@@ -10,6 +10,7 @@ class Status extends DefaultDBModel
     use HasFactory;
 
     protected $fillable= [
+
         'owner_id',
         'owner_type',
         'name',

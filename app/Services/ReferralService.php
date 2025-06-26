@@ -9,6 +9,7 @@ class ReferralService
     {
         // map the incoming keys to your model fields
         return Referral::create([
+            'client_id'    => $data['client_id'],
             'agency'       => $data['agency'] ?? null,
             'contact_name' => $data['contact_name'] ?? null,
             'job_title'    => $data['job_title'] ?? null,

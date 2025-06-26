@@ -11,6 +11,7 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('lead_id')->nullable()->constrained()->onDelete('set null');
 
             // Client Info
             $table->string('full_name');

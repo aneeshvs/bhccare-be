@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Client extends DefaultDBModel
 {
     protected $fillable = [
+        'lead_id',
         'full_name',
         'date_of_birth',
         'gender',
@@ -30,4 +31,8 @@ class Client extends DefaultDBModel
 
         'date_of_birth' => 'date',
     ];
+        public function lead()
+    {
+        return $this->belongsTo(Lead::class);
+    }
 }

@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('medical_information', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('primary_disability')->nullable();
             $table->string('secondary_disability')->nullable();
 

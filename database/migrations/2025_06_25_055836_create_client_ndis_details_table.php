@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         Schema::create('client_ndis_details', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->enum('ndis_plan_approved', ['Yes', 'No', 'Pending'])->nullable();
             $table->string('ndis_number')->nullable();
             $table->date('ndis_plan_start_date')->nullable();

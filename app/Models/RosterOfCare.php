@@ -9,6 +9,7 @@ class RosterOfCare extends DefaultDBModel
     protected $table = 'roster_of_care';
 
     protected $fillable = [
+         'client_id',
         'need_bhc_community_support',
         'comments',
         'transport_funding',

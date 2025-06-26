@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class HousingHistory extends DefaultDBModel
 {
     protected $fillable = [
+         'client_id',
         'most_recent_housing',
         'prior_housing',
 

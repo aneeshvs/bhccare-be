@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class ClientNdisDetail extends DefaultDBModel
 {
     protected $fillable = [
+         'client_id',
         'ndis_plan_approved',
         'ndis_number',
         'ndis_plan_start_date',

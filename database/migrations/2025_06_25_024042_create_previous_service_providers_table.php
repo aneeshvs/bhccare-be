@@ -7,11 +7,12 @@ use Illuminate\Support\Facades\Schema;
 use App\Classes\MigrationHelper;
 
 return new class extends Migration {
+
     public function up()
     {
         Schema::create('previous_service_providers', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('provider')->nullable();
             $table->string('contact_details')->nullable();
             $table->string('length_of_support')->nullable();

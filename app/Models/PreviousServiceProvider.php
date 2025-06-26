@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class PreviousServiceProvider extends DefaultDBModel
 {
     protected $fillable = [
-
+         'client_id',
         'provider',
         'contact_details',
         'length_of_support',

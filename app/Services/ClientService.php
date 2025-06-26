@@ -9,6 +9,7 @@ class ClientService
     {
         // you can pass $data directly since keys match fillable
         return Client::create([
+            'lead_id'               => $data['lead_id'] ?? null,
             'full_name'             => $data['full_name'],
             'date_of_birth'         => $data['date_of_birth'],
             'gender'                => $data['gender'],

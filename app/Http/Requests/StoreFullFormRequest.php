@@ -22,6 +22,7 @@ class StoreFullFormRequest extends FormRequest
             $this->medicalRules(),
             $this->housingRules(),
             $this->rosterRules(),
+            $this->goalRules(),
 
 
         );
@@ -87,7 +88,7 @@ class StoreFullFormRequest extends FormRequest
     public function serviceRules(): array
 {
     return [
-        'selected_services' => 'required|array|min:1',
+
         'selected_services.*.service_name' => 'nullable|string|max:255',
     ];
 }
@@ -178,6 +179,16 @@ class StoreFullFormRequest extends FormRequest
             'need_bhc_community_support' => 'nullable|in:Yes,No',
             'comments' => 'nullable|string',
             'transport_funding' => 'nullable|numeric|min:0',
+        ];
+    }
+     public function goalRules(): array
+    {
+        return [
+           'ndis_goals' => 'required|array|min:1',
+            'ndis_goals.*.goal' => 'nullable|string|max:255',
+            'ndis_goals.*.barriers' => 'nullable|string',
+            'ndis_goals.*.solutions' => 'nullable|string',
+
         ];
     }
 

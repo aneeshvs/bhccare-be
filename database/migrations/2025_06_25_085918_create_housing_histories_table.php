@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         Schema::create('housing_histories', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             // Housing history (2 years)
             $table->text('most_recent_housing')->nullable();
             $table->text('prior_housing')->nullable();

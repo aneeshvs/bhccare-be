@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MedicalInformation extends DefaultDBModel
 {
     protected $fillable = [
+         'client_id',
         'primary_disability',
         'secondary_disability',
         'requires_high_intensity_support',

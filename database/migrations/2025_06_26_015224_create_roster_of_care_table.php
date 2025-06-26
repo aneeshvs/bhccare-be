@@ -11,7 +11,7 @@ return new class extends Migration {
     {
         Schema::create('roster_of_care', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->enum('need_bhc_community_support', ['Yes', 'No'])->nullable();
             $table->text('comments')->nullable();
             $table->decimal('transport_funding', 10, 2)->nullable();

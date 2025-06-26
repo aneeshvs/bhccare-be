@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 class Referral extends DefaultDBModel
 {
     protected $fillable = [
+        'client_id',
         'agency',
         'contact_name',
         'job_title',

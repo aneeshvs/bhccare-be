@@ -11,7 +11,7 @@ class CreateReferralsTable extends Migration
     {
         Schema::create('referrals', function (Blueprint $table) {
             $table->id();
-
+            $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('agency')->nullable();
             $table->string('contact_name')->nullable();
             $table->string('job_title')->nullable();

@@ -10,6 +10,7 @@ class MedicalInformationService
     public function save(array $data): MedicalInformation
     {
         return MedicalInformation::create([
+             'client_id'             => $data['client_id'],
             'primary_disability' => $data['primary_disability'] ?? null,
             'secondary_disability' => $data['secondary_disability'] ?? null,
             'requires_high_intensity_support' => $data['requires_high_intensity_support'] ?? false,
