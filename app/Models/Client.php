@@ -27,7 +27,7 @@ class Client extends DefaultDBModel
 
     protected $casts = [
         'interpreter_required' => 'boolean',
-        'is_public_guardian' => 'boolean',
+
         'date_of_birth' => 'date',
     ];
 }

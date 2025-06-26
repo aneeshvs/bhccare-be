@@ -14,9 +14,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   Route::get('/profile', [ProfileController::class, 'show']);
   Route::post('/full-form', [FullFormController::class, 'store']);
-
-
-
 });
 
 Route::post('/login', [UsersController::class, 'login']);

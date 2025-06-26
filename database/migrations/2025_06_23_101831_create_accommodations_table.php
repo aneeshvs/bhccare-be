@@ -13,7 +13,7 @@ class CreateAccommodationsTable extends Migration
             $table->string('type_of_accommodation')->nullable();
             $table->string('requested_support')->nullable();
             $table->enum('worker_preference', ['Male', 'Female', 'No Preference'])->nullable();
-            $table->date('date_of_referral')->nullable()->nullable();
+            $table->date('date_of_referral')->nullable();
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
 
 

@@ -20,7 +20,7 @@ class ClientService
             'language_spoken'       => $data['language_spoken'] ?? null,
             'interpreter_required'  => $data['interpreter_required'] ?? false,
             'guardian_name'         => $data['guardian_name'] ?? null,
-            'is_public_guardian'    => $data['is_public_guardian'] ?? false,
+            'is_public_guardian'    => $data['is_public_guardian'] ?? null,
             'guardian_relationship' => $data['guardian_relationship'] ?? null,
             'guardian_mobile'       => $data['guardian_mobile'] ?? null,
             'guardian_email'        => $data['guardian_email'] ?? null,
