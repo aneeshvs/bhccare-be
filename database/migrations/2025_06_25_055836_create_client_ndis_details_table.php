@@ -18,7 +18,9 @@ return new class extends Migration {
             $table->date('ndis_plan_end_date')->nullable();
 
             $table->string('plan_manager_name')->nullable();
-            $table->string('plan_manager_contact')->nullable();
+            $table->string('plan_manager_contact_mobile')->nullable();
+            $table->string('plan_manager_contact_email')->nullable();
+
 
             $table->enum('plan_type', ['Plan Managed', 'Agency Managed', 'Self-Managed'])->nullable();
             $table->enum('copy_of_plan_provided', ['Yes', 'No'])->nullable();

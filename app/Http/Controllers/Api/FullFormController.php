@@ -14,11 +14,14 @@ use App\Services\HousingHistoryService;
 use App\Services\MedicalInformationService;
 use App\Services\RosterOfCareService;
 use App\Models\Lead;
+use App\Services\FinalDeclarationService;
+use App\Services\IndependentLivingOptionService;
 use App\Services\NdisGoalService;
 use Illuminate\Support\Facades\DB;
 
 class FullFormController extends UniversalController
 {
+
 
 
 public function update(
@@ -33,6 +36,8 @@ public function update(
     HousingHistoryService $housingHistoryService,
     RosterOfCareService $rosterOfCareService,
     NdisGoalService $ndisGoalService,
+    IndependentLivingOptionService $independentLivingOptionService,
+    FinalDeclarationService $finalDeclarationService,
     string $uuid
 ) {
     $lead = Lead::where('uuid', $uuid)->firstOrFail();
@@ -54,6 +59,8 @@ public function update(
         $housingHistoryService,
         $rosterOfCareService,
         $ndisGoalService,
+        $independentLivingOptionService,
+        $finalDeclarationService,
     ) {
         $client = $clientService->save($data);
         $data['client_id'] = $client->id;
@@ -69,10 +76,13 @@ public function update(
         $housingHistoryService->save($data);
         $rosterOfCareService->save($data);
         $ndisGoalService->saveMany($data['ndis_goals'] ?? [], $client->id);
+        $independentLivingOptionService->save($data);
+        $finalDeclarationService->save($data);
 
 
-        // ✅ Mark lead as converted
-        $lead->update(['status' => 'completed']);
+
+        //  Mark lead as completed
+        $lead->update(['form_status' => 'completed']);
 
         return compact('client');
     });

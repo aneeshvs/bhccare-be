@@ -12,4 +12,8 @@ class Accommodation extends DefaultDBModel
         'worker_preference',
         'date_of_referral',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

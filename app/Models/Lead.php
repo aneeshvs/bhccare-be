@@ -11,7 +11,7 @@ class Lead extends DefaultDBModel
         'full_name',
         'email',
         'mobile',
-        'status',
+        'form_status',
     ];
 
     // Route model binding using uuid

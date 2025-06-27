@@ -11,4 +11,8 @@ class SelectedService extends DefaultDBModel
          'client_id',
         'service_name',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

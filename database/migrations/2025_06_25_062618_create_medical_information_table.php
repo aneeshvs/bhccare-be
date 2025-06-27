@@ -47,9 +47,10 @@ return new class extends Migration {
             $table->text('challenging_behaviours')->nullable();
 
             // Behaviour Support Plan
-            $table->enum('pbsp_attached', ['Yes', 'No'])->nullable();
-            $table->enum('pbsp_required', ['Yes', 'No'])->nullable();
-            $table->enum('pbsp_review_requested', ['Yes', 'No'])->nullable();
+            $table->boolean('pbsp_attached')->default(false);
+            $table->boolean('pbsp_required')->default(false);
+            $table->boolean('pbsp_review_requested')->default(false);
+
             $table->string('behaviour_support_practitioner_contact')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());

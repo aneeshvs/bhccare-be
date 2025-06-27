@@ -11,6 +11,7 @@ class Client extends DefaultDBModel
         'date_of_birth',
         'gender',
         'residential_address',
+        'contact_type',
         'mobile',
         'email',
         'atsi_status',
@@ -31,8 +32,68 @@ class Client extends DefaultDBModel
 
         'date_of_birth' => 'date',
     ];
+
         public function lead()
     {
         return $this->belongsTo(Lead::class);
     }
+        public function referrals()
+    {
+        return $this->hasMany(Referral::class);
+    }
+
+    public function accommodations()
+    {
+        return $this->hasMany(Accommodation::class);
+    }
+
+    public function previousServiceProviders()
+    {
+        return $this->hasMany(PreviousServiceProvider::class);
+    }
+
+    public function selectedServices()
+    {
+        return $this->hasMany(SelectedService::class);
+    }
+
+    public function clientNdisDetail()
+    {
+        return $this->hasOne(ClientNdisDetail::class);
+    }
+
+    public function medicalInformation()
+    {
+        return $this->hasOne(MedicalInformation::class);
+    }
+
+    public function housingHistory()
+    {
+        return $this->hasOne(HousingHistory::class);
+    }
+
+    public function rosterOfCare()
+    {
+        return $this->hasOne(RosterOfCare::class);
+    }
+
+    public function ndisGoals()
+    {
+        return $this->hasMany(NdisGoal::class);
+    }
+
+    public function independentLivingOption()
+    {
+        return $this->hasOne(IndependentLivingOption::class);
+    }
+
+    public function finalDeclaration()
+    {
+        return $this->hasOne(FinalDeclaration::class);
+    }
+
+
+
+
+
 }

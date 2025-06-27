@@ -34,4 +34,8 @@ class HousingHistory extends DefaultDBModel
         'issue_child_custody',
         'issue_other_description',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

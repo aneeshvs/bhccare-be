@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->string('full_name');
             $table->string('email')->nullable();
             $table->string('mobile')->nullable();
-            $table->enum('status', ['in_progress', 'completed'])->default('in_progress');
+            $table->enum('form_status', ['in_progress', 'completed'])->default('in_progress');
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags()); // likely adds uuid, timestamps, soft deletes
         });
     }

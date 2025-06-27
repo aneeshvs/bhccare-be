@@ -23,6 +23,8 @@ class StoreFullFormRequest extends FormRequest
             $this->housingRules(),
             $this->rosterRules(),
             $this->goalRules(),
+            $this->independentLivingRules(),
+            $this->finalDeclarationRules(),
 
 
         );
@@ -45,6 +47,7 @@ class StoreFullFormRequest extends FormRequest
             'date_of_birth'         => 'required|date',
             'gender'                => 'required|in:Male,Female,Other',
             'residential_address'   => 'required|string',
+            'contact_type'          => 'required|in:Home_phone,Work_phone',
             'mobile'                => 'required|string|max:15',
             'email'                 => 'nullable|email|max:255',
             'atsi_status'           => 'required|in:Aboriginal,Torres Strait Islander,Neither,Both',
@@ -101,7 +104,8 @@ class StoreFullFormRequest extends FormRequest
                 'ndis_plan_end_date'             => 'nullable|date|after_or_equal:ndis_plan_start_date',
 
                 'plan_manager_name'              => 'nullable|string|max:255',
-                'plan_manager_contact'           => 'nullable|string|max:255',
+                'plan_manager_contact_mobile'    => 'nullable|string|max:255',
+                'plan_manager_contact_email'    => 'nullable|string|email|max:255',
 
                 'plan_type'                      => 'nullable|in:Plan Managed,Agency Managed,Self-Managed',
                 'copy_of_plan_provided'          => 'nullable|in:Yes,No',
@@ -138,9 +142,10 @@ class StoreFullFormRequest extends FormRequest
                 'equipment_other' => 'nullable|string|max:255',
 
                 'challenging_behaviours' => 'nullable|string',
-                'pbsp_attached' => 'nullable|in:Yes,No',
-                'pbsp_required' => 'nullable|in:Yes,No',
-                'pbsp_review_requested' => 'nullable|in:Yes,No',
+                'pbsp_attached' => 'nullable|boolean',
+                'pbsp_required' => 'nullable|boolean',
+                'pbsp_review_requested' => 'nullable|boolean',
+
                 'behaviour_support_practitioner_contact' => 'nullable|string|max:255',
             ];
         }
@@ -176,7 +181,7 @@ class StoreFullFormRequest extends FormRequest
      public function rosterRules(): array
     {
         return [
-            'need_bhc_community_support' => 'nullable|in:Yes,No',
+            'need_bhc_community_support' => 'nullable|boolean',
             'comments' => 'nullable|string',
             'transport_funding' => 'nullable|numeric|min:0',
         ];
@@ -184,12 +189,46 @@ class StoreFullFormRequest extends FormRequest
      public function goalRules(): array
     {
         return [
-           'ndis_goals' => 'required|array|min:1',
+            'ndis_goals' => 'required|array|min:1',
             'ndis_goals.*.goal' => 'nullable|string|max:255',
             'ndis_goals.*.barriers' => 'nullable|string',
             'ndis_goals.*.solutions' => 'nullable|string',
 
         ];
     }
+        private function independentLivingRules(): array
+    {
+        return [
+            'rent_per_week'           => 'nullable|numeric|min:0',
+            'utilities_per_week'      => 'nullable|numeric|min:0',
+            'needs_furnished'         => 'boolean',
+            'owns_furniture'          => 'boolean',
+            'lease_duration'          => 'nullable|string|max:255',
+            'can_pay_bond_upfront'    => 'boolean',
+            'preferred_location'      => 'nullable|string|max:255',
+            'living_preference'       => 'nullable|in:On Your Own,Share',
+        ];
+    }
+
+    private function finalDeclarationRules(): array
+{
+    return [
+        'primary_email'          => 'nullable|email|max:255',
+        'secondary_email'        => 'nullable|email|max:255',
+
+        'referrer_date'          => 'nullable|date',
+        'referrer_name'          => 'nullable|string|max:255',
+        'referrer_signature'     => 'nullable|string|max:255',
+        'referrer_organisation'  => 'nullable|string|max:255',
+
+        'client_date'            => 'nullable|date',
+        'client_name'            => 'nullable|string|max:255',
+        'client_signature'       => 'nullable|string|max:255',
+
+        'guardian_date'          => 'nullable|date',
+        'guardian_name'          => 'nullable|string|max:255',
+        'guardian_signature'     => 'nullable|string|max:255',
+    ];
+}
 
 }

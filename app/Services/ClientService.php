@@ -14,6 +14,7 @@ class ClientService
             'date_of_birth'         => $data['date_of_birth'],
             'gender'                => $data['gender'],
             'residential_address'   => $data['residential_address'] ?? null,
+             'contact_type'         => $data['contact_type'] ?? null,
             'mobile'                => $data['mobile'] ?? null,
             'email'                 => $data['email'] ?? null,
             'atsi_status'           => $data['atsi_status'],

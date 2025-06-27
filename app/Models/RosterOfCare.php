@@ -14,4 +14,8 @@ class RosterOfCare extends DefaultDBModel
         'comments',
         'transport_funding',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

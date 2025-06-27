@@ -16,8 +16,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
   Route::get('/profile', [ProfileController::class, 'show']);
   Route::post('/lead/create', [LeadController::class, 'store']);
+  Route::get('/admin/lead/{uuid}/details', [LeadController::class, 'showFullDetails']);
 });
-
+Route::get('/lead/{uuid}', [LeadController::class, 'show']);
 Route::put('/form/submit/{uuid}', [FullFormController::class, 'update']);
 
 

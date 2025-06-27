@@ -57,10 +57,7 @@ class UserStoreRequest extends FormRequest
                 'required',
                 Rule::exists(UserType::class, 'id'),
             ],
-            'jcom_table_id' =>[
-                'sometimes',
-                Rule::exists(JcomTable::class, 'id'),
-            ],
+
 
 
 

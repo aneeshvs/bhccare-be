@@ -14,11 +14,16 @@ class ClientNdisDetail extends DefaultDBModel
         'ndis_plan_start_date',
         'ndis_plan_end_date',
         'plan_manager_name',
-        'plan_manager_contact',
+        'plan_manager_contact_mobile',
+        'plan_manager_contact_email',
         'plan_type',
         'copy_of_plan_provided',
         'reason_plan_not_provided',
         'engagement_concerns',
         'engagement_concerns_description',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

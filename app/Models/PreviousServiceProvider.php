@@ -14,4 +14,8 @@ class PreviousServiceProvider extends DefaultDBModel
         'length_of_support',
         'reason_for_leaving',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

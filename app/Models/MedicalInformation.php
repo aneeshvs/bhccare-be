@@ -38,4 +38,8 @@ class MedicalInformation extends DefaultDBModel
         'pbsp_review_requested',
         'behaviour_support_practitioner_contact',
     ];
+     public function client()
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

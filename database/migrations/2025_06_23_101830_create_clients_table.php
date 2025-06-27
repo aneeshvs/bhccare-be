@@ -18,6 +18,7 @@ class CreateClientsTable extends Migration
             $table->date('date_of_birth');
             $table->enum('gender', ['Male', 'Female', 'Other']);
             $table->text('residential_address');
+            $table->enum('contact_type',['Home_phone','Work_phone']);
             $table->string('mobile');
             $table->string('email')->nullable();
             $table->enum('atsi_status', ['Aboriginal', 'Torres Strait Islander', 'Neither', 'Both']);
