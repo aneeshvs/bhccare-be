@@ -42,6 +42,7 @@ public function update(
 ) {
     $lead = Lead::where('uuid', $uuid)->firstOrFail();
     $data = $request->validated();
+
     $data['lead_id'] = $lead->id;
     $data['email']    = $lead->email;
 
@@ -66,7 +67,7 @@ public function update(
         $data['client_id'] = $client->id;
 
         // Save other records with client_id
-        $referral = $referralService->save($data);
+        $referralService->save($data);
         $accommodation = $accommodationService->save($data);
         $providerService->saveMany($data['previous_service_providers'] ?? [], $client->id);
         $selectedServiceService->saveMany($data['selected_services'] ?? [], $client->id);

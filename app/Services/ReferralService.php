@@ -14,7 +14,7 @@ class ReferralService
             'contact_name' => $data['contact_name'] ?? null,
             'job_title'    => $data['job_title'] ?? null,
             'work_contact' => $data['work_contact'] ?? null,
-            'mobile'       => $data['mobile'] ?? null,
+            'referral_mobile'=> $data['referral_mobile'] ?? null,
             'email'        => $data['email'] ?? null,
             'has_consent'  => $data['has_consent'],
         ]);

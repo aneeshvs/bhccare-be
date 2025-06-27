@@ -1,6 +1,8 @@
 <?php //store full form request validation
 namespace App\Http\Requests;
-
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreFullFormRequest extends FormRequest
@@ -72,7 +74,7 @@ class StoreFullFormRequest extends FormRequest
             'contact_name'    => 'nullable|string|max:255',
             'job_title'       => 'nullable|string|max:255',
             'work_contact'    => 'nullable|string|max:20',
-            'mobile'          => 'nullable|string|max:20',
+            'referral_mobile' => 'nullable|string|max:20',
             'email'           => 'nullable|email|max:255',
             'has_consent'     => 'nullable|boolean',
         ];
@@ -230,5 +232,12 @@ class StoreFullFormRequest extends FormRequest
         'guardian_signature'     => 'nullable|string|max:255',
     ];
 }
+   protected function failedValidation(Validator $validator)
+    {
+        $errors = (new ValidationException($validator))->errors();
+        throw new HttpResponseException(
+            response()->json(['success' => false, 'status' => 400, 'message' => 'Invalid Format', 'data' => $errors, 'alert' =>true], 200)
+        );
+    }
 
 }
