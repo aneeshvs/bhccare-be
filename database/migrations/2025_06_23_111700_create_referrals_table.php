@@ -17,7 +17,7 @@ class CreateReferralsTable extends Migration
             $table->string('job_title')->nullable();
             $table->string('work_contact')->nullable();
             $table->string('referral_mobile')->nullable();
-            $table->string('email')->nullable();
+            $table->string('referral_email')->nullable();
             $table->boolean('has_consent')->nullable(); // true = Yes, false = No
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
 

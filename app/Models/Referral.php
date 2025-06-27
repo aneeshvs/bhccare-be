@@ -12,7 +12,7 @@ class Referral extends DefaultDBModel
         'job_title',
         'work_contact',
         'referral_mobile',
-        'email',
+        'referral_email',
         'has_consent',
     ];
 

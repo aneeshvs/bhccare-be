@@ -75,7 +75,7 @@ class StoreFullFormRequest extends FormRequest
             'job_title'       => 'nullable|string|max:255',
             'work_contact'    => 'nullable|string|max:20',
             'referral_mobile' => 'nullable|string|max:20',
-            'email'           => 'nullable|email|max:255',
+            'referral_email'           => 'nullable|email|max:255',
             'has_consent'     => 'nullable|boolean',
         ];
     }
