@@ -1,4 +1,4 @@
-<?php
+<?php //store full form request validation
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -192,7 +192,7 @@ class StoreFullFormRequest extends FormRequest
             'ndis_goals' => 'required|array|min:1',
             'ndis_goals.*.goal' => 'nullable|string|max:255',
             'ndis_goals.*.barriers' => 'nullable|string',
-            'ndis_goals.*.solutions' => 'nullable|string',
+
 
         ];
     }

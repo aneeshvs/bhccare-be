@@ -15,7 +15,6 @@ return new class extends Migration {
 
             $table->string('goal')->nullable();
             $table->text('barriers')->nullable();
-            $table->text('solutions')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

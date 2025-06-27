@@ -22,7 +22,7 @@ class NdisGoalService
                 'client_id' => $clientId,
                 'goal'      => $goal['goal'],
                 'barriers'  => $goal['barriers'] ?? null,
-                'solutions' => $goal['solutions'] ?? null,
+
             ]);
         }
 
