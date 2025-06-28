@@ -40,16 +40,13 @@ public function update(
     FinalDeclarationService $finalDeclarationService,
     string $uuid
 ) {
-    $lead = Lead::where('uuid', $uuid)->firstOrFail();
+
+
     $data = $request->validated();
-
-    $data['lead_id'] = $lead->id;
-    $data['email']    = $lead->email;
-
 
     $result = DB::transaction(function () use (
         $data,
-        $lead,
+        $uuid,
         $referralService,
         $clientService,
         $accommodationService,
@@ -63,15 +60,16 @@ public function update(
         $independentLivingOptionService,
         $finalDeclarationService,
     ) {
+        // Include uuid in client creation
+        $data['uuid'] = $uuid;
         $client = $clientService->save($data);
         $data['client_id'] = $client->id;
 
-        // Save other records with client_id
+        // Save all services
         $referralService->save($data);
-        $accommodation = $accommodationService->save($data);
+        $accommodationService->save($data);
         $providerService->saveMany($data['previous_service_providers'] ?? [], $client->id);
         $selectedServiceService->saveMany($data['selected_services'] ?? [], $client->id);
-
         $clientNdisDetailService->save($data);
         $medicalInformationService->save($data);
         $housingHistoryService->save($data);
@@ -80,10 +78,6 @@ public function update(
         $independentLivingOptionService->save($data);
         $finalDeclarationService->save($data);
 
-
-
-        //  Mark lead as completed
-        $lead->update(['form_status' => 'completed']);
 
         return compact('client');
     });
@@ -94,6 +88,7 @@ public function update(
         'data' => $result,
     ]);
 }
+
 
 }
 
