@@ -11,6 +11,7 @@ Route::get('/form/data/{uuid}', [FullFormController::class, 'show']); // optiona
 Route::post('/generate-form-uuid', function () {
     return response()->json(['uuid' => \Illuminate\Support\Str::uuid()]);
 });
+
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 

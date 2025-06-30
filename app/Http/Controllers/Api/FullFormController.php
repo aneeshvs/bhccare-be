@@ -13,7 +13,7 @@ use App\Services\ClientNdisDetailService;
 use App\Services\HousingHistoryService;
 use App\Services\MedicalInformationService;
 use App\Services\RosterOfCareService;
-use App\Models\Lead;
+use App\Models\Client;
 use App\Services\FinalDeclarationService;
 use App\Services\IndependentLivingOptionService;
 use App\Services\NdisGoalService;
@@ -88,6 +88,26 @@ public function update(
         'data' => $result,
     ]);
 }
+public function show(string $uuid)
+{
+    $client = Client::with([
+        'referrals', 'accommodations', 'selectedServices',
+        'previousServiceProviders', 'clientNdisDetail',
+        'medicalInformation', 'housingHistory', 'rosterOfCare',
+        'ndisGoals', 'independentLivingOption', 'finalDeclaration'
+    ])->where('prospect_uuid', $uuid)->first(); // 👈 use lead_id instead of uuid
+
+    if (!$client) {
+        return response()->json(['status' => false, 'message' => 'Form not found.'], 404);
+    }
+
+    return response()->json([
+        'status' => true,
+        'data' => $client,
+    ]);
+}
+
+
 
 
 }

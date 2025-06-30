@@ -11,6 +11,15 @@ class StoreFullFormRequest extends FormRequest
     {
         return true; // or implement your auth logic
     }
+        protected function prepareForValidation()
+    {
+        if (is_string($this->ndis_goals)) {
+            $this->merge([
+                'ndis_goals' => json_decode($this->ndis_goals, true),
+            ]);
+        }
+    }
+
 
     public function rules()
     {
@@ -49,7 +58,7 @@ class StoreFullFormRequest extends FormRequest
             'date_of_birth'         => 'required|date',
             'gender'                => 'required|in:Male,Female,Other',
             'residential_address'   => 'required|string',
-            'contact_type'          => 'required|in:Home_phone,Work_phone',
+            'contact_type'          => 'nullable|in:Home_phone,Work_phone',
             'mobile'                => 'required|string|max:15',
             'email'                 => 'nullable|email|max:255',
             'atsi_status'           => 'required|in:Aboriginal,Torres Strait Islander,Neither,Both',

@@ -11,14 +11,15 @@ class CreateClientsTable extends Migration
     {
         Schema::create('clients', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('lead_id')->nullable()->constrained()->onDelete('set null');
+
+             $table->string('prospect_uuid', 36)->nullable();
 
             // Client Info
             $table->string('full_name');
             $table->date('date_of_birth');
             $table->enum('gender', ['Male', 'Female', 'Other']);
             $table->text('residential_address');
-            $table->enum('contact_type',['Home_phone','Work_phone']);
+            $table->enum('contact_type',['Home_phone','Work_phone'])->nullable();
             $table->string('mobile');
             $table->string('email')->nullable();
             $table->enum('atsi_status', ['Aboriginal', 'Torres Strait Islander', 'Neither', 'Both']);
