@@ -95,7 +95,7 @@ public function show(string $uuid)
         'previousServiceProviders', 'clientNdisDetail',
         'medicalInformation', 'housingHistory', 'rosterOfCare',
         'ndisGoals', 'independentLivingOption', 'finalDeclaration'
-    ])->where('prospect_uuid', $uuid)->first(); // 👈 use lead_id instead of uuid
+    ])->where('prospect_uuid', $uuid)->first();
 
     if (!$client) {
         return response()->json(['status' => false, 'message' => 'Form not found.'], 404);
