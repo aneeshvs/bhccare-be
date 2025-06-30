@@ -9,7 +9,7 @@ class ClientNdisDetailService
 {
     public function save(array $data): ClientNdisDetail
     {
-        return ClientNdisDetail::create([
+        return ClientNdisDetail::updateOrCreate([
              'client_id'             => $data['client_id'],
             'ndis_plan_approved'             => $data['ndis_plan_approved'] ?? null,
             'ndis_number'                    => $data['ndis_number'] ?? null,

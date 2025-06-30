@@ -8,7 +8,7 @@ class ReferralService
     public function save(array $data): Referral
     {
         // map the incoming keys to your model fields
-        return Referral::create([
+        return Referral::updateOrCreate([
             'client_id'      => $data['client_id'],
             'agency'         => $data['agency'] ?? null,
             'contact_name'   => $data['contact_name'] ?? null,

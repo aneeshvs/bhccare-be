@@ -7,7 +7,7 @@ class AccommodationService
 {
     public function save(array $data): Accommodation
     {
-        return Accommodation::create([
+        return Accommodation::updateOrCreate([
              'client_id'             => $data['client_id'],
             'type_of_accommodation' => $data['type_of_accommodation'],
             'requested_support'     => $data['requested_support'] ?? null,

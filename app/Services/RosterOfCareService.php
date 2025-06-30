@@ -7,7 +7,7 @@ class RosterOfCareService
 {
     public function save(array $data): RosterOfCare
     {
-        return RosterOfCare::create([
+        return RosterOfCare::updateOrCreate([
             'client_id'             => $data['client_id'],
             'need_bhc_community_support' => $data['need_bhc_community_support'] ?? null,
             'comments' => $data['comments'] ?? null,

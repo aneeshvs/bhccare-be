@@ -7,7 +7,7 @@ class IndependentLivingOptionService
 {
     public function save(array $data): IndependentLivingOption
     {
-        return IndependentLivingOption::create([
+        return IndependentLivingOption::updateOrCreate([
             'client_id'            => $data['client_id'],
             'rent_per_week'        => $data['rent_per_week'] ?? null,
             'utilities_per_week'   => $data['utilities_per_week'] ?? null,

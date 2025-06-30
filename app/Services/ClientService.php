@@ -8,7 +8,7 @@ class ClientService
     public function save(array $data): Client
     {
         // you can pass $data directly since keys match fillable
-        return Client::create([
+        return Client::updateOrCreate([
              'prospect_uuid' => $data['uuid'] ?? null,
             'full_name'             => $data['full_name'],
             'date_of_birth'         => $data['date_of_birth'],

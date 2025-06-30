@@ -10,7 +10,7 @@ class SelectedServiceService
         $saved = [];
 
         foreach ($services as $service) {
-            $saved[] = SelectedService::create([
+            $saved[] = SelectedService::updateOrCreate([
                 'client_id'    => $clientId,
                 'service_name' => $service['service_name'],
             ]);

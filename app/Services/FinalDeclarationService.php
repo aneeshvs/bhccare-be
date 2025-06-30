@@ -7,7 +7,7 @@ class FinalDeclarationService
 {
     public function save(array $data): FinalDeclaration
     {
-        return FinalDeclaration::create([
+        return FinalDeclaration::updateOrCreate([
             'client_id'              => $data['client_id'],
             'primary_email'          => $data['primary_email'] ?? null,
             'secondary_email'        => $data['secondary_email'] ?? null,

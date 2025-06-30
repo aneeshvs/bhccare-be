@@ -6,7 +6,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProfileController;
 
 // Public Routes
-Route::post('/form/submit/{uuid}', [FullFormController::class, 'update']);
+Route::put('/form/submit/{uuid}', [FullFormController::class, 'update']);
 Route::get('/form/data/{uuid}', [FullFormController::class, 'show']); // optional
 Route::post('/generate-form-uuid', function () {
     return response()->json(['uuid' => \Illuminate\Support\Str::uuid()]);

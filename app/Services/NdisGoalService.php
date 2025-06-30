@@ -18,7 +18,7 @@ class NdisGoalService
         $saved = [];
 
         foreach ($goals as $goal) {
-            $saved[] = NdisGoal::create([
+            $saved[] = NdisGoal::updateOrCreate([
                 'client_id' => $clientId,
                 'goal'      => $goal['goal'],
                 'barriers'  => $goal['barriers'] ?? null,

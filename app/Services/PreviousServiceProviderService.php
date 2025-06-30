@@ -10,7 +10,7 @@ class PreviousServiceProviderService
         $saved = [];
 
         foreach ($providers as $provider) {
-            $saved[] = PreviousServiceProvider::create([
+            $saved[] = PreviousServiceProvider::updateOrCreate([
                 'client_id'          => $clientId,
                 'provider'           => $provider['provider'] ?? null,
                 'contact_details'    => $provider['contact_details'] ?? null,
