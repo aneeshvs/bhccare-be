@@ -7,8 +7,10 @@ class IndependentLivingOptionService
 {
     public function save(array $data): IndependentLivingOption
     {
-        return IndependentLivingOption::updateOrCreate([
-            'client_id'            => $data['client_id'],
+        return IndependentLivingOption::updateOrCreate(
+
+            ['client_id' => $data['client_id']],
+            [
             'rent_per_week'        => $data['rent_per_week'] ?? null,
             'utilities_per_week'   => $data['utilities_per_week'] ?? null,
             'needs_furnished'      => $data['needs_furnished'] ?? false,
@@ -17,6 +19,7 @@ class IndependentLivingOptionService
             'can_pay_bond_upfront' => $data['can_pay_bond_upfront'] ?? false,
             'preferred_location'   => $data['preferred_location'] ?? null,
             'living_preference'    => $data['living_preference'] ?? null,
-        ]);
+            ]
+        );
     }
 }

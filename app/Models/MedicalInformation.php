@@ -11,7 +11,7 @@ class MedicalInformation extends DefaultDBModel
          'client_id',
         'primary_disability',
         'secondary_disability',
-        'requires_high_intensity_support',
+
 
         'complex_bowel_care',
         'enteral_feeding',

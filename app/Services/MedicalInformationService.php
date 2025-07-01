@@ -9,11 +9,13 @@ class MedicalInformationService
 {
     public function save(array $data): MedicalInformation
     {
-        return MedicalInformation::updateOrCreate([
-             'client_id'             => $data['client_id'],
+        return MedicalInformation::updateOrCreate(
+
+             ['client_id' => $data['client_id']],
+             [
             'primary_disability' => $data['primary_disability'] ?? null,
             'secondary_disability' => $data['secondary_disability'] ?? null,
-            'requires_high_intensity_support' => $data['requires_high_intensity_support'] ?? false,
+
 
             'complex_bowel_care' => $data['complex_bowel_care'] ?? false,
             'enteral_feeding' => $data['enteral_feeding'] ?? false,
@@ -35,10 +37,11 @@ class MedicalInformationService
             'equipment_other' => $data['equipment_other'] ?? null,
 
             'challenging_behaviours' => $data['challenging_behaviours'] ?? null,
-            'pbsp_attached' => $data['pbsp_attached'] ?? null,
-            'pbsp_required' => $data['pbsp_required'] ?? null,
-            'pbsp_review_requested' => $data['pbsp_review_requested'] ?? null,
+            'pbsp_attached' => $data['pbsp_attached'] ?? false,
+            'pbsp_required' => $data['pbsp_required'] ?? false,
+            'pbsp_review_requested' => $data['pbsp_review_requested'] ?? false,
             'behaviour_support_practitioner_contact' => $data['behaviour_support_practitioner_contact'] ?? null,
-        ]);
+             ]
+        );
     }
 }

@@ -9,8 +9,9 @@ class ClientNdisDetailService
 {
     public function save(array $data): ClientNdisDetail
     {
-        return ClientNdisDetail::updateOrCreate([
-             'client_id'             => $data['client_id'],
+        return ClientNdisDetail::updateOrCreate(
+           ['client_id' => $data['client_id']],
+             [
             'ndis_plan_approved'             => $data['ndis_plan_approved'] ?? null,
             'ndis_number'                    => $data['ndis_number'] ?? null,
             'ndis_plan_start_date'           => $data['ndis_plan_start_date'] ?? null,
@@ -23,6 +24,7 @@ class ClientNdisDetailService
             'reason_plan_not_provided'       => $data['reason_plan_not_provided'] ?? null,
             'engagement_concerns'            => $data['engagement_concerns'] ?? null,
             'engagement_concerns_description'=> $data['engagement_concerns_description'] ?? null,
-        ]);
+             ]
+        );
     }
 }

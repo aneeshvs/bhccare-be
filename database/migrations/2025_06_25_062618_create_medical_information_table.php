@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->string('primary_disability')->nullable();
             $table->string('secondary_disability')->nullable();
 
-            $table->boolean('requires_high_intensity_support')->default(false);
+
 
             // High-intensity support flags
             $table->boolean('complex_bowel_care')->default(false);

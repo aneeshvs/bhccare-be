@@ -18,7 +18,21 @@ class StoreFullFormRequest extends FormRequest
                 'ndis_goals' => json_decode($this->ndis_goals, true),
             ]);
         }
+        if (is_string($this->selected_services)) {
+            $this->merge([
+                'selected_services' => json_decode($this->selected_services, true),
+            ]);
+        }
+         if (is_string($this->previous_service_providers)) {
+            $this->merge([
+                'previous_service_providers' => json_decode($this->previous_service_providers, true),
+            ]);
+        }
+
+
     }
+
+
 
 
     public function rules()
@@ -103,7 +117,10 @@ class StoreFullFormRequest extends FormRequest
 {
     return [
 
+
+        'selected_services' => 'nullable|array',
         'selected_services.*.service_name' => 'nullable|string|max:255',
+
     ];
 }
         public function ndisRules(): array
@@ -131,7 +148,7 @@ class StoreFullFormRequest extends FormRequest
             return [
                 'primary_disability' => 'nullable|string|max:255',
                 'secondary_disability' => 'nullable|string|max:255',
-                'requires_high_intensity_support' => 'boolean',
+
 
                 'complex_bowel_care' => 'boolean',
                 'enteral_feeding' => 'boolean',

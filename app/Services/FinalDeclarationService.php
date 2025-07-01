@@ -7,8 +7,9 @@ class FinalDeclarationService
 {
     public function save(array $data): FinalDeclaration
     {
-        return FinalDeclaration::updateOrCreate([
-            'client_id'              => $data['client_id'],
+        return FinalDeclaration::updateOrCreate(
+           ['client_id' => $data['client_id']],
+           [
             'primary_email'          => $data['primary_email'] ?? null,
             'secondary_email'        => $data['secondary_email'] ?? null,
             'referrer_date'          => $data['referrer_date'] ?? null,
@@ -21,6 +22,7 @@ class FinalDeclarationService
             'guardian_date'          => $data['guardian_date'] ?? null,
             'guardian_name'          => $data['guardian_name'] ?? null,
             'guardian_signature'     => $data['guardian_signature'] ?? null,
-        ]);
+           ]
+        );
     }
 }
