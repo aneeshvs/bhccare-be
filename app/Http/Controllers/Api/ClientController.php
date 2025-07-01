@@ -22,7 +22,8 @@ public function storeBasic(Request $request)
         'residential_address' => 'required|string',
         'mobile'              => 'required|string',
         'email'               => 'nullable|email',
-    ]);
+        'password'            => 'required',
+       ]);
 
     $validated['prospect_uuid'] = $validated['uuid'];
     unset($validated['uuid']);

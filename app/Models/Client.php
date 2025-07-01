@@ -14,6 +14,7 @@ class Client extends DefaultDBModel
         'contact_type',
         'mobile',
         'email',
+        'password',
         'atsi_status',
         'cultural_background',
         'language_spoken',

@@ -79,6 +79,7 @@ class StoreFullFormRequest extends FormRequest
             'cultural_background'   => 'nullable|string',
             'language_spoken'       => 'nullable|string',
             'interpreter_required'  => 'boolean',
+            'password'              => 'required',
 
             'guardian_name'             => 'nullable|string|max:255',
             'is_public_guardian'        => 'nullable|string|max:255',

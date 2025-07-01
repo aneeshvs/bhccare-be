@@ -20,6 +20,7 @@ class ClientService
                 'contact_type'          => $data['contact_type'] ?? null,
                 'mobile'                => $data['mobile'] ?? null,
                 'email'                 => $data['email'] ?? null,
+                'password'              => $data['password'] ?? null,
                 'atsi_status'           => $data['atsi_status'],
                 'cultural_background'   => $data['cultural_background'] ?? null,
                 'language_spoken'       => $data['language_spoken'] ?? null,

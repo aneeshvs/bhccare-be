@@ -22,6 +22,7 @@ class CreateClientsTable extends Migration
             $table->enum('contact_type',['Home_phone','Work_phone'])->nullable();
             $table->string('mobile');
             $table->string('email')->nullable();
+            $table->string('password');
             $table->enum('atsi_status', ['Aboriginal', 'Torres Strait Islander', 'Neither', 'Both']);
             $table->string('cultural_background')->nullable();
             $table->string('language_spoken')->nullable();
