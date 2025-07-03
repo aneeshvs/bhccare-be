@@ -26,6 +26,7 @@ class Client extends DefaultDBModel
         'guardian_email',
         'guardian_address',
         'guardian_contact_method',
+        'form_status',
     ];
 
     protected $casts = [

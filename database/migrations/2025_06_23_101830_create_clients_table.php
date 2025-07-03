@@ -27,6 +27,8 @@ class CreateClientsTable extends Migration
             $table->string('cultural_background')->nullable();
             $table->string('language_spoken')->nullable();
             $table->boolean('interpreter_required')->default(false);
+            $table->enum('form_status', ['in_progress', 'completed', 'failed'])->default('in_progress');
+
 
             // Guardian Info
             $table->string('guardian_name')->nullable();

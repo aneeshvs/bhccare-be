@@ -20,7 +20,8 @@ class ClientService
                 'contact_type'          => $data['contact_type'] ?? null,
                 'mobile'                => $data['mobile'] ?? null,
                 'email'                 => $data['email'] ?? null,
-                'password'              => $data['password'] ?? null,
+
+
                 'atsi_status'           => $data['atsi_status'],
                 'cultural_background'   => $data['cultural_background'] ?? null,
                 'language_spoken'       => $data['language_spoken'] ?? null,
@@ -32,6 +33,7 @@ class ClientService
                 'guardian_email'        => $data['guardian_email'] ?? null,
                 'guardian_address'      => $data['guardian_address'] ?? null,
                 'guardian_contact_method'=> $data['guardian_contact_method'] ?? null,
+                'form_status' => $data['form_status'] ?? null,
             ]
         );
     }

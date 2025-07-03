@@ -1,5 +1,6 @@
 <?php //store full form request validation
 namespace App\Http\Requests;
+
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\Exceptions\HttpResponseException;
@@ -11,7 +12,7 @@ class StoreFullFormRequest extends FormRequest
     {
         return true; // or implement your auth logic
     }
-        protected function prepareForValidation()
+    protected function prepareForValidation()
     {
         if (is_string($this->ndis_goals)) {
             $this->merge([
@@ -23,13 +24,11 @@ class StoreFullFormRequest extends FormRequest
                 'selected_services' => json_decode($this->selected_services, true),
             ]);
         }
-         if (is_string($this->previous_service_providers)) {
+        if (is_string($this->previous_service_providers)) {
             $this->merge([
                 'previous_service_providers' => json_decode($this->previous_service_providers, true),
             ]);
         }
-
-
     }
 
 
@@ -79,7 +78,7 @@ class StoreFullFormRequest extends FormRequest
             'cultural_background'   => 'nullable|string',
             'language_spoken'       => 'nullable|string',
             'interpreter_required'  => 'boolean',
-            'password'              => 'required',
+            'password'              => 'sometimes|string',
 
             'guardian_name'             => 'nullable|string|max:255',
             'is_public_guardian'        => 'nullable|string|max:255',
@@ -105,81 +104,81 @@ class StoreFullFormRequest extends FormRequest
     }
     private function previousserviceRules(): array
     {
-       return[
+        return [
 
             'previous_service_providers.*.provider' => 'nullable|string|max:255',
             'previous_service_providers.*.contact_details' => 'nullable|string|max:255',
             'previous_service_providers.*.length_of_support' => 'nullable|string|max:255',
             'previous_service_providers.*.reason_for_leaving' => 'nullable|string|max:1000',
 
-       ];
+        ];
     }
     public function serviceRules(): array
-{
-    return [
+    {
+        return [
 
 
-        'selected_services' => 'nullable|array',
-        'selected_services.*.service_name' => 'nullable|string|max:255',
+            'selected_services' => 'nullable|array',
+            'selected_services.*.service_name' => 'nullable|string|max:255',
 
-    ];
-}
-        public function ndisRules(): array
-        {
-            return [
-                'ndis_plan_approved'              => 'nullable|in:Yes,No,Pending',
-                'ndis_number'                     => 'nullable|string|max:50',
-                'ndis_plan_start_date'           => 'nullable|date',
-                'ndis_plan_end_date'             => 'nullable|date|after_or_equal:ndis_plan_start_date',
+        ];
+    }
+    public function ndisRules(): array
+    {
+        return [
+            'ndis_plan_approved'              => 'nullable|in:Yes,No,Pending',
+            'ndis_number'                     => 'nullable|string|max:50',
+            'ndis_plan_start_date'           => 'nullable|date',
+            'ndis_plan_end_date'             => 'nullable|date|after_or_equal:ndis_plan_start_date',
 
-                'plan_manager_name'              => 'nullable|string|max:255',
-                'plan_manager_contact_mobile'    => 'nullable|string|max:255',
-                'plan_manager_contact_email'    => 'nullable|string|email|max:255',
+            'plan_manager_name'              => 'nullable|string|max:255',
+            'plan_manager_contact_mobile'    => 'nullable|string|max:255',
+            'plan_manager_contact_email'    => 'nullable|string|email|max:255',
 
-                'plan_type'                      => 'nullable|in:Plan Managed,Agency Managed,Self-Managed',
-                'copy_of_plan_provided'          => 'nullable|in:Yes,No',
-                'reason_plan_not_provided'       => 'nullable|required_if:copy_of_plan_provided,No|string',
+            'plan_type'                      => 'nullable|in:Plan Managed,Agency Managed,Self-Managed',
+            'copy_of_plan_provided'          => 'nullable|in:Yes,No',
+            'reason_plan_not_provided'       => 'nullable|required_if:copy_of_plan_provided,No|string',
 
-                'engagement_concerns'            => 'nullable|in:Yes,No,Not Sure',
-                'engagement_concerns_description'=> 'nullable|required_if:engagement_concerns,Yes|string',
-            ];
-        }
-                public function medicalRules(): array
-        {
-            return [
-                'primary_disability' => 'nullable|string|max:255',
-                'secondary_disability' => 'nullable|string|max:255',
+            'engagement_concerns'            => 'nullable|in:Yes,No,Not Sure',
+            'engagement_concerns_description' => 'nullable|required_if:engagement_concerns,Yes|string',
+        ];
+    }
+    public function medicalRules(): array
+    {
+        return [
+            'primary_disability' => 'nullable|string|max:255',
+            'secondary_disability' => 'nullable|string|max:255',
 
 
-                'complex_bowel_care' => 'boolean',
-                'enteral_feeding' => 'boolean',
-                'tracheostomy_care' => 'boolean',
-                'urinary_catheters' => 'boolean',
-                'ventilation' => 'boolean',
-                'subcutaneous_injection' => 'boolean',
+            'complex_bowel_care' => 'boolean',
+            'enteral_feeding' => 'boolean',
+            'tracheostomy_care' => 'boolean',
+            'urinary_catheters' => 'boolean',
+            'ventilation' => 'boolean',
+            'subcutaneous_injection' => 'boolean',
 
-                'communication_method' => 'nullable|string|max:255',
-                'communication_assessment' => 'nullable|in:Completed and Attached,Not Available',
-                'occupational_therapy_assessment' => 'nullable|in:Completed and Attached,Not Available',
+            'communication_method' => 'nullable|string|max:255',
+            'communication_assessment' => 'nullable|in:Completed and Attached,Not Available',
+            'occupational_therapy_assessment' => 'nullable|in:Completed and Attached,Not Available',
 
-                'hoisting' => 'boolean',
-                'assisted_devices' => 'boolean',
-                'mobility_other' => 'nullable|string|max:255',
+            'hoisting' => 'boolean',
+            'assisted_devices' => 'boolean',
+            'mobility_other' => 'nullable|string|max:255',
 
-                'hospital_bed' => 'boolean',
-                'pressure_mattresses' => 'boolean',
-                'equipment_other' => 'nullable|string|max:255',
+            'hospital_bed' => 'boolean',
+            'pressure_mattresses' => 'boolean',
+            'equipment_other' => 'nullable|string|max:255',
 
-                'challenging_behaviours' => 'nullable|string',
-                'pbsp_attached' => 'nullable|boolean',
-                'pbsp_required' => 'nullable|boolean',
-                'pbsp_review_requested' => 'nullable|boolean',
+            'challenging_behaviours' => 'nullable|string',
+            'pbsp_attached' => 'nullable|boolean',
+            'pbsp_required' => 'nullable|boolean',
+            'pbsp_review_requested' => 'nullable|boolean',
 
-                'behaviour_support_practitioner_contact' => 'nullable|string|max:255',
-            ];
-        }
+            'behaviour_support_practitioner_contact' => 'nullable|string|max:255',
+        ];
+    }
 
-        public function housingRules(): array
+    public function housingRules(): array
     {
         return [
             'most_recent_housing' => 'nullable|string',
@@ -207,7 +206,7 @@ class StoreFullFormRequest extends FormRequest
             'issue_other_description' => 'nullable|string',
         ];
     }
-     public function rosterRules(): array
+    public function rosterRules(): array
     {
         return [
             'need_bhc_community_support' => 'nullable|boolean',
@@ -215,7 +214,7 @@ class StoreFullFormRequest extends FormRequest
             'transport_funding' => 'nullable|numeric|min:0',
         ];
     }
-     public function goalRules(): array
+    public function goalRules(): array
     {
         return [
             'ndis_goals' => 'required|array|min:1',
@@ -225,7 +224,7 @@ class StoreFullFormRequest extends FormRequest
 
         ];
     }
-        private function independentLivingRules(): array
+    private function independentLivingRules(): array
     {
         return [
             'rent_per_week'           => 'nullable|numeric|min:0',
@@ -240,31 +239,30 @@ class StoreFullFormRequest extends FormRequest
     }
 
     private function finalDeclarationRules(): array
-{
-    return [
-        'primary_email'          => 'nullable|email|max:255',
-        'secondary_email'        => 'nullable|email|max:255',
+    {
+        return [
+            'primary_email'          => 'nullable|email|max:255',
+            'secondary_email'        => 'nullable|email|max:255',
 
-        'referrer_date'          => 'nullable|date',
-        'referrer_name'          => 'nullable|string|max:255',
-        'referrer_signature'     => 'nullable|string|max:255',
-        'referrer_organisation'  => 'nullable|string|max:255',
+            'referrer_date'          => 'nullable|date',
+            'referrer_name'          => 'nullable|string|max:255',
+            'referrer_signature'     => 'nullable|string|max:255',
+            'referrer_organisation'  => 'nullable|string|max:255',
 
-        'client_date'            => 'nullable|date',
-        'client_name'            => 'nullable|string|max:255',
-        'client_signature'       => 'nullable|string|max:255',
+            'client_date'            => 'nullable|date',
+            'client_name'            => 'nullable|string|max:255',
+            'client_signature'       => 'nullable|string|max:255',
 
-        'guardian_date'          => 'nullable|date',
-        'guardian_name'          => 'nullable|string|max:255',
-        'guardian_signature'     => 'nullable|string|max:255',
-    ];
-}
-   protected function failedValidation(Validator $validator)
+            'guardian_date'          => 'nullable|date',
+            'guardian_name'          => 'nullable|string|max:255',
+            'guardian_signature'     => 'nullable|string|max:255',
+        ];
+    }
+    protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(
-            response()->json(['success' => false, 'status' => 400, 'message' => 'Invalid Format', 'data' => $errors, 'alert' =>true], 200)
+            response()->json(['success' => false, 'status' => 400, 'message' => 'Invalid Format', 'data' => $errors, 'alert' => true], 200)
         );
     }
-
 }

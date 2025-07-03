@@ -18,6 +18,9 @@ use App\Services\FinalDeclarationService;
 use App\Services\IndependentLivingOptionService;
 use App\Services\NdisGoalService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
+
 
 class FullFormController extends UniversalController
 {
@@ -62,6 +65,7 @@ public function update(
     ) {
         // Include uuid in client creation
         $data['uuid'] = $uuid;
+        $data['form_status'] = 'completed';
         $client = $clientService->save($data);
         $data['client_id'] = $client->id;
 
@@ -81,6 +85,23 @@ public function update(
 
         return compact('client');
     });
+
+
+
+//core php request
+$response=Http::asForm()->post('http://localhost/bhcappdemo/php/update-form-status.php', [
+    'uuid' => $uuid,
+    'form_status' => 'completed',
+]);
+
+
+Log::info('Core PHP form status response', [
+    'response' => $response->body(),
+    'status' => $response->status()
+]);
+
+
+
 
     return response()->json([
         'status' => true,
