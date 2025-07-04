@@ -18,18 +18,18 @@ return new class extends Migration {
             // Referrer declaration
             $table->date('referrer_date')->nullable();
             $table->string('referrer_name')->nullable();
-            $table->string('referrer_signature')->nullable();
+            $table->binary('referrer_signature')->nullable();
             $table->string('referrer_organisation')->nullable();
 
             // Client declaration
             $table->date('client_date')->nullable();
             $table->string('client_name')->nullable();
-            $table->string('client_signature')->nullable();
+            $table->binary('client_signature')->nullable();
 
             // Guardian declaration
             $table->date('guardian_date')->nullable();
             $table->string('guardian_name')->nullable();
-            $table->string('guardian_signature')->nullable();
+            $table->binary('guardian_signature')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

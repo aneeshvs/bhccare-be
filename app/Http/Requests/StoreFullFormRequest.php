@@ -246,16 +246,16 @@ class StoreFullFormRequest extends FormRequest
 
             'referrer_date'          => 'nullable|date',
             'referrer_name'          => 'nullable|string|max:255',
-            'referrer_signature'     => 'nullable|string|max:255',
+            'referrer_signature'     => 'nullable|string',
             'referrer_organisation'  => 'nullable|string|max:255',
 
             'client_date'            => 'nullable|date',
             'client_name'            => 'nullable|string|max:255',
-            'client_signature'       => 'nullable|string|max:255',
+            'client_signature'       => 'nullable|string',
 
             'guardian_date'          => 'nullable|date',
             'guardian_name'          => 'nullable|string|max:255',
-            'guardian_signature'     => 'nullable|string|max:255',
+            'guardian_signature'     => 'nullable|string',
         ];
     }
     protected function failedValidation(Validator $validator)

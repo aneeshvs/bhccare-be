@@ -32,7 +32,7 @@ class Client extends DefaultDBModel
     protected $casts = [
         'interpreter_required' => 'boolean',
 
-        'date_of_birth' => 'date',
+        // 'date_of_birth' => 'date',
     ];
 
 
