@@ -47,6 +47,15 @@ public function update(
 
     $data = $request->validated();
 
+    $existingClient = Client::where('prospect_uuid', $uuid)->first();
+
+    if ($existingClient && $existingClient->form_status === 'completed' && empty($data['submit_final'])) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Form has already been submitted and cannot be edited.',
+        ], 403);
+    }
+
     $result = DB::transaction(function () use (
         $data,
         $uuid,
@@ -65,7 +74,12 @@ public function update(
     ) {
         // Include uuid in client creation
         $data['uuid'] = $uuid;
-        $data['form_status'] = 'completed';
+        $data['form_status'] = isset($data['submit_final']) && $data['submit_final'] == true
+        ? 'completed'
+        : 'in_progress';
+        unset($data['submit_final']);
+
+
         $client = $clientService->save($data);
         $data['client_id'] = $client->id;
 
