@@ -57,8 +57,12 @@ class StoreFullFormRequest extends FormRequest
     private function accommodationRules(): array
     {
         return [
-            'type_of_accommodation' => 'nullable|string|max:255',
-            'requested_support'     => 'nullable|string',
+            'type_of_accommodation' => 'nullable|array',
+            'type_of_accommodation.*' => 'string|max:255',
+
+            'requested_support'     => 'nullable|array',
+            'requested_support.*'   => 'string|max:255',
+
             'worker_preference'     => 'nullable|in:Male,Female,No Preference',
             'date_of_referral'      => 'nullable|date',
         ];
@@ -71,7 +75,10 @@ class StoreFullFormRequest extends FormRequest
             'date_of_birth'         => 'required|date',
             'gender'                => 'required|in:Male,Female,Other',
             'residential_address'   => 'required|string',
-            'contact_type'          => 'nullable|in:Home_phone,Work_phone',
+
+            'home_phone'             => 'nullable|string',
+            'work_phone'             => 'nullable|string',
+
             'mobile'                => 'required|string|max:15',
             'email'                 => 'nullable|email|max:255',
             'atsi_status'           => 'required|in:Aboriginal,Torres Strait Islander,Neither,Both',

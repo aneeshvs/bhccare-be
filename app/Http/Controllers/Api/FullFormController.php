@@ -43,10 +43,7 @@ public function update(
     FinalDeclarationService $finalDeclarationService,
     string $uuid
 ) {
-
-
     $data = $request->validated();
-
     $existingClient = Client::where('prospect_uuid', $uuid)->first();
 
     if ($existingClient && $existingClient->form_status === 'completed' && empty($data['submit_final'])) {
@@ -55,7 +52,6 @@ public function update(
             'message' => 'Form has already been submitted and cannot be edited.',
         ], 403);
     }
-
     $result = DB::transaction(function () use (
         $data,
         $uuid,
@@ -109,14 +105,11 @@ $response=Http::asForm()->post('http://localhost/bhcappdemo/php/update-form-stat
 ]);
 
 
+
 Log::info('Core PHP form status response', [
     'response' => $response->body(),
     'status' => $response->status()
 ]);
-
-
-
-
     return response()->json([
         'status' => true,
         'message' => 'Form submitted and client created successfully.',
@@ -131,6 +124,8 @@ public function show(string $uuid)
         'medicalInformation', 'housingHistory', 'rosterOfCare',
         'ndisGoals', 'independentLivingOption', 'finalDeclaration'
     ])->where('prospect_uuid', $uuid)->first();
+
+
 
     if (!$client) {
         return response()->json(['status' => false, 'message' => 'Form not found.'], 404);

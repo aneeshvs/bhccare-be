@@ -11,8 +11,10 @@ class CreateAccommodationsTable extends Migration
         Schema::create('accommodations', function (Blueprint $table) {
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
-            $table->string('type_of_accommodation')->nullable();
-            $table->string('requested_support')->nullable();
+
+            $table->json('type_of_accommodation')->nullable();
+            $table->json('requested_support')->nullable();
+
             $table->enum('worker_preference', ['Male', 'Female', 'No Preference'])->nullable();
             $table->date('date_of_referral')->nullable();
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());

@@ -16,4 +16,10 @@ class Accommodation extends DefaultDBModel
     {
         return $this->belongsTo(Client::class);
     }
+
+    protected $casts = [
+        'type_of_accommodation' => 'array',
+        'requested_support' => 'array',
+
+    ];
 }

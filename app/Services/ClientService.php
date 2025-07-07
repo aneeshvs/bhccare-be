@@ -17,10 +17,11 @@ class ClientService
                 'date_of_birth'         => $data['date_of_birth'],
                 'gender'                => $data['gender'],
                 'residential_address'   => $data['residential_address'] ?? null,
-                'contact_type'          => $data['contact_type'] ?? null,
+
                 'mobile'                => $data['mobile'] ?? null,
+                'home_phone'            => $data['home_phone'] ?? null,
+                'work_phone'            => $data['work_phone'] ?? null,
                 'email'                 => $data['email'] ?? null,
-                'password'              => $data['password'],
 
                 'atsi_status'           => $data['atsi_status'],
                 'cultural_background'   => $data['cultural_background'] ?? null,

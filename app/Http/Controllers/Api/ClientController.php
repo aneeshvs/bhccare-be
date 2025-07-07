@@ -13,8 +13,7 @@ class ClientController extends UniversalController
 
 public function storeBasic(Request $request)
 {
-
-    $validated = $request->validate([
+    $validator = Validator::make($request->all(), [
         'uuid'                => 'required|string|uuid',
         'full_name'           => 'required|string',
         'date_of_birth'       => 'required|date',
@@ -23,13 +22,19 @@ public function storeBasic(Request $request)
         'mobile'              => 'required|string',
         'email'               => 'nullable|email',
         'password'            => 'required',
-       ]);
+    ]);
 
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'errors' => $validator->errors(),
+        ], 422);
+    }
+
+    $validated = $validator->validated();
     $validated['prospect_uuid'] = $validated['uuid'];
     unset($validated['uuid']);
 
-
-    // ✅ Create client with only basic info
     $client = \App\Models\Client::create($validated);
 
     return response()->json([

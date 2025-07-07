@@ -7,6 +7,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 
 
 // Public Routes
@@ -23,6 +24,25 @@ Route::post('/generate-form-uuid', function () {
 });
 
 Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
+
+
+Route::get('/debug-token', function (Request $request) {
+    $uuid = $request->uuid;
+    $token = hash_hmac('sha256', $uuid, env('FORM_SECRET_KEY'));
+    return response()->json([
+        'uuid' => $uuid,
+        'expected_token' => $token
+    ]);
+});
+
+
+
+
+Route::prefix('onboarding')->group(function () {
+    Route::get('/show/{uuid}', [\App\Http\Controllers\Api\OnboardingController::class, 'show']);
+    Route::post('/submit/{uuid}', [\App\Http\Controllers\Api\OnboardingController::class, 'submit']);
+});
+
 
 
 
