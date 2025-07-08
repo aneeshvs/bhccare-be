@@ -12,25 +12,22 @@ class StoreFullFormRequest extends FormRequest
     {
         return true; // or implement your auth logic
     }
-    protected function prepareForValidation()
-    {
-        if (is_string($this->ndis_goals)) {
-            $this->merge([
-                'ndis_goals' => json_decode($this->ndis_goals, true),
-            ]);
+            protected function prepareForValidation()
+        {
+            foreach ([
+                'ndis_goals',
+                'selected_services',
+                'previous_service_providers',
+                'type_of_accommodation',
+                'requested_support'
+            ] as $field) {
+                if (is_string($this->$field)) {
+                    $this->merge([
+                        $field => json_decode($this->$field, true),
+                    ]);
+                }
+            }
         }
-        if (is_string($this->selected_services)) {
-            $this->merge([
-                'selected_services' => json_decode($this->selected_services, true),
-            ]);
-        }
-        if (is_string($this->previous_service_providers)) {
-            $this->merge([
-                'previous_service_providers' => json_decode($this->previous_service_providers, true),
-            ]);
-        }
-    }
-
 
 
 
