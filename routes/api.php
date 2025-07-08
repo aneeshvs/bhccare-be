@@ -36,17 +36,36 @@ Route::get('/debug-token', function (Request $request) {
 });
 
 
+// use Illuminate\Support\Facades\Hash;
+
+// Route::post('/token-creation', function (Request $request) {
+//     $request->validate([
+//         'name' => 'required|string',
+//         'password' => 'required|string',
+//     ]);
+
+//     // Replace this with actual user check (e.g., from users table)
+//     if ($request->name === 'admin' && $request->password === '1234') {
+//         $uuid = 'f4c072a5-fbe8-4b27-99db-860377a677ff'; // example UUID
+//         $secret = env('FORM_SECRET_KEY');
+//         $token = hash_hmac('sha256', $uuid, $secret);
+
+//         return response()->json([
+//             'token' => $token,
+//             'uuid' => $uuid,
+//             'url' => url("/api/onboarding/show/$uuid?token=$token"),
+//         ]);
+//     }
+
+//     return response()->json(['message' => 'Invalid credentials'], 401);
+// });
+
 
 
 Route::prefix('onboarding')->group(function () {
     Route::get('/show/{uuid}', [\App\Http\Controllers\Api\OnboardingController::class, 'show']);
     Route::post('/submit/{uuid}', [\App\Http\Controllers\Api\OnboardingController::class, 'submit']);
 });
-
-
-
-
-
 
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);

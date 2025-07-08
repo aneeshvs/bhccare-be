@@ -15,21 +15,22 @@ class UsersController extends UniversalController
 
 
     public function login(LoginRequest $request)
-    {
-
-
-
+{
+    try {
         if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
-
             $auth = Auth::user();
             $success['token'] = $auth->createToken('LaravelSanctumAuth')->plainTextToken;
             $success['name'] = $auth->name;
             $success['user'] = $auth;
-            return $this->sendResponse( $success,"Login Successfully");
+            return $this->sendResponse($success, "Login Successfully");
         } else {
             return $this->sendError('Unauthorized');
         }
+    } catch (\Exception $e) {
+        return response()->json(['message' => 'Login error: ' . $e->getMessage()], 500);
     }
+}
+
 
     /**
      * Display a listing of the resource.
