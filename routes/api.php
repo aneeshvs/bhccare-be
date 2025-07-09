@@ -26,14 +26,14 @@ Route::post('/generate-form-uuid', function () {
 Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
 
 
-Route::get('/debug-token', function (Request $request) {
-    $uuid = $request->uuid;
-    $token = hash_hmac('sha256', $uuid, env('FORM_SECRET_KEY'));
-    return response()->json([
-        'uuid' => $uuid,
-        'expected_token' => $token
-    ]);
-});
+// Route::get('/debug-token', function (Request $request) {
+//     $uuid = $request->uuid;
+//     $token = hash_hmac('sha256', $uuid, env('FORM_SECRET_KEY'));
+//     return response()->json([
+//         'uuid' => $uuid,
+//         'expected_token' => $token
+//     ]);
+// });
 
 
 // use Illuminate\Support\Facades\Hash;
