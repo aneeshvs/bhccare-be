@@ -69,15 +69,11 @@ public function update(
         $finalDeclarationService,
     ) {
         // Include uuid in client creation
-
-        $formStatus = (isset($data['submit_final']) && $data['submit_final'] == true)
+        $data['uuid'] = $uuid;
+        $data['form_status'] = isset($data['submit_final']) && $data['submit_final'] == true
         ? 'completed'
         : 'in_progress';
-
-        $data['uuid'] = $uuid;
-        $data['form_status'] = $formStatus;
         unset($data['submit_final']);
-
 
 
         $client = $clientService->save($data);
@@ -96,29 +92,16 @@ public function update(
         $independentLivingOptionService->save($data);
         $finalDeclarationService->save($data);
 
-        if ($formStatus === 'completed') {
+        if ($data['form_status'] === 'completed') {
             $response = Http::asForm()->post('http://localhost/bhcappdemo/php/update-form-status.php', [
                 'uuid' => $uuid,
                 'form_status' => 'completed',
             ]);
 
-            Log::info('Core PHP form status response', [
-                'response' => $response->body(),
-                'status' => $response->status()
-            ]);
+
         }
-
-
         return compact('client');
-
-
     });
-
-
-
-
-
-
 
 
     return response()->json([
