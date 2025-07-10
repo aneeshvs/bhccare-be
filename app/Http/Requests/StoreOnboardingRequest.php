@@ -16,7 +16,8 @@ class StoreOnboardingRequest extends FormRequest
     {
         return array_merge(
             $this->InitialenquiryRules(),
-            $this->fundingRules()
+            $this->fundingRules(),
+            $this->emergencyRules()
 
 
         );
@@ -25,25 +26,25 @@ class StoreOnboardingRequest extends FormRequest
     private function InitialenquiryRules(): array
     {
         return [
-            'full_name' => 'required|string|max:255',
+            'full_name' => 'nullable|string|max:255',
             'preferred_name' => 'nullable|string|max:255',
-            'gender' => 'required|in:male,female,other',
-            'date_of_birth' => 'required|date',
+            'gender' => 'nullable|in:male,female,other',
+            'date_of_birth' => 'nullable|date',
             'address' => 'nullable|string|max:255',
             'postcode' => 'nullable|string|max:10',
             'phone_number' => 'nullable|string|max:20',
-            'mobile_number' => 'required|string|max:20',
+            'mobile_number' => 'nullable|string|max:20',
             'email' => 'nullable|email',
-            'need_support_person' => 'required|boolean',
+            'need_support_person' => 'nullable|boolean',
             'support_person_details' => 'nullable|string'
         ];
     }
         private function fundingRules(): array
     {
         return [
-            'type_of_funding' => 'required|in:Self-Managed,NDIA,Plan Managed',
+            'type_of_funding' => 'nullable|in:Self-Managed,NDIA,Plan Managed',
             'funding_contact_person' => 'nullable|string|max:255',
-            'ndis_plan_attached' => 'required|boolean',
+            'ndis_plan_attached' => 'nullable|boolean',
             'ndis_plan_start_date' => 'nullable|date',
             'ndis_plan_end_date' => 'nullable|date|after_or_equal:ndis_plan_start_date',
             'plan_manager_name' => 'nullable|string|max:255',
@@ -51,6 +52,19 @@ class StoreOnboardingRequest extends FormRequest
             'plan_manager_phone' => 'nullable|string|max:20',
         ];
     }
+        private function emergencyRules(): array
+        {
+            return [
+
+                'name' => 'nullable|string|max:255',
+                'relationship' => 'nullable|string|max:255',
+                'phone' => 'nullable|string|max:20',
+                'mobile' => 'nullable|string|max:20',
+                'work_contact' => 'nullable|string|max:20',
+            ];
+        }
+
+
 
 
 

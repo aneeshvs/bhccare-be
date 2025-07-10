@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOnboardingRequest;
 use App\OnboardingService\InitialEnquiryService;
 use App\OnboardingService\FundingDetailService;
+use App\OnboardingService\EmergencyContactService;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -16,21 +18,25 @@ class OnboardingController extends UniversalController
     public function store(
         StoreOnboardingRequest  $request,
         InitialEnquiryService $initialService,
-        FundingDetailService $fundingDetailService
+        FundingDetailService $fundingDetailService,
+        EmergencyContactService $emergencyContactService
+
     ) {
         $data = $request->validated();
 
         $result = DB::transaction(function () use (
                 $data,
                 $initialService,
-                $fundingDetailService
+                $fundingDetailService,
+                $emergencyContactService
             ) {
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
 
                 $funding = $fundingDetailService->save($data);
+                $contacts = $emergencyContactService->save($data);
 
-                return compact('initial', 'funding'); // ✅ returns both models
+                return compact('initial', 'funding','contacts'); // ✅ returns both models
         });
 
 

@@ -15,14 +15,14 @@ return new class extends Migration
         {
         Schema::create('initial_enquiries', function (Blueprint $table) {
         $table->id();
-        $table->string('full_name');
+        $table->string('full_name')->nullable();
         $table->string('preferred_name')->nullable();
         $table->enum('gender', ['male', 'female', 'other']);
-        $table->date('date_of_birth');
+        $table->date('date_of_birth')->nullable();
         $table->string('address')->nullable();
         $table->string('postcode')->nullable();
         $table->string('phone_number')->nullable();
-        $table->string('mobile_number');
+        $table->string('mobile_number')->nullable();
         $table->string('email')->nullable();
         $table->boolean('need_support_person')->default(false);
         $table->text('support_person_details')->nullable();
