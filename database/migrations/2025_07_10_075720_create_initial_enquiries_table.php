@@ -17,7 +17,7 @@ return new class extends Migration
         $table->id();
         $table->string('full_name')->nullable();
         $table->string('preferred_name')->nullable();
-        $table->enum('gender', ['male', 'female', 'other']);
+        $table->enum('gender', ['male', 'female', 'other'])->nullable();
         $table->date('date_of_birth')->nullable();
         $table->string('address')->nullable();
         $table->string('postcode')->nullable();

@@ -28,7 +28,7 @@ class OnboardingController extends UniversalController
                 $data,
                 $initialService,
                 $fundingDetailService,
-                $emergencyContactService
+                $emergencyContactService,
             ) {
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
