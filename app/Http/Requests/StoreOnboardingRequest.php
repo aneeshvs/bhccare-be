@@ -16,6 +16,7 @@ class StoreOnboardingRequest extends FormRequest
     {
         return array_merge(
             $this->InitialenquiryRules(),
+            $this->fundingRules()
 
 
         );
@@ -37,6 +38,20 @@ class StoreOnboardingRequest extends FormRequest
             'support_person_details' => 'nullable|string'
         ];
     }
+        private function fundingRules(): array
+    {
+        return [
+            'type_of_funding' => 'required|in:Self-Managed,NDIA,Plan Managed',
+            'funding_contact_person' => 'nullable|string|max:255',
+            'ndis_plan_attached' => 'required|boolean',
+            'ndis_plan_start_date' => 'nullable|date',
+            'ndis_plan_end_date' => 'nullable|date|after_or_equal:ndis_plan_start_date',
+            'plan_manager_name' => 'nullable|string|max:255',
+            'plan_manager_email' => 'nullable|email|max:255',
+            'plan_manager_phone' => 'nullable|string|max:20',
+        ];
+    }
+
 
 
     protected function failedValidation(Validator $validator)

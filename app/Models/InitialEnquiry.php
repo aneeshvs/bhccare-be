@@ -20,4 +20,9 @@ class InitialEnquiry extends DefaultDBModel
         'need_support_person',
         'support_person_details'
     ];
+    public function funding()
+{
+    return $this->hasOne(FundingDetail::class, 'initial_enquiry_id');
+}
+
 }
