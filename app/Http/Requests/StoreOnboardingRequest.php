@@ -28,11 +28,11 @@ class StoreOnboardingRequest extends FormRequest
             'preferred_name' => 'nullable|string|max:255',
             'gender' => 'required|in:male,female,other',
             'date_of_birth' => 'required|date',
-            'address' => 'required|string|max:255',
-            'postcode' => 'required|string|max:10',
+            'address' => 'nullable|string|max:255',
+            'postcode' => 'nullable|string|max:10',
             'phone_number' => 'nullable|string|max:20',
             'mobile_number' => 'required|string|max:20',
-            'email' => 'required|email',
+            'email' => 'nullable|email',
             'need_support_person' => 'required|boolean',
             'support_person_details' => 'nullable|string'
         ];

@@ -19,11 +19,11 @@ return new class extends Migration
         $table->string('preferred_name')->nullable();
         $table->enum('gender', ['male', 'female', 'other']);
         $table->date('date_of_birth');
-        $table->string('address');
-        $table->string('postcode');
+        $table->string('address')->nullable();
+        $table->string('postcode')->nullable();
         $table->string('phone_number')->nullable();
         $table->string('mobile_number');
-        $table->string('email');
+        $table->string('email')->nullable();
         $table->boolean('need_support_person')->default(false);
         $table->text('support_person_details')->nullable();
         MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
