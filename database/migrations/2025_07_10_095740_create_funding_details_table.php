@@ -14,7 +14,7 @@ return new class extends Migration {
                 ->references('id')
                 ->on('initial_enquiries')
                 ->onDelete('cascade');
-            $table->enum('type_of_funding', ['Self-Managed', 'NDIA', 'Plan Managed']);
+            $table->enum('type_of_funding', ['Self-Managed', 'NDIA', 'Plan Managed'])->nullable();
             $table->string('funding_contact_person')->nullable();
             $table->boolean('ndis_plan_attached')->default(false);
             $table->date('ndis_plan_start_date')->nullable();
