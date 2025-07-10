@@ -1,39 +1,43 @@
 <?php
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Classes\UniversalController;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use App\Models\Client;
-use Illuminate\Support\Facades\Log;// or your onboarding model
+use App\Http\Requests\StoreOnboardingRequest;
+use App\OnboardingService\InitialEnquiryService;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
-class OnboardingController extends Controller
+
+class OnboardingController extends UniversalController
 {
+    public function store(
+        StoreOnboardingRequest  $request,
+        InitialEnquiryService $initialService
+    ) {
+        $data = $request->validated();
 
+        $result = DB::transaction(function () use (
+            $data,
+            $initialService
+        ) {
+            return $initialService->save($data); // ✅ important: return the created record
+        });
 
-    public function show($uuid)
-{
-    $token = request('token');
-    $expected = hash_hmac('sha256', $uuid, env('FORM_SECRET_KEY'));
-     // ✅ Add debug logs
-    Log::info('Incoming UUID: ' . $uuid);
-    Log::info('Expected Token: ' . $expected);
-    Log::info('Received Token: ' . $token);
-
-
-    if (!hash_equals($expected, $token)) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json([
+            'status' => true,
+            'message' => 'Form submitted and client created successfully.',
+            'data' => $result, // ✅ will now return the inserted row
+        ]);
     }
 
-    $client = \App\Models\Client::where('prospect_uuid', $uuid)->first();
 
-    if (!$client) {
-        return response()->json(['message' => 'Client not found'], 404);
-    }
-
-    return response()->json(['data' => $client], 200);
 }
 
 
 
-}
+
+
+
+
