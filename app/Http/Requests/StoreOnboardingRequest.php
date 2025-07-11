@@ -24,6 +24,14 @@ class StoreOnboardingRequest extends FormRequest
                     'ndis_goals_onboarding' => json_decode($this->ndis_goals_onboarding, true),
                 ]);
             }
+            if (is_string($this->health_professional_details)) {
+                $this->merge(['health_professional_details' => json_decode($this->health_professional_details, true)]);
+            }
+            if (is_string($this->health_conditions)) {
+                $this->merge([
+                    'health_conditions' => json_decode($this->health_conditions, true),
+                ]);
+            }
 
         }
 
@@ -36,6 +44,9 @@ class StoreOnboardingRequest extends FormRequest
             $this->scheduleRules(),
             $this->culturalRules(),
             $this->ndisRules(),
+            $this->healthProfessionalRules(),
+            $this->diagnosisRules(),
+            $this->healthInformationRules(),
 
 
 
@@ -115,6 +126,32 @@ class StoreOnboardingRequest extends FormRequest
         'ndis_goals_onboarding.*.goal_description' => 'nullable|string|max:1000',
             ];
         }
+        private function healthProfessionalRules(): array
+        {
+            return [
+                'health_professional_details' => 'nullable|array',
+                'health_professional_details.*.role' => 'nullable|string|max:255',
+                'health_professional_details.*.name' => 'nullable|string|max:255',
+                'health_professional_details.*.contact_number' => 'nullable|string|max:20',
+            ];
+        }
+        private function diagnosisRules(): array
+        {
+            return [
+                'primary_diagnosis' => 'nullable|string|max:255',
+                'secondary_diagnosis' => 'nullable|string|max:255',
+            ];
+        }
+        private function healthInformationRules(): array
+        {
+            return [
+                'health_conditions' => 'nullable|array',
+                'health_conditions.*' => 'string|in:Urinary Catheter Management,Intellectual Disability,Spinal Cord Disability/Injury,Bowel Care,Wound Care / Pressure Area Care,Hearing Impairment,Tracheostomy Management,Cerebral Palsy,Subcutaneous Medication Management,Mealtime Support or Dysphagia,Enteral Feeding or Peg Feeding,Ventilator,Medication Support,Other',
+            ];
+        }
+
+
+
 
 
    protected function failedValidation(Validator $validator)

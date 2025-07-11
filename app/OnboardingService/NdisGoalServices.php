@@ -10,6 +10,7 @@ class NdisGoalServices
         $saved = [];
 
         foreach ($goal as $goals) {
+
             if (!empty($goals['goal_description'])) {
                 $saved[] = NdisGoals::create([
                     'initial_enquiry_id' => $initialEnquiryId,
