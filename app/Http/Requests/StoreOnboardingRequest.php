@@ -47,6 +47,9 @@ class StoreOnboardingRequest extends FormRequest
             $this->healthProfessionalRules(),
             $this->diagnosisRules(),
             $this->healthInformationRules(),
+            $this->healthcareSupportRules(),
+            $this->behaviourSupportRules(),
+             $this->medicalAlertRules(),
 
 
 
@@ -150,6 +153,46 @@ class StoreOnboardingRequest extends FormRequest
             ];
         }
 
+
+
+                private function healthcareSupportRules(): array
+        {
+            return [
+                'medicare' => 'nullable|string|max:255',
+                'health_fund' => 'nullable|string|max:255',
+                'pension_card_number' => 'nullable|string|max:255',
+                'health_care_card' => 'nullable|string|max:255',
+                'dva_type' => 'nullable|string|max:255',
+                'dva_number' => 'nullable|string|max:255',
+                'companion_card' => 'nullable|string|max:255',
+                'preferred_hospital' => 'nullable|string|max:255',
+                'ambulance_number' => 'nullable|string|max:255',
+                'disabled_parking' => 'nullable|string|max:255',
+            ];
+        }
+                private function behaviourSupportRules(): array
+        {
+            return [
+                'has_support_plan' => 'nullable|boolean',
+                'plan_copy_received' => 'nullable|boolean',
+            ];
+        }
+                private function medicalAlertRules(): array
+        {
+            return [
+                'has_epilepsy' => 'nullable|boolean',
+                'has_asthma' => 'nullable|boolean',
+                'has_diabetes' => 'nullable|boolean',
+                'allergies' => 'nullable|string|max:1000',
+                'medical_info' => 'nullable|string|max:2000',
+                'diagnosis' => 'nullable|string|max:2000',
+                'other_description' => 'nullable|string|max:2000',
+                'medication_taken' => 'nullable|string|max:2000',
+                'medication_purpose' => 'nullable|string|max:2000',
+                'staff_administer_medication' => 'nullable|boolean',
+                'medication_administered_by' => 'nullable|in:Self-Administered,Guardian,Support Worker',
+            ];
+        }
 
 
 

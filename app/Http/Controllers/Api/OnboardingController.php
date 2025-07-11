@@ -13,6 +13,12 @@ use App\OnboardingService\CulturalBackgroundService;
  use App\OnboardingService\HealthProfessionalDetailService;
  use App\OnboardingService\DiagnosisSummaryService;
  use App\OnboardingService\HealthInformationService;
+ use App\OnboardingService\HealthcareSupportDetailService;
+ use App\OnboardingService\BehaviourSupportService;
+ use App\OnboardingService\MedicalAlertService;
+
+
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -31,6 +37,13 @@ class OnboardingController extends UniversalController
         HealthProfessionalDetailService $healthProfessionalDetailService,
         DiagnosisSummaryService $diagnosisSummaryService,
         HealthInformationService $healthInformationService,
+        HealthcareSupportDetailService $healthcareSupportDetailService,
+        BehaviourSupportService $behaviourSupportService,
+        MedicalAlertService $medicalAlertService
+
+
+
+
 
         ) {
         $data = $request->validated();
@@ -46,6 +59,10 @@ class OnboardingController extends UniversalController
                 $healthProfessionalDetailService,
                 $diagnosisSummaryService,
                 $healthInformationService,
+                $healthcareSupportDetailService,
+                $behaviourSupportService,
+                $medicalAlertService,
+
             ) {
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
@@ -58,11 +75,14 @@ class OnboardingController extends UniversalController
                 $healthProfessionals = $healthProfessionalDetailService->saveMany($data['health_professional_details'] ?? [],$initial->id);
                 $diagnosis = $diagnosisSummaryService->save($data);
                 $healthInfo = $healthInformationService->save($data);
+                $healthcare = $healthcareSupportDetailService->save($data);
+                $behaviourSupport = $behaviourSupportService->save($data);
+                $medicalAlert = $medicalAlertService->save($data);
 
 
-
-
-                return compact('initial', 'funding','contacts','schedules','cultural','ndisGoalService','healthProfessionals','diagnosis','healthInfo'); // ✅ returns both models
+                 return compact('initial', 'funding','contacts','schedules',
+                'cultural','ndisGoalService','healthProfessionals','diagnosis',
+                'healthInfo','healthcare','behaviourSupport','medicalAlert'); // ✅ returns both models
         });
 
 
