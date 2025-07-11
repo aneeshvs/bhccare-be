@@ -6,22 +6,19 @@ use App\Classes\MigrationHelper;
 
 return new class extends Migration {
     public function up(): void {
-        Schema::create('emergency_contacts', function (Blueprint $table) {
+        Schema::create('schedule_of_cares', function (Blueprint $table) {
             $table->id();
             $table->foreignId('initial_enquiry_id')->constrained('initial_enquiries')->onDelete('cascade');
 
-            $table->string('name')->nullable();
-            $table->string('relationship')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('mobile')->nullable();
-            $table->string('work_contact')->nullable();
+            $table->string('type_of_service')->nullable();
+            $table->text('primary_task_list')->nullable();
+            $table->text('secondary_task_list')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
     }
 
-
     public function down(): void {
-        Schema::dropIfExists('emergency_contacts');
+        Schema::dropIfExists('schedule_of_cares');
     }
 };

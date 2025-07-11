@@ -7,7 +7,9 @@ use App\Http\Requests\StoreOnboardingRequest;
 use App\OnboardingService\InitialEnquiryService;
 use App\OnboardingService\FundingDetailService;
 use App\OnboardingService\EmergencyContactService;
-
+use App\OnboardingService\ScheduleOfCareService;
+use App\OnboardingService\CulturalBackgroundService;
+ use App\OnboardingService\NdisGoalServices;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -19,7 +21,12 @@ class OnboardingController extends UniversalController
         StoreOnboardingRequest  $request,
         InitialEnquiryService $initialService,
         FundingDetailService $fundingDetailService,
-        EmergencyContactService $emergencyContactService
+        EmergencyContactService $emergencyContactService,
+        ScheduleOfCareService   $scheduleOfCareService,
+        CulturalBackgroundService $culturalBackgroundService,
+        NdisGoalServices $ndisGoalService
+
+
 
     ) {
         $data = $request->validated();
@@ -29,14 +36,20 @@ class OnboardingController extends UniversalController
                 $initialService,
                 $fundingDetailService,
                 $emergencyContactService,
+                $scheduleOfCareService,
+                 $culturalBackgroundService,
+                  $ndisGoalService,
             ) {
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
 
                 $funding = $fundingDetailService->save($data);
                 $contacts = $emergencyContactService->save($data);
+                $schedules = $scheduleOfCareService->saveMany($data['schedule_of_cares'] ?? [], $initial->id);
+                $cultural = $culturalBackgroundService->save($data);
+                $ndisGoalService = $ndisGoalService->saveMany($data['ndis_goals_onboarding'] ?? [], $initial->id);
 
-                return compact('initial', 'funding','contacts'); // ✅ returns both models
+                return compact('initial', 'funding','contacts','schedules','cultural','ndisGoalService'); // ✅ returns both models
         });
 
 

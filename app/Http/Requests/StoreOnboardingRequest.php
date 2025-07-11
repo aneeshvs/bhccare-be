@@ -12,12 +12,31 @@ class StoreOnboardingRequest extends FormRequest
     {
         return true; // or implement your auth logic
     }
+            protected function prepareForValidation()
+                {
+                if (is_string($this->schedule_of_cares)) {
+                $this->merge([
+                    'schedule_of_cares' => json_decode($this->schedule_of_cares, true),
+                ]);
+            }
+            if (is_string($this->ndis_goals_onboarding)) {
+                $this->merge([
+                    'ndis_goals_onboarding' => json_decode($this->ndis_goals_onboarding, true),
+                ]);
+            }
+
+        }
+
     public function rules()
     {
         return array_merge(
             $this->InitialenquiryRules(),
             $this->fundingRules(),
-            $this->emergencyRules()
+            $this->emergencyRules(),
+            $this->scheduleRules(),
+            $this->culturalRules(),
+            $this->ndisRules(),
+
 
 
         );
@@ -63,12 +82,42 @@ class StoreOnboardingRequest extends FormRequest
                 'work_contact' => 'nullable|string|max:20',
             ];
         }
+        private function scheduleRules(): array
+        {
+            return [
+
+        'schedule_of_cares' => 'nullable|array',
+        'schedule_of_cares.*.type_of_service' => 'nullable|string|max:255',
+        'schedule_of_cares.*.primary_task_list' => 'nullable|string',
+        'schedule_of_cares.*.secondary_task_list' => 'nullable|string',
+            ];
+        }
+        private function culturalRules(): array
+        {
+            return [
+            'has_children_under_18' => 'nullable|boolean',
+            'country_of_birth' => 'nullable|string|max:255',
+            'preferred_language' => 'nullable|string|max:255',
+            'religion' => 'nullable|string|max:255',
+            'other_languages' => 'nullable|string|max:255',
+            'cultural_needs' => 'nullable|string',
+            'interpreter_required' => 'nullable|boolean',
+            'auslan_required' => 'nullable|boolean',
+
+                ];
+
+        }
+        private function ndisRules(): array
+        {
+            return [
+
+        'ndis_goals_onboarding' => 'nullable|array',
+        'ndis_goals_onboarding.*.goal_description' => 'nullable|string|max:1000',
+            ];
+        }
 
 
-
-
-
-    protected function failedValidation(Validator $validator)
+   protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
         throw new HttpResponseException(
