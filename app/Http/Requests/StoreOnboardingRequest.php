@@ -49,7 +49,9 @@ class StoreOnboardingRequest extends FormRequest
             $this->healthInformationRules(),
             $this->healthcareSupportRules(),
             $this->behaviourSupportRules(),
-             $this->medicalAlertRules(),
+            $this->medicalAlertRules(),
+            $this->preventiveHealthRules(),
+            $this->supportInformationRules(),
 
 
 
@@ -193,6 +195,30 @@ class StoreOnboardingRequest extends FormRequest
                 'medication_administered_by' => 'nullable|in:Self-Administered,Guardian,Support Worker',
             ];
         }
+        private function preventiveHealthRules(): array
+        {
+            return [
+                'medical_checkup_status' => 'nullable|string|max:2000',
+                'last_dental_check' => 'nullable|date',
+                'last_hearing_check' => 'nullable|date',
+                'last_vision_check' => 'nullable|date',
+                'requires_vaccination_assistance' => 'nullable|boolean',
+            ];
+        }
+        private function supportInformationRules(): array
+        {
+            return [
+                'communication_assistance_required' => 'nullable|boolean',
+                'mealtime_plan' => 'nullable|string|max:2000',
+                'likes' => 'nullable|string|max:1000',
+                'dislikes' => 'nullable|string|max:1000',
+                'interests' => 'nullable|string|max:1000',
+                'preferred_worker_gender' => 'nullable|in:Male,Female,No Preference',
+                'special_request' => 'nullable|string|max:2000',
+            ];
+        }
+
+
 
 
 

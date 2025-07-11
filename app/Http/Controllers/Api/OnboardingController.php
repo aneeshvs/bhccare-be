@@ -16,8 +16,8 @@ use App\OnboardingService\CulturalBackgroundService;
  use App\OnboardingService\HealthcareSupportDetailService;
  use App\OnboardingService\BehaviourSupportService;
  use App\OnboardingService\MedicalAlertService;
-
-
+ use App\OnboardingService\PreventiveHealthSummaryService;
+ use App\OnboardingService\SupportInformationService;
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -39,7 +39,10 @@ class OnboardingController extends UniversalController
         HealthInformationService $healthInformationService,
         HealthcareSupportDetailService $healthcareSupportDetailService,
         BehaviourSupportService $behaviourSupportService,
-        MedicalAlertService $medicalAlertService
+        MedicalAlertService $medicalAlertService,
+        PreventiveHealthSummaryService $preventiveHealthSummaryService,
+        SupportInformationService $supportInformationService
+
 
 
 
@@ -62,6 +65,8 @@ class OnboardingController extends UniversalController
                 $healthcareSupportDetailService,
                 $behaviourSupportService,
                 $medicalAlertService,
+                $preventiveHealthSummaryService,
+                 $supportInformationService,
 
             ) {
                 $initial = $initialService->save($data);
@@ -78,11 +83,15 @@ class OnboardingController extends UniversalController
                 $healthcare = $healthcareSupportDetailService->save($data);
                 $behaviourSupport = $behaviourSupportService->save($data);
                 $medicalAlert = $medicalAlertService->save($data);
+                $preventiveHealth = $preventiveHealthSummaryService->save($data);
+                $supportInformation = $supportInformationService->save($data);
+
+
 
 
                  return compact('initial', 'funding','contacts','schedules',
                 'cultural','ndisGoalService','healthProfessionals','diagnosis',
-                'healthInfo','healthcare','behaviourSupport','medicalAlert'); // ✅ returns both models
+                'healthInfo','healthcare','behaviourSupport','medicalAlert', 'preventiveHealth','supportInformation'); // ✅ returns both models
         });
 
 
