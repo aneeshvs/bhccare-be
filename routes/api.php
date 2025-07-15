@@ -32,6 +32,9 @@ Route::post('/sync-staff', [StaffSyncController::class, 'store']);
 Route::post('/staff-update-password', [StaffSyncController::class, 'updatePassword']);
 Route::get('/initial-enquiry/{uuid}', [OnboardingController::class, 'show']);
 
+Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
+
+
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 

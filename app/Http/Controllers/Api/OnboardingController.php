@@ -19,6 +19,7 @@ use App\OnboardingService\MedicalAlertService;
 use App\OnboardingService\PreventiveHealthSummaryService;
 use App\OnboardingService\SupportInformationService;
 use App\Models\InitialEnquiry;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -141,6 +142,23 @@ class OnboardingController extends UniversalController
             'message' => 'Client details fetched successfully.',
             'data' => $initial
         ]);
+    }
+
+     public function getUuid(Request $request)
+    {
+        $userid = $request->query('userid');
+        $clientType = $request->query('client_type');
+
+        $initial = InitialEnquiry::where('user_id', $userid)
+            ->where('client_type', $clientType)
+            ->latest()
+            ->first();
+
+        if ($initial) {
+            return response()->json(['uuid' => (string) $initial->uuid]);
+        }
+
+        return response()->json(['uuid' => null], 404);
     }
 
 
