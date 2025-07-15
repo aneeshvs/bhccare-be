@@ -24,9 +24,9 @@ return new class extends Migration {
             $table->text('dislikes')->nullable();
             $table->text('interests')->nullable();
 
-            $table->boolean('Male')->nullable();
-            $table->boolean('Female')->nullable();
-            $table->boolean('No Preference')->nullable();
+            $table->boolean('male')->nullable();
+            $table->boolean('female')->nullable();
+            $table->boolean('no_preference')->nullable();
 
             $table->text('special_request')->nullable();
 

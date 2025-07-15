@@ -199,9 +199,9 @@ class StoreOnboardingRequest extends FormRequest
                 'medication_purpose' => 'nullable|string|max:2000',
                 'staff_administer_medication' => 'nullable|boolean',
 
-                 'Self-Administered' => 'nullable|boolean',
-                 'Guardian' => 'nullable|boolean',
-                 'Support Worker' => 'nullable|boolean',
+                 'self_administered' => 'nullable|boolean',
+                 'guardian' => 'nullable|boolean',
+                 'support_worker' => 'nullable|boolean',
 
             ];
         }
@@ -225,9 +225,9 @@ class StoreOnboardingRequest extends FormRequest
                 'dislikes' => 'nullable|string|max:1000',
                 'interests' => 'nullable|string|max:1000',
 
-                 'Male' => 'nullable|boolean',
-                 'Female' => 'nullable|boolean',
-                 'No Preference' => 'nullable|boolean',
+                 'male' => 'nullable|boolean',
+                 'female' => 'nullable|boolean',
+                 'no_preference' => 'nullable|boolean',
 
 
                 'special_request' => 'nullable|string|max:2000',

@@ -32,9 +32,9 @@ return new class extends Migration {
 
             $table->boolean('staff_administer_medication')->default(false);
 
-            $table->boolean('Self-Administered')->nullable();
-            $table->boolean('Guardian')->nullable();
-            $table->boolean('Support Worker')->nullable();
+            $table->boolean('self_administered')->nullable();
+            $table->boolean('guardian')->nullable();
+            $table->boolean('support_worker')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

@@ -21,9 +21,9 @@ class MedicalAlert extends DefaultDBModel
         'medication_purpose',
         'staff_administer_medication',
 
-        'Self-Administered',
-        'Guardian',
-        'Support Worker',
+        'self_administered',
+        'guardian',
+        'support_worker',
 
 
 
