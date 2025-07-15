@@ -13,4 +13,8 @@ class EmergencyContact extends DefaultDBModel
         'mobile',
         'work_contact',
     ];
+    public function initialEnquiry()
+{
+    return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
+}
 }

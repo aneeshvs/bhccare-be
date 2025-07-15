@@ -71,7 +71,9 @@ class StoreOnboardingRequest extends FormRequest
             'mobile_number' => 'nullable|string|max:20',
             'email' => 'nullable|email',
             'need_support_person' => 'nullable|boolean',
-            'support_person_details' => 'nullable|string'
+            'support_person_details' => 'nullable|string',
+            'user_id' => 'required|integer',
+            'client_type' => 'required|in:1,2',
         ];
     }
         private function fundingRules(): array

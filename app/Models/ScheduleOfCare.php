@@ -11,4 +11,8 @@ class ScheduleOfCare extends DefaultDBModel
         'primary_task_list',
         'secondary_task_list'
     ];
+    public function initialEnquiry()
+{
+    return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
+}
 }

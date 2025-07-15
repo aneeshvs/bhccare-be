@@ -25,8 +25,6 @@ use Illuminate\Support\Facades\Log;
 class FullFormController extends UniversalController
 {
 
-
-
 public function update(
     StoreFullFormRequest $request,
     ReferralService $referralService,

@@ -17,4 +17,8 @@ class CulturalBackground extends DefaultDBModel
         'interpreter_required',
         'auslan_required'
     ];
+    public function initialEnquiry()
+{
+    return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
+}
 }

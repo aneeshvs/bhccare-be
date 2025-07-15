@@ -9,7 +9,6 @@ use Illuminate\Database\Seeder;
 use Database\Seeders\UserTypeSeeder;
 
 
-
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -22,6 +21,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             UserTypeSeeder::class,
             BhcServicesTableSeeder::class,
+            StaffTypeSeeder::class,
 
 
         ]);

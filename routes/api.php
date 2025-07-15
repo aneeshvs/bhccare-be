@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\OnboardingController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\StaffSyncController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -26,9 +27,10 @@ Route::post('/generate-form-uuid', function () {
 Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
 
 //Onboarding
-Route::post('/onboardsubmit',[OnboardingController::class,'store']);
-
-
+// routes/api.php
+Route::post('/sync-staff', [StaffSyncController::class, 'store']);
+Route::post('/staff-update-password', [StaffSyncController::class, 'updatePassword']);
+Route::get('/initial-enquiry/{uuid}', [OnboardingController::class, 'show']);
 
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
@@ -36,4 +38,6 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
+    Route::post('/onboardsubmit',[OnboardingController::class,'store']);
+
 });

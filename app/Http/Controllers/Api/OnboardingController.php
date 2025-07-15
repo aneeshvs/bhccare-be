@@ -9,19 +9,20 @@ use App\OnboardingService\FundingDetailService;
 use App\OnboardingService\EmergencyContactService;
 use App\OnboardingService\ScheduleOfCareService;
 use App\OnboardingService\CulturalBackgroundService;
- use App\OnboardingService\NdisGoalServices;
- use App\OnboardingService\HealthProfessionalDetailService;
- use App\OnboardingService\DiagnosisSummaryService;
- use App\OnboardingService\HealthInformationService;
- use App\OnboardingService\HealthcareSupportDetailService;
- use App\OnboardingService\BehaviourSupportService;
- use App\OnboardingService\MedicalAlertService;
- use App\OnboardingService\PreventiveHealthSummaryService;
- use App\OnboardingService\SupportInformationService;
-
+use App\OnboardingService\NdisGoalServices;
+use App\OnboardingService\HealthProfessionalDetailService;
+use App\OnboardingService\DiagnosisSummaryService;
+use App\OnboardingService\HealthInformationService;
+use App\OnboardingService\HealthcareSupportDetailService;
+use App\OnboardingService\BehaviourSupportService;
+use App\OnboardingService\MedicalAlertService;
+use App\OnboardingService\PreventiveHealthSummaryService;
+use App\OnboardingService\SupportInformationService;
+use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 
 class OnboardingController extends UniversalController
@@ -42,11 +43,6 @@ class OnboardingController extends UniversalController
         MedicalAlertService $medicalAlertService,
         PreventiveHealthSummaryService $preventiveHealthSummaryService,
         SupportInformationService $supportInformationService
-
-
-
-
-
 
         ) {
         $data = $request->validated();
@@ -69,6 +65,16 @@ class OnboardingController extends UniversalController
                  $supportInformationService,
 
             ) {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json(['message' => 'Unauthorized'], 401);
+            }
+
+            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+            $data['staff_id'] = $staff?->id ?? null;
+
+
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
 
@@ -86,10 +92,16 @@ class OnboardingController extends UniversalController
                 $preventiveHealth = $preventiveHealthSummaryService->save($data);
                 $supportInformation = $supportInformationService->save($data);
 
+                $initial->form_status = 'completed';
+                $initial->save();
 
+                Http::asForm()->post('http://localhost/bhcappdemo/update-form-status.php', [
+                    'uuid' => (string) $initial->uuid, // 🔁 cast to string
+                    'form_name' => 'onboarding',
+                    'form_status' => 'completed',
+                ]);
 
-
-                 return compact('initial', 'funding','contacts','schedules',
+               return compact('initial', 'funding','contacts','schedules',
                 'cultural','ndisGoalService','healthProfessionals','diagnosis',
                 'healthInfo','healthcare','behaviourSupport','medicalAlert', 'preventiveHealth','supportInformation'); // ✅ returns both models
         });
@@ -101,6 +113,37 @@ class OnboardingController extends UniversalController
             'data' => $result, // ✅ will now return the inserted row
         ]);
     }
+
+
+
+
+        public function show(string $uuid)
+    {
+        $initial = InitialEnquiry::with([
+            'funding',
+            'emergencyContact',
+            'culturalBackground',
+            'diagnosisSummary',
+            'healthInformation',
+            'healthcareSupportDetail',
+            'behaviourSupport',
+            'medicalAlert',
+            'preventiveHealthSummary',
+            'supportInformation',
+            'scheduleOfCares',
+            'ndisGoals',
+            'healthProfessionalDetails',
+            'staff'
+        ])->where('uuid', $uuid)->firstOrFail();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Client details fetched successfully.',
+            'data' => $initial
+        ]);
+    }
+
+
 
 
 }

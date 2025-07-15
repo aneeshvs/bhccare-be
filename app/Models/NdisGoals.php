@@ -12,5 +12,9 @@ class NdisGoals extends DefaultDBModel
         'initial_enquiry_id',
         'goal_description',
     ];
+        public function initialEnquiry()
+    {
+        return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
+    }
 }
 

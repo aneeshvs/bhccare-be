@@ -47,4 +47,11 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    // app/Models/User.php
+
+    public function staff()
+    {
+        return $this->hasOne(\App\Models\Staff::class, 'email', 'email');
+    }
+
 }
