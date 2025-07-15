@@ -20,7 +20,14 @@ class MedicalAlert extends DefaultDBModel
         'medication_taken',
         'medication_purpose',
         'staff_administer_medication',
-        'medication_administered_by',
+
+        'Self-Administered',
+        'Guardian',
+        'Support Worker',
+
+
+
+
     ];
 
     protected $casts = [

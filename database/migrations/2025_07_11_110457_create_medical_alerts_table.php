@@ -31,7 +31,10 @@ return new class extends Migration {
             $table->text('medication_purpose')->nullable();
 
             $table->boolean('staff_administer_medication')->default(false);
-            $table->enum('medication_administered_by', ['Self-Administered', 'Guardian', 'Support Worker'])->nullable();
+
+            $table->boolean('Self-Administered')->nullable();
+            $table->boolean('Guardian')->nullable();
+            $table->boolean('Support Worker')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

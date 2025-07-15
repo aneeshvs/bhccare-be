@@ -31,7 +31,6 @@ Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
 Route::post('/sync-staff', [StaffSyncController::class, 'store']);
 Route::post('/staff-update-password', [StaffSyncController::class, 'updatePassword']);
 Route::get('/initial-enquiry/{uuid}', [OnboardingController::class, 'show']);
-
 Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
 
 
@@ -41,6 +40,6 @@ Route::post('/register', [RegisteredUserController::class, 'store']);
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
-    Route::post('/onboardsubmit',[OnboardingController::class,'store']);
+    Route::put('/onboardsubmit',[OnboardingController::class,'update']);
 
 });

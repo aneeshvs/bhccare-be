@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Auth;
 
 class OnboardingController extends UniversalController
 {
-    public function store(
+    public function update(
         StoreOnboardingRequest  $request,
         InitialEnquiryService $initialService,
         FundingDetailService $fundingDetailService,
@@ -47,6 +47,7 @@ class OnboardingController extends UniversalController
 
         ) {
         $data = $request->validated();
+
 
         $result = DB::transaction(function () use (
                 $data,

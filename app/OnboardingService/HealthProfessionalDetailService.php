@@ -1,6 +1,4 @@
 <?php
-// app/OnboardingService/HealthProfessionalDetailService.php
-
 namespace App\OnboardingService;
 
 use App\Models\HealthProfessionalDetail;
@@ -13,7 +11,14 @@ class HealthProfessionalDetailService
 
         foreach ($items as $item) {
             $item['initial_enquiry_id'] = $initialEnquiryId;
-            $results[] = HealthProfessionalDetail::create($item);
+
+            // 🔁 Define matching condition – adjust based on your schema
+            $conditions = [
+                'initial_enquiry_id' => $initialEnquiryId,
+
+            ];
+
+            $results[] = HealthProfessionalDetail::updateOrCreate($conditions, $item);
         }
 
         return $results;

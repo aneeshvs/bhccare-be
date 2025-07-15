@@ -33,6 +33,10 @@ class StoreOnboardingRequest extends FormRequest
                 ]);
             }
 
+
+
+
+
         }
 
     public function rules()
@@ -194,7 +198,11 @@ class StoreOnboardingRequest extends FormRequest
                 'medication_taken' => 'nullable|string|max:2000',
                 'medication_purpose' => 'nullable|string|max:2000',
                 'staff_administer_medication' => 'nullable|boolean',
-                'medication_administered_by' => 'nullable|in:Self-Administered,Guardian,Support Worker',
+
+                 'Self-Administered' => 'nullable|boolean',
+                 'Guardian' => 'nullable|boolean',
+                 'Support Worker' => 'nullable|boolean',
+
             ];
         }
         private function preventiveHealthRules(): array
@@ -210,12 +218,18 @@ class StoreOnboardingRequest extends FormRequest
         private function supportInformationRules(): array
         {
             return [
+
                 'communication_assistance_required' => 'nullable|boolean',
                 'mealtime_plan' => 'nullable|string|max:2000',
                 'likes' => 'nullable|string|max:1000',
                 'dislikes' => 'nullable|string|max:1000',
                 'interests' => 'nullable|string|max:1000',
-                'preferred_worker_gender' => 'nullable|in:Male,Female,No Preference',
+
+                 'Male' => 'nullable|boolean',
+                 'Female' => 'nullable|boolean',
+                 'No Preference' => 'nullable|boolean',
+
+
                 'special_request' => 'nullable|string|max:2000',
             ];
         }

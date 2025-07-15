@@ -23,7 +23,11 @@ return new class extends Migration {
             $table->text('likes')->nullable();
             $table->text('dislikes')->nullable();
             $table->text('interests')->nullable();
-            $table->enum('preferred_worker_gender', ['Male', 'Female', 'No Preference'])->nullable();
+
+            $table->boolean('Male')->nullable();
+            $table->boolean('Female')->nullable();
+            $table->boolean('No Preference')->nullable();
+
             $table->text('special_request')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());

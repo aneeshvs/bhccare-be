@@ -14,7 +14,10 @@ class SupportInformation extends DefaultDBModel
         'likes',
         'dislikes',
         'interests',
-        'preferred_worker_gender',
+         'Male',
+         'Female',
+         'No Preference',
+
         'special_request',
     ];
 

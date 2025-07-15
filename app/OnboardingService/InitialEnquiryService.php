@@ -1,13 +1,19 @@
 <?php
 namespace App\OnboardingService;
-use Illuminate\Support\Facades\DB;
+
 use App\Models\InitialEnquiry;
 
 class InitialEnquiryService
 {
     public function save(array $data): InitialEnquiry
     {
-       return InitialEnquiry::create($data);
+        // ✅ Define matching conditions (based on business logic)
+        $conditions = [
+            'user_id' => $data['user_id'],
+            'client_type' => $data['client_type'],
+        ];
 
+        // ✅ Update or create the record
+        return InitialEnquiry::updateOrCreate($conditions, $data);
     }
 }

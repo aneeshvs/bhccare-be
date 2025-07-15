@@ -10,8 +10,16 @@ class ScheduleOfCareService
         $saved = [];
 
         foreach ($schedules as $schedule) {
-            $schedule['initial_enquiry_id'] = $initialEnquiryId;
-            $saved[] = ScheduleOfCare::create($schedule);
+            $saved[] = ScheduleOfCare::updateOrCreate(
+                [
+                    // 🎯 Unique identifying columns for update
+                    'initial_enquiry_id' => $initialEnquiryId,
+
+                ],
+                array_merge($schedule, [
+                    'initial_enquiry_id' => $initialEnquiryId,
+                ])
+            );
         }
 
         return $saved;

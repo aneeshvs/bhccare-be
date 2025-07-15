@@ -10,12 +10,18 @@ class NdisGoalServices
         $saved = [];
 
         foreach ($goal as $goals) {
-
             if (!empty($goals['goal_description'])) {
-                $saved[] = NdisGoals::create([
-                    'initial_enquiry_id' => $initialEnquiryId,
-                    'goal_description' => $goals['goal_description'],
-                ]);
+                $saved[] = NdisGoals::updateOrCreate(
+                    [
+                        // 🎯 Uniqueness condition (change as needed)
+                        'initial_enquiry_id' => $initialEnquiryId,
+                        'goal_description' => $goals['goal_description'],
+                    ],
+                    [
+                        // ✅ Data to update if match found
+                        'goal_description' => $goals['goal_description'],
+                    ]
+                );
             }
         }
 
