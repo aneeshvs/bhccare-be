@@ -3,9 +3,24 @@ namespace App\Models;
 
 use App\Models\Classes\DefaultDBModel;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class InitialEnquiry extends DefaultDBModel
 {
+     use LogsActivity;
+
+   public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()                     // Log all fillable attributes
+            ->logOnlyDirty()              // Only log changes
+            ->useLogName('initial_enquiry'); // Optional: log name
+    }
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "InitialEnquiry record has been {$eventName}";
+    }
     protected $fillable = [
         'full_name',
         'preferred_name',

@@ -26,6 +26,8 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
 
+
+
 class OnboardingController extends UniversalController
 {
     public function update(
@@ -102,6 +104,15 @@ class OnboardingController extends UniversalController
                     'form_name' => 'onboarding',
                     'form_status' => 'completed',
                 ]);
+                activity()
+                ->causedBy(Auth::user()) // the staff doing the action
+                ->withProperties([
+                    'staff_id'     => $staff?->id,
+                    'user_id'      => $data['user_id'] ?? null,
+                    'client_type'  => $data['client_type'] ?? null,
+                    'uuid'         => $initial->uuid ?? null,
+                ])
+                ->log('Onboarding form updated.');
 
                return compact('initial', 'funding','contacts','schedules',
                 'cultural','ndisGoalService','healthProfessionals','diagnosis',
@@ -161,6 +172,9 @@ class OnboardingController extends UniversalController
 
         return response()->json(['uuid' => null], 404);
     }
+
+
+
 
 
 

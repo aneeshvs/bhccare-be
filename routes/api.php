@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\StaffSyncController;
+use App\Http\Controllers\Api\ActivityLogController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -30,8 +31,12 @@ Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
 // routes/api.php
 Route::post('/sync-staff', [StaffSyncController::class, 'store']);
 Route::post('/staff-update-password', [StaffSyncController::class, 'updatePassword']);
-Route::get('/initial-enquiry/{uuid}', [OnboardingController::class, 'show']);
+
+Route::get('/form-data/{uuid}', [OnboardingController::class, 'show']);//downoad pdf show
+
 Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
+
+Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activity log
 
 
 Route::post('/login', [UsersController::class, 'login']);
