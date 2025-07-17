@@ -1,13 +1,15 @@
 <?php
 
-// app/Models/HealthcareSupportDetail.php
-
 namespace App\Models;
 
 use App\Models\Classes\DefaultDBModel;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class HealthcareSupportDetail extends DefaultDBModel
 {
+    use LogsActivity;
+
     protected $fillable = [
         'initial_enquiry_id',
         'medicare',
@@ -26,5 +28,18 @@ class HealthcareSupportDetail extends DefaultDBModel
     {
         return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
     }
-}
 
+    // ✅ Activity Log Options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('healthcare_support_detail');
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "HealthcareSupportDetail record has been {$eventName}";
+    }
+}

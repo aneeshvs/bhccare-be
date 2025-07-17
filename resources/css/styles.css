@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    padding: 20px;
+}
+
+/* .bg-light {
+   background-color:#E9E1DA !important ;
+}
+ */
+
+.form-container {
+    background: #8EC641;
+    width: 100%;
+    max-width: 600px;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    font-size: 24px;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 5px;
+    color: #1176BC;
+    font-size: 14px;
+}
+
+input, textarea, select {
+    width: 100%;
+    font-size: 16px;
+    border: 1px solid #1176BC;
+    border-radius: 8px;
+    background: #ffffff;
+    outline: none;
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+input:focus, textarea:focus, select:focus {
+    border-color: #8EC641;
+    box-shadow: 0 0 5px rgba(142, 198, 65, 0.3);
+}
+
+select {
+    background-color: #ffffff;
+    color: #1176BC;
+    padding: 8px;
+}
+
+
+
+.btn-primary {
+    background-color: #1176BC;
+    border-color: #1176BC;
+}
+
+.btn-primary:hover {
+    background-color: #8EC641;
+    border-color: #8EC641;
+}
+
+/* Styling the Remove Button */
+.service-entry {
+    display: flex;
+    align-items: center;
+    gap: 10px; /* Ensures spacing between input and button */
+}
+
+.service-entry .form-control {
+    flex: 1; /* Makes input take available space */
+    height: 40px; /* Ensures same height as button */
+}
+
+.btn-remove {
+    background-color: red;
+    color: white;
+    border: none;
+    width: 40px;
+    height: 40px; /* Matches input field height */
+    display: flex;
+    align-self: flex-end;
+    align-items: center;
+    justify-content: center;
+    border-radius: 5px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.btn-remove:hover {
+    background-color: darkred;
+}
+
+.form-check-label {
+    color: #313131 !important;
+}
+
+.table-dark{
+    --bs-table-bg: #1176BC !important;
+}
+
+.btn.btn-primary{
+    margin-top: 2em;
+}

@@ -91,7 +91,7 @@ public function update(
         $finalDeclarationService->save($data);
 
         if ($data['form_status'] === 'completed') {
-            $response = Http::asForm()->post('http://localhost/bhcappdemo/php/update-form-status.php', [
+            $response = Http::asForm()->post(env('CORE_PHP_URL') . '/php/update-form-status.php', [
                 'uuid' => $uuid,
                 'form_status' => 'completed',
             ]);

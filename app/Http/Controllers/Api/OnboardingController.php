@@ -18,15 +18,14 @@ use App\OnboardingService\BehaviourSupportService;
 use App\OnboardingService\MedicalAlertService;
 use App\OnboardingService\PreventiveHealthSummaryService;
 use App\OnboardingService\SupportInformationService;
+use App\OnboardingService\FormCompletionService;
 use App\Models\InitialEnquiry;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
-
-
-
 
 class OnboardingController extends UniversalController
 {
@@ -99,11 +98,12 @@ class OnboardingController extends UniversalController
                 $initial->form_status = 'completed';
                 $initial->save();
 
-                Http::asForm()->post('http://localhost/bhcappdemo/update-form-status.php', [
+                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
                     'uuid' => (string) $initial->uuid, // 🔁 cast to string
                     'form_name' => 'onboarding',
                     'form_status' => 'completed',
                 ]);
+                //activity Log
                 activity()
                 ->causedBy(Auth::user()) // the staff doing the action
                 ->withProperties([
@@ -130,32 +130,28 @@ class OnboardingController extends UniversalController
 
 
 
-        public function show(string $uuid)
-    {
-        $initial = InitialEnquiry::with([
-            'funding',
-            'emergencyContact',
-            'culturalBackground',
-            'diagnosisSummary',
-            'healthInformation',
-            'healthcareSupportDetail',
-            'behaviourSupport',
-            'medicalAlert',
-            'preventiveHealthSummary',
-            'supportInformation',
-            'scheduleOfCares',
-            'ndisGoals',
-            'healthProfessionalDetails',
-            'staff'
-        ])->where('uuid', $uuid)->firstOrFail();
+    // show deatils
 
-        return response()->json([
-            'status' => true,
-            'message' => 'Client details fetched successfully.',
-            'data' => $initial
-        ]);
-    }
+        public function show(string $uuid, FormCompletionService $completionService)
+        {
+            $initial = InitialEnquiry::with([
+                'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
+                'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
+                'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
+                'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
+            ])->where('uuid', $uuid)->firstOrFail();
 
+            $completion = $completionService->calculate($initial);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Client details fetched successfully.',
+                'data' => $initial,
+                'completion_percentage' => $completion
+            ]);
+        }
+
+    //get uuid
      public function getUuid(Request $request)
     {
         $userid = $request->query('userid');
@@ -173,13 +169,28 @@ class OnboardingController extends UniversalController
         return response()->json(['uuid' => null], 404);
     }
 
+     public function exportFullFormPdf(string $uuid)
+    {
+        $initial = InitialEnquiry::with([
+            'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
+            'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
+            'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
+            'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
+        ])->where('uuid', $uuid)->firstOrFail();
 
 
+         $pdf = Pdf::loadView('pdf.onboarding_full_form', compact('initial'))
+              ->setPaper('A4', 'portrait');
 
-
-
-
+       return $pdf->download('Onboarding_Form_' . $initial->full_name . '.pdf');
 }
+    }
+
+
+
+
+
+
 
 
 

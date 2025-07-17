@@ -35,8 +35,12 @@ Route::post('/staff-update-password', [StaffSyncController::class, 'updatePasswo
 Route::get('/form-data/{uuid}', [OnboardingController::class, 'show']);//downoad pdf show
 
 Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
+Route::get('/onboarding/export-pdf/{uuid}', [OnboardingController::class, 'exportFullFormPdf']);
+
 
 Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activity log
+Route::get('/logs/pdf', [ActivityLogController::class, 'exportLogsPdf']);
+
 
 
 Route::post('/login', [UsersController::class, 'login']);

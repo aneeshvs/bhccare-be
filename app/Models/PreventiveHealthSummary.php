@@ -1,13 +1,15 @@
 <?php
 
-// app/Models/PreventiveHealthSummary.php
-
 namespace App\Models;
 
 use App\Models\Classes\DefaultDBModel;
+use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogOptions;
 
 class PreventiveHealthSummary extends DefaultDBModel
 {
+    use LogsActivity;
+
     protected $fillable = [
         'initial_enquiry_id',
         'medical_checkup_status',
@@ -19,11 +21,24 @@ class PreventiveHealthSummary extends DefaultDBModel
 
     protected $casts = [
         'requires_vaccination_assistance' => 'boolean',
-
     ];
 
     public function initialEnquiry()
     {
         return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
+    }
+
+    // ✅ Spatie Logging Options
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logAll()
+            ->logOnlyDirty()
+            ->useLogName('preventive_health_summary');
+    }
+
+    public function getDescriptionForEvent(string $eventName): string
+    {
+        return "PreventiveHealthSummary record has been {$eventName}";
     }
 }
