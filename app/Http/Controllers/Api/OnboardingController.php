@@ -65,7 +65,7 @@ class OnboardingController extends UniversalController
                 $behaviourSupportService,
                 $medicalAlertService,
                 $preventiveHealthSummaryService,
-                 $supportInformationService,
+                $supportInformationService,
 
             ) {
             $user = Auth::user();
@@ -77,7 +77,7 @@ class OnboardingController extends UniversalController
             $staff = \App\Models\Staff::where('user_id', $user->id)->first();
             $data['staff_id'] = $staff?->id ?? null;
 
-
+                $data['form_status'] = 'completed';
                 $initial = $initialService->save($data);
                 $data['initial_enquiry_id'] = $initial->id;
 
@@ -95,24 +95,15 @@ class OnboardingController extends UniversalController
                 $preventiveHealth = $preventiveHealthSummaryService->save($data);
                 $supportInformation = $supportInformationService->save($data);
 
-                $initial->form_status = 'completed';
-                $initial->save();
+
 
                 Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
                     'uuid' => (string) $initial->uuid, // 🔁 cast to string
                     'form_name' => 'onboarding',
                     'form_status' => 'completed',
                 ]);
-                //activity Log
-                activity()
-                ->causedBy(Auth::user()) // the staff doing the action
-                ->withProperties([
-                    'staff_id'     => $staff?->id,
-                    'user_id'      => $data['user_id'] ?? null,
-                    'client_type'  => $data['client_type'] ?? null,
-                    'uuid'         => $initial->uuid ?? null,
-                ])
-                ->log('Onboarding form updated.');
+
+
 
                return compact('initial', 'funding','contacts','schedules',
                 'cultural','ndisGoalService','healthProfessionals','diagnosis',
@@ -142,12 +133,12 @@ class OnboardingController extends UniversalController
             ])->where('uuid', $uuid)->firstOrFail();
 
             $completion = $completionService->calculate($initial);
-
+            $initial['completion_percentage'] =$completion;
             return response()->json([
                 'status' => true,
                 'message' => 'Client details fetched successfully.',
                 'data' => $initial,
-                'completion_percentage' => $completion
+
             ]);
         }
 

@@ -1,10 +1,7 @@
 <?php
-
-
 namespace App\Models;
 
 use App\Models\Classes\DefaultDBModel;
-
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
@@ -29,6 +26,10 @@ class SupportInformation extends DefaultDBModel
         'communication_assistance_required' => 'boolean',
     ];
 
+    // optional: for clarity
+    protected static $logName = 'support_information';
+    protected static $logFillable = true; // or define $logAttributes
+
     public function initialEnquiry()
     {
         return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
@@ -37,9 +38,9 @@ class SupportInformation extends DefaultDBModel
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logAll() // log all fillable fields
+            ->logOnly($this->fillable) // or ->logFillable()
             ->logOnlyDirty()
-            ->useLogName('support_information');
+            ->useLogName(self::$logName);
     }
 
     public function getDescriptionForEvent(string $eventName): string
@@ -47,5 +48,3 @@ class SupportInformation extends DefaultDBModel
         return "SupportInformation record was {$eventName}";
     }
 }
-
-

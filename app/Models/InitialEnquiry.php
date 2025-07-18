@@ -10,13 +10,19 @@ class InitialEnquiry extends DefaultDBModel
 {
      use LogsActivity;
 
-   public function getActivitylogOptions(): LogOptions
+    public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logAll()                     // Log all fillable attributes
-            ->logOnlyDirty()              // Only log changes
-            ->useLogName('initial_enquiry'); // Optional: log name
+            ->logOnly([
+                'full_name', 'preferred_name', 'gender', 'date_of_birth',
+                'address', 'postcode', 'phone_number', 'mobile_number',
+                'email', 'need_support_person', 'support_person_details',
+                'user_id', 'client_type', 'staff_id', 'form_status'
+            ])
+            ->logOnlyDirty()
+            ->useLogName('initial_enquiry');
     }
+
     public function getDescriptionForEvent(string $eventName): string
     {
         return "InitialEnquiry record has been {$eventName}";

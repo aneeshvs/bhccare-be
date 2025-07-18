@@ -10,18 +10,21 @@ class ScheduleOfCareService
         $saved = [];
 
         foreach ($schedules as $schedule) {
+            // Skip if empty type
+            if (empty($schedule['type_of_service'])) {
+                continue;
+            }
+
             $saved[] = ScheduleOfCare::updateOrCreate(
                 [
-                    // 🎯 Unique identifying columns for update
                     'initial_enquiry_id' => $initialEnquiryId,
-
+                    'type_of_service' => $schedule['type_of_service'], // ✅ now uniquely identifies record
                 ],
                 array_merge($schedule, [
                     'initial_enquiry_id' => $initialEnquiryId,
                 ])
             );
         }
-
 
         return $saved;
     }

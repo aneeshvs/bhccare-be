@@ -6,6 +6,18 @@ use App\Models\InitialEnquiry;
 class FormCompletionService
 {
     private array $sectionFields = [
+                'initialEnquiry' =>['full_name',
+        'preferred_name',
+        'gender',
+        'date_of_birth',
+        'address',
+        'postcode',
+        'phone_number',
+        'mobile_number',
+        'email',
+        'need_support_person',
+        'support_person_details',],
+
         'funding' => ['type_of_funding','funding_contact_person','ndis_plan_attached','ndis_plan_start_date', 'ndis_plan_end_date',
         'plan_manager_name','plan_manager_email','plan_manager_phone'],
 
@@ -89,26 +101,36 @@ class FormCompletionService
         $totalFields = 0;
 
         foreach ($this->sectionFields as $relation => $fields) {
-            $relatedData = $initial->$relation;
-
-            if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
-                foreach ($relatedData as $item) {
-                    foreach ($fields as $field) {
-                        $totalFields++;
-                        if (!empty($item->$field)) {
-                            $filledFields++;
-                        }
-                    }
-                }
-            } elseif ($relatedData) {
+            if ($relation === 'initialEnquiry') {
+                // These fields belong directly to the $initial model
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($relatedData->$field)) {
+                    if (!empty($initial->$field)) {
                         $filledFields++;
                     }
                 }
             } else {
-                $totalFields += count($fields);
+                $relatedData = $initial->$relation;
+
+                if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+                    foreach ($relatedData as $item) {
+                        foreach ($fields as $field) {
+                            $totalFields++;
+                            if (!empty($item->$field)) {
+                                $filledFields++;
+                            }
+                        }
+                    }
+                } elseif ($relatedData) {
+                    foreach ($fields as $field) {
+                        $totalFields++;
+                        if (!empty($relatedData->$field)) {
+                            $filledFields++;
+                        }
+                    }
+                } else {
+                    $totalFields += count($fields);
+                }
             }
         }
 

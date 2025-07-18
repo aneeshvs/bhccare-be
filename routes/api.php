@@ -41,6 +41,7 @@ Route::get('/onboarding/export-pdf/{uuid}', [OnboardingController::class, 'expor
 Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activity log
 Route::get('/logs/pdf', [ActivityLogController::class, 'exportLogsPdf']);
 
+Route::get('/logs/view', [ActivityLogController::class, 'getLogsByUuid']);//pass next js
 
 
 Route::post('/login', [UsersController::class, 'login']);

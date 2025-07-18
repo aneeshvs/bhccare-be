@@ -1,26 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <title>Activity Log Report</title>
     <style>
-        body { font-family: sans-serif; font-size: 13px; margin: 20px; }
-        h2 { margin-bottom: 5px; }
-        p { margin-top: 0; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        body {
+            font-family: sans-serif;
+            font-size: 13px;
+            margin: 20px;
+            color: #111827;
+        }
+        h1 {
+            text-align: center;
+            font-size: 20px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 14px;
+            color: #4b5563;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+        }
         th, td {
             border: 1px solid #ccc;
             padding: 6px;
-            text-align: left;
             vertical-align: top;
+            text-align: left;
         }
         th {
-            background-color: #f2f2f2;
+            background-color: #f3f4f6;
             font-weight: bold;
         }
     </style>
 </head>
 <body>
-    <h2>Activity Logs Report</h2>
-    <p><strong>UUID:</strong> {{ $uuid }}</p>
+    <h1>Client Onboarding – Activity Log Report</h1>
+
+    @php
+        $firstClientId = $logs->first(fn($log) => !empty($log->properties['user_id'] ?? $log->properties['attributes']['user_id'] ?? null));
+        $clientId = $firstClientId->properties['user_id'] ?? $firstClientId->properties['attributes']['user_id'] ?? 'N/A';
+    @endphp
+
+    <div class="subtitle">Client ID: {{ $clientId }}</div>
 
     <table>
         <thead>
@@ -32,62 +59,54 @@
                 <th>Client Type</th>
                 <th>Staff ID</th>
                 <th>Changes</th>
-                <th>Time</th>
+                <th>Timestamp</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($logs as $index => $log)
-                @php
-                    $props = $log->properties ?? [];
-                    $staffId = $props['staff_id'] ?? ($props['attributes']['staff_id'] ?? '');
-                    $clientId = $props['user_id'] ?? ($props['attributes']['user_id'] ?? '');
-                    $clientType = $props['client_type'] ?? ($props['attributes']['client_type'] ?? '');
+         @foreach($logs as $index => $log)
+            @php
+                $props = $log->parsed_properties ?? [];
 
-                    $changes = '';
-                    if (isset($props['attributes']) && isset($props['old'])) {
-                        foreach ($props['attributes'] as $key => $newVal) {
-                            $oldVal = $props['old'][$key] ?? null;
-                            if ($oldVal != $newVal) {
-                                $changes .= ucfirst(str_replace('_', ' ', $key)) . ': ' . ($oldVal ?? 'null') . ' → ' . ($newVal ?? 'null') . "<br>";
-                            }
-                        }
-                        $changes = $changes ?: 'No changes logged.';
-                    } else {
-                        $changes = 'No changes logged.';
-                    }
+                $attributes = $props['attributes'] ?? [];
+                $old = $props['old'] ?? [];
 
-                    $time = \Carbon\Carbon::parse($log->created_at)->format('d M Y, h:i A');
-                @endphp
-                <tr>
-                    <td>{{ $index + 1 }}</td>
-                    <td>{{ $log->log_name }}</td>
-                    <td>{{ $log->description }}</td>
-                    <td>{{ $clientId }}</td>
-                    <td>{{ $clientType }}</td>
-                    <td>{{ $staffId }}</td>
-                    <td>
-                        @php
-                            $props = $log->properties ?? [];
-                            $changes = '';
+                $clientId = $props['user_id'] ?? ($attributes['user_id'] ?? 'N/A');
+                $clientType = $props['client_type'] ?? ($attributes['client_type'] ?? 'N/A');
+                $staffId = $props['staff_id'] ?? 'N/A';
 
-                            if (isset($props['attributes']) && isset($props['old'])) {
-                                foreach ($props['attributes'] as $key => $new) {
-                                    $old = $props['old'][$key] ?? null;
-                                    if ($old != $new) {
-                                        $keyFormatted = ucfirst(str_replace('_', ' ', $key));
-                                        $changes .= "{$keyFormatted}: {$old} → {$new}<br>";
-                                    }
-                                }
-                            }
+                $changes = '';
+                foreach ($attributes as $key => $newVal) {
+                    if ($key === 'updated_at') continue;
 
-                            echo $changes ?: 'No changes logged.';
-                        @endphp
-                    </td>
+                    $oldVal = $old[$key] ?? '[no previous value]';
+                    if (trim((string)$oldVal) === trim((string)$newVal)) continue;
 
-                    <td>{{ $time }}</td>
-                </tr>
-            @endforeach
+                    $label = ucfirst(str_replace('_', ' ', $key));
+                    $changes .= "<strong>{$label}</strong>: Old value: <span style='color:red'>{$oldVal}</span> → New value: <span style='color:green'>{$newVal}</span><br>";
+                }
+
+                if (!$changes) {
+                    $changes = '<em>No field-level change data available.</em>';
+                }
+
+                $time = \Carbon\Carbon::parse($log->created_at)->format('d M Y, h:i A');
+            @endphp
+
+
+    <tr>
+        <td>{{ $index + 1 }}</td>
+        <td>{{ $log->log_name }}</td>
+        <td>{{ $log->description }}</td>
+        <td>{{ $clientId }}</td>
+        <td>{{ $clientType }}</td>
+        <td>{{ $staffId }}</td>
+        <td>{!! $changes !!}</td>
+        <td>{{ $time }}</td>
+    </tr>
+@endforeach
+
         </tbody>
     </table>
+
 </body>
 </html>

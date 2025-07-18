@@ -35,4 +35,5 @@ class ScheduleOfCare extends DefaultDBModel
     {
         return "ScheduleOfCare record has been {$eventName}";
     }
+
 }

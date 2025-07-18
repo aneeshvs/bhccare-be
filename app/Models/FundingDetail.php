@@ -19,7 +19,7 @@ class FundingDetail extends DefaultDBModel
         'ndis_plan_end_date',
         'plan_manager_name',
         'plan_manager_email',
-        'plan_manager_phone'
+        'plan_manager_phone',
     ];
 
     public function initialEnquiry()
@@ -27,12 +27,11 @@ class FundingDetail extends DefaultDBModel
         return $this->belongsTo(InitialEnquiry::class, 'initial_enquiry_id');
     }
 
-    // ✅ Activity Log Settings
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logAll()
-            ->logOnlyDirty()
+            ->logAll()           // logs all attributes
+            ->logOnlyDirty()     // only log when data changes
             ->useLogName('funding_detail');
     }
 
