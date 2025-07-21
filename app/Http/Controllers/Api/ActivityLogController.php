@@ -2,7 +2,7 @@
 namespace App\Http\Controllers\Api;
  use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-
+use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
@@ -76,24 +76,20 @@ class ActivityLogController extends Controller
 // }
 
 // In ActivityLogController.php
+
+
 public function getLogsByUuid(Request $request)
 {
     $uuid = $request->query('uuid');
 
-    // 1️⃣ Get the first activity by UUID to extract client ID
-    $firstLog = Activity::where('properties->uuid', $uuid)->first();
+    // Fallback from InitialEnquiry table
+    $initial = InitialEnquiry::where('uuid', $uuid)->first();
 
-    if (!$firstLog) {
-        return response()->json(['message' => 'No activity log found for the given UUID.'], 404);
+    if (!$initial) {
+        return response()->json(['message' => 'Invalid UUID. No InitialEnquiry found.'], 404);
     }
 
-    $clientId = $firstLog->properties['user_id'] ?? null;
-
-    if (!$clientId) {
-        return response()->json(['message' => 'Client ID not found in activity log.'], 404);
-    }
-
-    // 2️⃣ Fetch all logs for this client
+    // Use initial_enquiry_id (not user_id) for accuracy
     $logs = Activity::whereIn('log_name', [
             'initial_enquiry',
             'funding_detail',
@@ -110,11 +106,10 @@ public function getLogsByUuid(Request $request)
             'preventive_health_summary',
             'support_information',
         ])
-        ->where('properties->user_id', $clientId)
+        ->where('properties->initial_enquiry_id', $initial->id)
         ->orderBy('created_at', 'desc')
         ->get();
 
-    // 3️⃣ Return raw log + parsed properties
     $response = $logs->map(function ($log) {
         return [
             'id' => $log->id,
@@ -123,9 +118,9 @@ public function getLogsByUuid(Request $request)
             'created_at' => $log->created_at->toDateTimeString(),
             'attributes' => $log->properties['attributes'] ?? [],
             'old' => $log->properties['old'] ?? [],
-            'user_id' => $log->properties['user_id'] ?? $log->properties['attributes']['user_id'] ?? null,
-            'client_type' => $log->properties['client_type'] ?? $log->properties['attributes']['client_type'] ?? null,
-            'staff_id' => $log->properties['staff_id'] ?? $log->properties['attributes']['staff_id'] ?? null,
+            'user_id' => $log->properties['user_id'] ?? null,
+            'client_type' => $log->properties['client_type'] ?? null,
+            'staff_id' => $log->properties['staff_id'] ?? null,
             'uuid' => $log->properties['uuid'] ?? null,
         ];
     });
@@ -136,7 +131,4 @@ public function getLogsByUuid(Request $request)
         'data' => $response,
     ]);
 }
-
-
-
 }

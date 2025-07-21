@@ -132,6 +132,8 @@ class OnboardingController extends UniversalController
                 'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
             ])->where('uuid', $uuid)->firstOrFail();
 
+
+
             $completion = $completionService->calculate($initial);
             $initial['completion_percentage'] =$completion;
             return response()->json([
