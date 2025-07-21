@@ -28,6 +28,7 @@ class HealthcareSupportDetailService
                 ->withProperties([
                     'attributes' => $changes,
                     'old' => $original,
+                    'initial_enquiry_id' => $healthcare->initial_enquiry_id,
                     'client_type' => $data['client_type'] ?? null, // ✅ Add this
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $data['user_id'] ?? null,

@@ -35,6 +35,7 @@ class BehaviourSupportService
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $data['user_id'] ?? null,
                     'uuid' => $data['uuid'] ?? null,
+                    'initial_enquiry_id' => $support->initial_enquiry_id,
                 ])
                 ->log('BehaviourSupport record has been updated');
         } else {
