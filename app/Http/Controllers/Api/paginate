@@ -6,7 +6,6 @@ use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
- use App\Models\Staff;
 
 class ActivityLogController extends Controller
 {
@@ -83,14 +82,22 @@ class ActivityLogController extends Controller
 public function getLogsByUuid(Request $request)
 {
     $uuid = $request->query('uuid');
+    $staffId = $request->query('staff_id');
+    $userId = $request->query('user_id');
+    $field = $request->query('field');
+    $logName = $request->query('log_name'); // optional
+    $dateFrom = $request->query('date_from');
+    $dateTo = $request->query('date_to');
 
+    // 🔍 Lookup initial enquiry by UUID
     $initial = InitialEnquiry::where('uuid', $uuid)->first();
 
     if (!$initial) {
         return response()->json(['message' => 'Invalid UUID. No InitialEnquiry found.'], 404);
     }
 
-    $logs = Activity::whereIn('log_name', [
+    $logsQuery = Activity::where('properties->initial_enquiry_id', $initial->id)
+        ->whereIn('log_name', [
             'initial_enquiry',
             'funding_detail',
             'emergency_contact',
@@ -105,20 +112,46 @@ public function getLogsByUuid(Request $request)
             'medical_alert',
             'preventive_health_summary',
             'support_information',
-        ])
-        ->where('properties->initial_enquiry_id', $initial->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        ]);
 
-    // Preload all related staff names in one query
-    $staffIds = $logs->pluck('properties.staff_id')->filter()->unique()->toArray();
-    $staffNames = Staff::whereIn('id', $staffIds)->pluck('name', 'id');
+    // 🧠 Filter by log_name
+    if ($logName) {
+        $logsQuery->where('log_name', $logName);
+    }
 
-    $response = $logs->map(function ($log) use ($staffNames) {
+    // 🧠 Filter by staff_id/user_id
+    if ($staffId) {
+        $logsQuery->where('properties->staff_id', $staffId);
+    }
+
+    if ($userId) {
+        $logsQuery->where('properties->user_id', $userId);
+    }
+
+    // 🧠 Filter by field name (changed)
+    if ($field) {
+        $logsQuery->where(function ($q) use ($field) {
+            $q->where("properties->attributes->{$field}", '!=', null)
+              ->orWhere("properties->old->{$field}", '!=', null);
+        });
+    }
+
+    // 🧠 Filter by date range
+    if ($dateFrom) {
+        $logsQuery->whereDate('created_at', '>=', $dateFrom);
+    }
+
+    if ($dateTo) {
+        $logsQuery->whereDate('created_at', '<=', $dateTo);
+    }
+
+    $logs = $logsQuery->orderBy('created_at', 'desc')->get();
+
+    $response = $logs->map(function ($log) {
         $attributes = $log->properties['attributes'] ?? [];
         $old = $log->properties['old'] ?? [];
-        $staffId = $log->properties['staff_id'] ?? null;
 
+        // Format bools as Yes/No
         $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
         $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
 
@@ -131,8 +164,7 @@ public function getLogsByUuid(Request $request)
             'old' => $formattedOld,
             'user_id' => $log->properties['user_id'] ?? null,
             'client_type' => $log->properties['client_type'] ?? null,
-            'staff_id' => $staffId,
-            'staff_name' => $staffNames[$staffId] ?? null, // ✅ Add this
+            'staff_id' => $log->properties['staff_id'] ?? null,
             'uuid' => $log->properties['uuid'] ?? null,
         ];
     });
