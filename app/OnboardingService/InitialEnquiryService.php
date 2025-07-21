@@ -38,6 +38,8 @@ class InitialEnquiryService
                 'user_id' => $initial->user_id,
                 'client_type' => $initial->client_type,
                 'uuid' => $initial->uuid,
+                'initial_enquiry_id' => $initial->id,
+
             ])
             ->log('InitialEnquiry record has been updated');
 
