@@ -44,32 +44,30 @@ class OnboardingController extends UniversalController
         BehaviourSupportService $behaviourSupportService,
         MedicalAlertService $medicalAlertService,
         PreventiveHealthSummaryService $preventiveHealthSummaryService,
-        SupportInformationService $supportInformationService
-
-        ) {
+        SupportInformationService $supportInformationService,
+        FormCompletionService $completionService // ✅ inject it
+    ) {
         $data = $request->validated();
 
-
         $result = DB::transaction(function () use (
-                $data,
-                $initialService,
-                $fundingDetailService,
-                $emergencyContactService,
-                $scheduleOfCareService,
-                $culturalBackgroundService,
-                $ndisGoalService,
-                $healthProfessionalDetailService,
-                $diagnosisSummaryService,
-                $healthInformationService,
-                $healthcareSupportDetailService,
-                $behaviourSupportService,
-                $medicalAlertService,
-                $preventiveHealthSummaryService,
-                $supportInformationService,
-
-            ) {
+            $data,
+            $initialService,
+            $fundingDetailService,
+            $emergencyContactService,
+            $scheduleOfCareService,
+            $culturalBackgroundService,
+            $ndisGoalService,
+            $healthProfessionalDetailService,
+            $diagnosisSummaryService,
+            $healthInformationService,
+            $healthcareSupportDetailService,
+            $behaviourSupportService,
+            $medicalAlertService,
+            $preventiveHealthSummaryService,
+            $supportInformationService,
+            $completionService
+        ) {
             $user = Auth::user();
-
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
             }
@@ -77,46 +75,56 @@ class OnboardingController extends UniversalController
             $staff = \App\Models\Staff::where('user_id', $user->id)->first();
             $data['staff_id'] = $staff?->id ?? null;
 
-                $data['form_status'] = 'completed';
-                $initial = $initialService->save($data);
-                $data['initial_enquiry_id'] = $initial->id;
+            $initial = $initialService->save($data);
+            $data['initial_enquiry_id'] = $initial->id;
 
-                $funding = $fundingDetailService->save($data);
-                $contacts = $emergencyContactService->save($data);
-                $schedules = $scheduleOfCareService->saveMany($data['schedule_of_cares'] ?? [], $initial->id);
-                $cultural = $culturalBackgroundService->save($data);
-                $ndisGoalService = $ndisGoalService->saveMany($data['ndis_goals_onboarding'] ?? [], $initial->id);
-                $healthProfessionals = $healthProfessionalDetailService->saveMany($data['health_professional_details'] ?? [],$initial->id);
-                $diagnosis = $diagnosisSummaryService->save($data);
-                $healthInfo = $healthInformationService->save($data);
-                $healthcare = $healthcareSupportDetailService->save($data);
-                $behaviourSupport = $behaviourSupportService->save($data);
-                $medicalAlert = $medicalAlertService->save($data);
-                $preventiveHealth = $preventiveHealthSummaryService->save($data);
-                $supportInformation = $supportInformationService->save($data);
+            $funding = $fundingDetailService->save($data);
+            $contacts = $emergencyContactService->save($data);
+            $schedules = $scheduleOfCareService->saveMany($data['schedule_of_cares'] ?? [], $initial->id);
+            $cultural = $culturalBackgroundService->save($data);
+            $ndisGoals = $ndisGoalService->saveMany($data['ndis_goals_onboarding'] ?? [], $initial->id);
+            $healthProfessionals = $healthProfessionalDetailService->saveMany($data['health_professional_details'] ?? [], $initial->id);
+            $diagnosis = $diagnosisSummaryService->save($data);
+            $healthInfo = $healthInformationService->save($data);
+            $healthcare = $healthcareSupportDetailService->save($data);
+            $behaviourSupport = $behaviourSupportService->save($data);
+            $medicalAlert = $medicalAlertService->save($data);
+            $preventiveHealth = $preventiveHealthSummaryService->save($data);
+            $supportInformation = $supportInformationService->save($data);
 
+            // ✅ Calculate completion
+            $completion = $completionService->calculate($initial);
+            $initial['completion_percentage'] =$completion;
+            // ✅ Only mark as completed if >= 90%
+            if ($completion >= 90) {
+                $initial->form_status = 'completed';
 
-
+                // api call to core php
                 Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
-                    'uuid' => (string) $initial->uuid, // 🔁 cast to string
+                    'uuid' => (string) $initial->uuid,
                     'form_name' => 'onboarding',
                     'form_status' => 'completed',
                 ]);
+            } else {
+                $initial->form_status = 'in_progress';
+            }
 
 
-
-               return compact('initial', 'funding','contacts','schedules',
-                'cultural','ndisGoalService','healthProfessionals','diagnosis',
-                'healthInfo','healthcare','behaviourSupport','medicalAlert', 'preventiveHealth','supportInformation'); // ✅ returns both models
+            return compact(
+                'initial', 'funding', 'contacts', 'schedules',
+                'cultural', 'ndisGoals', 'healthProfessionals', 'diagnosis',
+                'healthInfo', 'healthcare', 'behaviourSupport', 'medicalAlert',
+                'preventiveHealth', 'supportInformation', 'completion'
+            );
         });
-
 
         return response()->json([
             'status' => true,
-            'message' => 'Form submitted and client created successfully.',
-            'data' => $result, // ✅ will now return the inserted row
+            'message' => 'Form submitted.',
+            'data' => $result,
         ]);
     }
+
 
 
 
@@ -162,22 +170,23 @@ class OnboardingController extends UniversalController
         return response()->json(['uuid' => null], 404);
     }
 
-     public function exportFullFormPdf(string $uuid)
-    {
-        $initial = InitialEnquiry::with([
-            'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
-            'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
-            'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
-            'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
-        ])->where('uuid', $uuid)->firstOrFail();
+    // export pdf
+        public function exportFullFormPdf(string $uuid)
+        {
+            $initial = InitialEnquiry::with([
+                'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
+                'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
+                'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
+                'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
+            ])->where('uuid', $uuid)->firstOrFail();
 
 
-         $pdf = Pdf::loadView('pdf.onboarding_full_form', compact('initial'))
-              ->setPaper('A4', 'portrait');
+            $pdf = Pdf::loadView('pdf.onboarding_full_form', compact('initial'))
+                ->setPaper('A4', 'portrait');
 
-       return $pdf->download('Onboarding_Form_' . $initial->full_name . '.pdf');
-}
+        return $pdf->download('Onboarding_Form_' . $initial->full_name . '.pdf');
     }
+}
 
 
 
