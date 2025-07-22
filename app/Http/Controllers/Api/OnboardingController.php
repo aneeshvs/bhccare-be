@@ -119,10 +119,12 @@ class OnboardingController extends UniversalController
         });
 
         return response()->json([
-            'status' => true,
+            'success' => true, // ✅ this is expected by frontend
+            'status' => 200,
             'message' => 'Form submitted.',
             'data' => $result,
         ]);
+
     }
 
 
