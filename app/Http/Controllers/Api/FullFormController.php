@@ -144,7 +144,7 @@ public function show(string $uuid)
             'success' => false,
             'status' => false,
             'message' => 'Invalid credentials.',
-        ], 401);
+        ]);
     }
 
     return response()->json([
