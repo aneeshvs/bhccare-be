@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
  use App\Models\Staff;
+use App\Models\StaffTypeMaster;
 
 class ActivityLogController extends Controller
 {
@@ -87,40 +88,76 @@ public function getLogsByUuid(Request $request)
     $initial = InitialEnquiry::where('uuid', $uuid)->first();
 
     if (!$initial) {
-        return response()->json(['message' => 'Invalid UUID. No InitialEnquiry found.'], 404);
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid UUID. No InitialEnquiry found.'
+        ], 404);
     }
 
     $logs = Activity::whereIn('log_name', [
-            'initial_enquiry',
-            'funding_detail',
-            'emergency_contact',
-            'schedule_of_care',
-            'cultural_background',
-            'ndis_goals',
-            'health_professional_detail',
-            'diagnosis_summary',
-            'health_information',
-            'healthcare_support_detail',
-            'behaviour_support',
-            'medical_alert',
-            'preventive_health_summary',
-            'support_information',
-        ])
-        ->where('properties->initial_enquiry_id', $initial->id)
-        ->orderBy('created_at', 'desc')
-        ->get();
+        'initial_enquiry',
+        'funding_detail',
+        'emergency_contact',
+        'schedule_of_care',
+        'cultural_background',
+        'ndis_goals',
+        'health_professional_detail',
+        'diagnosis_summary',
+        'health_information',
+        'healthcare_support_detail',
+        'behaviour_support',
+        'medical_alert',
+        'preventive_health_summary',
+        'support_information',
+    ])
+    ->where('properties->initial_enquiry_id', $initial->id)
+    ->orderBy('created_at', 'desc')
+    ->get();
 
-    // Preload all related staff names in one query
+    // Step 1: Get all staff IDs from logs
     $staffIds = $logs->pluck('properties.staff_id')->filter()->unique()->toArray();
-    $staffNames = Staff::whereIn('id', $staffIds)->pluck('name', 'id');
 
-    $response = $logs->map(function ($log) use ($staffNames) {
-        $attributes = $log->properties['attributes'] ?? [];
-        $old = $log->properties['old'] ?? [];
-        $staffId = $log->properties['staff_id'] ?? null;
+    // Step 2: Get all staff records with stafftype
+    $staffRecords = \App\Models\Staff::whereIn('id', $staffIds)->get(['id', 'name', 'stafftype']);
+
+    // Step 3: Build ID => Name and Stafftype maps
+    $staffNames = $staffRecords->pluck('name', 'id')->toArray();
+    $stafftypeIdsFromStaff = $staffRecords->pluck('stafftype')->filter()->unique()->toArray();
+
+    // Step 4: Also get stafftype directly from logs (if available)
+    $stafftypeIdsFromLogs = $logs->pluck('properties.stafftype')->filter()->unique()->toArray();
+
+    // Step 5: Merge both sets of IDs
+    $stafftypeIds = collect($stafftypeIdsFromLogs)
+        ->merge($stafftypeIdsFromStaff)
+        ->unique()
+        ->toArray();
+
+    // Step 6: Fetch stafftype names
+    $stafftypenames = \App\Models\StaffTypeMaster::whereIn('id', $stafftypeIds)
+        ->pluck('name', 'id')
+        ->mapWithKeys(fn($name, $id) => [(int)$id => $name])
+        ->toArray();
+
+    // ✅ Map and format log data
+    $response = $logs->map(function ($log) use ($staffNames, $stafftypenames) {
+        $properties = $log->properties ?? [];
+        $attributes = $properties['attributes'] ?? [];
+        $old = $properties['old'] ?? [];
 
         $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
         $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+
+        $staffId = $properties['staff_id'] ?? null;
+        $stafftypeId = $properties['stafftype'] ?? null;
+
+        // ✅ Fallback: load stafftype from staff model if missing
+        if (!$stafftypeId && $staffId) {
+            $staff = \App\Models\Staff::find($staffId);
+            $stafftypeId = $staff?->stafftype;
+        }
+
+
 
         return [
             'id' => $log->id,
@@ -129,12 +166,17 @@ public function getLogsByUuid(Request $request)
             'created_at' => $log->created_at->toDateTimeString(),
             'attributes' => $formattedAttributes,
             'old' => $formattedOld,
-            'user_id' => $log->properties['user_id'] ?? null,
-            'client_type' => $log->properties['client_type'] ?? null,
+            'user_id' => $properties['user_id'] ?? null,
+            'client_type' => $properties['client_type'] ?? null,
+            'stafftype_id' => $stafftypeId,
+            'stafftype_name' => $stafftypenames[(int)$stafftypeId] ?? null,
+
             'staff_id' => $staffId,
-            'staff_name' => $staffNames[$staffId] ?? null, // ✅ Add this
-            'uuid' => $log->properties['uuid'] ?? null,
+            'staff_name' => $staffNames[$staffId] ?? null,
+            'uuid' => $properties['uuid'] ?? null,
         ];
+
+
     });
 
     return response()->json([
@@ -143,5 +185,6 @@ public function getLogsByUuid(Request $request)
         'data' => $response,
     ]);
 }
+
 
 }

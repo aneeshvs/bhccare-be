@@ -118,16 +118,17 @@ public function show(string $uuid)
     ])->where('prospect_uuid', $uuid)->first();
 
 
-
     if (!$client) {
         return response()->json(['status' => false, 'message' => 'Form not found.'], 404);
     }
 
-    return response()->json([
+        return response()->json([
         'status' => true,
-        'data' => $client,
+        'data' => $client->makeHidden(['password']),
     ]);
+
 }
+
 
 
 
