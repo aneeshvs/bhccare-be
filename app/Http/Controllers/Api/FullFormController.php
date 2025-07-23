@@ -136,12 +136,12 @@ public function show(string $uuid)
     public function validatePassword(Request $request)
 {
 
- $client = \App\Models\Client::where('prospect_uuid', $request->uuid)->first();
+    $client = Client::where('prospect_uuid', $request->uuid)->first();
 
     if (!$client || $client->password !== $request->password) {
 
         return response()->json([
-            'success' => true,
+            'success' => false,
             'status' => false,
             'message' => 'Invalid credentials.',
         ]);
@@ -154,14 +154,6 @@ public function show(string $uuid)
 
     ]);
 }
-
-
-
-
-
-
-
-
 
 
 }

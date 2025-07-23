@@ -15,7 +15,8 @@ use Illuminate\Http\Request;
 
 // Public Routes Prospects
 Route::put('/form/submit/{uuid}', [FullFormController::class, 'update']);
-Route::get('/form/data/{uuid}', [FullFormController::class, 'show']); // optional
+Route::get('/form/data/{uuid}', [FullFormController::class, 'show']);
+ // optional
 Route::post('/generate-form-uuid', function () {
     $uuid = Str::uuid();
     $otp = Str::upper(Str::random(8)); // Alphanumeric OTP (e.g., "A7X9K2")
@@ -26,9 +27,9 @@ Route::post('/generate-form-uuid', function () {
     ]);
 });
 
-Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
+Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']); //core php create propect api call
 
-Route::get('/validate-password', [FullFormController::class, 'validatePassword']);
+Route::get('/validate-password', [FullFormController::class, 'validatePassword']);//prospect_form validate
 
 //Onboarding
 // routes/api.php
