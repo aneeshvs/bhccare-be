@@ -20,7 +20,8 @@ use App\Services\NdisGoalService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\Request;
 
 class FullFormController extends UniversalController
 {
@@ -118,16 +119,44 @@ public function show(string $uuid)
     ])->where('prospect_uuid', $uuid)->first();
 
 
+
     if (!$client) {
         return response()->json(['status' => false, 'message' => 'Form not found.'], 404);
     }
 
-        return response()->json([
+    return response()->json([
         'status' => true,
-        'data' => $client->makeHidden(['password']),
-    ]);
+        'data' => $client,
 
+    ]);
 }
+
+
+
+    public function validatePassword(Request $request)
+{
+
+ $client = \App\Models\Client::where('prospect_uuid', $request->prospect_uuid)->first();
+
+    if (!$client || $client->password !== $request->password) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid credentials.',
+        ], 401);
+    }
+
+    return response()->json([
+        'success' => true,
+        'status' => true,
+        'message' => 'Password is valid.',
+
+    ]);
+}
+
+
+
+
+
 
 
 

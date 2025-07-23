@@ -133,7 +133,7 @@ class OnboardingController extends UniversalController
 
     // show deatils
 
-        public function show(string $uuid, FormCompletionService $completionService)
+     public function show(string $uuid, FormCompletionService $completionService)
         {
             $initial = InitialEnquiry::with([
                 'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',

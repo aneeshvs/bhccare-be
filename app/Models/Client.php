@@ -16,7 +16,7 @@ class Client extends DefaultDBModel
         'work_phone',
         'mobile',
         'email',
-        'password',
+
         'atsi_status',
         'cultural_background',
         'language_spoken',
@@ -35,6 +35,9 @@ class Client extends DefaultDBModel
         'interpreter_required' => 'boolean',
 
         // 'date_of_birth' => 'date',
+    ];
+    protected $hidden =[
+        'password'
     ];
 
 
