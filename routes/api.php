@@ -27,6 +27,7 @@ Route::post('/generate-form-uuid', function () {
 });
 
 Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);
+
 Route::get('/validate-password', [FullFormController::class, 'validatePassword']);
 
 //Onboarding
