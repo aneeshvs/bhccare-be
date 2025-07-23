@@ -141,7 +141,7 @@ public function show(string $uuid)
     if (!$client || $client->password !== $request->password) {
 
         return response()->json([
-            'success' => false,
+            'success' => true,
             'status' => false,
             'message' => 'Invalid credentials.',
         ]);
