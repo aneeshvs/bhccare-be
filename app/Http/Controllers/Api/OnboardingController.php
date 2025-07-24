@@ -48,6 +48,10 @@ class OnboardingController extends UniversalController
         FormCompletionService $completionService // ✅ inject it
     ) {
         $data = $request->validated();
+        //form completion
+         $isFinal = $request->boolean('submit_final');
+         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+
 
         $result = DB::transaction(function () use (
             $data,
@@ -75,8 +79,10 @@ class OnboardingController extends UniversalController
             $staff = \App\Models\Staff::where('user_id', $user->id)->first();
             $data['staff_id'] = $staff?->id ?? null;
 
+
             $initial = $initialService->save($data);
             $data['initial_enquiry_id'] = $initial->id;
+
 
             $funding = $fundingDetailService->save($data);
             $contacts = $emergencyContactService->save($data);
@@ -95,18 +101,27 @@ class OnboardingController extends UniversalController
             // ✅ Calculate completion
             $completion = $completionService->calculate($initial);
             $initial['completion_percentage'] =$completion;
-            // ✅ Only mark as completed if >= 90%
-            if ($completion >= 90) {
+
+
+           if ($data['form_status'] === 'completed') {
                 $initial->form_status = 'completed';
 
                 // api call to core php
                 Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
                     'uuid' => (string) $initial->uuid,
                     'form_name' => 'onboarding',
+                    'completion_percentage' => $completion,
                     'form_status' => 'completed',
                 ]);
             } else {
-                $initial->form_status = 'in_progress';
+                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+                    'uuid' => (string) $initial->uuid,
+                    'form_name' => 'onboarding',
+                    'completion_percentage' => $completion,
+                    'form_status' => 'in_progress',
+                ]);
+
+
             }
 
 
