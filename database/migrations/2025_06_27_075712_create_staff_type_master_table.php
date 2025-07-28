@@ -11,7 +11,7 @@ return new class extends Migration {
         Schema::create('staff_type_master', function (Blueprint $table) {
             $table->id(); // This will match the option values like 11, 12, etc.
             $table->string('name'); // eg: Support Worker, HR, etc.
-             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
+            MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
     }
 

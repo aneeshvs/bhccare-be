@@ -6,7 +6,7 @@ use App\Models\InitialEnquiry;
 use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Spatie\Activitylog\Models\Activity;
- use App\Models\Staff;
+use App\Models\Staff;
 use App\Models\StaffTypeMaster;
 
 class ActivityLogController extends Controller
@@ -170,7 +170,6 @@ public function getLogsByUuid(Request $request)
             'client_type' => $properties['client_type'] ?? null,
             'stafftype_id' => $stafftypeId,
             'stafftype_name' => $stafftypenames[(int)$stafftypeId] ?? null,
-
             'staff_id' => $staffId,
             'staff_name' => $staffNames[$staffId] ?? null,
             'uuid' => $properties['uuid'] ?? null,
