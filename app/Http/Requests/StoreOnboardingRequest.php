@@ -188,9 +188,9 @@ class StoreOnboardingRequest extends FormRequest
                 private function medicalAlertRules(): array
         {
             return [
-                'has_epilepsy' => 'nullable|boolean',
-                'has_asthma' => 'nullable|boolean',
-                'has_diabetes' => 'nullable|boolean',
+                'epilepsy' => 'nullable|boolean',
+                'asthma' => 'nullable|boolean',
+                'diabetes' => 'nullable|boolean',
                 'allergies' => 'nullable|string|max:1000',
                 'medical_info' => 'nullable|string|max:2000',
                 'diagnosis' => 'nullable|string|max:2000',

@@ -12,9 +12,9 @@ class MedicalAlert extends DefaultDBModel
 
     protected $fillable = [
         'initial_enquiry_id',
-        'has_epilepsy',
-        'has_asthma',
-        'has_diabetes',
+        'epilepsy',
+        'asthma',
+        'diabetes',
         'allergies',
         'medical_info',
         'diagnosis',
@@ -28,9 +28,9 @@ class MedicalAlert extends DefaultDBModel
     ];
 
     protected $casts = [
-        'has_epilepsy' => 'boolean',
-        'has_asthma' => 'boolean',
-        'has_diabetes' => 'boolean',
+        'epilepsy' => 'boolean',
+        'asthma' => 'boolean',
+        'diabetes' => 'boolean',
         'staff_administer_medication' => 'boolean',
     ];
 

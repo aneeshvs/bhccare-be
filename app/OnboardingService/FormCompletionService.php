@@ -64,9 +64,9 @@ class FormCompletionService
         'behaviourSupport' => [ 'has_support_plan',
         'plan_copy_received'],
 
-        'medicalAlert' => [ 'has_epilepsy',
-        'has_asthma',
-        'has_diabetes',
+        'medicalAlert' => [ 'epilepsy',
+        'asthma',
+        'diabetes',
         'allergies',
         'medical_info',
         'diagnosis',

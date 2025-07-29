@@ -18,9 +18,9 @@ return new class extends Migration {
                 ->on('initial_enquiries')
                 ->onDelete('cascade');
 
-            $table->boolean('has_epilepsy')->default(false);
-            $table->boolean('has_asthma')->default(false);
-            $table->boolean('has_diabetes')->default(false);
+            $table->boolean('epilepsy')->default(false);
+            $table->boolean('asthma')->default(false);
+            $table->boolean('diabetes')->default(false);
 
             $table->string('allergies')->nullable();
             $table->text('medical_info')->nullable();

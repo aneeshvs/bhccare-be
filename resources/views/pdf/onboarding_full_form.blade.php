@@ -475,15 +475,15 @@
                 <tr>
                     <td>
                         <span class="label">Has Epilepsy</span>
-                        <span class="value">{{ $initial->medicalAlert->has_epilepsy ? 'Yes' : 'No' }}</span>
+                        <span class="value">{{ $initial->medicalAlert->epilepsy ? 'Yes' : 'No' }}</span>
                     </td>
                     <td>
                         <span class="label">Has Asthma</span>
-                        <span class="value">{{ $initial->medicalAlert->has_asthma ? 'Yes' : 'No' }}</span>
+                        <span class="value">{{ $initial->medicalAlert->asthma ? 'Yes' : 'No' }}</span>
                     </td>
                     <td>
                         <span class="label">Has Diabetes</span>
-                        <span class="value">{{ $initial->medicalAlert->has_diabetes ? 'Yes' : 'No' }}</span>
+                        <span class="value">{{ $initial->medicalAlert->diabetes ? 'Yes' : 'No' }}</span>
                     </td>
                     <td>
                         <span class="label">Allergies</span>
