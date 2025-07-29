@@ -84,6 +84,8 @@ class ActivityLogController extends Controller
 public function getLogsByUuid(Request $request)
 {
     $uuid = $request->query('uuid');
+    $table = $request->query('table');
+    $field = $request->query('field');
 
     $initial = InitialEnquiry::where('uuid', $uuid)->first();
 
@@ -94,25 +96,32 @@ public function getLogsByUuid(Request $request)
         ], 404);
     }
 
-    $logs = Activity::whereIn('log_name', [
-        'initial_enquiry',
-        'funding_detail',
-        'emergency_contact',
-        'schedule_of_care',
-        'cultural_background',
-        'ndis_goals',
-        'health_professional_detail',
-        'diagnosis_summary',
-        'health_information',
-        'healthcare_support_detail',
-        'behaviour_support',
-        'medical_alert',
-        'preventive_health_summary',
-        'support_information',
-    ])
-    ->where('properties->initial_enquiry_id', $initial->id)
-    ->orderBy('created_at', 'desc')
-    ->get();
+    $query = Activity::where('properties->initial_enquiry_id', $initial->id);
+
+    // Optional filter by table name (log_name)
+    if (!empty($table)) {
+        $query->where('log_name', $table);
+    } else {
+        // Default to all onboarding-related logs
+        $query->whereIn('log_name', [
+            'initial_enquiry',
+            'funding_detail',
+            'emergency_contact',
+            'schedule_of_care',
+            'cultural_background',
+            'ndis_goals',
+            'health_professional_detail',
+            'diagnosis_summary',
+            'health_information',
+            'healthcare_support_detail',
+            'behaviour_support',
+            'medical_alert',
+            'preventive_health_summary',
+            'support_information',
+        ]);
+    }
+
+    $logs = $query->orderBy('created_at', 'desc')->get();
 
     // Step 1: Get all staff IDs from logs
     $staffIds = $logs->pluck('properties.staff_id')->filter()->unique()->toArray();
@@ -139,6 +148,14 @@ public function getLogsByUuid(Request $request)
         ->mapWithKeys(fn($name, $id) => [(int)$id => $name])
         ->toArray();
 
+    // ✅ Step 7: Filter by field name if given
+    if (!empty($field)) {
+        $logs = $logs->filter(function ($log) use ($field) {
+            $properties = $log->properties ?? [];
+            return isset($properties['attributes'][$field]) || isset($properties['old'][$field]);
+        })->values(); // reindex the collection
+    }
+
     // ✅ Map and format log data
     $response = $logs->map(function ($log) use ($staffNames, $stafftypenames) {
         $properties = $log->properties ?? [];
@@ -151,13 +168,10 @@ public function getLogsByUuid(Request $request)
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
 
-        // ✅ Fallback: load stafftype from staff model if missing
         if (!$stafftypeId && $staffId) {
             $staff = \App\Models\Staff::find($staffId);
             $stafftypeId = $staff?->stafftype;
         }
-
-
 
         return [
             'id' => $log->id,
@@ -174,8 +188,6 @@ public function getLogsByUuid(Request $request)
             'staff_name' => $staffNames[$staffId] ?? null,
             'uuid' => $properties['uuid'] ?? null,
         ];
-
-
     });
 
     return response()->json([
@@ -184,6 +196,7 @@ public function getLogsByUuid(Request $request)
         'data' => $response,
     ]);
 }
+
 
 
 }
