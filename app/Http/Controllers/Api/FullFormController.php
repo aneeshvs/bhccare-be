@@ -154,6 +154,58 @@ public function show(string $uuid)
 
     ]);
 }
+// remove item in (savemany)
+public function removeItem(Request $request)
+{
+    $uuid = $request->input('uuid');
+    $table = $request->input('table'); // e.g., 'previous_service_providers'
+    $field = $request->input('field'); // e.g., 'provider'
+    $value = $request->input('value'); // e.g., 'Provider A'
+
+    if (!$uuid || !$table || !$field || !$value) {
+        return response()->json([
+            'status' => false,
+            'message' => 'uuid, table, field, and value are required.',
+        ], 400);
+    }
+
+    $client = \App\Models\Client::where('prospect_uuid', $uuid)->first();
+    if (!$client) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid UUID. Client not found.',
+        ], 404);
+    }
+
+    // Table => Model mapping
+    $modelMap = [
+        'previous_service_providers' => \App\Models\PreviousServiceProvider::class,
+        'selected_services' => \App\Models\SelectedService::class,
+        'ndis_goals' => \App\Models\NdisGoal::class,
+        // Add more here as needed
+    ];
+
+    if (!array_key_exists($table, $modelMap)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Unsupported table.',
+        ], 400);
+    }
+
+    $model = $modelMap[$table];
+
+    $deleted = $model::where('client_id', $client->id)
+        ->where($field, $value)
+        ->delete();
+
+    return response()->json([
+        'status' => $deleted > 0,
+        'message' => $deleted > 0 ? 'Entry deleted successfully.' : 'Entry not found.',
+    ]);
+}
+
+
+
 
 
 }

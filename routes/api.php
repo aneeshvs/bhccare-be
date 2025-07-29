@@ -33,6 +33,8 @@ Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']); /
 
 Route::get('/validate-password', [FullFormController::class, 'validatePassword']);//prospect_form validate
 
+Route::delete('/full-form/remove-item', [FullFormController::class, 'removeItem']);// delete prospect
+
 //Onboarding
 // routes/api.php
 Route::post('/sync-staff', [StaffSyncController::class, 'store']);
