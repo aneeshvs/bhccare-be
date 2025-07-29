@@ -26,6 +26,7 @@ class ActivityLogController extends Controller
 
 
 
+
 // public function exportLogsPdf(Request $request)
 // {
 //     $uuid = $request->query('uuid');
@@ -149,12 +150,18 @@ public function getLogsByUuid(Request $request)
         ->toArray();
 
     // ✅ Step 7: Filter by field name if given
-    if (!empty($field)) {
-        $logs = $logs->filter(function ($log) use ($field) {
-            $properties = $log->properties ?? [];
-            return isset($properties['attributes'][$field]) || isset($properties['old'][$field]);
-        })->values(); // reindex the collection
-    }
+            if (!empty($field)) {
+            $logs = $logs->filter(function ($log) use ($field) {
+                $properties = $log->properties ?? [];
+
+                $attributes = $properties['attributes'] ?? [];
+                $old = $properties['old'] ?? [];
+
+                // ✅ Also check top-level properties like 'type_of_service'
+                return isset($attributes[$field]) || isset($old[$field]) || isset($properties[$field]);
+            })->values(); // reindex the collection
+        }
+
 
     // ✅ Map and format log data
     $response = $logs->map(function ($log) use ($staffNames, $stafftypenames) {

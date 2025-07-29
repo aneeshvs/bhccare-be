@@ -37,20 +37,22 @@ class ScheduleOfCareService
                     'uuid' => optional($record->initialEnquiry)->uuid,
                 ]);
 
+
                 activity()
-                    ->useLog('schedule_of_care')
-                    ->performedOn($record)
-                    ->causedBy(Auth::user())
-                    ->withProperties([
-                        'attributes' => $changes,
-                        'old' => $original,
-                        'initial_enquiry_id' => $record->initial_enquiry_id,
-                       'uuid' => optional($record->initialEnquiry)->uuid,// ✅ make sure relationship exists
-                        'client_type' => $schedule['client_type'] ?? null,
-                        'staff_id' => $schedule['staff_id'] ?? null,
-                        'user_id' => $schedule['user_id'] ?? null,
-                    ])
-                    ->log('ScheduleOfCare record has been updated');
+                ->useLog('schedule_of_care')
+                ->performedOn($record)
+                ->causedBy(Auth::user())
+                ->withProperties([
+                    'attributes' => $changes,
+                    'old' => $original,
+                    'initial_enquiry_id' => $record->initial_enquiry_id,
+                    'uuid' => $schedule['uuid'] ?? optional($record->initialEnquiry)->uuid,
+                    'client_type' => $schedule['client_type'] ?? optional($record->initialEnquiry)->client_type,
+                    'staff_id' => $schedule['staff_id'] ?? optional($record->initialEnquiry)->staff_id,
+                    'user_id' => $schedule['user_id'] ?? optional($record->initialEnquiry)->user_id,
+                ])
+                ->log('ScheduleOfCare record has been updated');
+
             } else {
                 $record->save(); // if nothing changed
             }
@@ -60,4 +62,5 @@ class ScheduleOfCareService
 
         return $saved;
     }
+
 }

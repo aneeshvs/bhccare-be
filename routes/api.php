@@ -8,6 +8,8 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\StaffSyncController;
 use App\Http\Controllers\Api\ActivityLogController;
+use App\Http\Controllers\Api\ScheduleOfCareController;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
@@ -46,6 +48,8 @@ Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activit
 Route::get('/logs/pdf', [ActivityLogController::class, 'exportLogsPdf']);
 
 Route::get('/logs/view', [ActivityLogController::class, 'getLogsByUuid']);//pass next js
+
+Route::delete('/schedule-of-care/remove', [ScheduleOfCareController::class, 'remove']);
 
 
 Route::post('/login', [UsersController::class, 'login']);

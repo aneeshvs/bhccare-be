@@ -13,35 +13,37 @@ class HealthProfessionalDetailService
         $saved = [];
 
         foreach ($items as $item) {
-            // Skip if empty name or role
-            if (empty($item['role']) ) {
+            if (empty($item['role'])) {
                 continue;
             }
 
-            // Match by name, role, and initial_enquiry_id
             $record = HealthProfessionalDetail::firstOrNew([
                 'initial_enquiry_id' => $initialEnquiryId,
-
                 'role' => $item['role'],
             ]);
 
-            // Capture original state for logging
             $original = $record->exists ? $record->getOriginal() : [];
 
-            // Update with new values
             $record->fill($item);
             $record->initial_enquiry_id = $initialEnquiryId;
 
             if ($record->isDirty()) {
                 $changes = $record->getDirty();
                 $oldValues = array_intersect_key($original, $changes);
-
                 $record->save();
+
+                // ✅ Fallback from InitialEnquiry relationship if not passed
+                $initial = $record->initialEnquiry;
+
+                $uuid = $item['uuid'] ?? optional($initial)->uuid;
+                $staffId = $item['staff_id'] ?? optional($initial)->staff_id;
+                $clientType = $item['client_type'] ?? optional($initial)->client_type;
+                $userId = $item['user_id'] ?? optional($initial)->user_id;
 
                 Log::info("HealthProfessionalDetail: changes", [
                     'changes' => $changes,
                     'original' => $oldValues,
-                    'uuid' => optional($record->initialEnquiry)->uuid,
+                    'uuid' => $uuid,
                 ]);
 
                 activity()
@@ -52,14 +54,14 @@ class HealthProfessionalDetailService
                         'attributes' => $changes,
                         'old' => $oldValues,
                         'initial_enquiry_id' => $record->initial_enquiry_id,
-                        'uuid' => optional($record->initialEnquiry)->uuid,
-                        'client_type' => $item['client_type'] ?? null,
-                        'staff_id' => $item['staff_id'] ?? null,
-                        'user_id' => $item['user_id'] ?? null,
+                        'uuid' => $uuid,
+                        'client_type' => $clientType,
+                        'staff_id' => $staffId,
+                        'user_id' => $userId,
                     ])
                     ->log('HealthProfessionalDetail record has been updated');
             } else {
-                $record->save(); // save silently
+                $record->save();
             }
 
             $saved[] = $record;
