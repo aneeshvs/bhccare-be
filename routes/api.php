@@ -49,7 +49,8 @@ Route::get('/logs/pdf', [ActivityLogController::class, 'exportLogsPdf']);
 
 Route::get('/logs/view', [ActivityLogController::class, 'getLogsByUuid']);//pass next js
 
-Route::delete('/schedule-of-care/remove', [ScheduleOfCareController::class, 'remove']);
+Route::delete('/schedule-of-care/remove', [ScheduleOfCareController::class, 'remove']);// delete specific table
+Route::delete('/form/section/remove', [OnboardingController::class, 'removeSection']); // delete common for all table
 
 
 Route::post('/login', [UsersController::class, 'login']);
