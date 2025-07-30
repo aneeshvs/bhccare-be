@@ -9,6 +9,8 @@ return new class extends Migration {
         Schema::create('ndis_goals_onboarding', function (Blueprint $table) {
             $table->id();
             $table->foreignId('initial_enquiry_id')->constrained('initial_enquiries')->onDelete('cascade');
+            $table->string('goal_key')->nullable(); // OR ->unique() if globally unique
+
             $table->text('goal_description')->nullable();
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

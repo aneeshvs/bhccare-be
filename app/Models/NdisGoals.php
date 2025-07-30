@@ -14,6 +14,7 @@ class NdisGoals extends DefaultDBModel
 
     protected $fillable = [
         'initial_enquiry_id',
+        'goal_key',
         'goal_description',
     ];
 

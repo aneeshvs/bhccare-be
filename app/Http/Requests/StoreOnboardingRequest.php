@@ -129,14 +129,15 @@ class StoreOnboardingRequest extends FormRequest
                 ];
 
         }
-        private function ndisRules(): array
-        {
-            return [
+           private function ndisRules(): array
+            {
+                return [
+                    'ndis_goals_onboarding' => 'nullable|array',
+                    'ndis_goals_onboarding.*.goal_description' => 'nullable|string|max:1000',
+                    'ndis_goals_onboarding.*.goal_key' => 'nullable|string|max:255', // ✅ Add this
+                ];
+            }
 
-        'ndis_goals_onboarding' => 'nullable|array',
-        'ndis_goals_onboarding.*.goal_description' => 'nullable|string|max:1000',
-            ];
-        }
         private function healthProfessionalRules(): array
         {
             return [

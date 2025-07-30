@@ -5,10 +5,12 @@ namespace App\OnboardingService;
 use App\Models\NdisGoals;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class NdisGoalServices
 {
-    public function saveMany(array $goals, int $initialEnquiryId): array
+
+public function saveMany(array $goals, int $initialEnquiryId): array
     {
         $saved = [];
 
@@ -17,37 +19,33 @@ class NdisGoalServices
                 continue;
             }
 
-            // Try to fetch existing goal by ID (if editing), else use first match
-            $record = !empty($goal['id'])
-                ? NdisGoals::find($goal['id'])
-                : NdisGoals::where('initial_enquiry_id', $initialEnquiryId)
-                    ->where('goal_description', $goal['goal_description'])
-                    ->first();
+            // 🛠️ Auto-generate goal_key if missing
+            if (empty($goal['goal_key'])) {
+                $goal['goal_key'] = 'goal_' . Str::uuid();
+            }
 
-            $record = $record ?: new NdisGoals();
+            $record = NdisGoals::firstOrNew([
+                'initial_enquiry_id' => $initialEnquiryId,
+                'goal_key' => $goal['goal_key'],
+            ]);
 
-            // Capture old values BEFORE fill
             $original = $record->exists ? $record->getOriginal() : [];
 
-            // Update values
             $record->fill($goal);
             $record->initial_enquiry_id = $initialEnquiryId;
 
-            // Check if changes occurred
             if ($record->isDirty()) {
                 $changes = $record->getDirty();
                 $oldValues = array_intersect_key($original, $changes);
 
                 $record->save();
 
-                // ✅ Log to Laravel log file for debug
                 Log::info("NdisGoals: changes", [
                     'changes' => $changes,
                     'original' => $oldValues,
                     'uuid' => optional($record->initialEnquiry)->uuid,
                 ]);
 
-                // ✅ Spatie activity log
                 activity()
                     ->useLog('ndis_goals')
                     ->performedOn($record)
@@ -63,7 +61,7 @@ class NdisGoalServices
                     ])
                     ->log('NdisGoal record has been updated');
             } else {
-                $record->save(); // save silently if no changes
+                $record->save();
             }
 
             $saved[] = $record;
@@ -72,3 +70,5 @@ class NdisGoalServices
         return $saved;
     }
 }
+
+
