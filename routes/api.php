@@ -9,6 +9,9 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Api\StaffSyncController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ScheduleOfCareController;
+use App\Http\Controllers\Api\SupportPlanController;
+
+
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -58,9 +61,19 @@ Route::delete('/form/section/remove', [OnboardingController::class, 'removeSecti
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
 
+// routes/api.php support plan
+Route::get('/support-plan-show/{uuid}', [SupportPlanController::class, 'showByUuid']);
+Route::get('/support-plan/export-pdf/{uuid}', [SupportPlanController::class, 'exportFullFormPdf']);
+// In api.php
+Route::get('/get-support-plan-uuid', [SupportPlanController::class, 'getSupportPlanUuid']);
+
+
+
+
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
+    Route::put('/support-plan', [SupportPlanController::class, 'update']);
 
 });

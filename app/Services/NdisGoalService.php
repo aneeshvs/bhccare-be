@@ -11,11 +11,13 @@ class NdisGoalService
 
         foreach ($goals as $goal) {
             $goalName = trim($goal['goal'] ?? '');
-
+;
             // Skip empty goal names
             if ($goalName === '') {
                 continue;
             }
+
+
 
             // Find existing goal for client (case-insensitive match)
             $existing = NdisGoal::where('client_id', $clientId)

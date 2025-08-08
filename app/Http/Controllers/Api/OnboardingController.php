@@ -79,10 +79,8 @@ class OnboardingController extends UniversalController
             $staff = \App\Models\Staff::where('user_id', $user->id)->first();
             $data['staff_id'] = $staff?->id ?? null;
 
-
             $initial = $initialService->save($data);
             $data['initial_enquiry_id'] = $initial->id;
-
 
             $funding = $fundingDetailService->save($data);
             $contacts = $emergencyContactService->save($data);
@@ -101,6 +99,7 @@ class OnboardingController extends UniversalController
             // ✅ Calculate completion
             $completion = $completionService->calculate($initial);
             $initial['completion_percentage'] =$completion;
+
 
 
            if ($data['form_status'] === 'completed') {
