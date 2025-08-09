@@ -103,6 +103,7 @@ class OnboardingController extends UniversalController
 
 
            if ($data['form_status'] === 'completed') {
+
                 $initial->form_status = 'completed';
 
                 // api call to core php

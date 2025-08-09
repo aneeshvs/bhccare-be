@@ -232,6 +232,8 @@ public function getLogsByUuidSupport(Request $request)
         $query->whereIn('log_name', [
             'support_plan',
             'support_plan_approval',
+            'support_plan_representative',
+            'support_plan_care_partner',
         ]);
     }
 

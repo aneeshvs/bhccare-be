@@ -15,6 +15,8 @@ class StoreSupportPlanRequest extends FormRequest
         return array_merge(
             $this->SupportRules(),
             $this->SupportApprovalRules(),
+            $this->RepresentaiveRules(),
+            $this->SupportCarePartnerRules(),
 
 
 
@@ -44,6 +46,25 @@ class StoreSupportPlanRequest extends FormRequest
             'signature' => 'nullable|string|max:255', // Or file if needed
         ];
     }
+
+    public function RepresentaiveRules():array
+    {
+        return [
+
+            'support_representative_name' => 'nullable|string|max:255',
+            'role' => 'nullable|string|max:255',
+            'date_of_approval' => 'nullable|date',
+        ];
+    }
+    private function SupportCarePartnerRules(): array
+{
+    return [
+        'care_partner_name' => 'nullable|string|max:255',
+        'care_partner_role' => 'nullable|string|max:255',
+        'care_partner_contact_phone' => 'nullable|string|max:20',
+        'care_partner_email' => 'nullable|email|max:255',
+    ];
+}
 
 
     public function authorize(): bool

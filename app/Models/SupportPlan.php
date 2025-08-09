@@ -52,6 +52,15 @@ class SupportPlan extends DefaultDBModel
     {
         return $this->hasOne(SupportPlanApproval::class);
     }
+        public function representativeApproval()
+    {
+        return $this->hasOne(SupportPlanRepresentative::class);
+    }
+    public function careApproval()
+    {
+        return $this->hasOne(SupportPlanCarePartner::class);
+    }
+
 
 
 }

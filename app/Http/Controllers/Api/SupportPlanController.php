@@ -7,11 +7,16 @@ use App\Http\Requests\StoreSupportPlanRequest;
 use App\SupportplanService\SupportPlanService;
 use App\SupportplanService\SupportPlanCompletionService;
 use App\SupportplanService\SupportPlanApprovalService;
+use App\SupportplanService\SupportPlanRepresentativeService;
+use App\SupportplanService\SupportPlanCarePartnerService;
+
+
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
+
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 
@@ -25,10 +30,12 @@ class SupportPlanController extends UniversalController
 public function update(StoreSupportPlanRequest $request,
 SupportPlanService $service,
 SupportPlanApprovalService $approvalService,
-SupportPlanCompletionService $completionService)
+SupportPlanCompletionService $completionService,
+SupportPlanRepresentativeService $representativeService,
+SupportPlanCarePartnerService $carePartnerService,)
 {
     $data = $request->validated();
-     $isFinal = $request->boolean('submit_final');
+    $isFinal = $request->boolean('submit_final');
     $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
 
@@ -36,6 +43,8 @@ SupportPlanCompletionService $completionService)
     return DB::transaction(function () use ($data, $service,
      $completionService,
      $approvalService,
+     $representativeService,
+     $carePartnerService,
      ) {
         $user = Auth::user();
         if (!$user) {
@@ -50,6 +59,9 @@ SupportPlanCompletionService $completionService)
          $data['support_plan_id'] = $supportPlan->id;
 
          $approval = $approvalService->save($data);
+         $representative = $representativeService->save($data);
+         $carePartner = $carePartnerService->save($data);
+
 
         // ✅ New Completion Logic
         $completion = $completionService->calculate($supportPlan);
@@ -75,7 +87,7 @@ SupportPlanCompletionService $completionService)
         }
 
         return compact(
-                'supportPlan','approval'
+                'supportPlan','approval','representative','carePartner'
             );
 
         return response()->json([
@@ -90,7 +102,7 @@ SupportPlanCompletionService $completionService)
 
 public function showByUuid($uuid)
 {
-    $supportPlan = SupportPlan::with(['approval'])->where('uuid', $uuid)->firstOrFail();
+    $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -105,7 +117,7 @@ public function showByUuid($uuid)
 
 public function exportFullFormPdf(string $uuid)
 {
-    $supportPlan = SupportPlan::with(['staff','approval']) // only valid relationship
+    $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

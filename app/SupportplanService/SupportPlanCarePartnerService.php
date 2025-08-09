@@ -2,34 +2,32 @@
 
 namespace App\SupportplanService;
 
-use App\Models\SupportPlanApproval;
+use App\Models\SupportPlanCarePartner;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
-class SupportPlanApprovalService
+class SupportPlanCarePartnerService
 {
-    public function save(array $data): SupportPlanApproval
+    public function save(array $data): SupportPlanCarePartner
     {
-        $approval = SupportPlanApproval::firstOrNew([
+        $carePartner = SupportPlanCarePartner::firstOrNew([
             'support_plan_id' => $data['support_plan_id'],
-
         ]);
 
-        $approval->fill($data);
+          $carePartner->fill($data);
 
-        if ($approval->isDirty()) {
-            $changes = $approval->getDirty();
-            $original = array_intersect_key($approval->getOriginal(), $changes);
+        if ($carePartner->isDirty()) {
+            $changes = $carePartner->getDirty();
+            $original = array_intersect_key($carePartner->getOriginal(), $changes);
 
-            Log::info('SupportPlanApproval Changes', [
+            Log::info('SupportPlanCarePartner Changes', [
                 'dirty' => $changes,
                 'original' => $original,
             ]);
 
-            $approval->save();
             activity()
-                ->useLog('support_plan_approval')
-                ->performedOn($approval)
+                ->useLog('support_plan_care_partner')
+                ->performedOn($carePartner)
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
@@ -37,15 +35,14 @@ class SupportPlanApprovalService
                     'staff_id' => $data['staff_id'] ?? null,
                      'user_id' => $data['user_id'] ?? null,
                      'client_type' => $data['client_type'] ?? null,
-                    'uuid' => $approval->uuid,
-
+                    'uuid' => $carePartner->uuid,
                     'support_plan_id' => $data['support_plan_id'],
                 ])
-                ->log('SupportPlanApproval record has been updated');
+                ->log('SupportPlanCarePartner record has been updated');
 
-            $approval->save();
+            $carePartner->save();
         }
 
-        return $approval;
+        return $carePartner;
     }
 }

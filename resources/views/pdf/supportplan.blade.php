@@ -125,12 +125,7 @@
                     <span class="value">{{ $supportPlan->invited_but_not_participated ?? 'N/A' }}</span>
                 </td>
             </tr>
-            <tr>
-                <td colspan="3">
-                    <span class="label">Staff</span>
-                    <span class="value">{{ $supportPlan->staff->name ?? 'N/A' }}</span>
-                </td>
-            </tr>
+
         </table>
     </div>
     <div class="section">
@@ -154,6 +149,57 @@
             </tr>
         </table>
     </div>
+    {{-- ✅ If participant unable to approve / co-approval needed --}}
+<div class="section">
+    <div class="section-header">Support Representative Approval</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Support Representative Name</span>
+                <span class="value">{{ $supportPlan->representativeApproval->support_representative_name ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Role</span>
+                <span class="value">{{ $supportPlan->representativeApproval->role ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Date of Approval</span>
+                <span class="value">
+                    {{ $supportPlan->representativeApproval->date_of_approval ? \Carbon\Carbon::parse($supportPlan->representativeApproval->date_of_approval)->format('d-m-Y') : 'N/A' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div class="section">
+    <div class="section-header">Care Partner Details</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Name</span>
+                <span class="value">{{ $supportPlan->careApproval->care_partner_name ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Role</span>
+                <span class="value">{{ $supportPlan->careApproval->care_partner_role ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Contact Phone</span>
+                <span class="value">{{ $supportPlan->careApproval->care_partner_contact_phone ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Email</span>
+                <span class="value">{{ $supportPlan->careApproval->care_partner_email ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
 
 
 </div>
