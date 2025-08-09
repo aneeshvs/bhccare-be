@@ -66,6 +66,7 @@ Route::get('/support-plan-show/{uuid}', [SupportPlanController::class, 'showByUu
 Route::get('/support-plan/export-pdf/{uuid}', [SupportPlanController::class, 'exportFullFormPdf']);
 // In api.php
 Route::get('/get-support-plan-uuid', [SupportPlanController::class, 'getSupportPlanUuid']);
+Route::get('/logs/view/support', [ActivityLogController::class, 'getLogsByUuidSupport']);
 
 
 

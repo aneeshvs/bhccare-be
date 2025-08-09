@@ -48,6 +48,11 @@ class SupportPlan extends DefaultDBModel
     {
         return $this->belongsTo(Staff::class);
     }
+        public function approval()
+    {
+        return $this->hasOne(SupportPlanApproval::class);
+    }
+
 
 }
 

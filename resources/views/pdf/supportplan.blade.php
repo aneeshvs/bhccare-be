@@ -133,6 +133,28 @@
             </tr>
         </table>
     </div>
+    <div class="section">
+        <div class="section-header">Approval of Support Plan</div>
+        <table>
+            <tr>
+                <td>
+                    <span class="label">Participant Name</span>
+                    <span class="value">{{ $supportPlan->approval->participant_name ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Date of Approval</span>
+                    <span class="value">
+                        {{ $supportPlan->approval->date_of_approval ? \Carbon\Carbon::parse($supportPlan->approval->date_of_approval)->format('d-m-Y') : 'N/A' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Signature</span>
+                    <span class="value">{{ $supportPlan->approval->signature ?? 'N/A' }}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
 
 </div>
 

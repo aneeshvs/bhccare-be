@@ -14,6 +14,7 @@ class StoreSupportPlanRequest extends FormRequest
     {
         return array_merge(
             $this->SupportRules(),
+            $this->SupportApprovalRules(),
 
 
 
@@ -31,6 +32,16 @@ class StoreSupportPlanRequest extends FormRequest
             'confirmation_date' => 'nullable|date',
             'developed_by' => 'nullable|string',
             'invited_but_not_participated' => 'nullable|string',
+        ];
+
+    }
+    private function SupportApprovalRules(): array
+    {
+        return [
+
+            'participant_name' => 'nullable|string|max:255',
+            'date_of_approval' => 'nullable|date',
+            'signature' => 'nullable|string|max:255', // Or file if needed
         ];
     }
 
