@@ -86,9 +86,10 @@ SupportPlanCarePartnerService $carePartnerService,)
             $supportPlan->save();
         }
 
-        return compact(
-                'supportPlan','approval','representative','carePartner'
-            );
+       return [
+        'supportPlan' => $supportPlan
+        ];
+
 
     });
         return response()->json([
