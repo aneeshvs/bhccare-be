@@ -40,7 +40,7 @@ SupportPlanCarePartnerService $carePartnerService,)
 
 
 
-    return DB::transaction(function () use ($data, $service,
+    $result=DB::transaction(function () use ($data, $service,
      $completionService,
      $approvalService,
      $representativeService,
@@ -90,12 +90,14 @@ SupportPlanCarePartnerService $carePartnerService,)
                 'supportPlan','approval','representative','carePartner'
             );
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Support Plan saved successfully.',
-            'data' => $supportPlan,
-        ]);
     });
+        return response()->json([
+            'success' => true, // ✅ this is expected by frontend
+            'status' => 200,
+            'message' => 'Support Plan saved successfully.',
+            'data' => $result,
+        ]);
+
 }
 
 

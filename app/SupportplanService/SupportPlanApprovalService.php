@@ -32,12 +32,12 @@ class SupportPlanApprovalService
                 ->performedOn($approval)
                 ->causedBy(Auth::user())
                 ->withProperties([
-                    'attributes' => $changes,
-                    'old' => $original,
-                    'staff_id' => $data['staff_id'] ?? null,
+                     'attributes' => $changes,
+                     'old' => $original,
+                     'staff_id' => $data['staff_id'] ?? null,
                      'user_id' => $data['user_id'] ?? null,
                      'client_type' => $data['client_type'] ?? null,
-                    'uuid' => $approval->uuid,
+                     'uuid' => $approval->uuid,
 
                     'support_plan_id' => $data['support_plan_id'],
                 ])

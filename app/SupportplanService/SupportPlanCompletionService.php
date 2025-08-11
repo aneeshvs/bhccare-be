@@ -51,7 +51,7 @@ class SupportPlanCompletionService
 
         foreach ($this->sectionFields as $relation => $fields) {
             if ($relation === 'supportPlan') {
-                // Fields directly on the SupportPlan model
+                  // Fields directly on the SupportPlan model
                 foreach ($fields as $field) {
                     $totalFields++;
                     if (!empty($supportPlan->$field)) {

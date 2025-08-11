@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use App\Classes\MigrationHelper;
 
-
+// this is the primary table for onboarding form
 return new class extends Migration
 {
     /**
