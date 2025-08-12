@@ -103,13 +103,17 @@ SupportPlanCarePartnerService $carePartnerService,)
 
 
 
-public function showByUuid($uuid)
+public function showByUuid($uuid,SupportPlanCompletionService $completionService,)
 {
     $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
     }
+    // ✅ New Completion Logic
+        $completion = $completionService->calculate($supportPlan);
+        $supportPlan->completion_percentage = $completion;
+
 
     return response()->json([
         'success' => true,

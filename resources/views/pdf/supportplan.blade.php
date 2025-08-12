@@ -94,7 +94,7 @@
 
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="Company Logo">
-        <div class="document-number">Document Number: <span>Form F-20</span></div>
+        <div class="document-number">Document Number: <span>Form F-</span></div>
         <div class="header-title">Client Support Plan</div>
     </div>
 
