@@ -43,7 +43,7 @@ class StoreSupportPlanRequest extends FormRequest
 
             'participant_name' => 'nullable|string|max:255',
             'date_of_approval' => 'nullable|date',
-            'signature' => 'nullable|string|max:255', // Or file if needed
+            'signature' => 'nullable|string', // Or file if needed
         ];
     }
 

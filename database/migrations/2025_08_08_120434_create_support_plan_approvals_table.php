@@ -16,7 +16,7 @@ return new class extends Migration {
 
             $table->string('participant_name')->nullable();
             $table->date('date_of_approval')->nullable();
-            $table->string('signature')->nullable(); // Can be file path or base64
+            $table->binary('signature')->nullable(); // Can be file path or base64
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

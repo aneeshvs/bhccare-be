@@ -25,7 +25,7 @@ return new class extends Migration {
             $table->text('developed_by')->nullable();
             $table->text('invited_but_not_participated')->nullable();
             $table->string('form_status')->default('in_progress');
-            $table->integer('completion_percentage')->default(0)->after('uuid');
+            $table->integer('completion_percentage')->default(0);
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
