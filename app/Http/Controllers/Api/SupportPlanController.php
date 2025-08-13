@@ -9,17 +9,18 @@ use App\SupportplanService\SupportPlanCompletionService;
 use App\SupportplanService\SupportPlanApprovalService;
 use App\SupportplanService\SupportPlanRepresentativeService;
 use App\SupportplanService\SupportPlanCarePartnerService;
-
+use App\SupportplanService\KeepingInTouchService;
+use App\SupportplanService\NonResponseVisitPlanService;
+use App\SupportplanService\ParticipantDetailService;
+use App\SupportplanService\SupportPlanContactDetailService;
 
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
-
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
-
 use Illuminate\Support\Facades\Http;
 
 
@@ -32,7 +33,12 @@ SupportPlanService $service,
 SupportPlanApprovalService $approvalService,
 SupportPlanCompletionService $completionService,
 SupportPlanRepresentativeService $representativeService,
-SupportPlanCarePartnerService $carePartnerService,)
+SupportPlanCarePartnerService $carePartnerService,
+KeepingInTouchService $keepingInTouchService,
+NonResponseVisitPlanService $nonResponseVisitPlanService,
+ParticipantDetailService $participantDetailService,
+SupportPlanContactDetailService $ContactDetailService
+)
 {
     $data = $request->validated();
     $isFinal = $request->boolean('submit_final');
@@ -45,6 +51,11 @@ SupportPlanCarePartnerService $carePartnerService,)
      $approvalService,
      $representativeService,
      $carePartnerService,
+     $keepingInTouchService,
+     $nonResponseVisitPlanService,
+     $participantDetailService,
+     $ContactDetailService,
+
      ) {
         $user = Auth::user();
         if (!$user) {
@@ -61,6 +72,10 @@ SupportPlanCarePartnerService $carePartnerService,)
          $approval = $approvalService->save($data);
          $representative = $representativeService->save($data);
          $carePartner = $carePartnerService->save($data);
+         $keepingInTouchService->save($data);
+         $nonResponseVisitPlanService->save($data);
+         $participantDetailService->save($data);
+         $ContactDetailService->save($data);
 
 
         // ✅ New Completion Logic
@@ -105,7 +120,8 @@ SupportPlanCarePartnerService $carePartnerService,)
 
 public function showByUuid($uuid,SupportPlanCompletionService $completionService,)
 {
-    $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval'])->where('uuid', $uuid)->firstOrFail();
+    $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval',
+    'keepingtouch','nonresponsive','participantdetail','contactDetail'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -124,7 +140,8 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
 
 public function exportFullFormPdf(string $uuid)
 {
-    $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval']) // only valid relationship
+    $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval',
+    'keepingtouch','nonresponsive','participantdetail','contactDetail']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 
@@ -156,5 +173,5 @@ public function getSupportPlanUuid(Request $request)
 
 
 
-//hidjsd
+
 }

@@ -234,7 +234,11 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_approval',
             'support_plan_representative',
             'support_plan_care_partner',
-        ]);
+            'keeping_in_touch',
+            'non_response_visit_plan',
+            'participant_detail',
+            'support_plan_contact_detail'
+            ]);
     }
 
     $logs = $query->orderBy('created_at', 'desc')->get();
