@@ -38,7 +38,7 @@ class SupportPlanCompletionService
             'care_partner_contact_phone',
             'care_partner_email',
         ],
-        'keepingtouch' =>[
+        'keep_in_touch' =>[
             'need_help_to_communicate',
             'type_of_difficulty',
             'contact_first_instance',
@@ -57,7 +57,7 @@ class SupportPlanCompletionService
             'join_cab',
         ],
 
-        'nonresponsive'=>[
+        'non_responsive'=>[
 
         'telephone_home_or_mobile',
         'telephone_details',
@@ -74,7 +74,7 @@ class SupportPlanCompletionService
         'key_lock_code',
         'key_lock_details',
         ],
-       'participantdetail'=>[
+       'participantDetail'=>[
         'first_name',
         'surname',
         'preferred_name',

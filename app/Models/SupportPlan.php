@@ -60,15 +60,15 @@ class SupportPlan extends DefaultDBModel
     {
         return $this->hasOne(SupportPlanCarePartner::class);
     }
-    public function keepingtouch()
+    public function keep_in_touch()
     {
         return $this->hasOne(KeepingInTouch::class);
     }
-    public function nonresponsive()
+    public function non_responsive()
     {
         return $this->hasOne(NonResponseVisitPlan::class);
     }
-    public function participantdetail()
+    public function participantDetail()
     {
         return $this->hasOne(ParticipantDetail::class);
     }

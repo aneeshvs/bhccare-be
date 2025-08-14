@@ -121,7 +121,7 @@ SupportPlanContactDetailService $ContactDetailService
 public function showByUuid($uuid,SupportPlanCompletionService $completionService,)
 {
     $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval',
-    'keepingtouch','nonresponsive','participantdetail','contactDetail'])->where('uuid', $uuid)->firstOrFail();
+    'keep_in_touch','non_responsive','participantDetail','contactDetail'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -141,7 +141,7 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
 public function exportFullFormPdf(string $uuid)
 {
     $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval',
-    'keepingtouch','nonresponsive','participantdetail','contactDetail']) // only valid relationship
+    'keep_in_touch','non_responsive','participantDetail','contactDetail']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 
