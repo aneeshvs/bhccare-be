@@ -21,6 +21,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->nonresponsiverules(),
             $this->participantrules(),
             $this->contactrules(),
+            $this->secondarycontactrules(),
 
 
 
@@ -105,7 +106,6 @@ class StoreSupportPlanRequest extends FormRequest
             'emergency_contact_details' => 'nullable|string',
 
             'access_spare_key' => 'nullable|boolean',
-            'enter_home_with_spare_key' => 'nullable|boolean',
             'spare_key_details' => 'nullable|string',
 
             'contact_other_persons' => 'nullable|boolean',
@@ -143,6 +143,29 @@ class StoreSupportPlanRequest extends FormRequest
             'email' => 'nullable|email|max:255',
         ];
     }
+
+    public function secondarycontactrules(): array
+    {
+        return [
+
+            'secondary_role' => 'nullable|string|max:255',
+            'secondary_phone' => 'nullable|string|max:20',
+            'secondary_email' => 'nullable|email|max:255',
+            'secondary_address' => 'nullable|string|max:500',
+            'secondary_best_time_to_contact' => 'nullable|string|max:255',
+
+            'secondary_is_mac_registered' => 'boolean',
+            'secondary_list_documents' => 'nullable|string',
+            'secondary_legal_documentation_stored' => 'boolean',
+            'secondary_date_legal_orders_end' => 'nullable|date',
+
+            'secondary_participants_agreed_contact' => 'boolean',
+            'secondary_participants_agreed_contact_date' => 'nullable|date',
+
+            'secondary_decision_making_approval_for' => 'nullable|string',
+        ];
+    }
+
 
 
 

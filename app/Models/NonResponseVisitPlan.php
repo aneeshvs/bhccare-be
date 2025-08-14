@@ -17,7 +17,6 @@ class NonResponseVisitPlan extends DefaultDBModel
         'contact_emergency_contact',
         'emergency_contact_details',
         'access_spare_key',
-        'enter_home_with_spare_key',
         'spare_key_details',
         'contact_other_persons',
         'other_persons_details',

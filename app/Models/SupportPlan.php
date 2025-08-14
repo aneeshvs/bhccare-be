@@ -76,6 +76,11 @@ class SupportPlan extends DefaultDBModel
     {
         return $this->hasOne(SupportPlanContactDetail::class);
     }
+        public function contactDetailSecondary()
+    {
+        return $this->hasOne(SupportPlanContactDetailSecondary::class);
+    }
+
 
 
 

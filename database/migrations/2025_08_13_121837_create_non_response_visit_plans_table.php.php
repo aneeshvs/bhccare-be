@@ -24,7 +24,6 @@ return new class extends Migration
 
             // Step 3: Access spare key
             $table->boolean('access_spare_key')->nullable();
-            $table->boolean('enter_home_with_spare_key')->nullable();
             $table->text('spare_key_details')->nullable();
 
             // Step 4: Contact other persons

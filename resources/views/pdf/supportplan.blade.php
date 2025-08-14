@@ -312,10 +312,6 @@
                 <span class="label">Access Spare Key</span>
                 <span class="value">{{ $supportPlan->non_responsive->access_spare_key ?? 'N/A' }}</span>
             </td>
-            <td>
-                <span class="label">Enter Home With Spare Key</span>
-                <span class="value">{{ $supportPlan->non_responsive->enter_home_with_spare_key ?? 'N/A' }}</span>
-            </td>
         </tr>
         <tr>
             <td>
@@ -436,6 +432,79 @@
         </tr>
     </table>
 </div>
+<!-- seconadry contact deatils-->
+<div class="section">
+    <div class="section-header">Secondary Contact Details</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Role</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_role ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Phone</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_phone ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Email</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_email ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Address</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_address ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Best Time to Contact</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_best_time_to_contact ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">MAC Registered?</span>
+                <span class="value">
+                    {{ isset($supportPlan->contactDetailSecondary->secondary_is_mac_registered) && $supportPlan->contactDetailSecondary->secondary_is_mac_registered ? 'Yes' : 'No' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">List Documents</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_list_documents ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Legal Documentation Stored?</span>
+                <span class="value">
+                    {{ isset($supportPlan->contactDetailSecondary->secondary_legal_documentation_stored) && $supportPlan->contactDetailSecondary->secondary_legal_documentation_stored ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Legal Orders End Date</span>
+                <span class="value">
+                    {{ $supportPlan->contactDetailSecondary->secondary_date_legal_orders_end ? \Carbon\Carbon::parse($supportPlan->contactDetailSecondary->secondary_date_legal_orders_end)->format('d-m-Y') : 'N/A' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Participants Agreed Contact?</span>
+                <span class="value">
+                    {{ isset($supportPlan->contactDetailSecondary->secondary_participants_agreed_contact) && $supportPlan->contactDetailSecondary->secondary_participants_agreed_contact ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Participants Agreed Contact Date</span>
+                <span class="value">
+                    {{ $supportPlan->contactDetailSecondary->secondary_participants_agreed_contact_date ? \Carbon\Carbon::parse($supportPlan->contactDetailSecondary->secondary_participants_agreed_contact_date)->format('d-m-Y') : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Decision Making Approval For</span>
+                <span class="value">{{ $supportPlan->contactDetailSecondary->secondary_decision_making_approval_for ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
 
 

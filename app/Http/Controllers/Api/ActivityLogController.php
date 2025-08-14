@@ -237,7 +237,8 @@ public function getLogsByUuidSupport(Request $request)
             'keeping_in_touch',
             'non_response_visit_plan',
             'participant_detail',
-            'support_plan_contact_detail'
+            'support_plan_contact_detail',
+            'support_plan_contact_detail_secondary'
             ]);
     }
 

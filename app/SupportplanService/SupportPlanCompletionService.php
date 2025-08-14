@@ -64,7 +64,6 @@ class SupportPlanCompletionService
         'contact_emergency_contact',
         'emergency_contact_details',
         'access_spare_key',
-        'enter_home_with_spare_key',
         'spare_key_details',
         'contact_other_persons',
         'other_persons_details',
@@ -90,6 +89,20 @@ class SupportPlanCompletionService
         'mailing_address',
         'email',
        ],
+       'contactDetailSecondary'=>[
+        'secondary_role',
+        'secondary_phone',
+        'secondary_email',
+        'secondary_address',
+        'secondary_best_time_to_contact',
+        'secondary_is_mac_registered',
+        'secondary_list_documents',
+        'secondary_legal_documentation_stored',
+        'secondary_date_legal_orders_end',
+        'secondary_participants_agreed_contact',
+        'secondary_participants_agreed_contact_date',
+        'secondary_decision_making_approval_for',
+       ]
     ];
 
     /**
