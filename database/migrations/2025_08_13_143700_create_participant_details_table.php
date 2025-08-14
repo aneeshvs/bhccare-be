@@ -20,7 +20,7 @@ return new class extends Migration {
             $table->date('date_of_birth')->nullable();
             $table->string('country_of_birth')->nullable();
             $table->boolean('identify_as_aboriginal_or_torres_strait')->default(false);
-            $table->string('gender')->nullable();
+            $table->enum('gender', ['Male', 'Female', 'Other']);
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
 
         });

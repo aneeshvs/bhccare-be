@@ -129,7 +129,7 @@ class StoreSupportPlanRequest extends FormRequest
             'date_of_birth' => 'nullable|date',
             'country_of_birth' => 'nullable|string|max:255',
             'identify_as_aboriginal_or_torres_strait' => 'boolean',
-            'gender' => 'nullable|string|max:50',
+            'gender' => 'nullable|in:Male,Female,Other',
         ];
     }
     public function contactrules(): array
