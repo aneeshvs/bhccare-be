@@ -1,0 +1,67 @@
+<?php
+
+namespace App\SupportplanService;
+
+use App\Models\SupportPlanService;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
+class SupportPlanServiceService
+{
+    /**
+     * Save multiple services for a support plan
+     */
+    public function saveMany(array $data, int $supportPlanId): array
+    {
+
+
+        $saved = [];
+
+        foreach ($data as $row) {
+            $service = SupportPlanService::firstOrNew([
+                'support_plan_id' => $supportPlanId,
+                'name' => $row['name'] ?? null,
+
+            ]);
+
+            $service->fill($row);
+            $service->support_plan_id = $supportPlanId;
+
+            if ($service->isDirty()) {
+                $changes = $service->getDirty();
+                $original = array_intersect_key($service->getOriginal(), $changes);
+
+                Log::info('SupportPlanService Changes', [
+                    'dirty' => $changes,
+                    'original' => $original,
+                ]);
+
+                $service->save();
+
+                activity()
+                    ->useLog('support_plan_service')
+                    ->performedOn($service)
+                    ->causedBy(Auth::user())
+                    ->withProperties([
+                        'attributes' => $changes,
+                        'old' => $original,
+                        'staff_id' => $row['staff_id'] ?? null,
+                        'user_id' => $row['user_id'] ?? null,
+                        'client_type' => $row['client_type'] ?? null,
+                        'uuid' => $service->uuid,
+                        'support_plan_id' => $supportPlanId,
+                    ])
+                    ->log('SupportPlanService record has been updated');
+            } else {
+
+                    $service->save();
+
+            }
+
+
+            $saved[] = $service;
+        }
+
+        return $saved;
+    }
+}

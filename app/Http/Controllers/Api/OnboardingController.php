@@ -69,7 +69,7 @@ class OnboardingController extends UniversalController
             $medicalAlertService,
             $preventiveHealthSummaryService,
             $supportInformationService,
-            $completionService
+            $completionService,
         ) {
             $user = Auth::user();
             if (!$user) {

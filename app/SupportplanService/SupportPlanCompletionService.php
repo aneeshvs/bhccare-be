@@ -102,7 +102,27 @@ class SupportPlanCompletionService
         'secondary_participants_agreed_contact',
         'secondary_participants_agreed_contact_date',
         'secondary_decision_making_approval_for',
+
+       ],
+       'SupportFunding'=>[
+        'aged_care_id',
+        'pension_status',
+        'pension_card_details',
+        'card_number',
+        'card_expiry',
+        'approved_funding_level',
+        'awaiting_package_upgrade',
+        'upgrade_details',
+        'has_chsp_referral_codes',
+        'chsp_referral_details',
+        'war_veteran_or_widow',
+        'dva_number',
+        'medicare_number',
+        'private_health_insurance',
+        'hcp_funding_level',
+        'has_companion_card',
        ]
+
     ];
 
     /**

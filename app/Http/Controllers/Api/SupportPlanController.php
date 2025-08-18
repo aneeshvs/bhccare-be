@@ -14,13 +14,18 @@ use App\SupportplanService\NonResponseVisitPlanService;
 use App\SupportplanService\ParticipantDetailService;
 use App\SupportplanService\SupportPlanContactDetailService;
 use App\SupportplanService\SupportPlanContactDetailSecondaryService;
+use App\SupportplanService\SupportPlanFundingService;
+use App\SupportplanService\EmployeeMatchingNeedService;
+
 
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
+use App\Models\SupportPlanCarePartner;
 use App\Models\SupportPlanContactDetailSecondary;
+use App\SupportplanService\SupportPlanServiceService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -41,9 +46,13 @@ NonResponseVisitPlanService $nonResponseVisitPlanService,
 ParticipantDetailService $participantDetailService,
 SupportPlanContactDetailService $ContactDetailService,
 SupportPlanContactDetailSecondaryService $ContactDetailServiceSecondry,
+SupportPlanFundingService $supportPlanFundingService,
+SupportPlanServiceService $supportPlanServiceService,
+EmployeeMatchingNeedService $employeeMatchingNeedService
 )
 {
     $data = $request->validated();
+
     $isFinal = $request->boolean('submit_final');
     $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
@@ -59,6 +68,11 @@ SupportPlanContactDetailSecondaryService $ContactDetailServiceSecondry,
      $participantDetailService,
      $ContactDetailService,
      $ContactDetailServiceSecondry,
+     $supportPlanFundingService,
+     $supportPlanServiceService,
+     $employeeMatchingNeedService,
+
+
 
 
      ) {
@@ -82,6 +96,9 @@ SupportPlanContactDetailSecondaryService $ContactDetailServiceSecondry,
          $participantDetailService->save($data);
          $ContactDetailService->save($data);
          $ContactDetailServiceSecondry->save($data);
+         $supportPlanFundingService->save($data);
+         $supportPlanServiceService->saveMany($data['support_plan_services'] ?? [], $supportPlan->id);
+         $employeeMatchingNeedService->save($data);
 
 
         // ✅ New Completion Logic
@@ -108,8 +125,21 @@ SupportPlanContactDetailSecondaryService $ContactDetailServiceSecondry,
         }
 
        return [
-        'supportPlan' => $supportPlan
-        ];
+        'supportPlan' => $supportPlan->load([
+            'approval',
+            'representativeApproval',
+            'careApproval',
+            'keep_in_touch',
+            'non_responsive',
+            'participantDetail',
+            'contactDetail',
+            'contactDetailSecondary',
+            'SupportFunding',
+            'services',
+            'supportplan_employee'
+        ])
+    ];
+
 
 
     });
@@ -127,7 +157,8 @@ SupportPlanContactDetailSecondaryService $ContactDetailServiceSecondry,
 public function showByUuid($uuid,SupportPlanCompletionService $completionService,)
 {
     $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval',
-    'keep_in_touch','non_responsive','participantDetail','contactDetail','contactDetailSecondary'])->where('uuid', $uuid)->firstOrFail();
+    'keep_in_touch','non_responsive','participantDetail','contactDetail',
+    'contactDetailSecondary','SupportFunding','services','supportplan_employee'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -147,7 +178,8 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
 public function exportFullFormPdf(string $uuid)
 {
     $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval',
-    'keep_in_touch','non_responsive','participantDetail','contactDetail','contactDetailSecondary']) // only valid relationship
+    'keep_in_touch','non_responsive','participantDetail','contactDetail',
+    'contactDetailSecondary','SupportFunding','services','supportplan_employee']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

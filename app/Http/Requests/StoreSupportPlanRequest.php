@@ -10,6 +10,16 @@ use Illuminate\Foundation\Http\FormRequest;
 class StoreSupportPlanRequest extends FormRequest
 {
 
+        protected function prepareForValidation()
+        {
+            if (is_string($this->services)) {
+                $this->merge([
+                    'support_plan_services' => json_decode($this->services, true),
+                ]);
+            }
+        }
+
+
     public function rules()
     {
         return array_merge(
@@ -22,12 +32,17 @@ class StoreSupportPlanRequest extends FormRequest
             $this->participantrules(),
             $this->contactrules(),
             $this->secondarycontactrules(),
+            $this->Fundingrules(),
+            $this->servicerules(),
+            $this->employeerules(),
 
 
 
 
         );
     }
+
+
 
     private function SupportRules(): array
     {
@@ -163,6 +178,61 @@ class StoreSupportPlanRequest extends FormRequest
             'secondary_participants_agreed_contact_date' => 'nullable|date',
 
             'secondary_decision_making_approval_for' => 'nullable|string',
+        ];
+    }
+
+    public function Fundingrules(): array
+    {
+        return [
+
+
+            'aged_care_id'            => 'nullable|string|max:255',
+            'pension_status'          => 'nullable|string|max:255',
+            'pension_card_details'    => 'nullable|string|max:255',
+            'card_number'             => 'nullable|string|max:255',
+            'card_expiry'             => 'nullable|date',
+            'approved_funding_level'  => 'nullable|string|max:255',
+            'awaiting_package_upgrade'=> 'nullable|boolean',
+            'upgrade_details'         => 'nullable|string',
+
+            'has_chsp_referral_codes' => 'nullable|boolean',
+            'chsp_referral_details'   => 'nullable|string',
+
+            'war_veteran_or_widow'    => 'nullable|boolean',
+            'dva_number'              => 'nullable|string|max:255',
+            'medicare_number'         => 'nullable|string|max:255',
+            'private_health_insurance'=> 'nullable|string|max:255',
+            'hcp_funding_level'       => 'nullable|string|max:255',
+            'has_companion_card'      => 'nullable|boolean',
+
+
+        ];
+    }
+
+    public function servicerules(): array
+    {
+        return [
+
+
+            'support_plan_services' => 'nullable|array',
+            'support_plan_services.*.name' => 'nullable|string|max:255',
+            'support_plan_services.*.service_provided' => 'nullable|string|max:255',
+            'support_plan_services.*.funded_by' => 'nullable|string|max:255',
+            'support_plan_services.*.duration_frequency' => 'nullable|string|max:255',
+            'support_plan_services.*.support_to_implement_by_us' => 'nullable|boolean',
+
+
+        ];
+    }
+
+    public function employeerules(): array
+    {
+        return [
+
+            'cultural_considerations' => 'nullable|string',
+            'specific_training_required' => 'nullable|string',
+            'common_interests' => 'nullable|string',
+
         ];
     }
 

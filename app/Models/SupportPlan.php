@@ -80,6 +80,20 @@ class SupportPlan extends DefaultDBModel
     {
         return $this->hasOne(SupportPlanContactDetailSecondary::class);
     }
+    public function SupportFunding()
+    {
+        return $this->hasOne(SupportPlanFunding::class);
+    }
+
+            public function services()
+    {
+        return $this->hasMany(SupportPlanService::class, 'support_plan_id');
+    }
+    public function supportplan_employee()
+    {
+        return $this->hasOne(EmployeeMatchingNeed::class);
+    }
+
 
 
 

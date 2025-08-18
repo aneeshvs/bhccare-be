@@ -505,11 +505,143 @@
     </table>
 </div>
 
+<div class="section">
+    <div class="section-header">SupportFunding Details</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Aged Care ID</span>
+                <span class="value">{{ $supportPlan->SupportFunding->aged_care_id ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Pension Status</span>
+                <span class="value">{{ $supportPlan->SupportFunding->pension_status ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Pension Card Details</span>
+                <span class="value">{{ $supportPlan->SupportFunding->pension_card_details ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Card Number</span>
+                <span class="value">{{ $supportPlan->SupportFunding->card_number ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Card Expiry</span>
+                <span class="value">{{ $supportPlan->SupportFunding->card_expiry ? \Carbon\Carbon::parse($supportPlan->SupportFunding->card_expiry)->format('d-m-Y') : 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Approved SupportFunding Level</span>
+                <span class="value">{{ $supportPlan->SupportFunding->approved_funding_level ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Awaiting Package Upgrade</span>
+                <span class="value">{{ $supportPlan->SupportFunding->awaiting_package_upgrade ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Upgrade Details</span>
+                <span class="value">{{ $supportPlan->SupportFunding->upgrade_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">CHSP Referral Codes</span>
+                <span class="value">{{ $supportPlan->SupportFunding->chsp_referral_details ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">War Veteran / Widow</span>
+                <span class="value">{{ $supportPlan->SupportFunding->war_veteran_or_widow ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">DVA #</span>
+                <span class="value">{{ $supportPlan->SupportFunding->dva_number ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Medicare #</span>
+                <span class="value">{{ $supportPlan->SupportFunding->medicare_number ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Private Health Insurance</span>
+                <span class="value">{{ $supportPlan->SupportFunding->private_health_insurance ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">HCP SupportFunding Level</span>
+                <span class="value">{{ $supportPlan->SupportFunding->hcp_funding_level ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="label">Companion Card</span>
+                <span class="value">{{ $supportPlan->SupportFunding->has_companion_card ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+ <!--service section -->
+  <div class="section">
+    <div class="section-header">PART H – SUPPORT PLAN SERVICES</div>
+    <div class="section-body">
+        <table>
+            <thead>
+                <tr>
+                    <td><span class="label">Service Name</span></td>
+                    <td><span class="label">Service Provided</span></td>
+                    <td><span class="label">Funded By</span></td>
+                    <td><span class="label">Duration / Frequency</span></td>
+                    <td><span class="label">Support to Implement by Us</span></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($supportPlan->services as $service)
+                    <tr>
+                        <td><span class="value">{{ $service->name }}</span></td>
+                        <td><span class="value">{{ $service->service_provided }}</span></td>
+                        <td><span class="value">{{ $service->funded_by }}</span></td>
+                        <td><span class="value">{{ $service->duration_frequency }}</span></td>
+                        <td>
+                            <span class="value">
+                                {{ $service->support_to_implement_by_us ? 'Yes' : 'No' }}
+                            </span>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 
+<!---employee detail-->
 
-
-
-
+<div class="section">
+    <div class="section-header">Employee Matching Needs</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Cultural Considerations</span>
+                <span class="value">{{ $supportPlan->supportplan_employee->cultural_considerations ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Specific Training Required</span>
+                <span class="value">{{ $supportPlan->supportplan_employee->specific_training_required ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="label">Common Interests</span>
+                <span class="value">{{ $supportPlan->supportplan_employee->common_interests ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 </div>
