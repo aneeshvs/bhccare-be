@@ -94,6 +94,23 @@ class SupportPlan extends DefaultDBModel
         return $this->hasOne(EmployeeMatchingNeed::class);
     }
 
+        public function myGoals()
+    {
+        return $this->hasMany(SupportPlanMyGoal::class, 'support_plan_id');
+    }
+    public function LivingArrangement()
+    {
+        return $this->hasOne(SupportPlanLivingArrangement::class);
+    }
+
+    public function  cultural_diversity()
+    {
+        return $this->hasOne(CulturalDiversity::class);
+
+
+    }
+
+
 
 
 

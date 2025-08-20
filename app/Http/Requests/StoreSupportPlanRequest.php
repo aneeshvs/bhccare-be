@@ -17,6 +17,12 @@ class StoreSupportPlanRequest extends FormRequest
                     'support_plan_services' => json_decode($this->services, true),
                 ]);
             }
+            if (is_string($this->myGoals)) {
+            $this->merge([
+                'support_plan_my_goals' => json_decode($this->myGoals, true),
+            ]);
+        }
+
         }
 
 
@@ -35,6 +41,10 @@ class StoreSupportPlanRequest extends FormRequest
             $this->Fundingrules(),
             $this->servicerules(),
             $this->employeerules(),
+            $this->mygoalrules(),
+            $this->livingarrangementrules(),
+            $this->diversityrules(),
+
 
 
 
@@ -235,6 +245,58 @@ class StoreSupportPlanRequest extends FormRequest
 
         ];
     }
+
+    public function mygoalrules(): array
+    {
+        return [
+
+
+            'support_plan_my_goals'   => 'nullable|array',
+            'support_plan_my_goals.*.goal' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.measure_progress' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.success_look_like' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.who_will_support' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.participant_support' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.when_to_meet_goal' => 'nullable|string|max:255',
+        ];
+    }
+
+    public function livingarrangementrules(): array
+    {
+        return [
+
+            'reside_in' => 'nullable|string|max:255',
+            'reside_with' => 'nullable|string|max:255',
+            'home_safety_assessment_date' => 'nullable|date',
+            'is_home_suitable' => 'nullable|boolean',
+            'home_suitable_details' => 'nullable|string',
+            'at_risk_of_homelessness' => 'nullable|boolean',
+            'homelessness_details' => 'nullable|string',
+        ];
+    }
+
+    public function diversityrules(): array
+    {
+        return [
+
+
+            'is_lgbti' => 'nullable|boolean',
+            'lgbti_details' => 'nullable|string',
+
+            'is_separated_family' => 'nullable|boolean',
+            'separated_family_details' => 'nullable|string',
+
+            'has_cultural_events' => 'nullable|boolean',
+            'cultural_events_details' => 'nullable|string',
+
+            'has_past_events' => 'nullable|boolean',
+            'past_events_details' => 'nullable|string',
+
+            'has_non_disclosure_items' => 'nullable|boolean',
+            'non_disclosure_details' => 'nullable|string',
+        ];
+    }
+
 
 
 

@@ -643,6 +643,160 @@
     </table>
 </div>
 
+<!--mygoals -->
+<div class="section">
+    <div class="section-header">PART H – SUPPORT PLAN MY GOALS</div>
+    <div class="section-body">
+        <table>
+            <thead>
+                <tr>
+                    <td><span class="label">Goal</span></td>
+                    <td><span class="label">How will we measure this goal’s progress</span></td>
+                    <td><span class="label">What will success look like for you?</span></td>
+                    <td><span class="label">Who will support you</span></td>
+                    <td><span class="label">How participant will support the goal</span></td>
+                    <td><span class="label">When we aim to meet this goal</span></td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($supportPlan->myGoals as $goal)
+                    <tr>
+                        <td><span class="value">{{ $goal->goal }}</span></td>
+                        <td><span class="value">{{ $goal->measure_progress }}</span></td>
+                        <td><span class="value">{{ $goal->success_look_like }}</span></td>
+                        <td><span class="value">{{ $goal->who_will_support }}</span></td>
+                        <td><span class="value">{{ $goal->participant_support }}</span></td>
+                        <td><span class="value">{{ $goal->when_to_meet_goal }}</span></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!--living arrangement-->
+<div class="section">
+    <div class="section-header">Living Arrangements</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">I reside in</span>
+                <span class="value">{{ $supportPlan->LivingArrangement->reside_in ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">I reside with</span>
+                <span class="value">{{ $supportPlan->LivingArrangement->reside_with ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Date Home Safety Assessment completed</span>
+                <span class="value">
+                    {{ optional($supportPlan->LivingArrangement)->home_safety_assessment_date
+                        ? \Carbon\Carbon::parse($supportPlan->LivingArrangement->home_safety_assessment_date)->format('d-m-Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+
+            <td>
+                <span class="label">Is the home suitable to meet your needs?</span>
+                <span class="value">
+                    {{ $supportPlan->LivingArrangement->is_home_suitable ? 'Yes' : 'No' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="label">Details (if home is suitable/unsuitable)</span>
+                <span class="value">{{ $supportPlan->LivingArrangement->home_suitable_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Are you at risk of homelessness?</span>
+                <span class="value">
+                    {{ $supportPlan->LivingArrangement->at_risk_of_homelessness ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Homelessness Details</span>
+                <span class="value">{{ $supportPlan->LivingArrangement->homelessness_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<!-- diversity sections -->
+
+<div class="section">
+    <div class="section-header">Cultural, Diversity & Identity</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you identify as a lesbian, gay, bisexual, transgender, or intersex person</span>
+                <span class="value">
+                    {{ optional($supportPlan->cultural_diversity)->is_lgbti ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Details</span>
+                <span class="value">{{ optional($supportPlan->cultural_diversity)->lgbti_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Separated from parents or children by forced adoption or removal</span>
+                <span class="value">
+                    {{ optional($supportPlan->cultural_diversity)->is_separated_family ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Details</span>
+                <span class="value">{{ optional($supportPlan->cultural_diversity)->separated_family_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Are there cultural events, dates or practices we should be aware of?</span>
+                <span class="value">
+                    {{ optional($supportPlan->cultural_diversity)->has_cultural_events ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Details</span>
+                <span class="value">{{ optional($supportPlan->cultural_diversity)->cultural_events_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Are there past events we should know to support you safely?</span>
+                <span class="value">
+                    {{ optional($supportPlan->cultural_diversity)->has_past_events ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Details</span>
+                <span class="value">{{ optional($supportPlan->cultural_diversity)->past_events_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Any cultural/diversity/identity items not to disclose?</span>
+                <span class="value">
+                    {{ optional($supportPlan->cultural_diversity)->has_non_disclosure_items ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Details</span>
+                <span class="value">{{ optional($supportPlan->cultural_diversity)->non_disclosure_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+
 
 </div>
 

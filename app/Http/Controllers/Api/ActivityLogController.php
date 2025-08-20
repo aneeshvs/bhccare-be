@@ -242,6 +242,8 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_funding',
             'support_plan_service',
             'employee_matching_need',
+            'support_plan_my_goal',
+            'support_plan_living_arrangement'
             ]);
     }
 

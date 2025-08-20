@@ -121,10 +121,52 @@ class SupportPlanCompletionService
         'private_health_insurance',
         'hcp_funding_level',
         'has_companion_card',
-       ]
+       ],
+       'services'=>[
+            'name',
+            'service_provided',
+            'funded_by',
+            'duration_frequency',
+            'support_to_implement_by_us',
+       ],
+       'supportplan_employee'=>[
+        'cultural_considerations',
+        'specific_training_required',
+        'common_interests',
+       ],
+       'myGoals'=>[
+         'goal',
+        'measure_progress',
+        'success_look_like',
+        'who_will_support',
+        'participant_support',
+        'target_date',
+       ],
+
+      'LivingArrangement'=>[
+
+        'reside_in',
+        'reside_with',
+        'home_safety_assessment_date',
+        'is_home_suitable',
+        'home_suitable_details',
+        'at_risk_of_homelessness',
+        'homelessness_details',
+      ],
+      'cultural_diversity'=>[
+        'is_lgbti',
+        'lgbti_details',
+        'is_separated_family',
+        'separated_family_details',
+        'has_cultural_events',
+        'cultural_events_details',
+        'has_past_events',
+        'past_events_details',
+        'has_non_disclosure_items',
+        'non_disclosure_details',
+      ]
 
     ];
-
     /**
      * Calculate percentage of completed fields.
      */
