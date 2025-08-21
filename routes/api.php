@@ -68,6 +68,9 @@ Route::get('/support-plan/export-pdf/{uuid}', [SupportPlanController::class, 'ex
 Route::get('/get-support-plan-uuid', [SupportPlanController::class, 'getSupportPlanUuid']);
 Route::get('/logs/view/support', [ActivityLogController::class, 'getLogsByUuidSupport']);
 
+//remove support plan
+Route::delete('/formsupport/section/remove', [SupportPlanController::class, 'removeSection']);
+
 
 
 

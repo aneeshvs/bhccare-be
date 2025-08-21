@@ -225,6 +225,80 @@ public function getSupportPlanUuid(Request $request)
 
     return response()->json(['uuid' => $supportPlan->uuid], 200);
 }
+public function removeSection(Request $request)
+    {
+        $uuid = $request->input('uuid');
+        $table = $request->input('table'); // e.g. 'schedule_of_care'
+        $field = $request->input('field'); // e.g. 'type_of_service'
+        $value = $request->input('value'); // e.g. 'Community Access'
+
+        if (!$uuid || !$table || !$field || !$value) {
+            return response()->json([
+                'status' => false,
+                'message' => 'uuid, table, field, and value are required.',
+            ], 400);
+        }
+
+        $support =SupportPlan::where('uuid', $uuid)->first();
+        if (!$support) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Invalid UUID.',
+            ], 404);
+        }
+
+        // ✅ Map table name to Model
+        $modelMap = [
+            'support_plan_service' => \App\Models\SupportPlanService::class,
+            'support_plan_my_goal' => \App\Models\SupportPlanMyGoal::class,
+
+
+        ];
+
+        if (!array_key_exists($table, $modelMap)) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Unsupported table.',
+            ], 400);
+        }
+
+        $modelClass = $modelMap[$table];
+
+        $record = $modelClass::where('support_plan_id', $support->id)
+            ->where($field, $value)
+            ->first();
+
+        if (!$record) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Record not found.',
+            ], 404);
+        }
+
+        $original = $record->getOriginal(); // log before delete
+        $record->delete();
+
+        activity()
+            ->useLog($table)
+            ->performedOn($record)
+            ->causedBy(Auth::user())
+            ->withProperties([
+                'attributes' => [$field => $value],
+                'old' => $original,
+                'initial_enquiry_id' => $support->id,
+                'uuid' => $uuid,
+                'client_type' => $support->client_type,
+                'staff_id' => $support->staff_id,
+                'user_id' => $support->user_id,
+            ])
+            ->log(ucwords(str_replace('_', ' ', $table)) . ' entry deleted');
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Entry removed successfully.',
+        ]);
+    }
+
 
 
 
