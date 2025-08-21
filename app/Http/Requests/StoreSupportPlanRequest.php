@@ -17,9 +17,9 @@ class StoreSupportPlanRequest extends FormRequest
                     'support_plan_services' => json_decode($this->support_plan_services, true),
                 ]);
             }
-            if (is_string($this->myGoals)) {
+            if (is_string($this->support_plan_my_goals)) {
             $this->merge([
-                'support_plan_my_goals' => json_decode($this->myGoals, true),
+                'support_plan_my_goals' => json_decode($this->support_plan_my_goals, true),
             ]);
         }
 
