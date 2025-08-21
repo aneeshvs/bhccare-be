@@ -794,7 +794,504 @@
     </table>
 </div>
 
+<!-- general health -->
 
+<div class="section">
+    <div class="section-header">General Health</div>
+    <div class="section-body">
+        <table>
+            <tr>
+                <td>
+                    <span class="label">How regularly do you visit your GP?</span>
+                    <span class="value">{{ $supportPlan->general_health->gp_visit_frequency ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Admitted to hospital in last 12 months?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->admitted_hospital_last12months ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->admitted_hospital_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->admitted_hospital_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Preferred Hospital?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->preferred_hospital ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->preferred_hospital_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->preferred_hospital_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Diagnosis & Medication Conditions</span>
+                    <span class="value">{{ $supportPlan->general_health->diagnosis_medication_conditions ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Previous Surgeries</span>
+                    <span class="value">{{ $supportPlan->general_health->previous_surgeries ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Allergies</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->has_allergies ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->allergy_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->allergy_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Impact of Health Issues (1–10)</span>
+                    <span class="value">{{ $supportPlan->general_health->health_impact_scale ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Pain affecting daily activities?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->painful_day_to_day ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->painful_day_to_day_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->painful_day_to_day_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Weight loss in last 3 months?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->weight_loss_last3months ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->weight_loss_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->weight_loss_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Nutritional Concerns?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->nutritional_concerns ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->nutritional_concerns_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->nutritional_concerns_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Current Weight</span>
+                    <span class="value">{{ $supportPlan->general_health->current_weight ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Annual Vaccinations</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->annual_vaccinations ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->annual_vaccination_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->annual_vaccination_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Last Influenza Vaccination</span>
+                    <span class="value">
+                        {{ $supportPlan->general_health->last_influenza_vaccine
+                            ? \Carbon\Carbon::parse($supportPlan->general_health->last_influenza_vaccine)->format('d-m-Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Last COVID-19 Vaccination</span>
+                    <span class="value">
+                        {{ $supportPlan->general_health->last_covid19_vaccine
+                            ? \Carbon\Carbon::parse($supportPlan->general_health->last_covid19_vaccine)->format('d-m-Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Last Pneumonia Vaccination</span>
+                    <span class="value">
+                        {{ $supportPlan->general_health->last_pneumonia_vaccine
+                            ? \Carbon\Carbon::parse($supportPlan->general_health->last_pneumonia_vaccine)->format('d-m-Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Sleep Difficulties?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->sleep_difficulties ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->sleep_difficulties_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->sleep_difficulties_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Sleep Routine</span>
+                    <span class="value">{{ $supportPlan->general_health->sleep_routine ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Concerns about Sleep Routine?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->sleep_routine_worries ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->sleep_routine_worries_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->sleep_routine_worries_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Alcohol / Smoke / Drug Use?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->alcohol_smoke_drug_use ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->alcohol_smoke_drug_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->alcohol_smoke_drug_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Concerns about Alcohol/Drug Use?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->alcohol_smoke_drug_worries ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->alcohol_smoke_drug_worries_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->alcohol_smoke_drug_worries_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Referral Required for Alcohol/Drug Use?</span>
+                    <span class="value">
+                        {{ optional($supportPlan->general_health)->referral_required ? 'Yes' : 'No' }}
+                    </span>
+                    @if(optional($supportPlan->general_health)->referral_required_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->general_health->referral_required_details }}</div>
+                    @endif
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- medications -->
+
+<div class="section">
+    <div class="section-header">Medication Management</div>
+    <div class="section-body">
+        <table>
+            <tr>
+                <td><span class="label">Takes Regular Medications</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->takes_regular_medications ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Medication Details</span>
+                    <span class="value">{{ $supportPlan->medication_management->medication_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Medication Form</span>
+                    <span class="value">{{ $supportPlan->medication_management->medication_form ?? 'N/A' }}</span>
+                </td>
+                <td><span class="label">Medication Packaging</span>
+                    <span class="value">{{ $supportPlan->medication_management->medication_packaging ?? 'N/A' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Medications Locked?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->medications_locked ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->medications_locked_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->medications_locked_details }}</div>
+                    @endif
+                </td>
+                <td><span class="label">Specific Storage Requirements</span>
+                    <span class="value">{{ $supportPlan->medication_management->specific_storage_requirements ?? 'N/A' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Scheduled 4/8 Medications?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->scheduled_4_or_8_medications ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->scheduled_medications_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->scheduled_medications_details }}</div>
+                    @endif
+                </td>
+                <td><span class="label">Chemical Restraint Medications?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->chemical_restraint_medications ? 'Yes' : 'No' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Takes More Than Prescribed?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->takes_more_than_prescribed ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->takes_more_than_prescribed_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->takes_more_than_prescribed_details }}</div>
+                    @endif
+                </td>
+                <td><span class="label">At Risk of Missing Medication?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->at_risk_of_missing_medication ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->missing_medication_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->missing_medication_details }}</div>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Able to Explain Purpose</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->able_to_explain_purpose ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Last Medication Review</span>
+                    <span class="value">
+                        {{ $supportPlan->medication_management->last_medication_review_date
+                            ? \Carbon\Carbon::parse($supportPlan->medication_management->last_medication_review_date)->format('d-m-Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Medication Collection/Delivery</span>
+                    <span class="value">{{ $supportPlan->medication_management->medication_collection_delivery_details ?? 'N/A' }}</span>
+                </td>
+                <td><span class="label">Needs Support With Medication?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->needs_support_with_medication ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->support_with_medication_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->support_with_medication_details }}</div>
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <td><span class="label">Medication Management Worries?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->medication_management_worries ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->medication_management)->medication_management_worries_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->medication_management_worries_details }}</div>
+                    @endif
+                </td>
+                <td><span class="label">Medication Service Required?</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->medication_service_required ? 'Yes' : 'No' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><span class="label">Support Worker Prompt</span>
+                    <span class="value">{{ optional($supportPlan->medication_management)->support_worker_prompt ? 'Yes' : 'No' }}</span>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<!-- mobility transfer -->
+<div class="section">
+    <div class="section-header">Mobility & Transfers</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Are you able to walk independently?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->can_walk_independently ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->walk_independently_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Do you need support with transfers?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->needs_transfer_support ? 'Yes' : 'No' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Primary equipment used for mobility</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->primary_equipment_used ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Can you climb stairs safely?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->can_climb_stairs ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->climb_stairs_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Do you have stairs in your house?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->has_stairs_at_home ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->stairs_at_home_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Are you able to transfer yourself from a chair, bed, etc.?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->can_transfer_self ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Are you able to transfer in other environments?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->can_transfer_in_other_envs ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Do you use a Bed Pole/Bed Rails?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->uses_bed_pole_or_rails ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Bed Pole/Bed Rails prescribed by OT?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->bed_pole_prescribed_by_ot ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Can you access places out of walking distance?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->can_access_places_outside_walking_distance ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->access_places_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Is it safe for you to mobilise in your yard?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->safe_to_mobilise_in_yard ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->mobilise_yard_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">How do you access the community?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->community_access ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Do you drive?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->drives ? 'Yes' : 'No' }}
+                    @if($supportPlan->mobility_transfer->medications_or_conditions_risk)
+                        (Risk: {{ $supportPlan->mobility_transfer->driving_risk_details ?? 'N/A' }})
+                    @endif
+                </span>
+            </td>
+            <td>
+                <span class="label">Mobility equipment</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->mobility_equipment ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Equipment purchase type</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->equipment_purchase_type ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Do you use a 4-wheel walker?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->uses_four_wheel_walker ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->four_wheel_walker_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Wheelchair type</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_type ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Wheelchair operation</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_operation ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Wheelchair recommended by OT?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_ot_recommended ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Can charge wheelchair battery?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->can_charge_wheelchair ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Last wheelchair service date</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->last_wheelchair_service_date
+                        ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_wheelchair_service_date)->format('d-m-Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Can carry items &lt; 5kg?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->can_carry_5kg ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->carry_5kg_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Foot problems</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->foot_problems ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->foot_problems_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Mobility worries</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->mobility_worries ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->mobility_worries_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Last OT assessment date</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->last_ot_assessment_date
+                        ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_ot_assessment_date)->format('d-m-Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">New OT referral required?</span>
+                <span class="value">{{ $supportPlan->mobility_transfer->new_ot_referral_required ? 'Yes' : 'No' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">DEMMI Assessment required?</span>
+                <span class="value">
+                    {{ $supportPlan->mobility_transfer->demmi_assessment_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer->demmi_assessment_result ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 

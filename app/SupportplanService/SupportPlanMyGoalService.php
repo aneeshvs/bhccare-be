@@ -42,11 +42,11 @@ class SupportPlanMyGoalService
                     ->withProperties([
                         'attributes'      => $changes,
                         'old'             => $original,
-                        'staff_id'        => $row['staff_id'] ?? null,
-                        'user_id'         => $row['user_id'] ?? null,
-                        'client_type'     => $row['client_type'] ?? null,
-                        'uuid'            => $goal->uuid,
-                        'support_plan_id' => $supportPlanId,
+                        'staff_id'        => $row['staff_id'] ?? optional($goal->supportPlan)->staff_id,
+                        'user_id'          => $row['user_id'] ?? optional($goal->supportPlan)->user_id,
+                        'client_type'      => $row['client_type'] ?? optional($goal->supportPlan)->client_type,
+                        'uuid'             => $goal->uuid ?? optional($goal->supportPlan)->uuid,
+                         'support_plan_id' => $supportPlanId,
                     ])
                     ->log('SupportPlanMyGoal record has been updated');
             } else {

@@ -22,10 +22,14 @@ use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
 use App\Models\SupportPlanCarePartner;
 use App\Models\SupportPlanContactDetailSecondary;
+use App\Models\SupportPlanMobilityTransfer;
 use App\SupportplanService\CulturalDiversityService;
+use App\SupportplanService\SupportPlanGeneralHealthService;
 use App\SupportplanService\SupportPlanLivingArrangementService;
+use App\SupportplanService\SupportPlanMedicationManagementService;
 use App\SupportplanService\SupportPlanMyGoalService;
 use App\SupportplanService\SupportPlanServiceService;
+use App\SupportplanService\SupportPlanMobilityTransferService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -52,6 +56,9 @@ EmployeeMatchingNeedService $employeeMatchingNeedService,
 SupportPlanMyGoalService $supportPlanMyGoalService,
 SupportPlanLivingArrangementService $supportPlanLivingArrangement,
 CulturalDiversityService $cultural_diversity_service,
+SupportPlanGeneralHealthService $supportPlanGeneralHealthService,
+SupportPlanMedicationManagementService $supportPlanMedicationManagementService,
+SupportPlanMobilityTransferService $supportPlanMobilityService
 )
 {
     $data = $request->validated();
@@ -77,6 +84,10 @@ CulturalDiversityService $cultural_diversity_service,
      $supportPlanMyGoalService,
      $supportPlanLivingArrangement,
      $cultural_diversity_service,
+     $supportPlanGeneralHealthService,
+     $supportPlanMedicationManagementService,
+     $supportPlanMobilityService,
+
 
 
 
@@ -108,12 +119,13 @@ CulturalDiversityService $cultural_diversity_service,
          $supportPlanMyGoalService->saveMany($data['support_plan_my_goals'] ?? [],$supportPlan->id);
          $supportPlanLivingArrangement->save($data);
          $cultural_diversity_service->save($data);
+         $supportPlanGeneralHealthService->save($data);
+         $supportPlanMedicationManagementService->save($data);
+         $supportPlanMobilityService->save($data);
 
 
 
-
-
-        // ✅ New Completion Logic
+// ✅ New Completion Logic
         $completion = $completionService->calculate($supportPlan);
         $supportPlan->completion_percentage = $completion;
 
@@ -152,6 +164,9 @@ CulturalDiversityService $cultural_diversity_service,
             'myGoals',
             'LivingArrangement',
             'cultural_diversity',
+            'general_health',
+            'medication_management',
+            'mobility_transfer',
         ])
     ];
 
@@ -174,7 +189,8 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     $supportPlan = SupportPlan::with(['approval','representativeApproval','careApproval',
     'keep_in_touch','non_responsive','participantDetail','contactDetail',
     'contactDetailSecondary','SupportFunding','services',
-    'supportplan_employee','myGoals','LivingArrangement','cultural_diversity'])->where('uuid', $uuid)->firstOrFail();
+    'supportplan_employee','myGoals','LivingArrangement',
+    'cultural_diversity','general_health','medication_management','mobility_transfer'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -196,7 +212,8 @@ public function exportFullFormPdf(string $uuid)
     $supportPlan = SupportPlan::with(['staff','approval','representativeApproval','careApproval',
     'keep_in_touch','non_responsive','participantDetail','contactDetail',
     'contactDetailSecondary','SupportFunding','services',
-    'supportplan_employee','myGoals','LivingArrangement','cultural_diversity']) // only valid relationship
+    'supportplan_employee','myGoals',
+    'LivingArrangement','cultural_diversity','general_health','medication_management','mobility_transfer']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

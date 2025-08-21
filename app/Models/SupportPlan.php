@@ -109,6 +109,23 @@ class SupportPlan extends DefaultDBModel
 
 
     }
+        public function general_health()
+    {
+        return $this->hasOne(SupportPlanGeneralHealth::class);
+    }
+
+    public function medication_management()
+    {
+        return $this->hasOne(SupportPlanMedicationManagement::class);
+    }
+
+
+    public function mobility_transfer()
+    {
+        return $this->hasOne(SupportPlanMobilityTransfer::class);
+    }
+
+
 
 
 

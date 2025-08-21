@@ -44,6 +44,9 @@ class StoreSupportPlanRequest extends FormRequest
             $this->mygoalrules(),
             $this->livingarrangementrules(),
             $this->diversityrules(),
+            $this->healthrules(),
+            $this->medicationsrules(),
+            $this->mobilitytransferules(),
 
 
 
@@ -294,6 +297,139 @@ class StoreSupportPlanRequest extends FormRequest
 
             'has_non_disclosure_items' => 'nullable|boolean',
             'non_disclosure_details' => 'nullable|string',
+        ];
+    }
+
+    public function healthrules(): array
+    {
+        return [
+
+            'gp_visit_frequency' => 'nullable|string|max:255',
+
+            'admitted_hospital_last12months' => 'nullable|boolean',
+            'admitted_hospital_details' => 'nullable|string',
+
+            'preferred_hospital' => 'nullable|boolean',
+            'preferred_hospital_details' => 'nullable|string',
+
+            'diagnosis_medication_conditions' => 'nullable|string',
+            'previous_surgeries' => 'nullable|string',
+
+            'has_allergies' => 'nullable|boolean',
+            'allergy_details' => 'nullable|string',
+
+            'health_impact_scale' => 'nullable|integer|min:1|max:10',
+
+            'painful_day_to_day' => 'nullable|boolean',
+            'painful_day_to_day_details' => 'nullable|string',
+
+            'weight_loss_last3months' => 'nullable|boolean',
+            'weight_loss_details' => 'nullable|string',
+
+            'nutritional_concerns' => 'nullable|boolean',
+            'nutritional_concerns_details' => 'nullable|string',
+
+            'current_weight' => 'nullable|string|max:50',
+
+            'annual_vaccinations' => 'nullable|boolean',
+            'annual_vaccination_details' => 'nullable|string',
+
+            'last_influenza_vaccine' => 'nullable|date',
+            'last_covid19_vaccine' => 'nullable|date',
+            'last_pneumonia_vaccine' => 'nullable|date',
+
+            'sleep_difficulties' => 'nullable|boolean',
+            'sleep_difficulties_details' => 'nullable|string',
+
+            'sleep_routine' => 'nullable|string',
+
+            'sleep_routine_worries' => 'nullable|boolean',
+            'sleep_routine_worries_details' => 'nullable|string',
+
+            'alcohol_smoke_drug_use' => 'nullable|boolean',
+            'alcohol_smoke_drug_details' => 'nullable|string',
+
+            'alcohol_smoke_drug_worries' => 'nullable|boolean',
+            'alcohol_smoke_drug_worries_details' => 'nullable|string',
+
+            'referral_required' => 'nullable|boolean',
+            'referral_required_details' => 'nullable|string',
+        ];
+    }
+
+    public function medicationsrules(): array
+    {
+        return [
+
+            'takes_regular_medications' => 'nullable|boolean',
+            'medication_details' => 'nullable|string',
+            'medication_form' => 'nullable|string',
+            'medication_packaging' => 'nullable|string',
+            'medications_locked' => 'nullable|boolean',
+            'medications_locked_details' => 'nullable|string',
+            'specific_storage_requirements' => 'nullable|string',
+            'scheduled_4_or_8_medications' => 'nullable|boolean',
+            'scheduled_medications_details' => 'nullable|string',
+            'chemical_restraint_medications' => 'nullable|boolean',
+            'takes_more_than_prescribed' => 'nullable|boolean',
+            'takes_more_than_prescribed_details' => 'nullable|string',
+            'at_risk_of_missing_medication' => 'nullable|boolean',
+            'missing_medication_details' => 'nullable|string',
+            'able_to_explain_purpose' => 'nullable|boolean',
+            'last_medication_review_date' => 'nullable|date',
+            'medication_collection_delivery_details' => 'nullable|string',
+            'needs_support_with_medication' => 'nullable|boolean',
+            'support_with_medication_details' => 'nullable|string',
+            'medication_management_worries' => 'nullable|boolean',
+            'medication_management_worries_details' => 'nullable|string',
+            'medication_service_required' => 'nullable|boolean',
+            'support_worker_prompt' => 'nullable|boolean',
+        ];
+    }
+
+    public function mobilitytransferules(): array
+    {
+        return [
+
+            'can_walk_independently' => 'nullable|boolean',
+            'walk_independently_details' => 'nullable|string',
+            'needs_transfer_support' => 'nullable|boolean',
+            'primary_equipment_used' => 'nullable|string',
+            'can_climb_stairs' => 'nullable|boolean',
+            'climb_stairs_details' => 'nullable|string',
+            'has_stairs_at_home' => 'nullable|boolean',
+            'stairs_at_home_details' => 'nullable|string',
+            'can_transfer_self' => 'nullable|boolean',
+            'can_transfer_in_other_envs' => 'nullable|boolean',
+            'uses_bed_pole_or_rails' => 'nullable|boolean',
+            'bed_pole_prescribed_by_ot' => 'nullable|boolean',
+            'can_access_places_outside_walking_distance' => 'nullable|boolean',
+            'access_places_details' => 'nullable|string',
+            'safe_to_mobilise_in_yard' => 'nullable|boolean',
+            'mobilise_yard_details' => 'nullable|string',
+            'community_access' => 'nullable|string',
+            'drives' => 'nullable|boolean',
+            'medications_or_conditions_risk' => 'nullable|boolean',
+            'driving_risk_details' => 'nullable|string',
+            'mobility_equipment' => 'nullable|string',
+            'equipment_purchase_type' => 'nullable|string',
+            'uses_four_wheel_walker' => 'nullable|boolean',
+            'four_wheel_walker_details' => 'nullable|string',
+            'wheelchair_type' => 'nullable|string',
+            'wheelchair_operation' => 'nullable|string',
+            'wheelchair_ot_recommended' => 'nullable|boolean',
+            'can_charge_wheelchair' => 'nullable|boolean',
+            'last_wheelchair_service_date' => 'nullable|date',
+            'can_carry_5kg' => 'nullable|boolean',
+            'carry_5kg_details' => 'nullable|string',
+            'foot_problems' => 'nullable|boolean',
+            'foot_problems_details' => 'nullable|string',
+            'mobility_worries' => 'nullable|boolean',
+            'mobility_worries_details' => 'nullable|string',
+            'last_ot_assessment_date' => 'nullable|date',
+            'new_ot_referral_required' => 'nullable|boolean',
+            'demmi_assessment_required' => 'nullable|boolean',
+            'demmi_assessment_result' => 'nullable|string',
         ];
     }
 

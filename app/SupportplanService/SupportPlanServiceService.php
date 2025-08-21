@@ -45,14 +45,16 @@ class SupportPlanServiceService
                     ->withProperties([
                         'attributes' => $changes,
                         'old' => $original,
-                        'staff_id' => $row['staff_id'] ?? null,
-                        'user_id' => $row['user_id'] ?? null,
-                        'client_type' => $row['client_type'] ?? null,
-                        'uuid' => $service->uuid,
+                        'staff_id'        => $row['staff_id'] ?? optional($service->supportPlan)->staff_id,
+                        'user_id'          => $row['user_id'] ?? optional($service->supportPlan)->user_id,
+                        'client_type'      => $row['client_type'] ?? optional($service->supportPlan)->client_type,
+                        'uuid'             => $service->uuid ?? optional($service->supportPlan)->uuid,
+
                         'support_plan_id' => $supportPlanId,
                     ])
                     ->log('SupportPlanService record has been updated');
             } else {
+
 
                     $service->save();
 

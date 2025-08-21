@@ -243,7 +243,10 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_service',
             'employee_matching_need',
             'support_plan_my_goal',
-            'support_plan_living_arrangement'
+            'support_plan_living_arrangement',
+            'support_plan_general_health',
+            'support_plan_medication_management',
+            'support_plan_mobility_transfer'
             ]);
     }
 
