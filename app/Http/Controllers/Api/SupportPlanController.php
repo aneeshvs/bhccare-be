@@ -225,6 +225,8 @@ public function getSupportPlanUuid(Request $request)
 
     return response()->json(['uuid' => $supportPlan->uuid], 200);
 }
+
+// remove section
 public function removeSection(Request $request)
     {
         $uuid = $request->input('uuid');
