@@ -12,9 +12,9 @@ class StoreSupportPlanRequest extends FormRequest
 
         protected function prepareForValidation()
         {
-            if (is_string($this->services)) {
+            if (is_string($this->support_plan_services)) {
                 $this->merge([
-                    'support_plan_services' => json_decode($this->services, true),
+                    'support_plan_services' => json_decode($this->support_plan_services, true),
                 ]);
             }
             if (is_string($this->myGoals)) {
