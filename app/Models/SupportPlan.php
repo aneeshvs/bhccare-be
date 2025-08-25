@@ -167,21 +167,5 @@ public function dietary()
     return $this->hasOne(SupportPlanDietary::class);
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
 
