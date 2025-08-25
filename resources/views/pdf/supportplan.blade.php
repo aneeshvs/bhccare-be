@@ -1293,6 +1293,422 @@
     </table>
 </div>
 
+{{-- falls risk --}}
+ <div class="section">
+        <div class="section-header">Falls Risk</div>
+        <table>
+            <tr>
+                <td>
+                    <span class="label">Recent falls in last 6 months?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->recent_falls ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->recent_falls_details ?? '' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Strategies to reduce falls risk?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->strategies_reduce_risk ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->strategies_reduce_risk_details ?? '' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Safety pendant available?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->safety_pendant ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->safety_pendant_details ?? '' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Worried about falling?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->worried_about_falling ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->worried_about_falling_details ?? '' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Referral to Falls Clinic?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->referral_falls_clinic ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->referral_falls_clinic_details ?? '' }}
+                    </span>
+                </td>
+                <td>
+                    <span class="label">Referral to Occupational Therapist?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->referral_ot ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->referral_ot_details ?? '' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Referral to Physiotherapist?</span>
+                    <span class="value">
+                        {{ $supportPlan->fallsRisk->referral_physiotherapist ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->referral_physiotherapist_details ?? '' }}
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    {{-- cognitive --}}
+    <div class="section">
+    <div class="section-header">Cognition</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Are there cognitive concerns?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->cognitive_concerns ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->cognitive_concerns_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Diagnosis of dementia?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->diagnosis_dementia ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->diagnosis_dementia_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Capable of making own decisions?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->capable_of_decisions ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->capable_of_decisions_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Power of Attorney / Guardian?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->has_power_of_attorney ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->power_of_attorney_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Becomes confused at times?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->becomes_confused ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->becomes_confused_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Experienced delirium?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->experienced_delirium ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->experienced_delirium_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Feels anxious or worried?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->anxious_or_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->anxious_or_worry_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Short-term memory loss?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->short_term_memory_loss ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->short_term_memory_loss_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Long-term memory loss?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->long_term_memory_loss ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->long_term_memory_loss_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Health literacy support?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->health_literacy_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->health_literacy_support_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Referral to Geriatrician?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->referral_geriatrician ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->referral_geriatrician_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Referral to Psychologist?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->referral_psychologist ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->referral_psychologist_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Referral to Psychiatrist?</span>
+                <span class="value">
+                    {{ $supportPlan->cognition->referral_psychiatrist ? 'Yes' : 'No' }}
+                    {{ $supportPlan->cognition->referral_psychiatrist_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{-- Behaviour Support --}}
+
+<div class="section">
+    <div class="section-header">Behaviour Support</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Feeling agitation or frustration?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->feeling_agitation ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->feeling_agitation_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Delusions or hallucinations previously?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->delusions_hallucinations ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->delusions_hallucinations_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Changes to personality out of character?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->personality_changes ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->personality_changes_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Wanders without purpose?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->wandering ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->wandering_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Concerns of absconding?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->absconding ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->absconding_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Screams, yells or verbally threatens?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->verbal_threats ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->verbal_threats_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Physically assaults or threatens?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->physical_assault ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->physical_assault_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Restrictive interventions occurring?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->restrictive_interventions ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->restrictive_interventions_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Restrictive interventions approved?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->interventions_approved ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->interventions_approved_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Referral to Positive Behaviour Support Practitioner?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->referral_pbsp ? 'Yes' : 'No' }}
+                    {{ $supportPlan->behaviourSupport->referral_pbsp_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Behaviour Support Plan required?</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->bsp_required ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Expiry of Behaviour Support Plan</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->bsp_expiry_date
+                        ? \Carbon\Carbon::parse($supportPlan->behaviourSupport->bsp_expiry_date)->format('d/m/Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Current strategies being implemented:</span>
+                <span class="value">
+                    {{ $supportPlan->behaviourSupport->current_strategies ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{-- Personal Care --}}
+
+<div class="section">
+    <div class="section-header">Personal Care</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Support to maintain daily personal care?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_daily_personal_care ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->daily_personal_care_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Support for showering?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_showering ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->showering_type ?? '' }}
+                    {{ $supportPlan->personalCare->showering_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Personal care routine</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->personal_care_routine ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Support with dressing/undressing?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_dressing ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->dressing_details ?? '' }}
+                    {{ $supportPlan->personalCare->dressing_routine ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Equipment in shower/bathroom?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->equipment_in_bathroom ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->equipment_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Support with shaving?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_shaving ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->shaving_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Support with haircuts?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_haircuts ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->haircuts_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Complete this task at home?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->task_at_home ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Wears dentures?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->wears_dentures ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->dentures_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Support with brushing teeth?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->support_teeth_brushing ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->teeth_brushing_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">OT assessment on bathroom/shower?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->ot_bathroom_assessment ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->ot_assessment_type ?? '' }}
+                    {{ $supportPlan->personalCare->ot_assessment_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Referral to Occupational Therapist?</span>
+                <span class="value">
+                    {{ $supportPlan->personalCare->referral_ot_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->personalCare->referral_ot_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
 
 </div>

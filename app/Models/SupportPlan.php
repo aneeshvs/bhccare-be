@@ -125,6 +125,30 @@ class SupportPlan extends DefaultDBModel
         return $this->hasOne(SupportPlanMobilityTransfer::class);
     }
 
+    public function fallsRisk()
+{
+    return $this->hasOne(SupportPlanFallsRisk::class);
+}
+
+
+public function cognition()
+{
+    return $this->hasOne(\App\Models\SupportPlanCognition::class);
+}
+public function behaviourSupport()
+{
+    return $this->hasOne(SupportPlanBehaviourSupport::class);
+}
+
+public function personalCare()
+{
+    return $this->hasOne(SupportPlanPersonalCare::class);
+}
+
+
+
+
+
 
 
 

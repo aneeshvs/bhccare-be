@@ -246,7 +246,11 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_living_arrangement',
             'support_plan_general_health',
             'support_plan_medication_management',
-            'support_plan_mobility_transfer'
+            'support_plan_mobility_transfer',
+            'support_plan_falls_risk',
+            'support_plan_cognition',
+            'support_plan_behaviour_support',
+            'support_plan_personal_care',
             ]);
     }
 

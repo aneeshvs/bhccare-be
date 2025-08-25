@@ -20,16 +20,22 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
+use App\Models\SupportPlanBehaviourSupport;
 use App\Models\SupportPlanCarePartner;
 use App\Models\SupportPlanContactDetailSecondary;
 use App\Models\SupportPlanMobilityTransfer;
 use App\SupportplanService\CulturalDiversityService;
+use App\SupportplanService\SupportPlanFallsRiskService;
 use App\SupportplanService\SupportPlanGeneralHealthService;
 use App\SupportplanService\SupportPlanLivingArrangementService;
 use App\SupportplanService\SupportPlanMedicationManagementService;
 use App\SupportplanService\SupportPlanMyGoalService;
 use App\SupportplanService\SupportPlanServiceService;
 use App\SupportplanService\SupportPlanMobilityTransferService;
+use App\SupportplanService\SupportPlanCognitionService;
+use App\SupportplanService\SupportPlanBehaviourSupportService;
+use App\SupportplanService\SupportPlanPersonalCareService;
+
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -58,7 +64,11 @@ SupportPlanLivingArrangementService $supportPlanLivingArrangement,
 CulturalDiversityService $cultural_diversity_service,
 SupportPlanGeneralHealthService $supportPlanGeneralHealthService,
 SupportPlanMedicationManagementService $supportPlanMedicationManagementService,
-SupportPlanMobilityTransferService $supportPlanMobilityService
+SupportPlanMobilityTransferService $supportPlanMobilityService,
+SupportPlanFallsRiskService $supportPlanFallsService,
+SupportPlanCognitionService $supportplanCognitionService,
+SupportPlanBehaviourSupportService $supportplanbehaviourService,
+SupportPlanPersonalCareService $supportPlanPersonCareService
 )
 {
     $data = $request->validated();
@@ -87,6 +97,11 @@ SupportPlanMobilityTransferService $supportPlanMobilityService
      $supportPlanGeneralHealthService,
      $supportPlanMedicationManagementService,
      $supportPlanMobilityService,
+     $supportPlanFallsService,
+     $supportplanCognitionService,
+     $supportplanbehaviourService,
+     $supportPlanPersonCareService,
+
 
 
 
@@ -122,6 +137,11 @@ SupportPlanMobilityTransferService $supportPlanMobilityService
          $supportPlanGeneralHealthService->save($data);
          $supportPlanMedicationManagementService->save($data);
          $supportPlanMobilityService->save($data);
+         $supportPlanFallsService->save($data);
+         $supportplanCognitionService->save($data);
+         $supportplanbehaviourService->save($data);
+         $supportPlanPersonCareService->save($data);
+
 
 
 
@@ -167,6 +187,10 @@ SupportPlanMobilityTransferService $supportPlanMobilityService
             'general_health',
             'medication_management',
             'mobility_transfer',
+            'fallsRisk',
+            'cognition',
+            'behaviourSupport',
+            'personalCare'
         ])
     ];
 
@@ -190,7 +214,9 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     'keep_in_touch','non_responsive','participantDetail','contactDetail',
     'contactDetailSecondary','SupportFunding','services',
     'supportplan_employee','myGoals','LivingArrangement',
-    'cultural_diversity','general_health','medication_management','mobility_transfer'])->where('uuid', $uuid)->firstOrFail();
+    'cultural_diversity','general_health',
+    'medication_management','mobility_transfer','fallsRisk',
+    'cognition','behaviourSupport','personalCare'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -213,7 +239,9 @@ public function exportFullFormPdf(string $uuid)
     'keep_in_touch','non_responsive','participantDetail','contactDetail',
     'contactDetailSecondary','SupportFunding','services',
     'supportplan_employee','myGoals',
-    'LivingArrangement','cultural_diversity','general_health','medication_management','mobility_transfer']) // only valid relationship
+    'LivingArrangement','cultural_diversity','general_health',
+    'medication_management','mobility_transfer',
+    'fallsRisk','cognition','behaviourSupport','personalCare']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

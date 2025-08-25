@@ -47,6 +47,11 @@ class StoreSupportPlanRequest extends FormRequest
             $this->healthrules(),
             $this->medicationsrules(),
             $this->mobilitytransferules(),
+            $this->fallriskrules(),
+            $this->cognitiverules(),
+            $this->behaiviourules(),
+            $this->plancarerules(),
+
 
 
 
@@ -433,8 +438,179 @@ class StoreSupportPlanRequest extends FormRequest
         ];
     }
 
+    public function fallriskrules(): array
+    {
+        return [
+
+            'recent_falls' => ['nullable', 'boolean'],
+            'recent_falls_details' => ['nullable', 'string'],
+
+            'strategies_to_reduce_falls' => ['nullable', 'boolean'],
+            'strategies_details' => ['nullable', 'string'],
+
+            'safety_pendant' => ['nullable', 'boolean'],
+            'safety_pendant_details' => ['nullable', 'string'],
+
+            'worried_about_falling' => ['nullable', 'boolean'],
+            'worried_about_falling_details' => ['nullable', 'string'],
+
+            'referral_falls_clinic' => ['nullable', 'boolean'],
+            'referral_falls_clinic_details' => ['nullable', 'string'],
+
+            'referral_ot' => ['nullable', 'boolean'],
+            'referral_ot_details' => ['nullable', 'string'],
+
+            'referral_physiotherapist' => ['nullable', 'boolean'],
+            'referral_physiotherapist_details' => ['nullable', 'string']
+
+        ];
+    }
+
+    public function cognitiverules(): array
+    {
+        return [
+
+            'cognitive_concerns' => 'nullable|boolean',
+            'cognitive_concerns_details' => 'nullable|string',
+
+            'diagnosis_dementia' => 'nullable|boolean',
+            'diagnosis_dementia_details' => 'nullable|string',
+
+            'capable_of_decisions' => 'nullable|boolean',
+            'capable_of_decisions_details' => 'nullable|string',
+
+            'has_power_of_attorney' => 'nullable|boolean',
+            'power_of_attorney_details' => 'nullable|string',
+
+            'becomes_confused' => 'nullable|boolean',
+            'becomes_confused_details' => 'nullable|string',
+
+            'experienced_delirium' => 'nullable|boolean',
+            'experienced_delirium_details' => 'nullable|string',
+
+            'anxious_or_worry' => 'nullable|boolean',
+            'anxious_or_worry_details' => 'nullable|string',
+
+            'short_term_memory_loss' => 'nullable|boolean',
+            'short_term_memory_loss_details' => 'nullable|string',
+
+            'long_term_memory_loss' => 'nullable|boolean',
+            'long_term_memory_loss_details' => 'nullable|string',
+
+            'atsi_kica_cog_required' => 'nullable|boolean',
+            'atsi_kica_cog_file' => 'nullable|string',
+
+            'atsi_kica_carer_required' => 'nullable|boolean',
+            'atsi_kica_carer_file' => 'nullable|string',
+
+            'gpcog_required' => 'nullable|boolean',
+            'gpcog_file' => 'nullable|string',
+
+            'health_literacy_support' => 'nullable|boolean',
+            'health_literacy_support_details' => 'nullable|string',
+
+            'gds_required' => 'nullable|boolean',
+            'gds_file' => 'nullable|string',
+
+            'referral_geriatrician' => 'nullable|boolean',
+            'referral_geriatrician_details' => 'nullable|string',
+
+            'referral_psychologist' => 'nullable|boolean',
+            'referral_psychologist_details' => 'nullable|string',
+
+            'referral_psychiatrist' => 'nullable|boolean',
+            'referral_psychiatrist_details' => 'nullable|string',
 
 
+
+        ];
+    }
+
+    public function behaiviourules(): array
+    {
+        return [
+
+
+            'feeling_agitation'              => 'nullable|boolean',
+            'feeling_agitation_details'      => 'nullable|string',
+
+            'delusions_hallucinations'       => 'nullable|boolean',
+            'delusions_hallucinations_details' => 'nullable|string',
+
+            'personality_changes'            => 'nullable|boolean',
+            'personality_changes_details'    => 'nullable|string',
+
+            'wandering'                      => 'nullable|boolean',
+            'wandering_details'              => 'nullable|string',
+
+            'absconding'                     => 'nullable|boolean',
+            'absconding_details'             => 'nullable|string',
+
+            'verbal_threats'                 => 'nullable|boolean',
+            'verbal_threats_details'         => 'nullable|string',
+
+            'physical_assault'               => 'nullable|boolean',
+            'physical_assault_details'       => 'nullable|string',
+
+            'restrictive_interventions'      => 'nullable|boolean',
+            'restrictive_interventions_details' => 'nullable|string',
+
+            'interventions_approved'         => 'nullable|boolean',
+            'interventions_approved_details' => 'nullable|string',
+
+            'current_strategies'             => 'nullable|string',
+
+            'referral_pbsp'                  => 'nullable|boolean',
+            'referral_pbsp_details'          => 'nullable|string',
+
+            'bsp_required'                   => 'nullable|boolean',
+            'bsp_expiry_date'                => 'nullable|date',
+        ];
+    }
+
+
+    public function plancarerules(): array
+    {
+        return [
+
+            'support_daily_personal_care' => 'nullable|boolean',
+            'daily_personal_care_details' => 'nullable|string',
+
+            'support_showering' => 'nullable|boolean',
+            'showering_type' => 'nullable|string', // e.g., Supervision, Assistance
+            'showering_details' => 'nullable|string',
+
+            'personal_care_routine' => 'nullable|string',
+
+            'support_dressing' => 'nullable|boolean',
+            'dressing_details' => 'nullable|string',
+            'dressing_routine' => 'nullable|string',
+
+            'equipment_in_bathroom' => 'nullable|boolean',
+            'equipment_details' => 'nullable|string',
+
+            'support_shaving' => 'nullable|boolean',
+            'shaving_details' => 'nullable|string',
+
+            'support_haircuts' => 'nullable|boolean',
+            'haircuts_details' => 'nullable|string',
+
+            'task_at_home' => 'nullable|boolean',
+
+            'wears_dentures' => 'nullable|boolean',
+            'dentures_details' => 'nullable|string',
+
+            'support_teeth_brushing' => 'nullable|boolean',
+            'teeth_brushing_details' => 'nullable|string',
+
+            'ot_bathroom_assessment' => 'nullable|boolean',
+            'ot_assessment_type' => 'nullable|string', // e.g., Supervision
+            'ot_assessment_details' => 'nullable|string',
+
+            'referral_ot_required' => 'nullable|boolean',
+            'referral_ot_details' => 'nullable|string',
+        ];
+    }
 
 
     public function authorize(): bool
