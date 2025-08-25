@@ -323,7 +323,7 @@ class StoreSupportPlanRequest extends FormRequest
             'has_allergies' => 'nullable|boolean',
             'allergy_details' => 'nullable|string',
 
-            'health_impact_scale' => 'nullable|integer|min:1|max:10',
+            'health_impact_scale' => 'nullable|integer|max:10',
 
             'painful_day_to_day' => 'nullable|boolean',
             'painful_day_to_day_details' => 'nullable|string',
