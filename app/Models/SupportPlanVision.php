@@ -16,7 +16,7 @@ class SupportPlanVision extends DefaultDBModel
         'support_plan_id',
         'wears_glasses_or_contacts',
         'glasses_or_contacts_type',
-        'when_worn',
+        'vision_when_worn',
         'last_optometrist_appointment',
         'vision_worry',
         'vision_worry_details',

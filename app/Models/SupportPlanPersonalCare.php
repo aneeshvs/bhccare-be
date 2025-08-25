@@ -38,7 +38,7 @@ class SupportPlanPersonalCare extends DefaultDBModel
         'ot_assessment_type',
         'ot_assessment_details',
         'referral_ot_required',
-        'referral_ot_details',
+        'plancare_referral_ot_details',
     ];
 
     public function supportPlan()

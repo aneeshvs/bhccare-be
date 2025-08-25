@@ -16,7 +16,7 @@ return new class extends Migration
 
             $table->boolean('wears_glasses_or_contacts')->nullable();
             $table->string('glasses_or_contacts_type')->nullable(); // Glasses / Contact lenses
-            $table->string('when_worn')->nullable();
+            $table->string('vision_when_worn')->nullable();
             $table->date('last_optometrist_appointment')->nullable();
 
             $table->boolean('vision_worry')->nullable();

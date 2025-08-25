@@ -461,7 +461,7 @@ class StoreSupportPlanRequest extends FormRequest
             'referral_falls_clinic_details' => ['nullable', 'string'],
 
             'referral_ot' => ['nullable', 'boolean'],
-            'referral_ot_details' => ['nullable', 'string'],
+            'fallrisk_referral_ot_details' => ['nullable', 'string'],
 
             'referral_physiotherapist' => ['nullable', 'boolean'],
             'referral_physiotherapist_details' => ['nullable', 'string']
@@ -611,7 +611,7 @@ class StoreSupportPlanRequest extends FormRequest
             'ot_assessment_details' => 'nullable|string',
 
             'referral_ot_required' => 'nullable|boolean',
-            'referral_ot_details' => 'nullable|string',
+            'plancare_referral_ot_details' => 'nullable|string',
         ];
     }
 
@@ -654,7 +654,7 @@ class StoreSupportPlanRequest extends FormRequest
 
             'wears_glasses_or_contacts'   => 'nullable|boolean',
             'glasses_or_contacts_type'    => 'nullable|string|max:255',
-            'when_worn'                   => 'nullable|string|max:255',
+            'vision_when_worn'                   => 'nullable|string|max:255',
             'last_optometrist_appointment'=> 'nullable|date',
             'vision_worry'                => 'nullable|boolean',
             'vision_worry_details'        => 'nullable|string',

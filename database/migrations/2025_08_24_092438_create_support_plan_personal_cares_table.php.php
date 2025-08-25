@@ -49,7 +49,7 @@ return new class extends Migration {
             $table->text('ot_assessment_details')->nullable();
 
             $table->boolean('referral_ot_required')->nullable();
-            $table->text('referral_ot_details')->nullable();
+            $table->text('plancare_referral_ot_details')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

@@ -33,7 +33,7 @@ return new class extends Migration {
             $table->text('referral_falls_clinic_details')->nullable();
 
             $table->boolean('referral_ot')->nullable();
-            $table->text('referral_ot_details')->nullable();
+            $table->text('fallrisk_referral_ot_details')->nullable();
 
             $table->boolean('referral_physio')->nullable();
             $table->text('referral_physio_details')->nullable();

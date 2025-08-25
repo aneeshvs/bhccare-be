@@ -25,7 +25,7 @@ class SupportPlanFallsRisk extends DefaultDBModel
         'referral_falls_clinic',
         'referral_falls_clinic_details',
         'referral_ot_required',
-        'referral_ot_details',
+        'fallrisk_referral_ot_details',
         'referral_physio_required',
         'referral_physio_details',
     ];
