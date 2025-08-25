@@ -51,6 +51,9 @@ class StoreSupportPlanRequest extends FormRequest
             $this->cognitiverules(),
             $this->behaiviourules(),
             $this->plancarerules(),
+            $this->continencerules(),
+            $this->visionrules(),
+            $this->hearingrules(),
 
 
 
@@ -609,6 +612,66 @@ class StoreSupportPlanRequest extends FormRequest
 
             'referral_ot_required' => 'nullable|boolean',
             'referral_ot_details' => 'nullable|string',
+        ];
+    }
+
+    public function continencerules(): array
+    {
+        return [
+
+            'identified_needs' => 'nullable|boolean',
+            'identified_needs_details' => 'nullable|string',
+
+            'identify_toilet_needs' => 'nullable|boolean',
+            'identify_toilet_needs_details' => 'nullable|string',
+
+            'require_prompting' => 'nullable|boolean',
+            'require_prompting_details' => 'nullable|string',
+
+            'wears_continence_aids' => 'nullable|boolean',
+            'continence_aids_details' => 'nullable|string',
+
+            'ruis_required' => 'nullable|boolean',
+            'ruis_details' => 'nullable|string',
+
+            'rfis_required' => 'nullable|boolean',
+            'rfis_details' => 'nullable|string',
+
+            'funding_for_products' => 'nullable|boolean',
+            'funding_for_products_details' => 'nullable|string',
+
+            'nurse_assessment' => 'nullable|boolean',
+            'nurse_assessment_details' => 'nullable|string',
+
+            'worry_about_continence' => 'nullable|boolean',
+            'worry_about_continence_details' => 'nullable|string',
+        ];
+    }
+
+    public function visionrules(): array
+    {
+        return [
+
+            'wears_glasses_or_contacts'   => 'nullable|boolean',
+            'glasses_or_contacts_type'    => 'nullable|string|max:255',
+            'when_worn'                   => 'nullable|string|max:255',
+            'last_optometrist_appointment'=> 'nullable|date',
+            'vision_worry'                => 'nullable|boolean',
+            'vision_worry_details'        => 'nullable|string',
+        ];
+    }
+
+    public function hearingrules(): array
+    {
+        return [
+
+            'wears_hearing_devices' => 'nullable|boolean',
+            'hearing_devices_details' => 'nullable|string',
+            'when_worn' => 'nullable|string|max:255',
+            'last_audiologist_appointment' => 'nullable|date',
+
+            'hearing_worry' => 'nullable|boolean',
+            'hearing_worry_details' => 'nullable|string',
         ];
     }
 

@@ -251,6 +251,9 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_cognition',
             'support_plan_behaviour_support',
             'support_plan_personal_care',
+            'support_plan_continence',
+            'support_plan_vision',
+            'support_plan_hearing'
             ]);
     }
 

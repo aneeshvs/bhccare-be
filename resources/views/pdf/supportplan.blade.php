@@ -1709,6 +1709,170 @@
     </table>
 </div>
 
+<div class="section">
+    <div class="section-header">Continence</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Identified needs regarding continence support?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->identified_needs ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->identified_needs_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Able to identify toilet needs?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->identify_toilet_needs ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->identify_toilet_needs_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Require prompting to use toilet/change products?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->require_prompting ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->require_prompting_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Wear continence aids?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->wears_continence_aids ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->continence_aids_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">RUIS assessment required?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->ruis_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->ruis_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">RFIS assessment required?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->rfis_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->rfis_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Accessing funding for continence products?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->funding_for_products ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->funding_for_products_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Continence Nurse Assessment previously?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->nurse_assessment ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->nurse_assessment_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Does continence worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->continence->worry_about_continence ? 'Yes' : 'No' }}
+                    {{ $supportPlan->continence->worry_about_continence_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+{{-- Vision --}}
+
+<div class="section">
+    <div class="section-header">Vision</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you wear glasses or contact lenses?</span>
+                <span class="value">
+                    {{ $supportPlan->vision->wears_glasses_or_contacts ? 'Yes' : 'No' }}
+                    {{ $supportPlan->vision->glasses_or_contacts_type ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">When do you wear them?</span>
+                <span class="value">
+                    {{ $supportPlan->vision->when_worn ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Last Optometrist Appointment:</span>
+                <span class="value">
+                    {{ $supportPlan->vision->last_optometrist_appointment
+                        ? \Carbon\Carbon::parse($supportPlan->vision->last_optometrist_appointment)->format('d/m/Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Any aspects of vision worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->vision->vision_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->vision->vision_worry_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{-- Hearing --}}
+<div class="section">
+    <div class="section-header">Hearing</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you wear hearing devices?</span>
+                <span class="value">
+                    {{ $supportPlan->hearing->wears_hearing_devices ? 'Yes' : 'No' }}
+                    {{ $supportPlan->hearing->hearing_devices_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">When do you wear them?</span>
+                <span class="value">
+                    {{ $supportPlan->hearing->when_worn ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Last Audiologist Appointment:</span>
+                <span class="value">
+                    {{ $supportPlan->hearing->last_audiologist_appointment
+                        ? \Carbon\Carbon::parse($supportPlan->hearing->last_audiologist_appointment)->format('d/m/Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Any aspects of hearing worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->hearing->hearing_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->hearing->hearing_worry_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
 
 
 </div>

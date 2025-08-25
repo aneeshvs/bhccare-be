@@ -23,6 +23,7 @@ use App\Models\SupportPlan;
 use App\Models\SupportPlanBehaviourSupport;
 use App\Models\SupportPlanCarePartner;
 use App\Models\SupportPlanContactDetailSecondary;
+use App\Models\SupportPlanContinence;
 use App\Models\SupportPlanMobilityTransfer;
 use App\SupportplanService\CulturalDiversityService;
 use App\SupportplanService\SupportPlanFallsRiskService;
@@ -35,6 +36,9 @@ use App\SupportplanService\SupportPlanMobilityTransferService;
 use App\SupportplanService\SupportPlanCognitionService;
 use App\SupportplanService\SupportPlanBehaviourSupportService;
 use App\SupportplanService\SupportPlanPersonalCareService;
+use App\SupportplanService\SupportPlanContinenceService;
+use App\SupportplanService\SupportPlanVisionService;
+use App\SupportplanService\SupportPlanHearingService;
 
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -68,7 +72,10 @@ SupportPlanMobilityTransferService $supportPlanMobilityService,
 SupportPlanFallsRiskService $supportPlanFallsService,
 SupportPlanCognitionService $supportplanCognitionService,
 SupportPlanBehaviourSupportService $supportplanbehaviourService,
-SupportPlanPersonalCareService $supportPlanPersonCareService
+SupportPlanPersonalCareService $supportPlanPersonCareService,
+SupportPlanContinenceService $supportPlanContinenceService,
+SupportPlanVisionService $supportPlanVisionService,
+SupportPlanHearingService $supportPlanHearingService
 )
 {
     $data = $request->validated();
@@ -101,6 +108,9 @@ SupportPlanPersonalCareService $supportPlanPersonCareService
      $supportplanCognitionService,
      $supportplanbehaviourService,
      $supportPlanPersonCareService,
+     $supportPlanContinenceService,
+     $supportPlanVisionService,
+     $supportPlanHearingService,
 
 
 
@@ -141,6 +151,9 @@ SupportPlanPersonalCareService $supportPlanPersonCareService
          $supportplanCognitionService->save($data);
          $supportplanbehaviourService->save($data);
          $supportPlanPersonCareService->save($data);
+         $supportPlanContinenceService->save($data);
+         $supportPlanVisionService->save($data);
+         $supportPlanHearingService->save($data);
 
 
 
@@ -190,7 +203,10 @@ SupportPlanPersonalCareService $supportPlanPersonCareService
             'fallsRisk',
             'cognition',
             'behaviourSupport',
-            'personalCare'
+            'personalCare',
+            'continence',
+            'vision',
+            'hearing'
         ])
     ];
 
@@ -216,7 +232,8 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     'supportplan_employee','myGoals','LivingArrangement',
     'cultural_diversity','general_health',
     'medication_management','mobility_transfer','fallsRisk',
-    'cognition','behaviourSupport','personalCare'])->where('uuid', $uuid)->firstOrFail();
+    'cognition','behaviourSupport','personalCare',
+    'continence','vision','hearing'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -241,7 +258,8 @@ public function exportFullFormPdf(string $uuid)
     'supportplan_employee','myGoals',
     'LivingArrangement','cultural_diversity','general_health',
     'medication_management','mobility_transfer',
-    'fallsRisk','cognition','behaviourSupport','personalCare']) // only valid relationship
+    'fallsRisk','cognition','behaviourSupport',
+    'personalCare','continence','vision','hearing']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

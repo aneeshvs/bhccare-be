@@ -144,6 +144,20 @@ public function personalCare()
 {
     return $this->hasOne(SupportPlanPersonalCare::class);
 }
+public function continence()
+{
+    return $this->hasOne(SupportPlanContinence::class);
+}
+public function vision()
+{
+    return $this->hasOne(SupportPlanVision::class);
+}
+
+public function hearing()
+{
+    return $this->hasOne(SupportPlanHearing::class);
+}
+
 
 
 
