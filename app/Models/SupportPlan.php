@@ -158,6 +158,17 @@ public function hearing()
     return $this->hasOne(SupportPlanHearing::class);
 }
 
+public function skinCondition()
+{
+    return $this->hasOne(SupportPlanSkinCondition::class);
+}
+public function dietary()
+{
+    return $this->hasOne(SupportPlanDietary::class);
+}
+
+
+
 
 
 

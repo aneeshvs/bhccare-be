@@ -37,9 +37,10 @@ use App\SupportplanService\SupportPlanCognitionService;
 use App\SupportplanService\SupportPlanBehaviourSupportService;
 use App\SupportplanService\SupportPlanPersonalCareService;
 use App\SupportplanService\SupportPlanContinenceService;
+use App\SupportplanService\SupportPlanDietaryService;
 use App\SupportplanService\SupportPlanVisionService;
 use App\SupportplanService\SupportPlanHearingService;
-
+use App\SupportplanService\SupportPlanSkinConditionService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -75,7 +76,9 @@ SupportPlanBehaviourSupportService $supportplanbehaviourService,
 SupportPlanPersonalCareService $supportPlanPersonCareService,
 SupportPlanContinenceService $supportPlanContinenceService,
 SupportPlanVisionService $supportPlanVisionService,
-SupportPlanHearingService $supportPlanHearingService
+SupportPlanHearingService $supportPlanHearingService,
+SupportPlanSkinConditionService $supportPlanSkinConditionService,
+SupportPlanDietaryService   $supportPlanDietaryService,
 )
 {
     $data = $request->validated();
@@ -111,6 +114,8 @@ SupportPlanHearingService $supportPlanHearingService
      $supportPlanContinenceService,
      $supportPlanVisionService,
      $supportPlanHearingService,
+     $supportPlanSkinConditionService,
+     $supportPlanDietaryService,
 
 
 
@@ -154,6 +159,8 @@ SupportPlanHearingService $supportPlanHearingService
          $supportPlanContinenceService->save($data);
          $supportPlanVisionService->save($data);
          $supportPlanHearingService->save($data);
+         $supportPlanSkinConditionService->save($data);
+         $supportPlanDietaryService->save($data);
 
 
 
@@ -206,7 +213,9 @@ SupportPlanHearingService $supportPlanHearingService
             'personalCare',
             'continence',
             'vision',
-            'hearing'
+            'hearing',
+            'skinCondition',
+            'dietary',
         ])
     ];
 
@@ -233,7 +242,7 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     'cultural_diversity','general_health',
     'medication_management','mobility_transfer','fallsRisk',
     'cognition','behaviourSupport','personalCare',
-    'continence','vision','hearing'])->where('uuid', $uuid)->firstOrFail();
+    'continence','vision','hearing','skinCondition','dietary'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -259,7 +268,7 @@ public function exportFullFormPdf(string $uuid)
     'LivingArrangement','cultural_diversity','general_health',
     'medication_management','mobility_transfer',
     'fallsRisk','cognition','behaviourSupport',
-    'personalCare','continence','vision','hearing']) // only valid relationship
+    'personalCare','continence','vision','hearing','skinCondition','dietary']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

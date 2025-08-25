@@ -54,6 +54,8 @@ class StoreSupportPlanRequest extends FormRequest
             $this->continencerules(),
             $this->visionrules(),
             $this->hearingrules(),
+            $this->skinrules(),
+            $this->dietrules(),
 
 
 
@@ -672,6 +674,62 @@ class StoreSupportPlanRequest extends FormRequest
 
             'hearing_worry' => 'nullable|boolean',
             'hearing_worry_details' => 'nullable|string',
+        ];
+    }
+
+    public function skinrules(): array
+    {
+        return [
+
+            'has_skin_condition'        => 'nullable|boolean',
+            'skin_condition_type'       => 'nullable|string|max:255',
+            'impacts_daily_activities'  => 'nullable|boolean',
+            'impact_date'               => 'nullable|date',
+            'pain_discomfort_level'     => 'nullable|string|max:255',
+            'pain_level_score'          => 'nullable|integer|min:1|max:10',
+            'management_strategies'     => 'nullable|string',
+            'skin_condition_worry'      => 'nullable|boolean',
+            'worry_date'                => 'nullable|date',
+            'referral_nursing_required' => 'nullable|boolean',
+            'referral_nursing_date'     => 'nullable|date',
+        ];
+    }
+
+    public function dietrules(): array
+    {
+        return [
+
+            'intolerances' => 'nullable|boolean',
+            'intolerances_details' => 'nullable|string',
+
+            'dysphagia_concerns' => 'nullable|boolean',
+            'dysphagia_details' => 'nullable|string',
+
+            'speech_pathologist_recommendations' => 'nullable|boolean',
+
+            'iddsi_food_category' => 'nullable|string|max:255',
+            'iddsi_liquid_category' => 'nullable|string|max:255',
+
+            'prepares_meals' => 'nullable|boolean',
+            'prepares_meals_details' => 'nullable|string',
+
+            'needs_meal_support' => 'nullable|boolean',
+            'meal_support_details' => 'nullable|string',
+
+            'diet_meets_needs' => 'nullable|boolean',
+            'diet_meets_needs_details' => 'nullable|string',
+
+            'needs_cutting_support' => 'nullable|boolean',
+            'cutting_support_details' => 'nullable|string',
+
+            'needs_feeding_support' => 'nullable|boolean',
+            'feeding_support_details' => 'nullable|string',
+
+            'dietician_referral_required' => 'nullable|boolean',
+            'dietician_referral_details' => 'nullable|string',
+
+            'needs_shopping_support' => 'nullable|boolean',
+            'shopping_support_details' => 'nullable|string',
         ];
     }
 

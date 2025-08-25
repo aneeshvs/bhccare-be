@@ -1343,7 +1343,7 @@
                     <span class="label">Referral to Occupational Therapist?</span>
                     <span class="value">
                         {{ $supportPlan->fallsRisk->referral_ot ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->referral_ot_details ?? '' }}
+                        {{ $supportPlan->fallsRisk->fallrisk_referral_ot_details ?? '' }}
                     </span>
                 </td>
             </tr>
@@ -1702,7 +1702,7 @@
                 <span class="label">Referral to Occupational Therapist?</span>
                 <span class="value">
                     {{ $supportPlan->personalCare->referral_ot_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->referral_ot_details ?? '' }}
+                    {{ $supportPlan->personalCare->plancare_referral_ot_details ?? '' }}
                 </span>
             </td>
         </tr>
@@ -1807,7 +1807,7 @@
             <td>
                 <span class="label">When do you wear them?</span>
                 <span class="value">
-                    {{ $supportPlan->vision->when_worn ?? 'N/A' }}
+                    {{ $supportPlan->vision->vision_when_worn ?? 'N/A' }}
                 </span>
             </td>
         </tr>
@@ -1871,6 +1871,132 @@
         </tr>
     </table>
 </div>
+
+{{-- Skin Conditions --}}
+<div class="section">
+    <div class="section-header">Skin Conditions</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you have any skin conditions?</span>
+                <span class="value">
+                    {{ $supportPlan->skinCondition->has_skin_condition ? 'Yes' : 'No' }}
+                    {{ $supportPlan->skinCondition->skin_condition_type ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Does your skin condition impact daily activities?</span>
+                <span class="value">
+                    {{ $supportPlan->skinCondition->impacts_daily_activities ? 'Yes' : 'No' }}
+                    {{ $supportPlan->skinCondition->impact_date
+                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->impact_date)->format('d/m/Y')
+                        : '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Pain/Discomfort Level:</span>
+                <span class="value">
+                    {{ $supportPlan->skinCondition->pain_discomfort_level ?? 'N/A' }}
+                    (Score: {{ $supportPlan->skinCondition->pain_level_score ?? 'N/A' }})
+                </span>
+            </td>
+            <td>
+                <span class="label">Strategies:</span>
+                <span class="value">{{ $supportPlan->skinCondition->management_strategies ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Does condition worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->skinCondition->skin_condition_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->skinCondition->worry_date
+                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->worry_date)->format('d/m/Y')
+                        : '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Referral to Nursing required?</span>
+                <span class="value">
+                    {{ $supportPlan->skinCondition->referral_nursing_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->skinCondition->referral_nursing_date
+                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->referral_nursing_date)->format('d/m/Y')
+                        : '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{-- Dietary Requirements & Meal Preparation --}}
+
+<div class="section">
+    <div class="section-header">Dietary Requirements & Meal Preparation</div>
+    <table>
+        <tr>
+            <td><span class="label">Intolerances:</span>
+                <span class="value">{{ $supportPlan->dietary->intolerances ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->intolerances_details ?? '' }}</span>
+            </td>
+            <td><span class="label">Dysphagia Concerns:</span>
+                <span class="value">{{ $supportPlan->dietary->dysphagia_concerns ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->dysphagia_details ?? '' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Speech Pathologist Recommendations:</span>
+                <span class="value">{{ $supportPlan->dietary->speech_pathologist_recommendations ? 'Yes' : 'No' }}</span>
+            </td>
+            <td><span class="label">IDDSI Food Category:</span>
+                <span class="value">{{ $supportPlan->dietary->iddsi_food_category ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">IDDSI Liquid Category:</span>
+                <span class="value">{{ $supportPlan->dietary->iddsi_liquid_category ?? 'N/A' }}</span>
+            </td>
+            <td><span class="label">Prepares Meals:</span>
+                <span class="value">{{ $supportPlan->dietary->prepares_meals ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->prepares_meals_details ?? '' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Needs Meal Support:</span>
+                <span class="value">{{ $supportPlan->dietary->needs_meal_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->meal_support_details ?? '' }}</span>
+            </td>
+            <td><span class="label">Diet Meets Needs:</span>
+                <span class="value">{{ $supportPlan->dietary->diet_meets_needs ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->diet_meets_needs_details ?? '' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Needs Cutting Support:</span>
+                <span class="value">{{ $supportPlan->dietary->needs_cutting_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->cutting_support_details ?? '' }}</span>
+            </td>
+            <td><span class="label">Needs Feeding Support:</span>
+                <span class="value">{{ $supportPlan->dietary->needs_feeding_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->feeding_support_details ?? '' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Dietician Referral Required:</span>
+                <span class="value">{{ $supportPlan->dietary->dietician_referral_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->dietician_referral_details ?? '' }}</span>
+            </td>
+            <td><span class="label">Needs Shopping Support:</span>
+                <span class="value">{{ $supportPlan->dietary->needs_shopping_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->dietary->shopping_support_details ?? '' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
 
 
