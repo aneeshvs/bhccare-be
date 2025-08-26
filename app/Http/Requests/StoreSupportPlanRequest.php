@@ -60,6 +60,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->socialrules(),
             $this->maintenancerules(),
             $this->financialrules(),
+            $this->informalrules(),
 
 
 
@@ -853,6 +854,34 @@ class StoreSupportPlanRequest extends FormRequest
 
             'last_home_safety_assessment' => 'nullable|date',
             'home_safety_focus_areas' => 'nullable|string',
+        ];
+    }
+
+    public function informalrules(): array
+    {
+        return [
+
+            'is_primary_caregiver' => 'nullable|boolean',
+            'primary_caregiver_details' => 'nullable|string',
+
+            'receiving_help' => 'nullable|boolean',
+            'receiving_help_details' => 'nullable|string',
+
+            'carer_lives_with_you' => 'nullable|boolean',
+            'carer_lives_with_you_details' => 'nullable|string',
+
+            'carer_receives_pension' => 'nullable|boolean',
+            'carer_pension_details' => 'nullable|string',
+
+            'factors_affecting_care' => 'nullable|boolean',
+            'factors_affecting_care_details' => 'nullable|string',
+
+            'caregiver_strain_index_required' => 'nullable|boolean',
+
+            'carer_gateway_referral' => 'nullable|boolean',
+            'carer_gateway_referral_details' => 'nullable|string',
+
+            'primary_caregiver_receives_allowance' => 'nullable|boolean',
         ];
     }
 

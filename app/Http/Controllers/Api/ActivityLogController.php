@@ -260,6 +260,7 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_social_connection',
             'support_plan_home_maintenance',
             'support_plan_financial_support',
+            'support_plan_informal_support'
             ]);
     }
 

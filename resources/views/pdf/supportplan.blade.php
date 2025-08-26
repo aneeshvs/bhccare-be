@@ -2243,6 +2243,79 @@
     </table>
 </div>
 
+{{-- Informal Supports --}}
+<div class="section">
+    <div class="section-header">Informal Supports</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Are you the primary caregiver for another person?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->is_primary_caregiver ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->primary_caregiver_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Are you receiving help from someone?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->receiving_help ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->receiving_help_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Does the carer live with you?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_lives_with_you ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->carer_lives_with_you_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Does the carer receive a pension?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_receives_pension ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->carer_pension_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Factors affecting care relationship?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->factors_affecting_care ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->factors_affecting_care_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Caregiver Strain Index Required?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->caregiver_strain_index_required ? 'Yes' : 'No' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Carer Gateway referral suitable?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_gateway_referral ? 'Yes' : 'No' }}
+                    {{ $supportPlan->informalSupport->carer_gateway_referral_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Primary caregiver receiving Carers Allowance?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->primary_caregiver_receives_allowance ? 'Yes' : 'No' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
 
 
 

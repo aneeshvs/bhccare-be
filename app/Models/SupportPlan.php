@@ -184,6 +184,10 @@ public function financialSupport()
 {
     return $this->hasOne(SupportPlanFinancialSupport::class);
 }
+public function informalSupport()
+{
+    return $this->hasOne(SupportPlanInformalSupport::class, 'support_plan_id');
+}
 
 
 }
