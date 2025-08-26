@@ -43,6 +43,8 @@ use App\SupportplanService\SupportPlanHearingService;
 use App\SupportplanService\SupportPlanPainManagementService;
 use App\SupportplanService\SupportPlanSkinConditionService;
 use App\SupportplanService\SupportPlanSocialConnectionService;
+
+use App\SupportplanService\SupportPlanHomeMaintenanceService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -83,6 +85,8 @@ SupportPlanSkinConditionService $supportPlanSkinConditionService,
 SupportPlanDietaryService   $supportPlanDietaryService,
 SupportPlanPainManagementService  $supportPlanPainManagementService,
 SupportPlanSocialConnectionService $supportPlanSocialConnectionService,
+SupportPlanHomeMaintenanceService  $supportPlanHomeMaintenanceService,
+
 
 )
 
@@ -124,6 +128,7 @@ SupportPlanSocialConnectionService $supportPlanSocialConnectionService,
      $supportPlanDietaryService,
      $supportPlanPainManagementService,
      $supportPlanSocialConnectionService,
+     $supportPlanHomeMaintenanceService,
 
 
 
@@ -171,6 +176,7 @@ SupportPlanSocialConnectionService $supportPlanSocialConnectionService,
          $supportPlanDietaryService->save($data);
          $supportPlanPainManagementService->save($data);
          $supportPlanSocialConnectionService->save($data);
+         $supportPlanHomeMaintenanceService->save($data);
 
 
 
@@ -228,6 +234,7 @@ SupportPlanSocialConnectionService $supportPlanSocialConnectionService,
             'dietary',
             'painManagement',
             'socialConnection',
+            'homeMaintenance',
         ])
     ];
 
@@ -255,7 +262,7 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     'medication_management','mobility_transfer','fallsRisk',
     'cognition','behaviourSupport','personalCare',
     'continence','vision','hearing','skinCondition',
-    'dietary','painManagement','socialConnection'])->where('uuid', $uuid)->firstOrFail();
+    'dietary','painManagement','socialConnection','homeMaintenance'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -282,7 +289,7 @@ public function exportFullFormPdf(string $uuid)
     'medication_management','mobility_transfer',
     'fallsRisk','cognition','behaviourSupport',
     'personalCare','continence','vision','hearing','skinCondition','dietary',
-    'painManagement','socialConnection']) // only valid relationship
+    'painManagement','socialConnection','homeMaintenance']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

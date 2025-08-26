@@ -2103,6 +2103,79 @@
     </table>
 </div>
 
+<div class="section">
+    <div class="section-header">Maintaining Your Home</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you need support with domestic assistance within the home?</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->domestic_assistance ? 'Yes' : 'No' }}
+                    {{ $supportPlan->homeMaintenance->domestic_assistance_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Level of independence</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->domestic_independence ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Do you also need help obtaining safe and approved cleaning products and equipment?</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->cleaning_products_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->homeMaintenance->cleaning_products_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Do you need support with maintaining your gardens to be safe?</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->garden_maintenance ? 'Yes' : 'No' }}
+                    {{ $supportPlan->homeMaintenance->garden_maintenance_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Do you have any trouble navigating the house at night?</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->trouble_navigating_night ? 'Yes' : 'No' }}
+                    {{ $supportPlan->homeMaintenance->trouble_navigating_night_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Are there any aspects of maintaining your home that worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->home_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->homeMaintenance->home_worry_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Date Home Safety Assessment was last completed:</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->last_home_safety_assessment
+                        ? \Carbon\Carbon::parse($supportPlan->homeMaintenance->last_home_safety_assessment)->format('d/m/Y')
+                        : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Key areas of focus to be supported identified from Home:</span>
+                <span class="value">
+                    {{ $supportPlan->homeMaintenance->focus_areas ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
 
 
 

@@ -58,6 +58,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->dietrules(),
             $this->painmanagemntrules(),
             $this->socialrules(),
+            $this->maintenancerules(),
 
 
 
@@ -797,6 +798,32 @@ class StoreSupportPlanRequest extends FormRequest
 
             'needs_shopping_support' => 'nullable|boolean',
             'shopping_support_details' => 'nullable|string',
+        ];
+    }
+
+    public function maintenancerules(): array
+    {
+        return [
+
+
+            'needs_domestic_assistance' => 'nullable|boolean',
+            'domestic_assistance_type' => 'nullable|string',
+            'domestic_assistance_details' => 'nullable|string',
+
+            'needs_help_with_cleaning_products' => 'nullable|boolean',
+            'cleaning_products_details' => 'nullable|string',
+
+            'needs_garden_support' => 'nullable|boolean',
+            'garden_support_details' => 'nullable|string',
+
+            'trouble_navigating_at_night' => 'nullable|boolean',
+            'navigating_at_night_details' => 'nullable|string',
+
+            'home_maintenance_worries' => 'nullable|boolean',
+            'home_maintenance_worries_details' => 'nullable|string',
+
+            'last_home_safety_assessment' => 'nullable|date',
+            'home_safety_focus_areas' => 'nullable|string',
         ];
     }
 

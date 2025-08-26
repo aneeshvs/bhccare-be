@@ -176,6 +176,12 @@ public function socialConnection()
     return $this->hasOne(SupportPlanSocialConnection::class);
 }
 
+public function homeMaintenance()
+{
+    return $this->hasOne(SupportPlanHomeMaintenance::class);
+}
+
+
 
 }
 
