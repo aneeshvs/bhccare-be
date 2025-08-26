@@ -11,8 +11,8 @@ class SupportPlanFinancialSupport extends DefaultDBModel
 
     protected $fillable = [
         'support_plan_id',
-        'has_power_of_attorney',
-        'power_of_attorney_details',
+        'financial_has_power_of_attorney',
+        'financial_power_of_attorney_details',
         'has_access_to_money',
         'access_to_money_details',
         'at_risk_of_abuse',

@@ -2184,8 +2184,8 @@
             <td>
                 <span class="label">Do you have a Power of Attorney or Financial Guardian?</span>
                 <span class="value">
-                    {{ $supportPlan->financialSupport->has_power_of_attorney ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->power_of_attorney_details ?? '' }}
+                    {{ $supportPlan->financialSupport->financial_has_power_of_attorney ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->financial_power_of_attorney_details ?? '' }}
                 </span>
             </td>
             <td>

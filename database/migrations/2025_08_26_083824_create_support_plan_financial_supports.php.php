@@ -13,8 +13,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('support_plan_id')->constrained('support_plans')->onDelete('cascade');
 
-            $table->boolean('has_power_of_attorney')->nullable();
-            $table->text('power_of_attorney_details')->nullable();
+            $table->boolean('financial_has_power_of_attorney')->nullable();
+            $table->text('financial_power_of_attorney_details')->nullable();
 
             $table->boolean('has_access_to_money')->nullable();
             $table->text('access_to_money_details')->nullable();

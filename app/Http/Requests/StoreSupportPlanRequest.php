@@ -808,8 +808,8 @@ class StoreSupportPlanRequest extends FormRequest
         return [
 
 
-            'has_power_of_attorney' => 'nullable|boolean',
-            'power_of_attorney_details' => 'nullable|string',
+            'financial_has_power_of_attorney' => 'nullable|boolean',
+            'financial_power_of_attorney_details' => 'nullable|string',
 
             'has_access_to_money' => 'nullable|boolean',
             'access_to_money_details' => 'nullable|string',
