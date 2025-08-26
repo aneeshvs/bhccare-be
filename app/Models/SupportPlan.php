@@ -180,7 +180,10 @@ public function homeMaintenance()
 {
     return $this->hasOne(SupportPlanHomeMaintenance::class);
 }
-
+public function financialSupport()
+{
+    return $this->hasOne(SupportPlanFinancialSupport::class);
+}
 
 
 }

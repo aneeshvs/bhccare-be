@@ -2175,6 +2175,75 @@
     </table>
 </div>
 
+{{-- Financial Support --}}
+
+<div class="section">
+    <div class="section-header">Financial Support</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you have a Power of Attorney or Financial Guardian?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->has_power_of_attorney ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->power_of_attorney_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Do you have access to your own money?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->has_access_to_money ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->access_to_money_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Are you at risk of financial abuse?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->at_risk_of_abuse ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->risk_of_abuse_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Do you need support to pay bills/attend bank?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->needs_support_for_bills ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->support_for_bills_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Do you ever find that you don't have enough money?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->not_enough_money ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->not_enough_money_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Do you want support to engage with a financial counsellor?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->support_financial_counsellor ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->financial_counsellor_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Do you want support to access Government initiatives (e.g. Utility Relief Grant)?</span>
+                <span class="value">
+                    {{ $supportPlan->financialSupport->support_government_initiatives ? 'Yes' : 'No' }}
+                    {{ $supportPlan->financialSupport->government_initiatives_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
 
 
 

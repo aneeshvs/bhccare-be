@@ -59,6 +59,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->painmanagemntrules(),
             $this->socialrules(),
             $this->maintenancerules(),
+            $this->financialrules(),
 
 
 
@@ -798,6 +799,34 @@ class StoreSupportPlanRequest extends FormRequest
 
             'social_connections_needs_shopping_support' => 'nullable|boolean',
             'social_connections_shopping_support_details' => 'nullable|string',
+        ];
+    }
+
+    public function financialrules(): array
+    {
+        return [
+
+
+            'has_power_of_attorney' => 'nullable|boolean',
+            'power_of_attorney_details' => 'nullable|string',
+
+            'has_access_to_money' => 'nullable|boolean',
+            'access_to_money_details' => 'nullable|string',
+
+            'at_risk_of_abuse' => 'nullable|boolean',
+            'risk_of_abuse_details' => 'nullable|string',
+
+            'needs_support_for_bills' => 'nullable|boolean',
+            'support_for_bills_details' => 'nullable|string',
+
+            'not_enough_money' => 'nullable|boolean',
+            'not_enough_money_details' => 'nullable|string',
+
+            'support_financial_counsellor' => 'nullable|boolean',
+            'financial_counsellor_details' => 'nullable|string',
+
+            'support_government_initiatives' => 'nullable|boolean',
+            'government_initiatives_details' => 'nullable|string',
         ];
     }
 
