@@ -32,12 +32,12 @@ class SupportPlanSocialConnection extends DefaultDBModel
         'hobbies_activities_details',
         'needs_duke_index',
         'duke_index_details',
-        'needs_feeding_support',
-        'feeding_support_details',
-        'wants_dietician_referral',
-        'dietician_referral_details',
-        'needs_shopping_support',
-        'shopping_support_details',
+        'social_connections_needs_feeding_support',
+        'social_connections_feeding_support_details',
+        'social_connections_wants_dietician_referral',
+        'social_connections_dietician_referral_details',
+        'social_connections_needs_shopping_support',
+        'social_connections_shopping_support_details',
     ];
 
     public function supportPlan()

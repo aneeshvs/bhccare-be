@@ -790,14 +790,14 @@ class StoreSupportPlanRequest extends FormRequest
             'needs_duke_index' => 'nullable|boolean',
             'duke_index_details' => 'nullable|string',
 
-            'needs_feeding_support' => 'nullable|boolean',
-            'feeding_support_details' => 'nullable|string',
+            'social_connections_needs_feeding_support' => 'nullable|boolean',
+            'social_connections_feeding_support_details' => 'nullable|string',
 
-            'wants_dietician_referral' => 'nullable|boolean',
-            'dietician_referral_details' => 'nullable|string',
+            'social_connections_wants_dietician_referral' => 'nullable|boolean',
+            'social_connections_dietician_referral_details' => 'nullable|string',
 
-            'needs_shopping_support' => 'nullable|boolean',
-            'shopping_support_details' => 'nullable|string',
+            'social_connections_needs_shopping_support' => 'nullable|boolean',
+            'social_connections_shopping_support_details' => 'nullable|string',
         ];
     }
 

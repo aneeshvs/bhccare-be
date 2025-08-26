@@ -40,14 +40,14 @@ return new class extends Migration
             $table->boolean('needs_duke_index')->nullable();
             $table->text('duke_index_details')->nullable();
 
-            $table->boolean('needs_feeding_support')->nullable();
-            $table->text('feeding_support_details')->nullable();
+            $table->boolean('social_connections_needs_feeding_support')->nullable();
+            $table->text('social_connections_feeding_support_details')->nullable();
 
-            $table->boolean('wants_dietician_referral')->nullable();
-            $table->text('dietician_referral_details')->nullable();
+            $table->boolean('social_connections_wants_dietician_referral')->nullable();
+            $table->text('social_connections_dietician_referral_details')->nullable();
 
-            $table->boolean('needs_shopping_support')->nullable();
-            $table->text('shopping_support_details')->nullable();
+            $table->boolean('social_connections_needs_shopping_support')->nullable();
+            $table->text('social_connections_shopping_support_details')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

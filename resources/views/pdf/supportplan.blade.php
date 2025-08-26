@@ -2090,15 +2090,15 @@
         </tr>
         <tr>
             <td><span class="label">Do you need support with feeding?</span></td>
-            <td><span class="value">{{ $supportPlan->socialConnection->needs_feeding_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->feeding_support_details ?? '' }}</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->social_connections_needs_feeding_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->social_connections_feeding_support_details ?? '' }}</span></td>
         </tr>
         <tr>
             <td><span class="label">Referral to Dietician?</span></td>
-            <td><span class="value">{{ $supportPlan->socialConnection->wants_dietician_referral ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->dietician_referral_details ?? '' }}</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->social_connections_wants_dietician_referral ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->social_connections_dietician_referral_details ?? '' }}</span></td>
         </tr>
         <tr>
             <td><span class="label">Support with food shopping/unpacking?</span></td>
-            <td><span class="value">{{ $supportPlan->socialConnection->needs_shopping_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->shopping_support_details ?? '' }}</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->social_connections_needs_shopping_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->social_connections_shopping_support_details ?? '' }}</span></td>
         </tr>
     </table>
 </div>
