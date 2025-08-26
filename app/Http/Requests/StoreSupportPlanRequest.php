@@ -56,7 +56,8 @@ class StoreSupportPlanRequest extends FormRequest
             $this->hearingrules(),
             $this->skinrules(),
             $this->dietrules(),
-
+            $this->painmanagemntrules(),
+            $this->socialrules(),
 
 
 
@@ -726,6 +727,72 @@ class StoreSupportPlanRequest extends FormRequest
             'feeding_support_details' => 'nullable|string',
 
             'dietician_referral_required' => 'nullable|boolean',
+            'dietician_referral_details' => 'nullable|string',
+
+            'needs_shopping_support' => 'nullable|boolean',
+            'shopping_support_details' => 'nullable|string',
+        ];
+    }
+
+    public function painmanagemntrules(): array
+    {
+        return [
+
+
+            'ongoing_pain' => 'nullable|boolean',
+            'pain_details' => 'nullable|string',
+
+            'pain_location' => 'nullable|string|max:255',
+            'pain_frequency' => 'nullable|string|max:255',
+            'pain_scale' => 'nullable|integer|min:1|max:10',
+
+            'supported_for_pain' => 'nullable|boolean',
+            'supported_pain_details' => 'nullable|string',
+
+            'pain_management_strategies' => 'nullable|string',
+
+            'abbey_pain_scale_required' => 'nullable|boolean',
+
+            'pain_worry' => 'nullable|boolean',
+            'pain_worry_details' => 'nullable|string',
+        ];
+    }
+
+    public function socialrules(): array
+    {
+        return [
+
+            'feels_lonely' => 'nullable|boolean',
+            'feels_lonely_details' => 'nullable|string',
+
+            'has_informal_supports' => 'nullable|boolean',
+            'informal_supports_details' => 'nullable|string',
+
+            'wants_more_community_engagement' => 'nullable|boolean',
+            'community_engagement_details' => 'nullable|string',
+
+            'wants_support_for_community_engagement' => 'nullable|boolean',
+            'support_for_community_engagement_details' => 'nullable|string',
+
+            'needs_community_access_support' => 'nullable|boolean',
+            'community_access_support_details' => 'nullable|string',
+
+            'has_taxi_card' => 'nullable|boolean',
+            'taxi_card_details' => 'nullable|string',
+
+            'interested_in_visitors_program' => 'nullable|boolean',
+            'visitors_program_details' => 'nullable|string',
+
+            'has_hobbies_activities' => 'nullable|boolean',
+            'hobbies_activities_details' => 'nullable|string',
+
+            'needs_duke_index' => 'nullable|boolean',
+            'duke_index_details' => 'nullable|string',
+
+            'needs_feeding_support' => 'nullable|boolean',
+            'feeding_support_details' => 'nullable|string',
+
+            'wants_dietician_referral' => 'nullable|boolean',
             'dietician_referral_details' => 'nullable|string',
 
             'needs_shopping_support' => 'nullable|boolean',

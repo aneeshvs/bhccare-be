@@ -255,7 +255,9 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_vision',
             'support_plan_hearing',
             'support_plan_skin_condition',
-            'support_plan_dietary'
+            'support_plan_dietary',
+            'support_plan_pain_management',
+            'support_plan_social_connection'
             ]);
     }
 

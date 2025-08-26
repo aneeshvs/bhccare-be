@@ -1997,6 +1997,112 @@
     </table>
 </div>
 
+{{-- Pain Management --}}
+<div class="section">
+    <div class="section-header">Pain Management</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Do you have ongoing pain?</span>
+                <span class="value">
+                    {{ $supportPlan->painManagement->ongoing_pain ? 'Yes' : 'No' }}
+                    {{ $supportPlan->painManagement->pain_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Location of the pain</span>
+                <span class="value">{{ $supportPlan->painManagement->pain_location ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Frequency of the pain</span>
+                <span class="value">{{ $supportPlan->painManagement->pain_frequency ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Scale of the pain (1-10)</span>
+                <span class="value">{{ $supportPlan->painManagement->pain_scale ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Currently supported for pain?</span>
+                <span class="value">
+                    {{ $supportPlan->painManagement->supported_for_pain ? 'Yes' : 'No' }}
+                    {{ $supportPlan->painManagement->supported_pain_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Strategies to manage pain</span>
+                <span class="value">{{ $supportPlan->painManagement->pain_management_strategies ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Abbey Pain Scale required?</span>
+                <span class="value">{{ $supportPlan->painManagement->abbey_pain_scale_required ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Does any aspect of pain worry you?</span>
+                <span class="value">
+                    {{ $supportPlan->painManagement->pain_worry ? 'Yes' : 'No' }}
+                    {{ $supportPlan->painManagement->pain_worry_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+{{-- Social Connections & Community Access --}}
+<div class="section">
+    <div class="section-header">Social Connections & Community Access</div>
+    <table>
+        <tr>
+            <td><span class="label">Do you ever feel lonely?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->feels_lonely ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->feels_lonely_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Do you have informal supports?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->has_informal_supports ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->informal_supports_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Do you want to engage more with the local community?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->wants_more_community_engagement ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->community_engagement_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Do you need support accessing the community?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->needs_community_access_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->community_access_support_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Do you have a multi-purpose taxi card?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->has_taxi_card ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->taxi_card_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Interested in Community Visitors Program?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->interested_in_visitors_program ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->visitors_program_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Hobbies & Activities:</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->has_hobbies_activities ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->hobbies_activities_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Duke Social Support Index Required?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->needs_duke_index ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->duke_index_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Do you need support with feeding?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->needs_feeding_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->feeding_support_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Referral to Dietician?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->wants_dietician_referral ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->dietician_referral_details ?? '' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Support with food shopping/unpacking?</span></td>
+            <td><span class="value">{{ $supportPlan->socialConnection->needs_shopping_support ? 'Yes' : 'No' }} {{ $supportPlan->socialConnection->shopping_support_details ?? '' }}</span></td>
+        </tr>
+    </table>
+</div>
+
 
 
 

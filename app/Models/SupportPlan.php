@@ -167,5 +167,15 @@ public function dietary()
     return $this->hasOne(SupportPlanDietary::class);
 }
 
+public function painManagement()
+{
+    return $this->hasOne(SupportPlanPainManagement::class);
+}
+public function socialConnection()
+{
+    return $this->hasOne(SupportPlanSocialConnection::class);
+}
+
+
 }
 
