@@ -892,7 +892,7 @@ class StoreSupportPlanRequest extends FormRequest
         return [
 
 
-            'at_risk_of_abuse' => 'nullable|boolean',
+            'emergency_at_risk_of_abuse' => 'nullable|boolean',
             'abuse_details' => 'nullable|string',
 
             'opan_referral_required' => 'nullable|boolean',

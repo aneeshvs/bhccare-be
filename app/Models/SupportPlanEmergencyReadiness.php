@@ -14,7 +14,7 @@ class SupportPlanEmergencyReadiness extends DefaultDbModel
 
     protected $fillable = [
         'support_plan_id',
-        'at_risk_of_abuse',
+        'emergency_at_risk_of_abuse',
         'abuse_details',
         'opan_referral_required',
         'opan_referral_details',

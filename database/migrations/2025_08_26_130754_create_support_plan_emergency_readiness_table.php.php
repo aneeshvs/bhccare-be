@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('support_plan_id')->constrained('support_plans')->onDelete('cascade');
 
-            $table->boolean('at_risk_of_abuse')->nullable();
+            $table->boolean('emergency_at_risk_of_abuse')->nullable();
             $table->text('abuse_details')->nullable();
 
             $table->boolean('opan_referral_required')->nullable();

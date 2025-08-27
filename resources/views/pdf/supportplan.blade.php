@@ -2323,7 +2323,7 @@
             <td>
                 <span class="label">At risk of abuse or neglect?</span>
                 <span class="value">
-                    {{ $supportPlan->emergencyReadiness->at_risk_of_abuse ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->emergency_at_risk_of_abuse ? 'Yes' : 'No' }}
                     {{ $supportPlan->emergencyReadiness->abuse_details ?? '' }}
                 </span>
             </td>
