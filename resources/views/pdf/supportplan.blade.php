@@ -2445,6 +2445,36 @@
     </table>
 </div>
 
+<div class="section">
+    <div class="section-header">Telecommunication Outage</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Able to leave home independently?</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->independent_leave_home ? 'Yes' : 'No' }}
+                    {{ $supportPlan->telecommunicationOutage?->independent_leave_home_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Support check-in available?</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin ? 'Yes' : 'No' }}
+                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <span class="label">Welfare check required (&gt; 5 hrs)?</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->welfare_check_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->telecommunicationOutage?->welfare_check_required_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
 
 
 

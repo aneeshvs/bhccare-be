@@ -264,6 +264,7 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_emergency_readiness',
             'support_plan_fire_heat_readiness',
             'support_plan_storm_flooding',
+            'support_plan_telecommunication_outage'
 
             ]);
     }

@@ -64,6 +64,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->emergencyrules(),
             $this->firerules(),
             $this->stormrules(),
+            $this->telecommunicationrules(),
 
 
 
@@ -958,6 +959,22 @@ class StoreSupportPlanRequest extends FormRequest
             'evacuate_independently_details' => 'nullable|string',
             'support_from_family_or_neighbour' => 'nullable|boolean',
             'support_from_family_or_neighbour_details' => 'nullable|string',
+        ];
+    }
+
+    public function telecommunicationrules(): array
+    {
+        return [
+
+
+            'independent_leave_home' => 'nullable|boolean',
+            'independent_leave_home_details' => 'nullable|string',
+
+            'has_support_checkin' => 'nullable|boolean',
+            'has_support_checkin_details' => 'nullable|string',
+
+            'welfare_check_required' => 'nullable|boolean',
+            'welfare_check_required_details' => 'nullable|string',
         ];
     }
 

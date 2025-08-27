@@ -204,6 +204,12 @@ public function emergencyReadiness()
     return $this->hasOne(SupportPlanStormFlooding::class, 'support_plan_id');
 }
 
+public function telecommunicationOutage()
+{
+    return $this->hasOne(SupportPlanTelecommunicationOutage::class, 'support_plan_id');
+}
+
+
 
 
 
