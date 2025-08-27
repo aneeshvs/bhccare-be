@@ -65,6 +65,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->firerules(),
             $this->stormrules(),
             $this->telecommunicationrules(),
+            $this->powerrules(),
 
 
 
@@ -975,6 +976,29 @@ class StoreSupportPlanRequest extends FormRequest
 
             'welfare_check_required' => 'nullable|boolean',
             'welfare_check_required_details' => 'nullable|string',
+        ];
+    }
+
+    public function powerrules(): array
+    {
+        return [
+
+            'has_medical_equipment'         => 'nullable|boolean',
+            'has_backup_power'              => 'nullable|boolean',
+            'backup_power_details'          => 'nullable|string',
+
+            'registered_life_support'       => 'nullable|boolean',
+            'life_support_hours_supply'     => 'nullable|string|max:255',
+            'life_support_provider'         => 'nullable|string|max:255',
+
+            'power_independent_leave_home'        => 'nullable|boolean',
+            'power_independent_leave_home_details'=> 'nullable|string',
+
+            'power_has_support_checkin'           => 'nullable|boolean',
+            'power_has_support_checkin_details'   => 'nullable|string',
+
+            'power_welfare_check_required'        => 'nullable|boolean',
+            'power_welfare_check_required_details'=> 'nullable|string',
         ];
     }
 

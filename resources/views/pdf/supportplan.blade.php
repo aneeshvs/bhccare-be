@@ -2477,6 +2477,60 @@
 </div>
 
 
+<div class="section">
+    <div class="section-header">Power Outage</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Medical equipment reliant on power?</span>
+                <span class="value">{{ $supportPlan->powerOutage->has_medical_equipment ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Backup Power Supply?</span>
+                <span class="value">
+                    {{ $supportPlan->powerOutage->has_backup_power ? 'Yes' : 'No' }}
+                    {{ $supportPlan->powerOutage->backup_power_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Registered Life Support?</span>
+                <span class="value">
+                    {{ $supportPlan->powerOutage->registered_life_support ? 'Yes' : 'No' }}
+                    {{ $supportPlan->powerOutage->life_support_hours_supply ?? '' }} hrs
+                    ({{ $supportPlan->powerOutage->life_support_provider ?? '' }})
+                </span>
+            </td>
+            <td>
+                <span class="label">Can leave home independently?</span>
+                <span class="value">
+                    {{ $supportPlan->powerOutage->power_independent_leave_home ? 'Yes' : 'No' }}
+                    {{ $supportPlan->powerOutage->power_independent_leave_home_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Support check-in during outage?</span>
+                <span class="value">
+                    {{ $supportPlan->powerOutage->power_has_support_checkin ? 'Yes' : 'No' }}
+                    {{ $supportPlan->powerOutage->power_has_support_checkin_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Welfare check required >5 hours?</span>
+                <span class="value">
+                    {{ $supportPlan->powerOutage->power_welfare_check_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->powerOutage->power_welfare_check_required_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
 
 
 
