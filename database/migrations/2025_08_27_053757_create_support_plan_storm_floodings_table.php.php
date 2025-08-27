@@ -18,8 +18,8 @@ return new class extends Migration
             $table->boolean('storm_home_preparation_support')->nullable();
             $table->text('storm_home_preparation_details')->nullable();
 
-            $table->boolean('multiple_exit_points')->nullable();
-            $table->text('multiple_exit_points_details')->nullable();
+            $table->boolean('storm_multiple_exit_points')->nullable();
+            $table->text('storm_multiple_exit_points_details')->nullable();
 
             $table->boolean('identify_flood_risk')->nullable();
             $table->text('identify_flood_risk_details')->nullable();
