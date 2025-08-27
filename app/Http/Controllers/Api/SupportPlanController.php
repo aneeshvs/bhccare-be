@@ -49,6 +49,7 @@ use App\SupportplanService\SupportPlanHomeMaintenanceService;
 use App\SupportplanService\SupportPlanFinancialSupportService;
 use App\SupportplanService\SupportPlanFireHeatReadinessService;
 use App\SupportplanService\SupportPlanInformalSupportService;
+use App\SupportplanService\SupportPlanStormFloodingService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
@@ -93,7 +94,8 @@ SupportPlanHomeMaintenanceService  $supportPlanHomeMaintenanceService,
 SupportPlanFinancialSupportService $supportPlanFinancialSupportService,
 SupportPlanInformalSupportService $supportPlanInformalSupportService,
 SupportPlanEmergencyReadinessService $supportPlanEmergencyReadinessService,
-SupportPlanFireHeatReadinessService $SupportPlanFireHeatReadinessService
+SupportPlanFireHeatReadinessService $SupportPlanFireHeatReadinessService,
+SupportPlanStormFloodingService  $supportPlanStormFloodingService ,
 
 
 )
@@ -141,6 +143,7 @@ SupportPlanFireHeatReadinessService $SupportPlanFireHeatReadinessService
      $supportPlanInformalSupportService,
      $supportPlanEmergencyReadinessService,
      $SupportPlanFireHeatReadinessService,
+     $supportPlanStormFloodingService ,
 
 
 
@@ -193,6 +196,7 @@ SupportPlanFireHeatReadinessService $SupportPlanFireHeatReadinessService
          $supportPlanInformalSupportService->save($data);
          $supportPlanEmergencyReadinessService->save($data);
          $SupportPlanFireHeatReadinessService->save($data);
+         $supportPlanStormFloodingService->save($data);
 
 
 
@@ -255,6 +259,7 @@ SupportPlanFireHeatReadinessService $SupportPlanFireHeatReadinessService
             'informalSupport',
             'emergencyReadiness',
             'fireHeatReadiness',
+            'stormFlooding',
         ])
     ];
 
@@ -283,7 +288,8 @@ public function showByUuid($uuid,SupportPlanCompletionService $completionService
     'cognition','behaviourSupport','personalCare',
     'continence','vision','hearing','skinCondition',
     'dietary','painManagement','socialConnection','homeMaintenance',
-    'financialSupport','informalSupport','emergencyReadiness','fireHeatReadiness'])->where('uuid', $uuid)->firstOrFail();
+    'financialSupport','informalSupport','emergencyReadiness',
+    'fireHeatReadiness','stormFlooding'])->where('uuid', $uuid)->firstOrFail();
 
     if (!$supportPlan) {
         return response()->json(['success' => false, 'message' => 'Support Plan not found'], 404);
@@ -311,7 +317,7 @@ public function exportFullFormPdf(string $uuid)
     'fallsRisk','cognition','behaviourSupport',
     'personalCare','continence','vision','hearing','skinCondition','dietary',
     'painManagement','socialConnection','homeMaintenance',
-    'financialSupport','informalSupport','emergencyReadiness','fireHeatReadiness']) // only valid relationship
+    'financialSupport','informalSupport','emergencyReadiness','fireHeatReadiness','stormFlooding']) // only valid relationship
         ->where('uuid', $uuid)
         ->firstOrFail();
 

@@ -2419,6 +2419,31 @@
 </div>
 
 
+<div class="section">
+    <div class="section-header">Storm or Flooding</div>
+    <table>
+        <tr>
+            <td><strong>Home Preparation:</strong></td>
+            <td>{{ $supportPlan->stormFlooding->home_preparation_support ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->home_preparation_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Multiple Exit Points:</strong></td>
+            <td>{{ $supportPlan->stormFlooding->multiple_exit_points ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->multiple_exit_points_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Identify Flood Risk:</strong></td>
+            <td>{{ $supportPlan->stormFlooding->identify_flood_risk ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->identify_flood_risk_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Evacuate Independently:</strong></td>
+            <td>{{ $supportPlan->stormFlooding->can_evacuate_independently ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->evacuate_independently_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Support from Family/Neighbour:</strong></td>
+            <td>{{ $supportPlan->stormFlooding->support_from_family_or_neighbour ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->support_from_family_or_neighbour_details }}</td>
+        </tr>
+    </table>
+</div>
 
 
 

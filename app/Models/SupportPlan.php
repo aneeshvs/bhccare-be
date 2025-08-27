@@ -199,6 +199,12 @@ public function emergencyReadiness()
         return $this->hasOne(SupportPlanFireHeatReadiness::class, 'support_plan_id');
     }
 
+    public function stormFlooding()
+{
+    return $this->hasOne(SupportPlanStormFlooding::class, 'support_plan_id');
+}
+
+
 
 
 }

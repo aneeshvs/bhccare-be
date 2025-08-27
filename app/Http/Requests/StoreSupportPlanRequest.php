@@ -63,6 +63,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->informalrules(),
             $this->emergencyrules(),
             $this->firerules(),
+            $this->stormrules(),
 
 
 
@@ -938,6 +939,23 @@ class StoreSupportPlanRequest extends FormRequest
             'can_evacuate_independently' => 'nullable|boolean',
             'evacuate_independently_details' => 'nullable|string',
 
+            'support_from_family_or_neighbour' => 'nullable|boolean',
+            'support_from_family_or_neighbour_details' => 'nullable|string',
+        ];
+    }
+
+    public function stormrules(): array
+    {
+        return [
+
+            'home_preparation_support' => 'nullable|boolean',
+            'home_preparation_details' => 'nullable|string',
+            'multiple_exit_points' => 'nullable|boolean',
+            'multiple_exit_points_details' => 'nullable|string',
+            'identify_flood_risk' => 'nullable|boolean',
+            'identify_flood_risk_details' => 'nullable|string',
+            'can_evacuate_independently' => 'nullable|boolean',
+            'evacuate_independently_details' => 'nullable|string',
             'support_from_family_or_neighbour' => 'nullable|boolean',
             'support_from_family_or_neighbour_details' => 'nullable|string',
         ];
