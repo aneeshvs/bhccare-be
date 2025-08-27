@@ -209,10 +209,16 @@ public function telecommunicationOutage()
     return $this->hasOne(SupportPlanTelecommunicationOutage::class, 'support_plan_id');
 }
 
-public function powerOutage()
+   public function powerOutage()
     {
         return $this->hasOne(SupportPlanPowerOutage::class, 'support_plan_id');
     }
+
+    public function endOfLifeAdvancedCarePlanning()
+{
+    return $this->hasOne(SupportPlanEndOfLifeAdvancedCarePlanning::class, 'support_plan_id');
+}
+
 
 
 

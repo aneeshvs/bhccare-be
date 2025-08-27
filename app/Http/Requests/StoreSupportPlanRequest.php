@@ -66,6 +66,7 @@ class StoreSupportPlanRequest extends FormRequest
             $this->stormrules(),
             $this->telecommunicationrules(),
             $this->powerrules(),
+            $this->liferules(),
 
 
 
@@ -999,6 +1000,23 @@ class StoreSupportPlanRequest extends FormRequest
 
             'power_welfare_check_required'        => 'nullable|boolean',
             'power_welfare_check_required_details'=> 'nullable|string',
+        ];
+    }
+
+    public function liferules(): array
+    {
+        return [
+
+            'receiving_palliative_care' => 'nullable|boolean',
+            'receiving_palliative_care_details' => 'nullable|string',
+            'support_to_initiate_palliative_care' => 'nullable|boolean',
+            'support_to_initiate_palliative_care_details' => 'nullable|string',
+            'has_advanced_care_plan' => 'nullable|boolean',
+            'advanced_care_plan_details' => 'nullable|string',
+            'support_to_complete_advanced_care_plan' => 'nullable|boolean',
+            'support_to_complete_advanced_care_plan_details' => 'nullable|string',
+            'has_dnr' => 'nullable|boolean',
+            'dnr_details' => 'nullable|string',
         ];
     }
 

@@ -266,6 +266,7 @@ public function getLogsByUuidSupport(Request $request)
             'support_plan_storm_flooding',
             'support_plan_telecommunication_outage',
             'support_plan_power_outage',
+            'support_plan_end_of_life_advanced_care_planning'
 
             ]);
     }
