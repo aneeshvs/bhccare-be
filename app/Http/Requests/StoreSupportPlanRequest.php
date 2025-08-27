@@ -949,16 +949,16 @@ class StoreSupportPlanRequest extends FormRequest
     {
         return [
 
-            'home_preparation_support' => 'nullable|boolean',
-            'home_preparation_details' => 'nullable|string',
-            'multiple_exit_points' => 'nullable|boolean',
-            'multiple_exit_points_details' => 'nullable|string',
+            'storm_home_preparation_support' => 'nullable|boolean',
+            'storm_home_preparation_details' => 'nullable|string',
+            'storm_multiple_exit_points' => 'nullable|boolean',
+            'storm_multiple_exit_points_details' => 'nullable|string',
             'identify_flood_risk' => 'nullable|boolean',
             'identify_flood_risk_details' => 'nullable|string',
-            'can_evacuate_independently' => 'nullable|boolean',
-            'evacuate_independently_details' => 'nullable|string',
-            'support_from_family_or_neighbour' => 'nullable|boolean',
-            'support_from_family_or_neighbour_details' => 'nullable|string',
+            'storm_can_evacuate_independently' => 'nullable|boolean',
+            'storm_evacuate_independently_details' => 'nullable|string',
+            'storm_support_from_family_or_neighbour' => 'nullable|boolean',
+            'storm_support_from_family_or_neighbour_details' => 'nullable|string',
         ];
     }
 

@@ -12,16 +12,16 @@ class SupportPlanStormFlooding extends DefaultDBModel
 
     protected $fillable = [
         'support_plan_id',
-        'home_preparation_support',
-        'home_preparation_details',
-        'multiple_exit_points',
-        'multiple_exit_points_details',
+        'storm_home_preparation_support',
+        'storm_home_preparation_details',
+        'storm_multiple_exit_points',
+        'storm_multiple_exit_points_details',
         'identify_flood_risk',
         'identify_flood_risk_details',
-        'can_evacuate_independently',
-        'evacuate_independently_details',
-        'support_from_family_or_neighbour',
-        'support_from_family_or_neighbour_details',
+        'storm_can_evacuate_independently',
+        'storm_evacuate_independently_details',
+        'storm_support_from_family_or_neighbour',
+        'storm_support_from_family_or_neighbour_details',
     ];
 
     public function supportPlan()

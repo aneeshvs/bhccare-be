@@ -2424,11 +2424,11 @@
     <table>
         <tr>
             <td><strong>Home Preparation:</strong></td>
-            <td>{{ $supportPlan->stormFlooding->home_preparation_support ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->home_preparation_details }}</td>
+            <td>{{ $supportPlan->stormFlooding->storm_home_preparation_support ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->storm_home_preparation_details }}</td>
         </tr>
         <tr>
             <td><strong>Multiple Exit Points:</strong></td>
-            <td>{{ $supportPlan->stormFlooding->multiple_exit_points ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->multiple_exit_points_details }}</td>
+            <td>{{ $supportPlan->stormFlooding->storm_multiple_exit_points ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->storm_multiple_exit_points_details }}</td>
         </tr>
         <tr>
             <td><strong>Identify Flood Risk:</strong></td>
@@ -2436,11 +2436,11 @@
         </tr>
         <tr>
             <td><strong>Evacuate Independently:</strong></td>
-            <td>{{ $supportPlan->stormFlooding->can_evacuate_independently ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->evacuate_independently_details }}</td>
+            <td>{{ $supportPlan->stormFlooding->storm_can_evacuate_independently ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->storm_evacuate_independently_details }}</td>
         </tr>
         <tr>
             <td><strong>Support from Family/Neighbour:</strong></td>
-            <td>{{ $supportPlan->stormFlooding->support_from_family_or_neighbour ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->support_from_family_or_neighbour_details }}</td>
+            <td>{{ $supportPlan->stormFlooding->_storm_support_from_family_or_neighbour ? 'Yes' : 'No' }} - {{ $supportPlan->stormFlooding->storm_support_from_family_or_neighbour_details }}</td>
         </tr>
     </table>
 </div>

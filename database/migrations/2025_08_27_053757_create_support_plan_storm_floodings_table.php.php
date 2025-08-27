@@ -15,8 +15,8 @@ return new class extends Migration
                   ->constrained('support_plans')
                   ->onDelete('cascade');
 
-            $table->boolean('home_preparation_support')->nullable();
-            $table->text('home_preparation_details')->nullable();
+            $table->boolean('storm_home_preparation_support')->nullable();
+            $table->text('storm_home_preparation_details')->nullable();
 
             $table->boolean('multiple_exit_points')->nullable();
             $table->text('multiple_exit_points_details')->nullable();
@@ -24,11 +24,11 @@ return new class extends Migration
             $table->boolean('identify_flood_risk')->nullable();
             $table->text('identify_flood_risk_details')->nullable();
 
-            $table->boolean('can_evacuate_independently')->nullable();
-            $table->text('evacuate_independently_details')->nullable();
+            $table->boolean('storm_can_evacuate_independently')->nullable();
+            $table->text('storm_evacuate_independently_details')->nullable();
 
-            $table->boolean('support_from_family_or_neighbour')->nullable();
-            $table->text('support_from_family_or_neighbour_details')->nullable();
+            $table->boolean('storm_support_from_family_or_neighbour')->nullable();
+            $table->text('storm_support_from_family_or_neighbour_details')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
