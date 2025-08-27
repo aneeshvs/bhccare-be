@@ -61,6 +61,8 @@ class StoreSupportPlanRequest extends FormRequest
             $this->maintenancerules(),
             $this->financialrules(),
             $this->informalrules(),
+            $this->emergencyrules(),
+            $this->firerules(),
 
 
 
@@ -882,6 +884,62 @@ class StoreSupportPlanRequest extends FormRequest
             'carer_gateway_referral_details' => 'nullable|string',
 
             'primary_caregiver_receives_allowance' => 'nullable|boolean',
+        ];
+    }
+
+    public function emergencyrules(): array
+    {
+        return [
+
+
+            'at_risk_of_abuse' => 'nullable|boolean',
+            'abuse_details' => 'nullable|string',
+
+            'opan_referral_required' => 'nullable|boolean',
+            'opan_referral_details' => 'nullable|string',
+
+            'risk_of_declining_services' => 'nullable|boolean',
+            'declining_services_details' => 'nullable|string',
+
+            'neglect_indicators' => 'nullable|boolean',
+            'neglect_indicators_details' => 'nullable|string',
+
+            'emergency_accessible' => 'nullable|boolean',
+            'emergency_accessible_details' => 'nullable|string',
+
+            'emergency_support_available' => 'nullable|boolean',
+            'emergency_support_details' => 'nullable|string',
+
+            'vpr_required' => 'nullable|boolean',
+            'vpr_details' => 'nullable|string',
+        ];
+    }
+
+    public function firerules(): array
+    {
+        return [
+
+
+            'home_preparation_support' => 'nullable|boolean',
+            'home_preparation_details' => 'nullable|string',
+
+            'hydration_access' => 'nullable|boolean',
+            'hydration_details' => 'nullable|string',
+
+            'home_cooling' => 'nullable|boolean',
+            'home_cooling_details' => 'nullable|string',
+
+            'multiple_exit_points' => 'nullable|boolean',
+            'exit_points_details' => 'nullable|string',
+
+            'identify_fire_risk' => 'nullable|boolean',
+            'fire_risk_details' => 'nullable|string',
+
+            'can_evacuate_independently' => 'nullable|boolean',
+            'evacuate_independently_details' => 'nullable|string',
+
+            'support_from_family_or_neighbour' => 'nullable|boolean',
+            'support_from_family_or_neighbour_details' => 'nullable|string',
         ];
     }
 

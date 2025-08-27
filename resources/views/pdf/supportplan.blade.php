@@ -2315,6 +2315,111 @@
     </table>
 </div>
 
+{{-- Emergency Readiness - Safeguarding --}}
+<div class="section">
+    <div class="section-header">Emergency Readiness - Safeguarding</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">At risk of abuse or neglect?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->at_risk_of_abuse ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->abuse_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Referral to OPAN required?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->opan_referral_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->opan_referral_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Risk of declining services?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->risk_of_declining_services ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->declining_services_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Indicators of neglect?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->neglect_indicators ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->neglect_indicators_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Emergency access to property?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->emergency_accessible ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->emergency_accessible_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Emergency support available?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->emergency_support_available ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->emergency_support_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">VPR Required?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->vpr_required ? 'Yes' : 'No' }}
+                    {{ $supportPlan->emergencyReadiness->vpr_details ?? '' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
+{{-- Fire & Heat Readiness --}}
+
+<div class="section">
+    <div class="section-header">Fire & Heat Readiness</div>
+    <table>
+        <tr>
+            <td><strong>Support with home preparation:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->home_preparation_support ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->home_preparation_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Hydration access during warm weather:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->hydration_access ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->hydration_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Cooling at home:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->home_cooling ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->home_cooling_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Multiple exit points available:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->multiple_exit_points ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->exit_points_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Aware of fire risk & evacuation:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->identify_fire_risk ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->fire_risk_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Can evacuate independently:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->can_evacuate_independently ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->evacuate_independently_details }}</td>
+        </tr>
+        <tr>
+            <td><strong>Support from family/neighbours:</strong></td>
+            <td>{{ $supportPlan->fireHeatReadiness->support_from_family_or_neighbour ? 'Yes' : 'No' }} - {{ $supportPlan->fireHeatReadiness->support_from_family_or_neighbour_details }}</td>
+        </tr>
+    </table>
+</div>
+
+
+
 
 
 

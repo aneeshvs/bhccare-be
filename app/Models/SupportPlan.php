@@ -189,6 +189,17 @@ public function informalSupport()
     return $this->hasOne(SupportPlanInformalSupport::class, 'support_plan_id');
 }
 
+public function emergencyReadiness()
+{
+    return $this->hasOne(SupportPlanEmergencyReadiness::class, 'support_plan_id');
+}
+
+    public function fireHeatReadiness()
+    {
+        return $this->hasOne(SupportPlanFireHeatReadiness::class, 'support_plan_id');
+    }
+
+
 
 }
 
