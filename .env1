@@ -2,7 +2,7 @@ APP_NAME=Laravel
 APP_ENV=local
 APP_KEY=
 APP_DEBUG=true
-APP_URL=http://backend.bhccare.com.au/index.html
+APP_URL=http://backend.bhccare.com.au/
 FRONTEND_URL=https://frontend.bhccare.com.au/
 CORE_PHP_URL=http://bhccare.com.au/
 
