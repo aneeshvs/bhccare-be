@@ -48,6 +48,8 @@ Route::get('/form-data/{uuid}', [OnboardingController::class, 'show']);//downoad
 Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
 Route::get('/onboarding/export-pdf/{uuid}', [OnboardingController::class, 'exportFullFormPdf']);
 
+Route::post('/onboarding/renew-pdf/{uuid}', [OnboardingController::class, 'renewPdf']);
+
 
 Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activity log
 Route::get('/logs/pdf', [ActivityLogController::class, 'exportLogsPdf']);
@@ -79,5 +81,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
+
 
 });

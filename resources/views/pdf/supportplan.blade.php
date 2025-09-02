@@ -2537,15 +2537,15 @@
             <td>
                 <span class="label">Receiving palliative care?</span>
                 <span class="value">
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanningPlanning->receiving_palliative_care ? 'Yes' : 'No' }}
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->receiving_palliative_care_details ?? '' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->receiving_palliative_care ? 'Yes' : 'No' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->receiving_palliative_care_details }}
                 </span>
             </td>
             <td>
                 <span class="label">Support to initiate palliative care services?</span>
                 <span class="value">
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->support_initiate_palliative_services ? 'Yes' : 'No' }}
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->support_initiate_palliative_services_details ?? '' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_initiate_palliative_care ? 'Yes' : 'No' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_initiate_palliative_care_details }}
                 </span>
             </td>
         </tr>
@@ -2553,15 +2553,15 @@
             <td>
                 <span class="label">Has an advanced care plan?</span>
                 <span class="value">
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->has_advanced_care_plan ? 'Yes' : 'No' }}
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->advanced_care_plan_details ?? '' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->has_advanced_care_plan ? 'Yes' : 'No' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->advanced_care_plan_details }}
                 </span>
             </td>
             <td>
                 <span class="label">Support completing advanced care plan?</span>
                 <span class="value">
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->support_completing_advanced_care_plan ? 'Yes' : 'No' }}
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->support_completing_advanced_care_plan_details ?? '' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_complete_advanced_care_plan ? 'Yes' : 'No' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_complete_advanced_care_plan_details }}
                 </span>
             </td>
         </tr>
@@ -2569,13 +2569,14 @@
             <td colspan="2">
                 <span class="label">Do Not Resuscitate (DNR)?</span>
                 <span class="value">
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->has_dnr ? 'Yes' : 'No' }}
-                    {{ $supportPlan->endOfLifeAdvancedCarePlanning->dnr_details ?? '' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->has_dnr ? 'Yes' : 'No' }}
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->dnr_details }}
                 </span>
             </td>
         </tr>
     </table>
 </div>
+
 
 
 

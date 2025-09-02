@@ -27,6 +27,10 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 
+
+use App\Models\User;
+use Illuminate\Support\Facades\Hash;
+
 class OnboardingController extends UniversalController
 {
     public function update(
@@ -203,6 +207,49 @@ class OnboardingController extends UniversalController
 
         return $pdf->download('Onboarding_Form_' . $initial->full_name . '.pdf');
     }
+
+    //renew pdf
+
+
+
+public function renewPdf(Request $request, $uuid)
+{
+    $request->validate([
+        'staff_password' => 'required|string',
+        'email' => 'required|email|exists:users,email', // staff email passed from frontend
+    ]);
+
+    $initial = InitialEnquiry::with([
+                'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
+                'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
+                'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
+                'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
+            ])->where('uuid', $uuid)->firstOrFail();
+
+    // 2. Get staff user from users table
+    $user = User::where('email', $request->email)->firstOrFail();
+
+    // 3. Verify staff password
+    if (!Hash::check($request->staff_password, $user->password)) {
+        return response()->json(['error' => 'Invalid staff password'], 403);
+    }
+
+    // 4. Generate new PDF (without password in the file)
+   $pdf = Pdf::loadView('pdf.onboarding_full_form', compact('initial'));
+
+    $fileName = 'renewed_'.$uuid.'_'.time().'.pdf';
+    $filePath = storage_path('app/renewed-pdfs/'.$fileName);
+
+    if (!file_exists(dirname($filePath))) {
+        mkdir(dirname($filePath), 0755, true);
+    }
+
+    $pdf->save($filePath);
+
+    // 5. Return file download
+    return response()->download($filePath, $fileName);
+}
+
 
      // remove specific data
 
