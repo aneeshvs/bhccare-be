@@ -38,7 +38,7 @@ use App\SupportplanService\SupportPlanBehaviourSupportService;
 use App\SupportplanService\SupportPlanPersonalCareService;
 use App\SupportplanService\SupportPlanContinenceService;
 use App\SupportplanService\SupportPlanDietaryService;
-use App\SupportPlanService\SupportPlanEmergencyReadinessService;
+use App\SupportplanService\SupportPlanEmergencyReadinessService;
 use App\SupportplanService\SupportPlanEndOfLifeAdvancedCarePlanningService;
 use App\SupportplanService\SupportPlanVisionService;
 use App\SupportplanService\SupportPlanHearingService;
