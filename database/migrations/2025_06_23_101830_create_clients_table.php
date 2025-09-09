@@ -34,7 +34,7 @@ class CreateClientsTable extends Migration
 
             // Guardian Info
             $table->string('guardian_name')->nullable();
-            $table->string('is_public_guardian')->nullable();
+            $table->enum('is_public_guardian', ['public_guardian', 'temporary_guardian','No'])->nullable();
             $table->string('guardian_relationship')->nullable();
             $table->string('guardian_mobile')->nullable();
             $table->string('guardian_email')->nullable();

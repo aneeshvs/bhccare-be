@@ -85,7 +85,7 @@ class StoreFullFormRequest extends FormRequest
             'password'              => 'nullable|string',
             'submit_final'          => 'nullable|boolean',
             'guardian_name'             => 'nullable|string|max:255',
-            'is_public_guardian'        => 'nullable|string|max:255',
+            'is_public_guardian' => 'required|in:public_guardian,temporary_guardian','No',
             'guardian_relationship'     => 'nullable|string|max:100',
             'guardian_mobile'           => 'nullable|string|max:15',
             'guardian_email'            => 'nullable|email|max:255',
