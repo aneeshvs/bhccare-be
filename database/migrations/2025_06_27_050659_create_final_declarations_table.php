@@ -28,7 +28,7 @@ return new class extends Migration {
 
             // Guardian declaration
             $table->date('guardian_date')->nullable();
-            $table->string('guardian_name')->nullable();
+            $table->string('declaration_guardian_name')->nullable();
             $table->binary('guardian_signature')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());

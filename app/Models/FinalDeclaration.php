@@ -18,7 +18,7 @@ class FinalDeclaration extends DefaultDBModel
         'client_name',
         'client_signature',
         'guardian_date',
-        'guardian_name',
+        'declaration_guardian_name',
         'guardian_signature',
     ];
      public function client()

@@ -258,7 +258,7 @@ class StoreFullFormRequest extends FormRequest
             'client_signature'       => 'nullable|string',
 
             'guardian_date'          => 'nullable|date',
-            'guardian_name'          => 'nullable|string|max:255',
+            'declaration_guardian_name' => 'nullable|string|max:255',
             'guardian_signature'     => 'nullable|string',
         ];
     }

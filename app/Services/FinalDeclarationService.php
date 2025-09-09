@@ -20,7 +20,7 @@ class FinalDeclarationService
             'client_name'            => $data['client_name'] ?? null,
             'client_signature'       => $data['client_signature'] ?? null,
             'guardian_date'          => $data['guardian_date'] ?? null,
-            'guardian_name'          => $data['guardian_name'] ?? null,
+            'declaration_guardian_name'=> $data['declaration_guardian_name'] ?? null,
             'guardian_signature'     => $data['guardian_signature'] ?? null,
            ]
         );
