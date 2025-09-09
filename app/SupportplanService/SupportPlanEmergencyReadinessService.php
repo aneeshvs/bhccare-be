@@ -1,6 +1,6 @@
 <?php
 
-namespace App\SupportPlanService;
+namespace App\SupportplanService;
 
 use App\Models\SupportPlanEmergencyReadiness;
 use Illuminate\Support\Facades\Auth;
