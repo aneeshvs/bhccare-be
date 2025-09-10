@@ -77,7 +77,7 @@ Route::delete('/formsupport/section/remove', [SupportPlanController::class, 'rem
 
 
 // Authenticated Routes
-Route::middleware(['auth:web'])->group(function () {
+Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
