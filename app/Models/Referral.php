@@ -16,9 +16,9 @@ class Referral extends DefaultDBModel
         'has_consent',
     ];
 
-    protected $casts = [
-        'has_consent' => 'boolean',
-    ];
+    // protected $casts = [
+    //     'has_consent' => 'boolean',
+    // ];
      public function client()
     {
         return $this->belongsTo(Client::class);
