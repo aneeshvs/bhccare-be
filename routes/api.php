@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\StaffSyncController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ScheduleOfCareController;
 use App\Http\Controllers\Api\SupportPlanController;
+use App\Http\Controllers\Api\ServiceAgreementController;
+
 
 
 
@@ -81,6 +83,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
+    Route::post('/service-agreement/update', [ServiceAgreementController::class, 'update']);
 
 
 });
+
