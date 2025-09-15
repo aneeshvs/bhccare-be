@@ -78,6 +78,20 @@ Route::delete('/formsupport/section/remove', [SupportPlanController::class, 'rem
 
 
 
+//service agreement
+
+// First static route
+Route::get('/service-agreement/logs', [ActivityLogController::class, 'getLogsByUuidServiceAgreement']);
+
+// Then dynamic route
+Route::get('/service-agreement/{uuid}', [ServiceAgreementController::class, 'showByUuid']);
+
+Route::get('/get-service-agreement-uuid', [ServiceAgreementController::class, 'getServiceAgreementUuid']);
+
+Route::get('/service-agreement/export-pdf/{uuid}', [ServiceAgreementController::class, 'exportFullFormPdf']);
+Route::get('/service-agreement/{uuid}/export-pdf', [ServiceAgreementController::class, 'exportFullFormPdf']);
+
+
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
