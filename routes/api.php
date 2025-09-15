@@ -97,7 +97,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
-    Route::post('/service-agreement/update', [ServiceAgreementController::class, 'update']);
+    Route::put('/service-agreement/update', [ServiceAgreementController::class, 'update']);
 
 
 });
