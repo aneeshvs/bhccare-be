@@ -13,7 +13,21 @@ class StoreServiceAgreementRequest extends FormRequest
         return true; // adjust if you want authorization logic
     }
 
-    public function rules(): array
+    public function rules()
+    {
+        return array_merge(
+            $this->agreementrules(),
+            $this->conscentrules(),
+
+
+
+
+
+
+        );
+    }
+
+    private function agreementrules(): array
     {
         return [
 
@@ -42,6 +56,43 @@ class StoreServiceAgreementRequest extends FormRequest
             // ✅ Form tracking
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',
+        ];
+    }
+
+    public function conscentrules(): array
+    {
+        return [
+
+
+            // ✅ Agreement Accepted & Signed
+            'accepted_name'       => 'nullable|string|max:255',
+            'accepted_position'   => 'nullable|string|max:255',
+            'accepted_signature'  => 'nullable|string', // can be base64 or file path
+            'accepted_date'       => 'nullable|date',
+
+            // ✅ Written Participant Consent
+            'consents_participant_name'     => 'nullable|string|max:255',
+            'participant_role'     => 'nullable|in:participant,representative',
+            'participant_signature'=> 'nullable|string',
+            'participant_date'     => 'nullable|date',
+
+            'witness_name'         => 'nullable|string|max:255',
+            'witness_signature'    => 'nullable|string',
+            'witness_date'         => 'nullable|date',
+
+            // ✅ Verbal Participant Consent
+            'verbal_staff_name'     => 'nullable|string|max:255',
+            'verbal_staff_signature'=> 'nullable|string',
+            'verbal_staff_position' => 'nullable|string|max:255',
+            'verbal_date'           => 'nullable|date',
+
+            // ✅ Other Notes
+            'other_notes' => 'nullable|string|max:2000',
+
+            // ✅ Office Use
+            'received_signed_copy' => 'nullable|in:yes,no',
+            'agreed_verbally'      => 'nullable|in:yes,no',
+            'cms_comments_entered' => 'nullable|in:yes,no',
         ];
     }
 

@@ -11,6 +11,7 @@ use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\ScheduleOfCareController;
 use App\Http\Controllers\Api\SupportPlanController;
 use App\Http\Controllers\Api\ServiceAgreementController;
+use App\Http\Controllers\Api\SupportCarePlanController;
 
 
 
@@ -92,12 +93,29 @@ Route::get('/service-agreement/export-pdf/{uuid}', [ServiceAgreementController::
 Route::get('/service-agreement/{uuid}/export-pdf', [ServiceAgreementController::class, 'exportFullFormPdf']);
 
 
+// 🔹 Static first (logs)
+Route::get('/support-care-plan/logs', [ActivityLogController::class, 'getLogsByUuidSupportCarePlan']);
+
+// 🔹 Fetch by UUID (public)
+Route::get('/support-care-plan/{uuid}', [SupportCarePlanController::class, 'showByUuid']);
+
+// 🔹 Get UUID by user & client_type
+Route::get('/get-support-care-plan-uuid', [SupportCarePlanController::class, 'getSupportCarePlanUuid']);
+
+// 🔹 Export PDF (two options)
+Route::get('/support-care-plan/export-pdf/{uuid}', [SupportCarePlanController::class, 'exportFullFormPdf']);
+Route::get('/support-care-plan/{uuid}/export-pdf', [SupportCarePlanController::class, 'exportFullFormPdf']);
+
+
+
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
     Route::put('/service-agreement/update', [ServiceAgreementController::class, 'update']);
+     // Support Care Plan
+    Route::put('/support-care-plan/update', [SupportCarePlanController::class, 'update']);
 
 
 });
