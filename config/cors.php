@@ -7,8 +7,8 @@ return [
     'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
 
     'allowed_origins' => [
-        'http://localhost:3000', // Next.js frontend
-        'http://localhost',      // Core PHP via XAMPP or Apache
+        'https://frontend.bhccare.com.au', // Next.js frontend
+        'https://bhccare.com.au',      // Core PHP via XAMPP or Apache
     ],
 
     'allowed_origins_patterns' => [],
