@@ -54,4 +54,10 @@ class ServiceAgreement extends DefaultDBModel
     {
         return "Service Agreement record has been {$eventName}";
     }
+
+    public function consent()
+{
+    return $this->hasOne(ServiceAgreementConsent::class);
+}
+
 }

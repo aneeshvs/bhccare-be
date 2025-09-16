@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreServiceAgreementRequest;
 use App\Http\Controllers\Controller;
 use App\Models\ServiceAgreement;
+use App\Models\ServiceAgreementConsent;
 use App\ServiceAgreementService\ServiceAgreementService;
 use App\ServiceAgreementService\ServiceAgreementCompletionService;
+use App\ServiceAgreementService\ServiceAgreementConsentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -21,6 +23,7 @@ class ServiceAgreementController extends Controller
         StoreServiceAgreementRequest $request,
         ServiceAgreementService $service,
         ServiceAgreementCompletionService $completionService,
+        ServiceAgreementConsentService $serviceAgreementConsentService
 
     ) {
         $data = $request->validated();
@@ -32,6 +35,7 @@ class ServiceAgreementController extends Controller
             $data,
             $service,
             $completionService,
+            $serviceAgreementConsentService,
 
         ) {
             $user = Auth::user();
@@ -47,6 +51,7 @@ class ServiceAgreementController extends Controller
             $agreement = $service->save($data);
             $data['service_agreement_id'] = $agreement->id;
 
+            $serviceAgreementConsentService->save($data);
 
 
 
@@ -76,6 +81,7 @@ class ServiceAgreementController extends Controller
 
             return [
                 'serviceAgreement' => $agreement->load([
+                    'consent'
 
                 ]),
             ];
@@ -96,6 +102,7 @@ class ServiceAgreementController extends Controller
 {
     // ✅ Load all related relationships if needed
     $serviceAgreement = ServiceAgreement::with([
+        'consent'
 
 
     ])->where('uuid', $uuid)->first();
@@ -119,7 +126,7 @@ class ServiceAgreementController extends Controller
 
 public function exportFullFormPdf(string $uuid)
 {
-    $serviceAgreement = ServiceAgreement::with(['staff']) // add other relationships if any
+    $serviceAgreement = ServiceAgreement::with(['staff','consent']) // add other relationships if any
         ->where('uuid', $uuid)
         ->firstOrFail();
 
