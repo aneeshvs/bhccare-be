@@ -16,14 +16,11 @@ class SupportPlanMyGoalService
         $saved = [];
 
         foreach ($data as $row) {
-                        if (empty($row['goal'])) {
-                            continue; // 🚀 skip empty goals
-                        }
+            $goal = SupportPlanMyGoal::firstOrNew([
+                'support_plan_id' => $supportPlanId,
+                'goal'            => $row['goal'] ?? null,
+            ]);
 
-                        $goal = SupportPlanMyGoal::firstOrNew([
-                            'support_plan_id' => $supportPlanId,
-                            'goal'            => $row['goal'],
-                        ]);
             $goal->fill($row);
             $goal->support_plan_id = $supportPlanId;
 
