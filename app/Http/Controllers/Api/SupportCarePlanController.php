@@ -125,7 +125,7 @@ class SupportCarePlanController extends Controller
 
         public function exportFullFormPdf(string $uuid)
     {
-        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker','silGoals','supportCoordinationGoals']) // load staff relationship
+        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker','silGoals','supportCoordinationGoals','homecareGoals']) // load staff relationship
             ->where('uuid', $uuid)
             ->firstOrFail();
 
