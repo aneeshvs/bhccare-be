@@ -476,6 +476,7 @@ public function getLogsByUuidSupportCarePlan(Request $request)
     } else {
         $query->whereIn('log_name', [
             'support_care_plan',
+            'alternate_decision_maker',
         ]);
     }
 

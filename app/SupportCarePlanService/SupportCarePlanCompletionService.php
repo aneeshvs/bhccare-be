@@ -19,6 +19,13 @@ class SupportCarePlanCompletionService
             'consents_goal_plan_start_date',
             'consents_goal_plan_review_date',
         ],
+
+        'alternateDecisionMaker'=>[
+        'type',
+        'first_name',
+        'surname',
+        'notes',
+        ],
     ];
 
     /**

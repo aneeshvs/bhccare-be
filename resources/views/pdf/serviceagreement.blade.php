@@ -5,34 +5,83 @@
     <title>Service Agreement PDF</title>
     <style>
         body {
-            font-family: DejaVu Sans, sans-serif;
+            font-family: sans-serif;
             font-size: 12px;
-            line-height: 1.5;
+            background-color: #f9fafb;
+            color: #111827;
+            margin: 0;
+            padding: 20px;
         }
-        h2 {
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 20px 30px;
+        }
+
+        /* Header */
+        .header {
+            position: relative;
             text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
+            margin-bottom: 30px;
         }
+        .logo {
+            position: absolute;
+            top: 0;
+            left: 0;
+            max-width: 70px;
+            height: auto;
+        }
+        .header h2 {
+            font-size: 22px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin: 0;
+        }
+
+        /* Section titles */
+        .section-title {
+            background-color: #f3f4f6;
+            font-weight: bold;
+            padding: 8px 12px;
+            border-left: 4px solid #4f46e5;
+            font-size: 13px;
+        }
+
+        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 18px;
         }
         th, td {
-            border: 1px solid #000;
+            border: 1px solid #e5e7eb;
             padding: 6px 8px;
             text-align: left;
         }
-        .section-title {
-            background-color: #f2f2f2;
+        th {
+            background-color: #f9fafb;
             font-weight: bold;
-            padding: 6px;
+            width: 30%;
+        }
+
+        /* Page breaks for multi-page PDFs */
+        .page-break {
+            page-break-before: always;
+            break-before: page;
         }
     </style>
 </head>
 <body>
-    <h2>Service Agreement</h2>
+<div class="container">
+    {{-- Header with Logo --}}
+    <div class="header">
+        <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
+        <h2>Service Agreement</h2>
+    </div>
 
     {{-- Participant Details --}}
     <table>
@@ -52,6 +101,7 @@
         <tr><th>End Date</th><td>{{ $serviceAgreement->ndis_plan_end_date ?? '-' }}</td></tr>
     </table>
 
+    {{-- Service Agreement Term --}}
     <table>
         <tr><td colspan="2" class="section-title">Service Agreement Term</td></tr>
         <tr><th>Start Date</th><td>{{ $serviceAgreement->term_start_date ?? '-' }}</td></tr>
@@ -73,6 +123,9 @@
         <tr><th>Email</th><td>{{ $serviceAgreement->representative_email ?? '-' }}</td></tr>
     </table>
 
+
+
+
     {{-- Staff Details (optional) --}}
     @if($serviceAgreement->staff)
     <table>
@@ -81,6 +134,6 @@
         <tr><th>Type</th><td>{{ $serviceAgreement->staff->stafftype ?? '-' }}</td></tr>
     </table>
     @endif
-
+</div>
 </body>
 </html>

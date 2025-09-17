@@ -40,4 +40,10 @@ class SupportCarePlan extends DefaultDBModel
             ->logFillable()
             ->useLogName('support_care_plan');
     }
+
+    public function alternateDecisionMaker()
+{
+    return $this->hasOne(AlternateDecisionMaker::class);
+}
+
 }

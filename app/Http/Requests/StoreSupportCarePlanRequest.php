@@ -13,7 +13,22 @@ class StoreSupportCarePlanRequest extends FormRequest
         return true;
     }
 
-    public function rules()
+     public function rules()
+    {
+        return array_merge(
+            $this->consentrules(),
+            $this->alternativerules(),
+
+
+
+
+
+
+        );
+    }
+
+
+    private function consentrules():array
     {
         return [
             'user_id' => 'nullable|integer',
@@ -27,6 +42,18 @@ class StoreSupportCarePlanRequest extends FormRequest
 
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',
+
+
+        ];
+    }
+    private function alternativerules():array
+    {
+        return [
+
+                'type' => 'nullable|in:not_applicable,partner,carer,guardian,parent,advocacy,other',
+                'first_name' => 'nullable|string|max:255',
+                'surname' => 'nullable|string|max:255',
+                'notes' => 'nullable|string|max:2000',
         ];
     }
 

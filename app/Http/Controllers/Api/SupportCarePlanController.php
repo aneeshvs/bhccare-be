@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\SupportCarePlan;
 use App\SupportCarePlanService\SupportCarePlanService;
 use App\SupportCarePlanService\SupportCarePlanCompletionService;
+use App\SupportCarePlanService\AlternateDecisionMakerService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +20,8 @@ class SupportCarePlanController extends Controller
     public function update(
         StoreSupportCarePlanRequest $request,
         SupportCarePlanService $service,
-        SupportCarePlanCompletionService $completionService
+        SupportCarePlanCompletionService $completionService,
+        AlternateDecisionMakerService $alternateDecisionMakerService,
     ) {
         $data = $request->validated();
 
@@ -29,7 +31,8 @@ class SupportCarePlanController extends Controller
         $result = DB::transaction(function () use (
             $data,
             $service,
-            $completionService
+            $completionService,
+            $alternateDecisionMakerService,
         ) {
             $user = Auth::user();
             if (!$user) {
@@ -42,6 +45,9 @@ class SupportCarePlanController extends Controller
 
             // ✅ Save main Support Care Plan
             $plan = $service->save($data);
+             $data['support_care_plan_id'] = $plan->id;
+
+             $alternateDecisionMakerService->save($data);
 
             // ✅ Calculate completion %
             $completion = $completionService->calculate($plan);
@@ -67,7 +73,10 @@ class SupportCarePlanController extends Controller
             }
 
             return [
-                'supportCarePlan' => $plan,
+               'serviceAgreement' => $plan->load([
+               'alternateDecisionMaker'
+
+                ]),
             ];
         });
 
@@ -81,7 +90,7 @@ class SupportCarePlanController extends Controller
 
     public function showByUuid($uuid, SupportCarePlanCompletionService $completionService)
     {
-        $plan = SupportCarePlan::with([]) // add child relationships if any
+        $plan = SupportCarePlan::with(['alternateDecisionMaker']) // add child relationships if any
             ->where('uuid', $uuid)
             ->first();
 
@@ -103,7 +112,7 @@ class SupportCarePlanController extends Controller
 
         public function exportFullFormPdf(string $uuid)
     {
-        $supportCarePlan = SupportCarePlan::with(['staff']) // load staff relationship
+        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker']) // load staff relationship
             ->where('uuid', $uuid)
             ->firstOrFail();
 
