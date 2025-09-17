@@ -16,6 +16,9 @@ class SupportPlanMyGoalService
         $saved = [];
 
         foreach ($data as $row) {
+            if (empty($row['goal'])) {
+                continue; // skip empty rows like NdisGoalServices
+            }
             $goal = SupportPlanMyGoal::firstOrNew([
                 'support_plan_id' => $supportPlanId,
                 'goal'            => $row['goal'] ?? null,
