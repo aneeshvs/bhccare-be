@@ -154,4 +154,5 @@ class SupportCarePlanController extends Controller
 
         return response()->json(['uuid' => $plan->uuid], 200);
     }
+
 }
