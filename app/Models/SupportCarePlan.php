@@ -46,4 +46,31 @@ class SupportCarePlan extends DefaultDBModel
     return $this->hasOne(AlternateDecisionMaker::class);
 }
 
+public function silGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'sil');
+    }
+
+    // Support Coordination Goals
+    public function supportCoordinationGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'support_coordination');
+    }
+
+    // Homecare Goals
+    public function homecareGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'homecare');
+    }
+
+// public function supportCoordinationGoals()
+// {
+//     return $this->hasMany(SupportCoordinationGoal::class, 'support_care_plan_id');
+// }
+
+
+
 }

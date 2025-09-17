@@ -378,6 +378,8 @@ public function getLogsByUuidServiceAgreement(Request $request)
         $query->whereIn('log_name', [
             'service_agreement',
             'service_agreement_consent',
+            'sil_goals',
+            'support_coordination_goals',
 
         ]);
     }

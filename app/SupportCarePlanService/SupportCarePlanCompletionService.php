@@ -26,6 +26,15 @@ class SupportCarePlanCompletionService
         'surname',
         'notes',
         ],
+
+        'silGoals'=>[
+        'goal_title',
+        'goals_of_support',
+        'steps',
+        'organisation_steps',
+        'risk',
+        'risk_management_strategies',
+        ]
     ];
 
     /**
