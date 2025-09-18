@@ -71,6 +71,17 @@ public function silGoals()
         return $this->hasMany(SupportCarePlanCommunicationPlan::class);
     }
 
+    public function emergencyDisasterPlan()
+        {
+            return $this->hasOne(SupportCarePlanEmergencyDisasterPlan::class, 'support_care_plan_id');
+        }
+
+    public function emergencyContacts()
+    {
+        return $this->hasMany(SupportCarePlanEmergencyContact::class, 'support_care_plan_id');
+    }
+
+
 
 // public function supportCoordinationGoals()
 // {

@@ -13,7 +13,7 @@ class StoreSupportCarePlanRequest extends FormRequest
         return true;
     }
 
-            protected function prepareForValidation()
+                    protected function prepareForValidation()
         {
             if (is_string($this->sil_goals)) {
                 $this->merge([
@@ -21,13 +21,19 @@ class StoreSupportCarePlanRequest extends FormRequest
                 ]);
             }
 
+            if (is_string($this->support_coordination_goals)) {
+                $this->merge([
+                    'support_coordination_goals' => json_decode($this->support_coordination_goals, true),
+                ]);
+            }
 
-        if (is_string($this->support_coordination_goals)) {
-            $this->merge([
-                'support_coordination_goals' => json_decode($this->support_coordination_goals, true),
-            ]);
+            if (is_string($this->emergency_contacts)) {
+                $this->merge([
+                    'emergency_contacts' => json_decode($this->emergency_contacts, true),
+                ]);
+            }
         }
-    }
+
 
 
 
@@ -41,6 +47,8 @@ class StoreSupportCarePlanRequest extends FormRequest
             $this->silrules(),
             $this->goalsrules(),
             $this->communicationrules(),
+            $this->disasterrules(),
+            $this->contactrules(),
 
 
 
@@ -118,6 +126,31 @@ class StoreSupportCarePlanRequest extends FormRequest
             'helps_me_understand'    => 'nullable|array',
             'please_communicate_by'  => 'nullable|array',
             'emergency_communication'=> 'nullable|string|max:2000',
+        ];
+    }
+
+    private function disasterrules(): array
+    {
+        return [
+
+            'participant_name'     => 'nullable|string|max:255',
+            'date'                 => 'nullable|date',
+            'review_date'          => 'nullable|date|after_or_equal:date',
+            'user_id'              => 'nullable|integer', // for activity log
+        ];
+    }
+
+    public function contactrules(): array
+    {
+        return [
+
+            'emergency_contacts'             => 'nullable|array',
+
+            'emergency_contacts.*.name'      => 'nullable|string|max:255',
+            'emergency_contacts.*.relationship' => 'nullable|string|max:255',
+            'emergency_contacts.*.phone'     => 'nullable|string|max:50',
+            'emergency_contacts.*.email'     => 'nullable|email|max:255',
+            'emergency_contacts.*.location'  => 'nullable|string|max:255',
         ];
     }
 
