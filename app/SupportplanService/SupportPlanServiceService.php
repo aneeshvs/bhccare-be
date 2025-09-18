@@ -18,6 +18,10 @@ class SupportPlanServiceService
         $saved = [];
 
         foreach ($data as $row) {
+            if (empty($row['name'])) {
+                // Skip this row if `name` is missing/empty
+                continue;
+            }
             $service = SupportPlanService::firstOrNew([
                 'support_plan_id' => $supportPlanId,
                 'name' => $row['name'] ?? null,
