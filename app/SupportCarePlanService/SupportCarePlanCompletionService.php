@@ -34,6 +34,12 @@ class SupportCarePlanCompletionService
         'organisation_steps',
         'risk',
         'risk_management_strategies',
+        ],
+        '$supportCarePlanCommunicationPlanService'=>[
+            'helps_me_talk',
+        'helps_me_understand',
+        'please_communicate_by',
+        'emergency_communication'
         ]
     ];
 

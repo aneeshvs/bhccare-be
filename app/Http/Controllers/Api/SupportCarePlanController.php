@@ -10,6 +10,7 @@ use App\SupportCarePlanService\SupportCarePlanService;
 use App\SupportCarePlanService\SupportCarePlanCompletionService;
 use App\SupportCarePlanService\AlternateDecisionMakerService;
 use App\SupportCarePlanService\SilGoalService;
+use App\SupportCarePlanService\SupportCarePlanCommunicationPlanService;
 use App\SupportCarePlanService\SupportCoordinationGoalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,8 @@ class SupportCarePlanController extends Controller
         SupportCarePlanCompletionService $completionService,
         AlternateDecisionMakerService $alternateDecisionMakerService,
         SilGoalService $silGoalService,
-        SupportCoordinationGoalService $supportCoordinationGoalService
+        SupportCoordinationGoalService $supportCoordinationGoalService,
+        SupportCarePlanCommunicationPlanService $supportCarePlanCommunicationPlanService
     ) {
         $data = $request->validated();
 
@@ -40,6 +42,7 @@ class SupportCarePlanController extends Controller
             $alternateDecisionMakerService,
             $silGoalService,
             $supportCoordinationGoalService,
+            $supportCarePlanCommunicationPlanService,
         ) {
             $user = Auth::user();
             if (!$user) {
@@ -58,6 +61,7 @@ class SupportCarePlanController extends Controller
              $silGoalService->saveMany($data['sil_goals'] ?? [], $plan->id, 'sil');
             $silGoalService->saveMany($data['support_coordination_goals'] ?? [], $plan->id, 'support_coordination');
             $silGoalService->saveMany($data['homecare_goals'] ?? [], $plan->id, 'homecare');
+            $supportCarePlanCommunicationPlanService->save($data);
 
             // ✅ Calculate completion %
             $completion = $completionService->calculate($plan);
@@ -88,6 +92,7 @@ class SupportCarePlanController extends Controller
                'silGoals',
                'supportCoordinationGoals',
                'homecareGoals',
+               'communicationPlans'
 
                 ]),
             ];
@@ -103,7 +108,8 @@ class SupportCarePlanController extends Controller
 
     public function showByUuid($uuid, SupportCarePlanCompletionService $completionService)
     {
-        $plan = SupportCarePlan::with(['alternateDecisionMaker','silGoals','supportCoordinationGoals','homecareGoals']) // add child relationships if any
+        $plan = SupportCarePlan::with(['alternateDecisionMaker','silGoals',
+        'supportCoordinationGoals','homecareGoals','communicationPlans']) // add child relationships if any
             ->where('uuid', $uuid)
             ->first();
 
@@ -125,7 +131,8 @@ class SupportCarePlanController extends Controller
 
         public function exportFullFormPdf(string $uuid)
     {
-        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker','silGoals','supportCoordinationGoals','homecareGoals']) // load staff relationship
+        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker',
+        'silGoals','supportCoordinationGoals','homecareGoals','communicationPlans']) // load staff relationship
             ->where('uuid', $uuid)
             ->firstOrFail();
 

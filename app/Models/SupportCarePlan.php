@@ -66,6 +66,12 @@ public function silGoals()
                     ->where('category', 'homecare');
     }
 
+        public function communicationPlans()
+    {
+        return $this->hasMany(SupportCarePlanCommunicationPlan::class);
+    }
+
+
 // public function supportCoordinationGoals()
 // {
 //     return $this->hasMany(SupportCoordinationGoal::class, 'support_care_plan_id');

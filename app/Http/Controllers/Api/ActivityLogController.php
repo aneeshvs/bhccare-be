@@ -380,6 +380,7 @@ public function getLogsByUuidServiceAgreement(Request $request)
             'service_agreement_consent',
             'sil_goals',
             'support_coordination_goals',
+            'support_care_plan_communication'
 
         ]);
     }

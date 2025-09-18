@@ -40,6 +40,7 @@ class StoreSupportCarePlanRequest extends FormRequest
             $this->alternativerules(),
             $this->silrules(),
             $this->goalsrules(),
+            $this->communicationrules(),
 
 
 
@@ -109,7 +110,16 @@ class StoreSupportCarePlanRequest extends FormRequest
             'support_coordination_goals.*.goal_key' => 'nullable|string|max:255',
         ];
     }
+    private function communicationrules(): array
+    {
+        return [
 
+            'helps_me_talk'          => 'nullable|array',
+            'helps_me_understand'    => 'nullable|array',
+            'please_communicate_by'  => 'nullable|array',
+            'emergency_communication'=> 'nullable|string|max:2000',
+        ];
+    }
 
 
     protected function failedValidation(Validator $validator)
