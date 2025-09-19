@@ -9,6 +9,7 @@ use Spatie\Activitylog\LogOptions;
 class SupportCarePlanCommunicationPlan extends DefaultDBModel
 {
     use LogsActivity;
+            protected $table  = 'communication_plans';
 
    protected $table = 'communication_plans';
 

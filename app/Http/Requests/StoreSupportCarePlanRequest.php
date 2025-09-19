@@ -32,6 +32,13 @@ class StoreSupportCarePlanRequest extends FormRequest
                     'emergency_contacts' => json_decode($this->emergency_contacts, true),
                 ]);
             }
+            foreach (['helps_me_talk', 'helps_me_understand', 'please_communicate_by'] as $field) {
+                if (is_string($this->$field)) {
+                    $this->merge([
+                        $field => json_decode($this->$field, true),
+                    ]);
+                }
+            }
         }
 
 
@@ -125,10 +132,16 @@ class StoreSupportCarePlanRequest extends FormRequest
     {
         return [
 
-            'helps_me_talk'          => 'nullable|array',
-            'helps_me_understand'    => 'nullable|array',
-            'please_communicate_by'  => 'nullable|array',
-            'emergency_communication'=> 'nullable|string|max:2000',
+            // 'helps_me_talk' => 'nullable|array',
+            'helps_me_talk.*' => 'string|in:Interpreter,Symbols,Pictures,Gesturing,Facial Expressions,Simple words,When you wait for me to respond,My Supporter/carer,Other (Including Assistive technology)',
+
+            // 'helps_me_understand' => 'nullable|array',
+            'helps_me_understand.*' => 'string|in:Short plain sentences,Simple words,Concrete examples,Diagrams or pictures,Checking to see if I understand,Asking me to explain it,Asking my supporter/carer to explain it to me,Using real objects,Giving me a demonstration,Other',
+
+            // 'please_communicate_by' => 'nullable|array',
+            'please_communicate_by.*' => 'string|in:Speaking directly to me,Taking time to tell me,Waiting for me to respond,Writing down notes in my care plan,Knowing I cannot talk but can hear and understand,Other',
+
+            'emergency_communication' => 'nullable|string|max:2000',
         ];
     }
 
