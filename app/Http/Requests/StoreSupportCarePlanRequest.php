@@ -49,6 +49,9 @@ class StoreSupportCarePlanRequest extends FormRequest
             $this->communicationrules(),
             $this->disasterrules(),
             $this->contactrules(),
+            $this->importantContactsRules(),
+            $this->localrules(),
+            $this->emergencyScenariosRules(),
 
 
 
@@ -153,6 +156,49 @@ class StoreSupportCarePlanRequest extends FormRequest
             'emergency_contacts.*.location'  => 'nullable|string|max:255',
         ];
     }
+
+    private function importantContactsRules(): array
+{
+    return [
+        'advocate'                  => 'nullable|string|max:255',
+        'childcare_school_contact'  => 'nullable|string|max:255',
+        'power_of_attorney_guardian'=> 'nullable|string|max:255',
+        'workplace_volunteer_contact'=> 'nullable|string|max:255',
+        'landlord_sda_provider'     => 'nullable|string|max:255',
+        'doctor'                    => 'nullable|string|max:255',
+        'specialist_practitioner'   => 'nullable|string|max:255',
+        'solicitor'                 => 'nullable|string|max:255',
+        'insurer_home_contents'     => 'nullable|string|max:255',
+        'private_health_cover'      => 'nullable|string|max:255',
+        'insurer_vehicle'           => 'nullable|string|max:255',
+    ];
+}
+
+private function localrules(): array
+    {
+        return [
+            'council'     => 'nullable|string|max:255',
+            'hospital'    => 'nullable|string|max:255',
+            'electricity' => 'nullable|string|max:255',
+            'water'       => 'nullable|string|max:255',
+        ];
+    }
+
+    private function emergencyScenariosRules(): array
+{
+    return [
+        'admitted_to_hospital'                  => 'nullable|boolean',
+        'admitted_to_hospital_action'           => 'nullable|string|max:2000',
+        'medical_emergencies'                   => 'nullable|boolean',
+        'medical_emergencies_action'            => 'nullable|string|max:2000',
+        'other_likely_medical_emergency'        => 'nullable|boolean',
+        'other_likely_medical_emergency_action' => 'nullable|string|max:2000',
+        'natural_disaster'                      => 'nullable|boolean',
+        'natural_disaster_action'               => 'nullable|string|max:2000',
+    ];
+}
+
+
 
 
     protected function failedValidation(Validator $validator)

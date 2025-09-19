@@ -6,25 +6,22 @@ use App\Models\Classes\DefaultDBModel;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class SupportCarePlanCommunicationPlan extends DefaultDBModel
+class SupportCarePlanEmergencyScenario extends DefaultDBModel
 {
     use LogsActivity;
-            protected $table  = 'communication_plans';
 
-   protected $table = 'communication_plans';
+    protected $table = 'plan_emergency_scenarios';
 
     protected $fillable = [
         'support_care_plan_id',
-        'helps_me_talk',
-        'helps_me_understand',
-        'please_communicate_by',
-        'emergency_communication',
-    ];
-
-    protected $casts = [
-        'helps_me_talk'          => 'array',
-        'helps_me_understand'    => 'array',
-        'please_communicate_by'  => 'array',
+        'admitted_to_hospital',
+        'admitted_to_hospital_action',
+        'medical_emergencies',
+        'medical_emergencies_action',
+        'other_likely_medical_emergency',
+        'other_likely_medical_emergency_action',
+        'natural_disaster',
+        'natural_disaster_action',
     ];
 
     public function supportCarePlan()
@@ -37,6 +34,6 @@ class SupportCarePlanCommunicationPlan extends DefaultDBModel
         return LogOptions::defaults()
             ->logOnlyDirty()
             ->logFillable()
-            ->useLogName('support_care_plan_communication');
+            ->useLogName('support_care_plan_emergency_scenarios');
     }
 }

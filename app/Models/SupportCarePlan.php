@@ -10,6 +10,8 @@ class SupportCarePlan extends DefaultDBModel
 {
     use LogsActivity;
 
+    protected $table = 'support_care_plans';
+
     protected $fillable = [
         'user_id',
         'staff_id',
@@ -80,6 +82,22 @@ public function silGoals()
     {
         return $this->hasMany(SupportCarePlanEmergencyContact::class, 'support_care_plan_id');
     }
+
+    public function importantContacts()
+    {
+        return $this->hasMany(SupportCarePlanImportantContact::class, 'support_care_plan_id');
+    }
+     public function localServicesContact()
+    {
+        return $this->hasMany(SupportCarePlanLocalServicesContact::class, 'support_care_plan_id');
+    }
+
+        public function emergencyScenario()
+    {
+        return $this->hasOne(SupportCarePlanEmergencyScenario::class, 'support_care_plan_id');
+    }
+
+
 
 
 

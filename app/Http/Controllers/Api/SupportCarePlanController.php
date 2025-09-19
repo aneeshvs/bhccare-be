@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreSupportCarePlanRequest;
 use App\Http\Controllers\Controller;
 use App\Models\SupportCarePlan;
-
+use App\SupportCarePlanService\SupportCarePlanLocalServicesContactService;
 use App\SupportCarePlanService\SupportCarePlanService;
 use App\SupportCarePlanService\SupportCarePlanCompletionService;
 use App\SupportCarePlanService\AlternateDecisionMakerService;
@@ -14,6 +14,8 @@ use App\SupportCarePlanService\SupportCarePlanCommunicationPlanService;
 use App\SupportCarePlanService\SupportCoordinationGoalService;
 use App\SupportCarePlanService\SupportCarePlanEmergencyContactService;
 use App\SupportCarePlanService\SupportCarePlanEmergencyDisasterPlanService;
+use App\SupportCarePlanService\SupportCarePlanEmergencyScenarioService;
+use App\SupportCarePlanService\SupportCarePlanImportantContactService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -33,6 +35,10 @@ class SupportCarePlanController extends Controller
         SupportCarePlanCommunicationPlanService $supportCarePlanCommunicationPlanService,
         SupportCarePlanEmergencyDisasterPlanService  $supportCarePlanEmergencyDisasterPlanService,
         SupportCarePlanEmergencyContactService $supportCarePlanEmergencyContactService,
+        SupportCarePlanImportantContactService $supportCarePlanImportantContactService,
+        SupportCarePlanLocalServicesContactService $supportCarePlanLocalServicesContact,
+        SupportCarePlanEmergencyScenarioService $supportCarePlanEmergencyScenarioService
+
 
     ) {
         $data = $request->validated();
@@ -50,6 +56,9 @@ class SupportCarePlanController extends Controller
             $supportCarePlanCommunicationPlanService,
             $supportCarePlanEmergencyDisasterPlanService,
             $supportCarePlanEmergencyContactService,
+            $supportCarePlanImportantContactService,
+            $supportCarePlanLocalServicesContact,
+            $supportCarePlanEmergencyScenarioService,
         ) {
             $user = Auth::user();
             if (!$user) {
@@ -70,8 +79,13 @@ class SupportCarePlanController extends Controller
             $silGoalService->saveMany($data['homecare_goals'] ?? [], $plan->id, 'homecare');
             $supportCarePlanCommunicationPlanService->save($data);
             $supportCarePlanEmergencyDisasterPlanService->save($data);
+            $supportCarePlanImportantContactService->save($data + ['support_care_plan_id' => $plan->id]);
+
 
            $supportCarePlanEmergencyContactService->saveMany($data['emergency_contacts'] ?? [], $plan->id);
+           $supportCarePlanLocalServicesContact->save($data);
+           $supportCarePlanEmergencyScenarioService->save($data);
+
 
 
             // ✅ Calculate completion %
@@ -105,7 +119,10 @@ class SupportCarePlanController extends Controller
                'homecareGoals',
                'communicationPlans',
                'emergencyDisasterPlan',
-               'emergencyContacts'
+               'emergencyContacts',
+               'importantContacts',
+               'localServicesContact',
+               'emergencyScenario'
 
                 ]),
             ];
@@ -123,7 +140,8 @@ class SupportCarePlanController extends Controller
     {
         $plan = SupportCarePlan::with(['alternateDecisionMaker','silGoals',
         'supportCoordinationGoals','homecareGoals','communicationPlans',
-        'emergencyDisasterPlan','emergencyContacts']) // add child relationships if any
+        'emergencyDisasterPlan','emergencyContacts',
+        'importantContacts','localServicesContact','emergencyScenario']) // add child relationships if any
             ->where('uuid', $uuid)
             ->first();
 
@@ -147,7 +165,8 @@ class SupportCarePlanController extends Controller
     {
         $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker',
         'silGoals','supportCoordinationGoals','homecareGoals',
-        'communicationPlans','emergencyDisasterPlan','emergencyContacts']) // load staff relationship
+        'communicationPlans','emergencyDisasterPlan',
+        'emergencyContacts','importantContacts','localServicesContact','emergencyScenario']) // load staff relationship
             ->where('uuid', $uuid)
             ->firstOrFail();
 
