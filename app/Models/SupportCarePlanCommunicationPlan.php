@@ -11,7 +11,7 @@ class SupportCarePlanCommunicationPlan extends DefaultDBModel
     use LogsActivity;
             protected $table  = 'communication_plans';
 
-   protected $table = 'communication_plans';
+
 
     protected $fillable = [
         'support_care_plan_id',

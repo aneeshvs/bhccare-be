@@ -172,35 +172,39 @@
     @endif
 
     <!-- Communication Plans -->
-@if($supportCarePlan->communicationPlan)
+@if($supportCarePlan->communicationPlans->count())
 <div class="section">
     <div class="section-header">Communication Plan</div>
+
     <table>
-        <tr>
-            <td>
-                <span class="label">Helps me talk</span>
-                <span class="value">
-                    {{ implode(', ', json_decode($supportCarePlan->communicationPlan->helps_me_talk ?? '[]', true)) }}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="label">Helps me understand</span>
-                <span class="value">
-                    {{ implode(', ', json_decode($supportCarePlan->communicationPlan->helps_me_understand ?? '[]', true)) }}
-                </span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="label">Emergency Communication</span>
-                <span class="value">{{ $supportCarePlan->communicationPlan->emergency_communication ?? 'N/A' }}</span>
-            </td>
-        </tr>
+        @foreach($supportCarePlan->communicationPlans as $communication)
+            <tr>
+                <td>
+                    <span class="label">Helps me talk</span>
+                    <span class="value">
+                        {{ implode(', ', json_decode($communication->helps_me_talk ?? '[]', true)) }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Helps me understand</span>
+                    <span class="value">
+                        {{ implode(', ', json_decode($communication->helps_me_understand ?? '[]', true)) }}
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Emergency Communication</span>
+                    <span class="value">{{ $communication->emergency_communication ?? 'N/A' }}</span>
+                </td>
+            </tr>
+        @endforeach
     </table>
 </div>
 @endif
+
 
 
 
