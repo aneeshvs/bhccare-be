@@ -70,7 +70,7 @@ public function silGoals()
 
         public function communicationPlans()
     {
-        return $this->hasMany(SupportCarePlanCommunicationPlan::class);
+        return $this->hasOne(SupportCarePlanCommunicationPlan::class);
     }
 
     public function emergencyDisasterPlan()
@@ -85,11 +85,11 @@ public function silGoals()
 
     public function importantContacts()
     {
-        return $this->hasMany(SupportCarePlanImportantContact::class, 'support_care_plan_id');
+        return $this->hasOne(SupportCarePlanImportantContact::class, 'support_care_plan_id');
     }
      public function localServicesContact()
     {
-        return $this->hasMany(SupportCarePlanLocalServicesContact::class, 'support_care_plan_id');
+        return $this->hasOne(SupportCarePlanLocalServicesContact::class, 'support_care_plan_id');
     }
 
         public function emergencyScenario()
