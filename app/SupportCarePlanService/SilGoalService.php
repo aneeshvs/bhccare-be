@@ -27,6 +27,10 @@ class SilGoalService
                 continue;
             }
 
+            if (empty($goal['goal_key'])) {
+                $goal['goal_key'] = 'goal_' . Str::uuid();
+            }
+
             $record = null;
 
             // 1️⃣ Update by ID if provided
