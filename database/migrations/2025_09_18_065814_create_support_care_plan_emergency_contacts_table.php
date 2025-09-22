@@ -13,6 +13,8 @@ return new class extends Migration {
 
             $table->unsignedBigInteger('support_care_plan_id');
 
+             $table->string('goal_key')->nullable();
+
             $table->string('name')->nullable();
             $table->string('relationship')->nullable();
             $table->string('phone')->nullable();

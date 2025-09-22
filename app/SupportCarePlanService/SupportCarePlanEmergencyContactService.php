@@ -18,23 +18,37 @@ class SupportCarePlanEmergencyContactService
         $processedIds = [];
 
         foreach ($contacts as $contact) {
+            // Skip empty rows
             if (empty($contact['name']) && empty($contact['phone'])) {
-                continue; // skip empty rows
+                continue;
+            }
+
+            // Ensure goal_key exists
+            if (empty($contact['goal_key'])) {
+                $contact['goal_key'] = 'goal_' . Str::uuid();
             }
 
             $record = null;
 
-            // Update if ID present
+            // 1️⃣ Update by ID if present
             if (!empty($contact['id'])) {
                 $record = SupportCarePlanEmergencyContact::where('id', $contact['id'])
                     ->where('support_care_plan_id', $supportCarePlanId)
                     ->first();
             }
 
-            // Create new if not found
+            // 2️⃣ Update by goal_key if ID not found
+            if (!$record && !empty($contact['goal_key'])) {
+                $record = SupportCarePlanEmergencyContact::where('support_care_plan_id', $supportCarePlanId)
+                    ->where('goal_key', $contact['goal_key'])
+                    ->first();
+            }
+
+            // 3️⃣ Create new if still not found
             if (!$record) {
                 $record = new SupportCarePlanEmergencyContact();
                 $record->support_care_plan_id = $supportCarePlanId;
+                $record->goal_key = $contact['goal_key'];
             }
 
             $original = $record->exists ? $record->getOriginal() : [];
@@ -48,9 +62,10 @@ class SupportCarePlanEmergencyContactService
 
                 $record->save();
 
-                Log::info("EmergencyContact changes", [
+                Log::info("EmergencyContact: changes", [
                     'changes' => $changes,
                     'original' => $oldValues,
+                    'uuid' => optional($record->supportCarePlan)->uuid,
                 ]);
 
                 activity()
@@ -61,6 +76,11 @@ class SupportCarePlanEmergencyContactService
                         'attributes' => $changes,
                         'old' => $oldValues,
                         'support_care_plan_id' => $record->support_care_plan_id,
+                        'uuid' => $contact['uuid'] ?? optional($record->supportCarePlan)->uuid,
+                        'user_id' => $contact['user_id'] ?? optional($record->supportCarePlan)->user_id,
+                        'client_type' => $contact['client_type'] ?? optional($record->supportCarePlan)->client_type,
+                        'staff_id' => $contact['staff_id'] ?? optional($record->supportCarePlan)->staff_id,
+                        'category' => $contact['category'] ?? 'emergency_contact',
                     ])
                     ->log('Emergency Contact record updated');
             } else {

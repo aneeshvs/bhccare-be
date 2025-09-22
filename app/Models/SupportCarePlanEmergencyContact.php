@@ -14,6 +14,7 @@ class SupportCarePlanEmergencyContact extends DefaultDBModel
 
     protected $fillable = [
         'support_care_plan_id',
+        'goal_key',
         'name',
         'relationship',
         'phone',

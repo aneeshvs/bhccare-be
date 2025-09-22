@@ -167,6 +167,7 @@ class StoreSupportCarePlanRequest extends FormRequest
             'emergency_contacts.*.phone'     => 'nullable|string|max:50',
             'emergency_contacts.*.email'     => 'nullable|email|max:255',
             'emergency_contacts.*.location'  => 'nullable|string|max:255',
+            'emergency_contacts.*.goal_key' => 'nullable|string|max:255',
         ];
     }
 
