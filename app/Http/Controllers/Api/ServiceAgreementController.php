@@ -98,7 +98,7 @@ class ServiceAgreementController extends Controller
 
 
 
-    public function showByUuid($uuid, ServiceAgreementCompletionService $completionService)
+    public function showByUuid( string $uuid, ServiceAgreementCompletionService $completionService)
 {
     // ✅ Load all related relationships if needed
     $serviceAgreement = ServiceAgreement::with([

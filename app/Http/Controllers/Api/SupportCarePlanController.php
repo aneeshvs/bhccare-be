@@ -136,7 +136,7 @@ class SupportCarePlanController extends Controller
         ]);
     }
 
-    public function showByUuid($uuid, SupportCarePlanCompletionService $completionService)
+    public function showByUuid(string $uuid, SupportCarePlanCompletionService $completionService)
     {
         $plan = SupportCarePlan::with(['alternateDecisionMaker','silGoals',
         'supportCoordinationGoals','homecareGoals','communicationPlans',
