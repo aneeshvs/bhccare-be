@@ -5,8 +5,17 @@ namespace App\Http\Controllers\Api;
 use App\Http\Requests\StoreSupportCarePlanRequest;
 use App\Http\Controllers\Controller;
 use App\Models\SupportCarePlan;
+use App\SupportCarePlanService\SupportCarePlanLocalServicesContactService;
 use App\SupportCarePlanService\SupportCarePlanService;
 use App\SupportCarePlanService\SupportCarePlanCompletionService;
+use App\SupportCarePlanService\AlternateDecisionMakerService;
+use App\SupportCarePlanService\SilGoalService;
+use App\SupportCarePlanService\SupportCarePlanCommunicationPlanService;
+use App\SupportCarePlanService\SupportCoordinationGoalService;
+use App\SupportCarePlanService\SupportCarePlanEmergencyContactService;
+use App\SupportCarePlanService\SupportCarePlanEmergencyDisasterPlanService;
+use App\SupportCarePlanService\SupportCarePlanEmergencyScenarioService;
+use App\SupportCarePlanService\SupportCarePlanImportantContactService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +28,18 @@ class SupportCarePlanController extends Controller
     public function update(
         StoreSupportCarePlanRequest $request,
         SupportCarePlanService $service,
-        SupportCarePlanCompletionService $completionService
+        SupportCarePlanCompletionService $completionService,
+        AlternateDecisionMakerService $alternateDecisionMakerService,
+        SilGoalService $silGoalService,
+        SupportCoordinationGoalService $supportCoordinationGoalService,
+        SupportCarePlanCommunicationPlanService $supportCarePlanCommunicationPlanService,
+        SupportCarePlanEmergencyDisasterPlanService  $supportCarePlanEmergencyDisasterPlanService,
+        SupportCarePlanEmergencyContactService $supportCarePlanEmergencyContactService,
+        SupportCarePlanImportantContactService $supportCarePlanImportantContactService,
+        SupportCarePlanLocalServicesContactService $supportCarePlanLocalServicesContact,
+        SupportCarePlanEmergencyScenarioService $supportCarePlanEmergencyScenarioService
+
+
     ) {
         $data = $request->validated();
 
@@ -29,7 +49,16 @@ class SupportCarePlanController extends Controller
         $result = DB::transaction(function () use (
             $data,
             $service,
-            $completionService
+            $completionService,
+            $alternateDecisionMakerService,
+            $silGoalService,
+            $supportCoordinationGoalService,
+            $supportCarePlanCommunicationPlanService,
+            $supportCarePlanEmergencyDisasterPlanService,
+            $supportCarePlanEmergencyContactService,
+            $supportCarePlanImportantContactService,
+            $supportCarePlanLocalServicesContact,
+            $supportCarePlanEmergencyScenarioService,
         ) {
             $user = Auth::user();
             if (!$user) {
@@ -42,6 +71,22 @@ class SupportCarePlanController extends Controller
 
             // ✅ Save main Support Care Plan
             $plan = $service->save($data);
+             $data['support_care_plan_id'] = $plan->id;
+
+             $alternateDecisionMakerService->save($data);
+             $silGoalService->saveMany($data['sil_goals'] ?? [], $plan->id, 'sil');
+            $silGoalService->saveMany($data['support_coordination_goals'] ?? [], $plan->id, 'support_coordination');
+            $silGoalService->saveMany($data['homecare_goals'] ?? [], $plan->id, 'homecare');
+            $supportCarePlanCommunicationPlanService->save($data);
+            $supportCarePlanEmergencyDisasterPlanService->save($data);
+            $supportCarePlanImportantContactService->save($data + ['support_care_plan_id' => $plan->id]);
+
+
+           $supportCarePlanEmergencyContactService->saveMany($data['emergency_contacts'] ?? [], $plan->id);
+           $supportCarePlanLocalServicesContact->save($data);
+           $supportCarePlanEmergencyScenarioService->save($data);
+
+
 
             // ✅ Calculate completion %
             $completion = $completionService->calculate($plan);
@@ -67,7 +112,19 @@ class SupportCarePlanController extends Controller
             }
 
             return [
-                'supportCarePlan' => $plan,
+               'supportCarePlan' => $plan->load([
+               'alternateDecisionMaker',
+               'silGoals',
+               'supportCoordinationGoals',
+               'homecareGoals',
+               'communicationPlans',
+               'emergencyDisasterPlan',
+               'emergencyContacts',
+               'importantContacts',
+               'localServicesContact',
+               'emergencyScenario'
+
+                ]),
             ];
         });
 
@@ -81,7 +138,10 @@ class SupportCarePlanController extends Controller
 
     public function showByUuid($uuid, SupportCarePlanCompletionService $completionService)
     {
-        $plan = SupportCarePlan::with([]) // add child relationships if any
+        $plan = SupportCarePlan::with(['alternateDecisionMaker','silGoals',
+        'supportCoordinationGoals','homecareGoals','communicationPlans',
+        'emergencyDisasterPlan','emergencyContacts',
+        'importantContacts','localServicesContact','emergencyScenario']) // add child relationships if any
             ->where('uuid', $uuid)
             ->first();
 
@@ -97,13 +157,16 @@ class SupportCarePlanController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => $plan,
+            'data' => $plan->toArray(),
         ]);
     }
 
         public function exportFullFormPdf(string $uuid)
     {
-        $supportCarePlan = SupportCarePlan::with(['staff']) // load staff relationship
+        $supportCarePlan = SupportCarePlan::with(['staff','alternateDecisionMaker',
+        'silGoals','supportCoordinationGoals','homecareGoals',
+        'communicationPlans','emergencyDisasterPlan',
+        'emergencyContacts','importantContacts','localServicesContact','emergencyScenario']) // load staff relationship
             ->where('uuid', $uuid)
             ->firstOrFail();
 
@@ -132,4 +195,5 @@ class SupportCarePlanController extends Controller
 
         return response()->json(['uuid' => $plan->uuid], 200);
     }
+
 }

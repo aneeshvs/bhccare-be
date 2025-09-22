@@ -10,6 +10,8 @@ class SupportCarePlan extends DefaultDBModel
 {
     use LogsActivity;
 
+    protected $table = 'support_care_plans';
+
     protected $fillable = [
         'user_id',
         'staff_id',
@@ -40,4 +42,73 @@ class SupportCarePlan extends DefaultDBModel
             ->logFillable()
             ->useLogName('support_care_plan');
     }
+
+    public function alternateDecisionMaker()
+{
+    return $this->hasOne(AlternateDecisionMaker::class);
+}
+
+public function silGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'sil');
+    }
+
+    // Support Coordination Goals
+    public function supportCoordinationGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'support_coordination');
+    }
+
+    // Homecare Goals
+    public function homecareGoals()
+    {
+        return $this->hasMany(SilGoal::class, 'support_care_plan_id')
+                    ->where('category', 'homecare');
+    }
+
+            public function communicationPlans()
+    {
+        return $this->hasMany(SupportCarePlanCommunicationPlan::class);
+    }
+
+
+    public function emergencyDisasterPlan()
+        {
+            return $this->hasOne(SupportCarePlanEmergencyDisasterPlan::class, 'support_care_plan_id');
+        }
+
+    public function emergencyContacts()
+    {
+        return $this->hasMany(SupportCarePlanEmergencyContact::class, 'support_care_plan_id');
+    }
+
+    public function importantContacts()
+    {
+        return $this->hasOne(SupportCarePlanImportantContact::class, 'support_care_plan_id');
+    }
+     public function localServicesContact()
+    {
+        return $this->hasOne(SupportCarePlanLocalServicesContact::class, 'support_care_plan_id');
+    }
+
+        public function emergencyScenario()
+    {
+        return $this->hasOne(SupportCarePlanEmergencyScenario::class, 'support_care_plan_id');
+    }
+
+
+
+
+
+// public function supportCoordinationGoals()
+// {
+//     return $this->hasMany(SupportCoordinationGoal::class, 'support_care_plan_id');
+// }
+
+//
+
+
+
 }

@@ -19,23 +19,23 @@ return new class extends Migration {
             // Agreement accepted (on behalf of Best of Homecare)
             $table->string('accepted_name')->nullable();
             $table->string('accepted_position')->nullable();
-            $table->string('accepted_signature')->nullable();
+            $table->binary('accepted_signature')->nullable();
             $table->date('accepted_date')->nullable();
 
             // Written participant consent
             $table->string('consents_participant_name')->nullable();
             $table->enum('participant_role', ['participant', 'representative'])->nullable();
-            $table->string('participant_signature')->nullable();
+            $table->binary('participant_signature')->nullable();
             $table->date('participant_date')->nullable();
 
             // Witness
             $table->string('witness_name')->nullable();
-            $table->string('witness_signature')->nullable();
+            $table->binary('witness_signature')->nullable();
             $table->date('witness_date')->nullable();
 
             // Verbal participant consent
             $table->string('verbal_staff_name')->nullable();
-            $table->string('verbal_staff_signature')->nullable();
+            $table->binary('verbal_staff_signature')->nullable();
             $table->string('verbal_staff_position')->nullable();
             $table->date('verbal_date')->nullable();
             $table->text('other_notes')->nullable();

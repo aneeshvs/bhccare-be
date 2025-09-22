@@ -379,6 +379,7 @@ public function getLogsByUuidServiceAgreement(Request $request)
             'service_agreement',
             'service_agreement_consent',
 
+
         ]);
     }
 
@@ -476,6 +477,15 @@ public function getLogsByUuidSupportCarePlan(Request $request)
     } else {
         $query->whereIn('log_name', [
             'support_care_plan',
+            'alternate_decision_maker',
+            'sil_goals',
+            'support_coordination_goals',
+            'support_care_plan_communication',
+            'support_care_plan_emergency_disaster',
+            'support_care_plan_emergency_contacts',
+            'support_care_plan_important_contacts',
+            'support_care_plan_local_services_contacts',
+            'support_care_plan_emergency_scenarios'
         ]);
     }
 
