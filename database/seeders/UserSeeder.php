@@ -21,8 +21,8 @@ class UserSeeder extends Seeder
 
         $admin = User::create([
             'name'         => 'Admin',
-            'email'        => 'admin@exam.com',
-            'password'     => Hash::make('admin@123'),
+            'email'        => 'admin@bestofhomecare.com.au',
+            'password'     => Hash::make('24brownsrdDM'),
             'user_type_id'  => 1, // Admin
         ]);
     }
