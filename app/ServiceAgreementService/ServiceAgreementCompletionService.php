@@ -42,22 +42,47 @@ class ServiceAgreementCompletionService
      * Calculate percentage of completed fields.
      */
     public function calculate(ServiceAgreement $serviceAgreement): int
-    {
-        $filledFields = 0;
-        $totalFields  = 0;
+{
+    $filledFields = 0;
+    $totalFields  = 0;
 
-        foreach ($this->sectionFields as $relation => $fields) {
-            if ($relation === 'serviceAgreement') {
-                // Fields directly on the ServiceAgreement model
+    foreach ($this->sectionFields as $relation => $fields) {
+        if ($relation === 'serviceAgreement') {
+            // Direct fields
+            foreach ($fields as $field) {
+                $totalFields++;
+                if (!empty($serviceAgreement->$field)) {
+                    $filledFields++;
+                }
+            }
+        } else {
+            // Handle relations (hasOne / hasMany)
+            $relatedData = $serviceAgreement->$relation;
+
+            if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+                foreach ($relatedData as $item) {
+                    foreach ($fields as $field) {
+                        $totalFields++;
+                        if (!empty($item->$field)) {
+                            $filledFields++;
+                        }
+                    }
+                }
+            } elseif ($relatedData) {
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($serviceAgreement->$field)) {
+                    if (!empty($relatedData->$field)) {
                         $filledFields++;
                     }
                 }
+            } else {
+                // No related records exist → count fields as empty
+                $totalFields += count($fields);
             }
         }
-
-        return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
     }
+
+    return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
+}
+
 }

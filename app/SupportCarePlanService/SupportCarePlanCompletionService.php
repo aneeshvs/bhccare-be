@@ -35,12 +35,14 @@ class SupportCarePlanCompletionService
         'risk',
         'risk_management_strategies',
         ],
+
         'communicationPlans'=>[
             'helps_me_talk',
         'helps_me_understand',
         'please_communicate_by',
         'emergency_communication'
         ],
+
 
         'emergencyDisasterPlan'=>[
         'participant_name',
@@ -78,7 +80,7 @@ class SupportCarePlanCompletionService
     ],
 
 
-         'emergencyScenario'=>[
+    'emergencyScenario'=>[
 
         'admitted_to_hospital',
         'admitted_to_hospital_action',
@@ -102,21 +104,47 @@ class SupportCarePlanCompletionService
      * Calculate percentage of completed fields.
      */
     public function calculate(SupportCarePlan $plan): int
-    {
-        $filledFields = 0;
-        $totalFields  = 0;
+{
+    $filledFields = 0;
+    $totalFields  = 0;
 
-        foreach ($this->sectionFields as $relation => $fields) {
-            if ($relation === 'supportCarePlan') {
+    foreach ($this->sectionFields as $relation => $fields) {
+        if ($relation === 'supportCarePlan') {
+            // Direct fields on SupportCarePlan
+            foreach ($fields as $field) {
+                $totalFields++;
+                if (!empty($plan->$field)) {
+                    $filledFields++;
+                }
+            }
+        } else {
+            // Handle relations (hasMany / hasOne)
+            $relatedData = $plan->$relation;
+
+            if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+                foreach ($relatedData as $item) {
+                    foreach ($fields as $field) {
+                        $totalFields++;
+                        if (!empty($item->$field)) {
+                            $filledFields++;
+                        }
+                    }
+                }
+            } elseif ($relatedData) {
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($plan->$field)) {
+                    if (!empty($relatedData->$field)) {
                         $filledFields++;
                     }
                 }
+            } else {
+                // If no related records exist, count fields as empty
+                $totalFields += count($fields);
             }
         }
-
-        return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
     }
+
+    return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
+}
+
 }
