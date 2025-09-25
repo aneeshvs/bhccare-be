@@ -2,23 +2,23 @@
 
 return [
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Limit to API endpoints (better security)
+    'paths' => ['api/*', 'sanctum/csrf-cookie'],
 
-    'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
+    'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'http://localhost:3000', // Next.js frontend
-        'http://localhost',      // Core PHP via XAMPP or Apache
+        env('FRONTEND_URL'),
+        env('CORE_PHP_URL'),
     ],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'], // Allow all headers
+    'allowed_headers' => ['*'],
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => false, // Set to true only if you're using cookies/auth with frontend
+    'supports_credentials' => false, // true if using cookies/auth
 
 ];

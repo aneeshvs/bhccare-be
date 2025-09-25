@@ -15,37 +15,59 @@ public function store(Request $request)
 {
     $request->validate([
         'name' => 'required|string',
-        'email' => 'required|email|unique:users,email',
-        'password' => 'required|string|min:6',
+        'email' => 'required|email',
+        'password' => 'required|string',
         'phone' => 'nullable|string',
         'username' => 'nullable|string',
         'stafftype' => 'nullable|string',
     ]);
 
-    $user = User::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-        'usertype' => 'staff',
-    ]);
+    // 🔹 Check if user exists
+    $user = User::where('email', $request->email)->first();
 
-    // ✅ Store in staff table too
-    $staff = Staff::create([
-        'name' => $request->name,
-        'email' => $request->email,
-        'phone' => $request->phone,
-        'username' => $request->username,
-        'stafftype' => $request->stafftype,
-        'user_id' => $user->id,
+    if ($user) {
+        // Update existing
+        $user->update([
+            'name' => $request->name,
+            'password' => Hash::make($request->password),
+        ]);
 
-    ]);
+        $staff = Staff::updateOrCreate(
+            ['user_id' => $user->id],
+            [
+                'name'      => $request->name,
+                'email'     => $request->email,
+                'phone'     => $request->phone,
+                'username'  => $request->username,
+                'stafftype' => $request->stafftype,
+            ]
+        );
+    } else {
+        // Create new
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'usertype' => 'staff',
+        ]);
+
+        $staff = Staff::create([
+            'name'      => $request->name,
+            'email'     => $request->email,
+            'phone'     => $request->phone,
+            'username'  => $request->username,
+            'stafftype' => $request->stafftype,
+            'user_id'   => $user->id,
+        ]);
+    }
 
     return response()->json([
         'status' => true,
-        'user' => $user,
-        'staff' => $staff,
+        'user'   => $user,
+        'staff'  => $staff,
     ]);
 }
+
 
    // Laravel: StaffSyncController.php
     // In StaffSyncController
@@ -53,7 +75,7 @@ public function store(Request $request)
     {
         $request->validate([
             'email' => 'required|email|exists:users,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string',
         ]);
 
         $user = User::where('email', $request->email)->first();
