@@ -7,8 +7,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        env('FRONTEND_URL'),
-        env('CORE_PHP_URL'),
+        'https://frontend.bhccare.com.au/',
+        'https://bhccare.com.au/',
     ],
 
     'allowed_origins_patterns' => [],
