@@ -14,21 +14,22 @@ class StaffSyncController extends UniversalController
 public function store(Request $request)
 {
     $request->validate([
-        'name' => 'required|string',
-        'email' => 'required|email',
-        'password' => 'required|string',
-        'phone' => 'nullable|string',
-        'username' => 'nullable|string',
+        'name'      => 'required|string',
+        'email'     => 'required|email',
+        'password'  => 'required|string',
+        'phone'     => 'nullable|string',
+        'username'  => 'nullable|string',
         'stafftype' => 'nullable|string',
     ]);
 
-    // 🔹 Check if user exists
+    // 🔹 Check if user already exists
     $user = User::where('email', $request->email)->first();
 
     if ($user) {
-        // Update existing
+        // ✅ Update existing user & staff
         $user->update([
-            'name' => $request->name,
+            'name'     => $request->name,
+            'email'    => $request->email,   // update email too
             'password' => Hash::make($request->password),
         ]);
 
@@ -43,10 +44,10 @@ public function store(Request $request)
             ]
         );
     } else {
-        // Create new
+        // ✅ Create new user & staff
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
+            'name'     => $request->name,
+            'email'    => $request->email,
             'password' => Hash::make($request->password),
             'usertype' => 'staff',
         ]);
@@ -63,10 +64,12 @@ public function store(Request $request)
 
     return response()->json([
         'status' => true,
+        'message'=> $user->wasRecentlyCreated ? 'Staff created successfully' : 'Staff updated successfully',
         'user'   => $user,
         'staff'  => $staff,
     ]);
 }
+
 
 
    // Laravel: StaffSyncController.php
