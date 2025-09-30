@@ -576,7 +576,7 @@ public function getLogsByUuidRiskAssessment(Request $request)
     }
 
     // 2. Build activity log query
-    $query = \Spatie\Activitylog\Models\Activity::where('properties->risk_assessment_id', $riskAssessment->id);
+    $query = \Spatie\Activitylog\Models\Activity::where('properties->individual_risk_assessment_id', $riskAssessment->id);
 
     // Optional filter by table (log_name)
     if (!empty($table)) {
@@ -584,6 +584,9 @@ public function getLogsByUuidRiskAssessment(Request $request)
     } else {
         $query->whereIn('log_name', [
             'individual_risk_assessment',
+            'individual_risk_assessment_detail',
+            'individual_risk_assessment_communication',
+            'individual_risk_assessment_cognition',
 
         ]);
     }

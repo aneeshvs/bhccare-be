@@ -23,6 +23,9 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
     {
         return array_merge(
             $this->baseRules(),
+            $this->detailsrules(),
+            $this->communicationrules(),
+            $this->cognitionrules(),
 
         );
     }
@@ -49,6 +52,49 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             'completion_percentage' => 'nullable|integer|min:0|max:100',
         ];
     }
+
+    private function detailsrules(): array
+    {
+        return [
+
+            'vulnerability'                 => 'nullable|in:high,medium,low',
+            'review_frequency'              => 'nullable|in:3_months,6_months,12_months',
+            'dependent_on_homecare'         => 'nullable|boolean',
+
+        ];
+    }
+
+    private function communicationrules(): array
+    {
+        return [
+
+            'hearing_impairment'            => 'nullable|boolean',
+            'hearing_hazards'               => 'nullable|string|max:2000',
+            'hearing_management_plan'       => 'nullable|string|max:2000',
+            'speech_impairment'             => 'nullable|boolean',
+            'speech_hazards'                => 'nullable|string|max:2000',
+            'speech_management_plan'        => 'nullable|string|max:2000',
+        ];
+    }
+
+    private function cognitionrules(): array
+    {
+        return [
+
+            'oriented_in_time_place' => 'nullable|boolean',
+            'oriented_hazards' => 'nullable|string|max:2000',
+            'oriented_management_plan' => 'nullable|string|max:2000',
+
+            'accepts_direction' => 'nullable|boolean',
+            'direction_hazards' => 'nullable|string|max:2000',
+            'direction_management_plan' => 'nullable|string|max:2000',
+
+            'short_term_memory_issues' => 'nullable|boolean',
+            'memory_hazards' => 'nullable|string|max:2000',
+            'memory_management_plan' => 'nullable|string|max:2000',
+        ];
+    }
+
 
 
 

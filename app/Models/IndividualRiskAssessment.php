@@ -34,6 +34,23 @@ class IndividualRiskAssessment extends DefaultDBModel
         return $this->belongsTo(Staff::class);
     }
 
+    public function details()
+{
+    return $this->hasMany(IndividualRiskAssessmentDetail::class, 'individual_risk_assessment_id');
+}
+
+public function communications()
+{
+    return $this->hasMany(IndividualRiskAssessmentCommunication::class, 'individual_risk_assessment_id');
+}
+
+public function cognitions()
+{
+    return $this->hasMany(IndividualRiskAssessmentCognition::class, 'individual_risk_assessment_id');
+}
+
+
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

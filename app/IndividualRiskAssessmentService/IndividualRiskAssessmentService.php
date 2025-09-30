@@ -39,7 +39,7 @@ class IndividualRiskAssessmentService
                     'user_id' => $assessment->user_id,
                     'client_type' => $assessment->client_type,
                     'uuid' => $assessment->uuid,
-                    'risk_assessment_id' => $assessment->id,
+                    'individual_risk_assessment_id' => $assessment->id,
                 ])
                 ->log('Individual Risk Assessment record has been updated');
 

@@ -11,11 +11,42 @@ class IndividualRiskAssessmentCompletionService
      * The `riskAssessment` section refers to fields directly on the IndividualRiskAssessment model.
      */
     private array $sectionFields = [
+
         'riskAssessment' => [
             'client_name',
             'site_address',
             'assessment_date',
             'planned_review_date',
+        ],
+
+        'deatils' =>[
+
+        'vulnerability',
+        'review_frequency',
+        'dependent_on_homecare',
+
+        ],
+
+        'communications'=>[
+        'hearing_impairment',
+        'hearing_hazards',
+        'hearing_management_plan',
+        'speech_impairment',
+        'speech_hazards',
+        'speech_management_plan',
+        ],
+
+        'cognitions'=>[
+
+        'oriented_in_time_place',
+        'oriented_hazards',
+        'oriented_management_plan',
+        'accepts_direction',
+        'direction_hazards',
+        'direction_management_plan',
+        'short_term_memory_issues',
+        'memory_hazards',
+        'memory_management_plan',
         ],
 
 

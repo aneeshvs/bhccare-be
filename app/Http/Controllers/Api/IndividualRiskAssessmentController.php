@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreIndividualRiskAssessmentRequest;
+use App\IndividualRiskAssessmentService\IndividualRiskAssessmentCognitionService;
+use App\IndividualRiskAssessmentService\IndividualRiskAssessmentCommunicationService;
 use App\Models\IndividualRiskAssessment;
 use App\IndividualRiskAssessmentService\IndividualRiskAssessmentService;
 use App\IndividualRiskAssessmentService\IndividualRiskAssessmentCompletionService;
+use App\IndividualRiskAssessmentService\IndividualRiskAssessmentDetailService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +22,20 @@ class IndividualRiskAssessmentController extends Controller
     public function update(
         StoreIndividualRiskAssessmentRequest $request,
         IndividualRiskAssessmentService $service,
-        IndividualRiskAssessmentCompletionService $completionService
+        IndividualRiskAssessmentCompletionService $completionService,
+        IndividualRiskAssessmentDetailService $individualRiskAssessmentDetailService,
+        IndividualRiskAssessmentCommunicationService $individualRiskAssessmentCommunicationService,
+        IndividualRiskAssessmentCognitionService  $individualRiskAssessmentCognitionService,
+
     ) {
         $data = $request->validated();
         $isFinal = $request->boolean('submit_final');
         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        $result = DB::transaction(function () use ($data, $service, $completionService) {
+        $result = DB::transaction(function () use ($data, $service, $completionService,
+        $individualRiskAssessmentDetailService,
+        $individualRiskAssessmentCommunicationService,
+        $individualRiskAssessmentCognitionService,) {
             $user = Auth::user();
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -37,6 +47,12 @@ class IndividualRiskAssessmentController extends Controller
 
             // Save main record
             $assessment = $service->save($data);
+            $data['individual_risk_assessment_id'] = $assessment->id;
+
+
+            $individualRiskAssessmentDetailService->save($data);
+            $individualRiskAssessmentCommunicationService->save($data);
+            $individualRiskAssessmentCognitionService->save($data);
 
             // Calculate completion %
             $completion = $completionService->calculate($assessment);
@@ -56,7 +72,16 @@ class IndividualRiskAssessmentController extends Controller
                 Log::error('Error reporting Risk Assessment status: ' . $e->getMessage());
             }
 
-            return ['individualRiskAssessment' => $assessment];
+
+            return ['individualRiskAssessment' => $assessment->load
+        ([
+            'details',
+            'communications',
+            'cognitions',
+        ])
+       ];
+
+
 
         });
 
@@ -70,7 +95,7 @@ class IndividualRiskAssessmentController extends Controller
 
     public function showByUuid(string $uuid, IndividualRiskAssessmentCompletionService $completionService)
     {
-        $assessment = IndividualRiskAssessment::where('uuid', $uuid)->first();
+        $assessment = IndividualRiskAssessment::with('details','communications','cognitions')->where('uuid', $uuid)->first();
 
         if (!$assessment) {
             return response()->json([
@@ -90,7 +115,7 @@ class IndividualRiskAssessmentController extends Controller
 
     public function exportFullFormPdf(string $uuid)
     {
-        $assessment = IndividualRiskAssessment::with('staff')
+        $assessment = IndividualRiskAssessment::with('staff','details','communications','cognitions')
             ->where('uuid', $uuid)
             ->firstOrFail();
 
