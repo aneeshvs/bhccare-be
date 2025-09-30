@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\ScheduleOfCareController;
 use App\Http\Controllers\Api\SupportPlanController;
 use App\Http\Controllers\Api\ServiceAgreementController;
 use App\Http\Controllers\Api\SupportCarePlanController;
+use App\Http\Controllers\Api\IndividualRiskAssessmentController;
 
 
 
@@ -107,6 +108,20 @@ Route::get('/support-care-plan/export-pdf/{uuid}', [SupportCarePlanController::c
 Route::get('/support-care-plan/{uuid}/export-pdf', [SupportCarePlanController::class, 'exportFullFormPdf']);
 
 
+// risk assessment
+
+Route::get('/risk-assessment/logs', [ActivityLogController::class, 'getLogsByUuidRiskAssessment']);
+
+// 🔹 Fetch by UUID (public)
+Route::get('/risk-assessment/{uuid}', [IndividualRiskAssessmentController::class, 'showByUuid']);
+
+// 🔹 Get UUID by user & client_type
+Route::get('/get-risk-assessment-uuid', [IndividualRiskAssessmentController::class, 'getRiskAssessmentUuid']);
+
+// 🔹 Export PDF (two options)
+Route::get('/risk-assessment/export-pdf/{uuid}', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
+Route::get('/risk-assessment/{uuid}/export-pdf', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
+
 
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
@@ -116,6 +131,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/service-agreement/update', [ServiceAgreementController::class, 'update']);
      // Support Care Plan
     Route::put('/support-care-plan/update', [SupportCarePlanController::class, 'update']);
+
+    Route::put('/risk-assessment/update', [IndividualRiskAssessmentController::class, 'update']);
 
 
 });
