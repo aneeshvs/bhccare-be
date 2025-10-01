@@ -28,6 +28,7 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             $this->cognitionrules(),
             $this->mobilityrules(),
             $this->carerules(),
+            $this->manualHandlingRules(),
 
         );
     }
@@ -169,6 +170,22 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             'skin_care_management_plan' => 'nullable|string',
         ];
     }
+
+    private function manualHandlingRules(): array
+{
+    return [
+        'manual_handlings'                              => 'nullable|array',
+
+        'manual_handlings.*.goal_key'                   => 'nullable|string|max:255',
+        'manual_handlings.*.training_provided'          => 'nullable|boolean',
+        'manual_handlings.*.training_hazards'           => 'nullable|string',
+        'manual_handlings.*.training_management_plan'   => 'nullable|string',
+        'manual_handlings.*.tasks_safe'                 => 'nullable|boolean',
+        'manual_handlings.*.tasks_hazards'              => 'nullable|string',
+        'manual_handlings.*.tasks_management_plan'      => 'nullable|string',
+    ];
+}
+
 
 
 

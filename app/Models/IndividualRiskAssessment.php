@@ -58,6 +58,11 @@ public function personalCareSupport()
     return $this->hasOne(IndividualRiskAssessmentPersonalCareSupport::class, 'individual_risk_assessment_id');
 }
 
+public function manualHandlings()
+{
+    return $this->hasMany(PlanManualHandling::class, 'individual_risk_assessment_id');
+}
+
 
 
     public function getActivitylogOptions(): LogOptions

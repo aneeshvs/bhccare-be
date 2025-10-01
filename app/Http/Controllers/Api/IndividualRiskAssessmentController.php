@@ -12,6 +12,7 @@ use App\IndividualRiskAssessmentService\IndividualRiskAssessmentCompletionServic
 use App\IndividualRiskAssessmentService\IndividualRiskAssessmentDetailService;
 use App\IndividualRiskAssessmentService\IndividualRiskAssessmentMobilityService;
 use App\IndividualRiskAssessmentService\IndividualRiskAssessmentPersonalCareSupportService;
+use App\IndividualRiskAssessmentService\PlanManualHandlingService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,8 @@ class IndividualRiskAssessmentController extends Controller
         IndividualRiskAssessmentCommunicationService $individualRiskAssessmentCommunicationService,
         IndividualRiskAssessmentCognitionService  $individualRiskAssessmentCognitionService,
         IndividualRiskAssessmentMobilityService  $individualRiskAssessmentMobilityService,
-        IndividualRiskAssessmentPersonalCareSupportService $individualRiskAssessmentPersonalCareSupportService
+        IndividualRiskAssessmentPersonalCareSupportService $individualRiskAssessmentPersonalCareSupportService,
+        PlanManualHandlingService $planManualHandlingService
 
     ) {
         $data = $request->validated();
@@ -41,7 +43,8 @@ class IndividualRiskAssessmentController extends Controller
         $individualRiskAssessmentCommunicationService,
         $individualRiskAssessmentCognitionService,
         $individualRiskAssessmentMobilityService,
-        $individualRiskAssessmentPersonalCareSupportService) {
+        $individualRiskAssessmentPersonalCareSupportService,
+        $planManualHandlingService) {
             $user = Auth::user();
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -61,6 +64,8 @@ class IndividualRiskAssessmentController extends Controller
             $individualRiskAssessmentCognitionService->save($data);
             $individualRiskAssessmentMobilityService->save($data);
             $individualRiskAssessmentPersonalCareSupportService->save($data);
+
+            $planManualHandlingService->saveMany($data['manual_handlings'] ?? [],$assessment->id);
 
             // Calculate completion %
             $completion = $completionService->calculate($assessment);
@@ -86,7 +91,8 @@ class IndividualRiskAssessmentController extends Controller
             'communications',
             'cognitions',
             'mobilities',
-            'personalCareSupport'
+            'personalCareSupport',
+            'manualHandlings'
 
             ]),
        ];
@@ -105,7 +111,8 @@ class IndividualRiskAssessmentController extends Controller
 
     public function showByUuid(string $uuid, IndividualRiskAssessmentCompletionService $completionService)
     {
-        $assessment = IndividualRiskAssessment::with('details','communications','cognitions','mobilities','personalCareSupport')->where('uuid', $uuid)->first();
+        $assessment = IndividualRiskAssessment::with('details','communications','cognitions','mobilities',
+        'personalCareSupport','manualHandlings')->where('uuid', $uuid)->first();
 
         if (!$assessment) {
             return response()->json([
@@ -126,7 +133,7 @@ class IndividualRiskAssessmentController extends Controller
     public function exportFullFormPdf(string $uuid)
     {
         $assessment = IndividualRiskAssessment::with('staff','details','communications',
-        'cognitions','mobilities','personalCareSupport')
+        'cognitions','mobilities','personalCareSupport','manualHandlings')
             ->where('uuid', $uuid)
             ->firstOrFail();
 
