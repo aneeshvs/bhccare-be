@@ -49,6 +49,48 @@ class IndividualRiskAssessmentCompletionService
         'memory_management_plan',
         ],
 
+        'mobilities'=>[
+            'walk_unaided',
+        'accessibility_required',
+        'walk_hazards',
+        'walk_management_plan',
+
+        'manages_stairs',
+        'stairs_hazards',
+        'stairs_management_plan',
+
+        'uses_walking_aid',
+        'walking_aid_hazards',
+        'walking_aid_management_plan',
+
+        'uses_wheelchair',
+        'wheelchair_hazards',
+        'wheelchair_management_plan',
+
+        'bed_transfer',
+        'bed_transfer_hazards',
+        'bed_transfer_management_plan',
+
+        'vehicle_transfer',
+        'vehicle_transfer_hazards',
+        'vehicle_transfer_management_plan',
+
+        'toilet_transfer',
+        'toilet_transfer_hazards',
+        'toilet_transfer_management_plan',
+        ],
+
+        'personalCareSupport'=>[
+        'showering', 'showering_hazards', 'showering_management_plan',
+        'meal', 'meal_hazards', 'meal_management_plan',
+        'toileting', 'toileting_hazards', 'toileting_management_plan',
+        'grooming', 'grooming_hazards', 'grooming_management_plan',
+        'repositioning_bed', 'repositioning_bed_hazards', 'repositioning_bed_management_plan',
+        'repositioning_chair', 'repositioning_chair_hazards', 'repositioning_chair_management_plan',
+        'mouthcare', 'mouthcare_hazards', 'mouthcare_management_plan',
+        'skin_care', 'skin_care_hazards', 'skin_care_management_plan',
+        ]
+
 
     ];
 

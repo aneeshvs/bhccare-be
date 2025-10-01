@@ -36,17 +36,26 @@ class IndividualRiskAssessment extends DefaultDBModel
 
     public function details()
 {
-    return $this->hasMany(IndividualRiskAssessmentDetail::class, 'individual_risk_assessment_id');
+    return $this->hasOne(IndividualRiskAssessmentDetail::class, 'individual_risk_assessment_id');
 }
 
 public function communications()
 {
-    return $this->hasMany(IndividualRiskAssessmentCommunication::class, 'individual_risk_assessment_id');
+    return $this->hasOne(IndividualRiskAssessmentCommunication::class, 'individual_risk_assessment_id');
 }
 
 public function cognitions()
 {
-    return $this->hasMany(IndividualRiskAssessmentCognition::class, 'individual_risk_assessment_id');
+    return $this->hasOne(IndividualRiskAssessmentCognition::class, 'individual_risk_assessment_id');
+}
+public function mobilities()
+{
+    return $this->hasOne(IndividualRiskAssessmentMobility::class, 'individual_risk_assessment_id');
+}
+
+public function personalCareSupport()
+{
+    return $this->hasOne(IndividualRiskAssessmentPersonalCareSupport::class, 'individual_risk_assessment_id');
 }
 
 

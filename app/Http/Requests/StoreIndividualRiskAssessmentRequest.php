@@ -26,6 +26,8 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             $this->detailsrules(),
             $this->communicationrules(),
             $this->cognitionrules(),
+            $this->mobilityrules(),
+            $this->carerules(),
 
         );
     }
@@ -92,6 +94,79 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             'short_term_memory_issues' => 'nullable|boolean',
             'memory_hazards' => 'nullable|string|max:2000',
             'memory_management_plan' => 'nullable|string|max:2000',
+        ];
+    }
+
+    private function mobilityrules(): array
+    {
+        return [
+
+            'walk_unaided' => 'nullable|boolean',
+            'accessibility_required' => 'nullable|boolean',
+            'walk_hazards' => 'nullable|string|max:2000',
+            'walk_management_plan' => 'nullable|string|max:2000',
+
+            'manages_stairs' => 'nullable|boolean',
+            'stairs_hazards' => 'nullable|string|max:2000',
+            'stairs_management_plan' => 'nullable|string|max:2000',
+
+            'uses_walking_aid' => 'nullable|boolean',
+            'walking_aid_hazards' => 'nullable|string|max:2000',
+            'walking_aid_management_plan' => 'nullable|string|max:2000',
+
+            'uses_wheelchair' => 'nullable|boolean',
+            'wheelchair_hazards' => 'nullable|string|max:2000',
+            'wheelchair_management_plan' => 'nullable|string|max:2000',
+
+            'bed_transfer' => 'nullable|boolean',
+            'bed_transfer_hazards' => 'nullable|string|max:2000',
+            'bed_transfer_management_plan' => 'nullable|string|max:2000',
+
+            'vehicle_transfer' => 'nullable|boolean',
+            'vehicle_transfer_hazards' => 'nullable|string|max:2000',
+            'vehicle_transfer_management_plan' => 'nullable|string|max:2000',
+
+            'toilet_transfer' => 'nullable|boolean',
+            'toilet_transfer_hazards' => 'nullable|string|max:2000',
+            'toilet_transfer_management_plan' => 'nullable|string|max:2000',
+        ];
+    }
+
+    private function carerules(): array
+    {
+        return [
+
+            'showering' => 'nullable|boolean',
+            'showering_hazards' => 'nullable|string',
+            'showering_management_plan' => 'nullable|string',
+
+            'meal' => 'nullable|boolean',
+            'meal_hazards' => 'nullable|string',
+            'meal_management_plan' => 'nullable|string',
+
+            'toileting' => 'nullable|boolean',
+            'toileting_hazards' => 'nullable|string',
+            'toileting_management_plan' => 'nullable|string',
+
+            'grooming' => 'nullable|boolean',
+            'grooming_hazards' => 'nullable|string',
+            'grooming_management_plan' => 'nullable|string',
+
+            'repositioning_bed' => 'nullable|boolean',
+            'repositioning_bed_hazards' => 'nullable|string',
+            'repositioning_bed_management_plan' => 'nullable|string',
+
+            'repositioning_chair' => 'nullable|boolean',
+            'repositioning_chair_hazards' => 'nullable|string',
+            'repositioning_chair_management_plan' => 'nullable|string',
+
+            'mouthcare' => 'nullable|boolean',
+            'mouthcare_hazards' => 'nullable|string',
+            'mouthcare_management_plan' => 'nullable|string',
+
+            'skin_care' => 'nullable|boolean',
+            'skin_care_hazards' => 'nullable|string',
+            'skin_care_management_plan' => 'nullable|string',
         ];
     }
 

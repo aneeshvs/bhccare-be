@@ -587,6 +587,8 @@ public function getLogsByUuidRiskAssessment(Request $request)
             'individual_risk_assessment_detail',
             'individual_risk_assessment_communication',
             'individual_risk_assessment_cognition',
+            'individual_risk_assessment_mobility',
+            'individual_risk_assessment_personal_care',
 
         ]);
     }
