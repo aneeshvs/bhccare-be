@@ -29,6 +29,7 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             $this->mobilityrules(),
             $this->carerules(),
             $this->manualHandlingRules(),
+            $this->violencerules(),
 
         );
     }
@@ -185,6 +186,58 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
         'manual_handlings.*.tasks_management_plan'      => 'nullable|string',
     ];
 }
+
+
+private function violencerules(): array
+    {
+        return [
+
+            'physical_aggression' => 'boolean',
+            'physical_hazards' => 'nullable|string',
+            'physical_management_plan' => 'nullable|string',
+            'physical_bsp_plan' => 'boolean',
+
+            'verbal_aggression' => 'boolean',
+            'verbal_hazards' => 'nullable|string',
+            'verbal_management_plan' => 'nullable|string',
+            'verbal_bsp_plan' => 'boolean',
+
+            'client_aggression' => 'boolean',
+            'client_hazards' => 'nullable|string',
+            'client_management_plan' => 'nullable|string',
+            'client_bsp_plan' => 'boolean',
+
+            'self_harm' => 'boolean',
+            'self_harm_hazards' => 'nullable|string',
+            'self_harm_management_plan' => 'nullable|string',
+            'self_harm_bsp_plan' => 'boolean',
+
+            'drug_alcohol_use' => 'boolean',
+            'drug_alcohol_hazards' => 'nullable|string',
+            'drug_alcohol_management_plan' => 'nullable|string',
+            'drug_alcohol_bsp_plan' => 'boolean',
+
+            'sexual_abuse_history' => 'boolean',
+            'sexual_abuse_hazards' => 'nullable|string',
+            'sexual_abuse_management_plan' => 'nullable|string',
+            'sexual_abuse_bsp_plan' => 'boolean',
+
+            'emotional_manipulation' => 'boolean',
+            'emotional_hazards' => 'nullable|string',
+            'emotional_management_plan' => 'nullable|string',
+            'emotional_bsp_plan' => 'boolean',
+
+            'other_known_risks' => 'boolean',
+            'other_risks_hazards' => 'nullable|string',
+            'other_risks_management_plan' => 'nullable|string',
+            'other_risks_bsp_plan' => 'boolean',
+
+            'finance_management' => 'boolean',
+            'finance_hazards' => 'nullable|string',
+            'finance_management_plan' => 'nullable|string',
+            'finance_bsp_plan' => 'boolean',
+        ];
+    }
 
 
 

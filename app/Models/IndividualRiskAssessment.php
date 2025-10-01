@@ -63,6 +63,12 @@ public function manualHandlings()
     return $this->hasMany(PlanManualHandling::class, 'individual_risk_assessment_id');
 }
 
+public function violenceRisk()
+{
+    return $this->hasOne(IndividualRiskAssessmentViolenceRisk::class, 'individual_risk_assessment_id');
+}
+
+
 
 
     public function getActivitylogOptions(): LogOptions
