@@ -13,6 +13,17 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
         return true; // Authorize all for now (you can add policies later)
     }
 
+       protected function prepareForValidation()
+        {
+
+
+            if (is_string($this->manual_handlings)) {
+                $this->merge([
+                    'manual_handlings' => json_decode($this->manual_handlings, true),
+                ]);
+            }
+
+        }
 
 
 
