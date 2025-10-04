@@ -16,17 +16,9 @@ class SupportCoordinationGoalService
         $processedKeys = [];
 
         foreach ($goals as $goal) {
-               $allEmpty = true;
-                foreach ($goal as $value) {
-                    if (!empty($value)) {
-                        $allEmpty = false;
-                        break;
-                    }
-                }
-                if ($allEmpty) {
-                    continue; // skip row if truly empty
-                }
-
+            if (empty($goal['goals_of_support'])) {
+                continue;
+            }
 
             $record = null;
 
