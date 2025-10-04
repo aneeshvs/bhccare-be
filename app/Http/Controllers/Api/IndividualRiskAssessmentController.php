@@ -160,7 +160,6 @@ class IndividualRiskAssessmentController extends Controller
             ->where('client_type', $clientType)
             ->latest()
             ->first();
-            dd($assessment->uuid);
 
         return response()->json(['uuid' => $assessment?->uuid], 200);
     }
