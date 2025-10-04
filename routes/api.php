@@ -13,6 +13,9 @@ use App\Http\Controllers\Api\SupportPlanController;
 use App\Http\Controllers\Api\ServiceAgreementController;
 use App\Http\Controllers\Api\SupportCarePlanController;
 use App\Http\Controllers\Api\IndividualRiskAssessmentController;
+use App\Http\Controllers\FormRenewController;
+
+
 
 
 
@@ -52,7 +55,7 @@ Route::get('/form-data/{uuid}', [OnboardingController::class, 'show']);//downoad
 Route::get('/get-client-uuid', [OnboardingController::class, 'getUuid']);
 Route::get('/onboarding/export-pdf/{uuid}', [OnboardingController::class, 'exportFullFormPdf']);
 
-Route::post('/onboarding/renew-pdf/{uuid}', [OnboardingController::class, 'renewPdf']);
+// Route::post('/onboarding/renew-pdf/{uuid}', [OnboardingController::class, 'renewPdf']);
 
 
 Route::get('/activity-logs', [ActivityLogController::class, 'index']); //activity log
@@ -121,6 +124,8 @@ Route::get('/get-risk-assessment-uuid', [IndividualRiskAssessmentController::cla
 // 🔹 Export PDF (two options)
 Route::get('/risk-assessment/export-pdf/{uuid}', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
 Route::get('/risk-assessment/{uuid}/export-pdf', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
+
+Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
 // Authenticated Routes

@@ -83,7 +83,7 @@
     <!-- Header -->
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
-        <div class="header-title">Individual Risk Assessment</div>
+        <div class="header-title">Form-F5a Individual Risk Assessment</div>
         <div class="document-number">Document Number: <span>IRA-{{ $assessment->id }}</span></div>
     </div>
 

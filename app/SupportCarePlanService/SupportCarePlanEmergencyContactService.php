@@ -19,9 +19,17 @@ class SupportCarePlanEmergencyContactService
 
         foreach ($contacts as $contact) {
             // Skip empty rows
-            if (empty($contact['name']) && empty($contact['phone'])) {
-                continue;
-            }
+                $allEmpty = true;
+                foreach ($contact as $value) {
+                    if (!empty($value)) {
+                        $allEmpty = false;
+                        break;
+                    }
+                }
+                if ($allEmpty) {
+                    continue; // skip row if truly empty
+                }
+
 
             // Ensure goal_key exists
             if (empty($contact['goal_key'])) {
