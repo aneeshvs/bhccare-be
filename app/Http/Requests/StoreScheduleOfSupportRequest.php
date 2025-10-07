@@ -20,6 +20,7 @@ class StoreScheduleOfSupportRequest extends FormRequest
             $this->schedulerules(),
             $this->transportrules(),
             $this->unfundedrules(),
+            $this->agreementrules(),
 
         );
     }
@@ -59,12 +60,28 @@ class StoreScheduleOfSupportRequest extends FormRequest
     {
         return [
 
-            'support_name' => 'nullable|string|max:255',
-            'description' => 'nullable|string',
-            'price_information' => 'nullable|string|max:255',
-            'delivery_details' => 'nullable|string',
-            'price' => 'nullable|numeric',
-            'grand_total' => 'nullable|numeric',
+            'unfunded_support_name' => 'nullable|string|max:255',
+            'unfunded_description' => 'nullable|string',
+            'unfunded_price_information' => 'nullable|string|max:255',
+            'unfunded_delivery_details' => 'nullable|string',
+            'unfunded_price' => 'nullable|numeric',
+            'unfunded_grand_total' => 'nullable|numeric',
+        ];
+
+    }
+
+    private function agreementrules(): array
+    {
+        return [
+
+
+            'participant_signature' => 'nullable',
+            'agreement_participant_name' => 'nullable|string|max:255',
+            'participant_date' => 'nullable|date',
+
+            'representative_signature' => 'nullable',
+            'representative_name' => 'nullable|string|max:255',
+            'representative_date' => 'nullable|date',
         ];
     }
 

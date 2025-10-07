@@ -44,6 +44,12 @@ class ScheduleOfSupport extends DefaultDBModel
     return $this->hasOne(UnfundedSupport::class, 'schedule_of_support_id');
 }
 
+public function agreementSignature()
+{
+    return $this->hasOne(AgreementSignature::class, 'schedule_of_support_id');
+}
+
+
 
     public function getActivitylogOptions(): LogOptions
     {

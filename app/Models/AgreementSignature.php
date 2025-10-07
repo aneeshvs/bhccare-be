@@ -6,18 +6,18 @@ use App\Models\Classes\DefaultDBModel;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class UnfundedSupport extends DefaultDBModel
+class AgreementSignature extends DefaultDBModel
 {
     use LogsActivity;
 
     protected $fillable = [
         'schedule_of_support_id',
-        'unfunded_support_name',
-        'unfunded_description',
-        'unfunded_price_information',
-        'unfunded_delivery_details',
-        'unfunded_price',
-        'unfunded_grand_total',
+        'participant_signature',
+        'agreement_participant_name',
+        'participant_date',
+        'representative_signature',
+        'representative_name',
+        'representative_date',
     ];
 
     public function scheduleOfSupport()
@@ -30,11 +30,11 @@ class UnfundedSupport extends DefaultDBModel
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->useLogName('unfunded_support');
+            ->useLogName('agreement_signature');
     }
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "UnfundedSupport record has been {$eventName}";
+        return "AgreementSignature record has been {$eventName}";
     }
 }

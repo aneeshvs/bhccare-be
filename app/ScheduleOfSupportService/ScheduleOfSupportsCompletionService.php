@@ -30,13 +30,23 @@ class ScheduleOfSupportsCompletionService
 
         'unfundedSupport'=>[
 
-        'support_name',
-        'description',
-        'price_information',
-        'delivery_details',
-        'price',
-        'grand_total',
+        'unfunded_support_name',
+        'unfunded_description',
+        'unfunded_price_information',
+        'unfunded_delivery_details',
+        'unfunded_price',
+        'unfunded_grand_total',
 
+        ],
+
+        'agreementSignature' =>[
+
+        'participant_signature',
+        'agreement_participant_name',
+        'participant_date',
+        'homecare_signature',
+        'homecare_name',
+        'homecare_date',
         ],
 
     ];

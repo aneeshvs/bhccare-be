@@ -691,6 +691,7 @@ public function getLogsByUuidSchedule(Request $request)
             'schedule_of_support',
             'funded_support',
             'unfunded_support',
+            'agreement_signature',
 
         ]);
     }
