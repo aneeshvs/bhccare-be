@@ -13,10 +13,9 @@ class ScheduleOfSupportsCompletionService
     private array $sectionFields = [
 
         'schedule' => [
-            'participant_name',
+           'participant_name',
             'creation_date',
-            'review_date',
-            'prepared_by',
+            'funding_review_date',
             'support_on_public_holiday',
         ],
 
