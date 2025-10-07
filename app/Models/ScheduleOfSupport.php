@@ -34,6 +34,17 @@ class ScheduleOfSupport extends DefaultDBModel
         return $this->belongsTo(Staff::class);
     }
 
+    public function transport()
+    {
+        return $this->hasOne(FundedSupport::class, 'schedule_of_support_id');
+    }
+
+    public function unfundedSupport()
+{
+    return $this->hasOne(UnfundedSupport::class, 'schedule_of_support_id');
+}
+
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

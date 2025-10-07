@@ -18,6 +18,26 @@ class ScheduleOfSupportsCompletionService
             'funding_review_date',
             'support_on_public_holiday',
         ],
+        'transport'=>[
+            'support_name',
+            'description',
+            'price',
+            'payment_information',
+            'invoicing_details',
+            'delivery_details',
+            'grand_total',
+        ],
+
+        'unfundedSupport'=>[
+
+        'support_name',
+        'description',
+        'price_information',
+        'delivery_details',
+        'price',
+        'grand_total',
+
+        ],
 
     ];
 

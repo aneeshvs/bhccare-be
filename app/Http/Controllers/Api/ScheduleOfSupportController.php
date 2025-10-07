@@ -7,6 +7,8 @@ use App\Http\Requests\StoreScheduleOfSupportRequest;
 use App\ScheduleOfSupportService\ScheduleOfSupportService;
 use App\ScheduleOfSupportService\ScheduleOfSupportsCompletionService;
 use App\Models\ScheduleOfSupport;
+use App\ScheduleOfSupportService\FundedSupportService;
+use App\ScheduleOfSupportService\UnfundedSupportService;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -16,13 +18,15 @@ use Illuminate\Http\Request;
 
 class ScheduleOfSupportController extends Controller
 {
-    public function update(StoreScheduleOfSupportRequest $request, ScheduleOfSupportService $service)
+    public function update(StoreScheduleOfSupportRequest $request, ScheduleOfSupportService $service,
+    FundedSupportService $fundedSupportService,
+     UnfundedSupportService  $unfundedSupportService )
     {
         $data = $request->validated();
         $isFinal = $request->boolean('submit_final');
         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        $result = DB::transaction(function () use ($data, $service) {
+        $result = DB::transaction(function () use ($data, $service,$fundedSupportService,$unfundedSupportService) {
             $user = Auth::user();
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -32,6 +36,11 @@ class ScheduleOfSupportController extends Controller
             $data['staff_id'] = $staff?->id ?? null;
 
             $schedule = $service->save($data);
+
+            $data['schedule_of_support_id'] = $schedule->id;
+
+            $fundedSupportService->save($data);
+            $unfundedSupportService->save($data);
 
             // Report back to Core PHP
             try {
@@ -45,7 +54,13 @@ class ScheduleOfSupportController extends Controller
                 Log::error('Error reporting Schedule of Support status: ' . $e->getMessage());
             }
 
-            return ['scheduleOfSupport' => $schedule];
+            return ['scheduleOfSupport' => $schedule->load([
+                'transport',
+                'unfundedSupport',
+
+            ]),
+        ];
+
         });
 
         return response()->json([
@@ -57,7 +72,7 @@ class ScheduleOfSupportController extends Controller
 
     public function showByUuid(string $uuid, ScheduleOfSupportsCompletionService $completionService)
 {
-     $schedule = ScheduleOfSupport::where('uuid', $uuid)->firstOrFail();
+     $schedule = ScheduleOfSupport::with('transport','unfundedSupport')->where('uuid', $uuid)->firstOrFail();
 
 
     if (!$schedule) {
@@ -80,7 +95,7 @@ class ScheduleOfSupportController extends Controller
 
     public function exportFullFormPdf(string $uuid)
     {
-        $schedule = ScheduleOfSupport::with('staff')->where('uuid', $uuid)->firstOrFail();
+        $schedule = ScheduleOfSupport::with('staff','transport','unfundedSupport')->where('uuid', $uuid)->firstOrFail();
 
         $pdf = Pdf::loadView('pdf.schedule_of_support', compact('schedule'))
             ->setPaper('A4', 'portrait');

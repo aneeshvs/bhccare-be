@@ -681,7 +681,7 @@ public function getLogsByUuidSchedule(Request $request)
     }
 
     // 2. Build activity log query
-    $query = \Spatie\Activitylog\Models\Activity::where('properties->schedule_of_supports_id', $schedule->id);
+    $query = \Spatie\Activitylog\Models\Activity::where('properties->schedule_of_support_id', $schedule->id);
 
     // Optional filter by table (log_name)
     if (!empty($table)) {
@@ -689,6 +689,8 @@ public function getLogsByUuidSchedule(Request $request)
     } else {
         $query->whereIn('log_name', [
             'schedule_of_support',
+            'funded_support',
+            'unfunded_support',
 
         ]);
     }

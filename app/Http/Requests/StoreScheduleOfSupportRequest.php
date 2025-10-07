@@ -16,6 +16,16 @@ class StoreScheduleOfSupportRequest extends FormRequest
 
     public function rules(): array
     {
+        return array_merge(
+            $this->schedulerules(),
+            $this->transportrules(),
+            $this->unfundedrules(),
+
+        );
+    }
+
+    private function schedulerules(): array
+    {
         return [
             'user_id' => 'nullable|integer',
             'client_type' => 'required|in:1,2',
@@ -28,6 +38,33 @@ class StoreScheduleOfSupportRequest extends FormRequest
 
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',
+        ];
+    }
+
+    private function transportrules(): array
+    {
+        return [
+
+            'support_name'           => 'nullable|string',
+            'description'            => 'nullable|string',
+            'price'                  => 'nullable| numeric',
+            'payment_information'    => 'nullable| string',
+            'invoicing_details'      => 'nullable| string',
+            'delivery_details'       => 'nullable| string',
+            'grand_total'            =>  'nullable| numeric',
+        ];
+    }
+
+    private function unfundedrules(): array
+    {
+        return [
+
+            'support_name' => 'nullable|string|max:255',
+            'description' => 'nullable|string',
+            'price_information' => 'nullable|string|max:255',
+            'delivery_details' => 'nullable|string',
+            'price' => 'nullable|numeric',
+            'grand_total' => 'nullable|numeric',
         ];
     }
 
