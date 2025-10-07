@@ -14,10 +14,7 @@ use App\Http\Controllers\Api\ServiceAgreementController;
 use App\Http\Controllers\Api\SupportCarePlanController;
 use App\Http\Controllers\Api\IndividualRiskAssessmentController;
 use App\Http\Controllers\FormRenewController;
-
-
-
-
+use App\Http\Controllers\Api\ScheduleOfSupportController;
 
 
 use Illuminate\Support\Facades\DB;
@@ -125,6 +122,16 @@ Route::get('/get-risk-assessment-uuid', [IndividualRiskAssessmentController::cla
 Route::get('/risk-assessment/export-pdf/{uuid}', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
 Route::get('/risk-assessment/{uuid}/export-pdf', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
 
+Route::get('/schedule-of-supports/logs', [ActivityLogController::class, 'getLogsByUuidSchedule']); // Logs by UUID
+
+Route::get('/schedule-of-supports/{uuid}', [ScheduleOfSupportController::class, 'showByUuid']); // Fetch by UUID
+
+Route::get('/get-schedule-of-supports-uuid', [ScheduleOfSupportController::class, 'getScheduleOfSupportsUuid']); // Get UUID by user & client_type
+
+Route::get('/schedule-of-supports/export-pdf/{uuid}', [ScheduleOfSupportController::class, 'exportFullFormPdf']); // Export PDF
+Route::get('/schedule-of-supports/{uuid}/export-pdf', [ScheduleOfSupportController::class, 'exportFullFormPdf']); // Export PDF alternate
+
+
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
@@ -138,6 +145,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::put('/support-care-plan/update', [SupportCarePlanController::class, 'update']);
 
     Route::put('/risk-assessment/update', [IndividualRiskAssessmentController::class, 'update']);
+
+    Route::put('/schedule-of-support/update', [ScheduleOfSupportController::class, 'update']); // Save/update schedule
+
 
 
 });

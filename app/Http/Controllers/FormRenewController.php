@@ -21,12 +21,14 @@ class FormRenewController extends Controller
     }
 
     $formMap = [
-        'onboarding'        => [\App\Models\InitialEnquiry::class, 'pdf.onboarding_full_form', 'initial'],
-        'support-plan'      => [\App\Models\SupportPlan::class, 'pdf.supportplan', 'supportPlan'],
-        'support-care-plan' => [\App\Models\SupportCarePlan::class, 'pdf.supportcareplan', 'supportCarePlan'],
-        'service-agreement' => [\App\Models\ServiceAgreement::class, 'pdf.serviceagreement', 'serviceAgreement'],
-        'risk-assessment'   => [\App\Models\IndividualRiskAssessment::class, 'pdf.individual_risk_assessment', 'assessment'],
-    ];
+    'onboarding'         => [\App\Models\InitialEnquiry::class, 'pdf.onboarding_full_form', 'initial'],
+    'support-plan'       => [\App\Models\SupportPlan::class, 'pdf.supportplan', 'supportPlan'],
+    'support-care-plan'  => [\App\Models\SupportCarePlan::class, 'pdf.supportcareplan', 'supportCarePlan'],
+    'service-agreement'  => [\App\Models\ServiceAgreement::class, 'pdf.serviceagreement', 'serviceAgreement'],
+    'risk-assessment'    => [\App\Models\IndividualRiskAssessment::class, 'pdf.individual_risk_assessment', 'assessment'],
+    'schedule-of-supports' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_supports', 'schedule'], // ✅ added
+];
+
 
     if (!isset($formMap[$form])) {
         return response()->json(['error' => 'Unsupported form type'], 400);
