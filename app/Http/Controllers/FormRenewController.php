@@ -26,7 +26,8 @@ class FormRenewController extends Controller
     'support-care-plan'  => [\App\Models\SupportCarePlan::class, 'pdf.supportcareplan', 'supportCarePlan'],
     'service-agreement'  => [\App\Models\ServiceAgreement::class, 'pdf.serviceagreement', 'serviceAgreement'],
     'risk-assessment'    => [\App\Models\IndividualRiskAssessment::class, 'pdf.individual_risk_assessment', 'assessment'],
-    'schedule-of-supports' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_supports', 'schedule'], // ✅ added
+    'schedule-of-support' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_support', 'schedule'],
+    'home-safety' => [\App\Models\HomeSafetyChecklistAssessment::class, 'pdf.home_safety_assessment', 'homeSafety'], // ✅ added // ✅ added
 ];
 
 

@@ -71,6 +71,19 @@
         .value {
             margin-top: 2px;
         }
+        .signature-table td {
+            height: 80px;
+            text-align: center;
+        }
+        .signature-line {
+            border-top: 1px solid #111827;
+            width: 100%;
+            display: inline-block;
+            margin-top: 40px;
+        }
+        .text-center {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -133,6 +146,56 @@
             This may impact on scope of support and lower the hours of support available.
         </p>
     </div>
+
+    <!-- Transport Section -->
+    <div class="section">
+        <div class="section-header">Transport</div>
+        @if($schedule->transport)
+        <table>
+            <tr>
+                <td><span class="label">Support Name</span><span class="value">{{ $schedule->transport->support_name ?? 'N/A' }}</span></td>
+                <td><span class="label">Description</span><span class="value">{{ $schedule->transport->description ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td><span class="label">Price</span><span class="value">{{ $schedule->transport->price ?? 'N/A' }}</span></td>
+                <td><span class="label">Payment Information</span><span class="value">{{ $schedule->transport->payment_information ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td><span class="label">Invoicing Details</span><span class="value">{{ $schedule->transport->invoicing_details ?? 'N/A' }}</span></td>
+                <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->transport->delivery_details ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td colspan="2"><span class="label">Grand Total</span><span class="value">${{ $schedule->transport->grand_total ?? '0.00' }}</span></td>
+            </tr>
+        </table>
+        @else
+        <p>No transport details available.</p>
+        @endif
+    </div>
+
+    <!-- Unfunded Supports -->
+    <div class="section">
+        <div class="section-header">Unfunded Supports</div>
+        @if($schedule->unfundedSupport)
+        <table>
+            <tr>
+                <td><span class="label">Support Name</span><span class="value">{{ $schedule->unfundedSupport->unfunded_support_name ?? 'N/A' }}</span></td>
+                <td><span class="label">Description</span><span class="value">{{ $schedule->unfundedSupport->unfunded_description ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td><span class="label">Price Information</span><span class="value">{{ $schedule->unfundedSupport->unfunded_price_information ?? 'N/A' }}</span></td>
+                <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td><span class="label">Price</span><span class="value">{{ $schedule->unfundedSupport->unfunded_price ?? 'N/A' }}</span></td>
+                <td><span class="label">Grand Total</span><span class="value">${{ $schedule->unfundedSupport->unfunded_grand_total ?? '0.00' }}</span></td>
+            </tr>
+        </table>
+        @else
+        <p>No unfunded support details available.</p>
+        @endif
+    </div>
+
 
 </div>
 </body>

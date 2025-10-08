@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\SupportCarePlanController;
 use App\Http\Controllers\Api\IndividualRiskAssessmentController;
 use App\Http\Controllers\FormRenewController;
 use App\Http\Controllers\Api\ScheduleOfSupportController;
+use App\Http\Controllers\Api\HomeSafetyChecklistAssessmentController;
 
 
 use Illuminate\Support\Facades\DB;
@@ -132,6 +133,24 @@ Route::get('/schedule-of-supports/export-pdf/{uuid}', [ScheduleOfSupportControll
 Route::get('/schedule-of-supports/{uuid}/export-pdf', [ScheduleOfSupportController::class, 'exportFullFormPdf']); // Export PDF alternate
 
 
+
+
+Route::get('/home-safety-assessment/logs', [ActivityLogController::class, 'getLogsByUuidHomeSafety']); // Logs by UUID
+
+// ✅ Public (no auth required)
+Route::get('/get-home-safety-assessment-uuid', [HomeSafetyChecklistAssessmentController::class, 'getHomeSafetyAssessmentUuid']); // Get UUID by user_id & client_type
+
+Route::get('/home-safety-assessment/{uuid}', [HomeSafetyChecklistAssessmentController::class, 'showByUuid']); // Fetch Home Safety by UUID
+
+
+Route::get('/home-safety-assessment/export-pdf/{uuid}', [HomeSafetyChecklistAssessmentController::class, 'exportFullFormPdf']); // Export PDF
+
+Route::get('/home-safety-assessment/{uuid}/export-pdf', [HomeSafetyChecklistAssessmentController::class, 'exportFullFormPdf']); // Alternate PDF route
+
+
+
+
+
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
@@ -146,7 +165,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('/risk-assessment/update', [IndividualRiskAssessmentController::class, 'update']);
 
-    Route::put('/schedule-of-support/update', [ScheduleOfSupportController::class, 'update']); // Save/update schedule
+    Route::put('/schedule-of-support/update', [ScheduleOfSupportController::class, 'update']);
+
+     Route::put('/home-safety-assessment/update', [HomeSafetyChecklistAssessmentController::class, 'update']); // Save or update Home Safety form// Save/update schedule
 
 
 

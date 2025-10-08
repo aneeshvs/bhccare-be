@@ -765,5 +765,106 @@ public function getLogsByUuidSchedule(Request $request)
     ]);
 }
 
+public function getLogsByUuidHomeSafety(Request $request)
+{
+    $uuid  = $request->query('uuid');
+    $table = $request->query('table');
+    $field = $request->query('field');
+
+    // 1️⃣ Validate UUID
+    $record = \App\Models\HomeSafetyChecklistAssessment::where('uuid', $uuid)->first();
+
+    if (!$record) {
+        return response()->json([
+            'status'  => false,
+            'message' => 'Invalid UUID. No Home Safety Checklist Assessment found.',
+        ], 404);
+    }
+
+    // 2️⃣ Build activity log query
+    $query = \Spatie\Activitylog\Models\Activity::where('properties->home_safety_checklist_assessment_id', $record->id);
+
+    // Optional table filter (log_name)
+    if (!empty($table)) {
+        $query->where('log_name', $table);
+    } else {
+        $query->whereIn('log_name', [
+            'home_safety_checklist_assessment',
+            'home_safety_outside_entry',
+            'home_safety_inside_residence'
+        ]);
+    }
+
+    $logs = $query->orderBy('created_at', 'desc')->get();
+
+    // 3️⃣ Extract staff IDs
+    $staffIds = $logs->pluck('properties.staff_id')->filter()->unique()->toArray();
+    $staffRecords = \App\Models\Staff::whereIn('id', $staffIds)->get(['id', 'name', 'stafftype']);
+    $staffNames = $staffRecords->pluck('name', 'id')->toArray();
+
+    // 4️⃣ Resolve stafftype names
+    $stafftypeIdsFromStaff = $staffRecords->pluck('stafftype')->filter()->unique()->toArray();
+    $stafftypeIdsFromLogs  = $logs->pluck('properties.stafftype')->filter()->unique()->toArray();
+    $stafftypeIds = collect($stafftypeIdsFromLogs)->merge($stafftypeIdsFromStaff)->unique()->toArray();
+
+    $stafftypenames = \App\Models\StaffTypeMaster::whereIn('id', $stafftypeIds)
+        ->pluck('name', 'id')
+        ->mapWithKeys(fn($name, $id) => [(int) $id => $name])
+        ->toArray();
+
+    // 5️⃣ Optional filter by field
+    if (!empty($field) && $field !== 'all') {
+        $logs = $logs->filter(function ($log) use ($field) {
+            $properties = $log->properties ?? [];
+            $attributes = $properties['attributes'] ?? [];
+            $old = $properties['old'] ?? [];
+
+            return isset($attributes[$field]) || isset($old[$field]) || isset($properties[$field]);
+        })->values();
+    }
+
+    // 6️⃣ Format response
+    $response = $logs->map(function ($log) use ($staffNames, $stafftypenames) {
+        $properties = $log->properties ?? [];
+        $attributes = $properties['attributes'] ?? [];
+        $old = $properties['old'] ?? [];
+
+        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+
+        $staffId = $properties['staff_id'] ?? null;
+        $stafftypeId = $properties['stafftype'] ?? null;
+
+        if (!$stafftypeId && $staffId) {
+            $staff = \App\Models\Staff::find($staffId);
+            $stafftypeId = $staff?->stafftype;
+        }
+
+        return [
+            'id'             => $log->id,
+            'log_name'       => $log->log_name,
+            'description'    => $log->description,
+            'created_at'     => $log->created_at->toDateTimeString(),
+            'attributes'     => $formattedAttributes,
+            'old'            => $formattedOld,
+            'user_id'        => $properties['user_id'] ?? null,
+            'client_type'    => $properties['client_type'] ?? null,
+            'stafftype_id'   => $stafftypeId,
+            'stafftype_name' => $stafftypenames[(int) $stafftypeId] ?? null,
+            'staff_id'       => $staffId,
+            'staff_name'     => $staffNames[$staffId] ?? null,
+            'uuid'           => $properties['uuid'] ?? null,
+        ];
+    });
+
+    // 7️⃣ Return response
+    return response()->json([
+        'status'  => true,
+        'message' => 'Home Safety Checklist Assessment activity logs fetched successfully.',
+        'data'    => $response,
+    ]);
+}
+
+
 
 }
