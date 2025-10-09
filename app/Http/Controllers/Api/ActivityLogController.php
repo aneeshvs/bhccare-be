@@ -172,8 +172,27 @@ public function getLogsByUuid(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $checkboxFields = ['male', 'female', 'no_preference'];
+
+        $formattedAttributes = collect($attributes)->map(function ($val, $key) use ($checkboxFields) {
+            if (in_array($key, $checkboxFields)) {
+                // Only these fields: checked/unchecked
+                return $val ? 'checked' : 'unchecked';
+            } elseif (is_bool($val) || $val === 0 || $val === 1 || $val === '0' || $val === '1') {
+                // Other boolean fields: Yes/No
+                return $val ? 'Yes' : 'No';
+            }
+            return $val;
+        });
+
+        $formattedOld = collect($old)->map(function ($val, $key) use ($checkboxFields) {
+            if (in_array($key, $checkboxFields)) {
+                return $val ? 'checked' : 'unchecked';
+            } elseif (is_bool($val) || $val === 0 || $val === 1 || $val === '0' || $val === '1') {
+                return $val ? 'Yes' : 'No';
+            }
+            return $val;
+        });
 
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -319,8 +338,8 @@ public function getLogsByUuidSupport(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
 
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -419,8 +438,9 @@ public function getLogsByUuidServiceAgreement(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+
 
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -524,8 +544,8 @@ public function getLogsByUuidSupportCarePlan(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old        = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld        = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+         $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
 
         $staffId     = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -629,8 +649,8 @@ public function getLogsByUuidRiskAssessment(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old        = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld        = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
 
         $staffId     = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -730,8 +750,8 @@ public function getLogsByUuidSchedule(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old        = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld        = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
 
         $staffId     = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
@@ -791,7 +811,9 @@ public function getLogsByUuidHomeSafety(Request $request)
         $query->whereIn('log_name', [
             'home_safety_checklist_assessment',
             'home_safety_outside_entry',
-            'home_safety_inside_residence'
+            'home_safety_inside_residence',
+            'hallways_safety_check',
+            'kitchen_bathroom_safety_check'
         ]);
     }
 
@@ -829,8 +851,8 @@ public function getLogsByUuidHomeSafety(Request $request)
         $attributes = $properties['attributes'] ?? [];
         $old = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
-        $formattedOld = collect($old)->map(fn($val) => is_bool($val) ? ($val ? 'Yes' : 'No') : $val);
+        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
 
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;

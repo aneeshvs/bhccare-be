@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\HomeSafetyChecklistAssessmentService\HallwaysSafetyCheckService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreHomeSafetyChecklistAssessmentRequest;
 use App\Models\HomeSafetyChecklistAssessment;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyChecklistCompletionService;
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyInsideResidenceService;
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyOutsideEntryService;
+use App\HomeSafetyChecklistAssessmentService\KitchenBathroomSafetyCheckService;
 
 class HomeSafetyChecklistAssessmentController extends Controller
 {
@@ -24,14 +26,17 @@ class HomeSafetyChecklistAssessmentController extends Controller
         HomeSafetyChecklistAssessmentService $service,
         HomeSafetyChecklistCompletionService $completionService,
         HomeSafetyOutsideEntryService $homeSafetyOutsideEntryService,
-        HomeSafetyInsideResidenceService $homeSafetyInsideResidenceService
+        HomeSafetyInsideResidenceService $homeSafetyInsideResidenceService,
+        HallwaysSafetyCheckService  $hallwaysSafetyCheckService,
+        KitchenBathroomSafetyCheckService $kitchenBathroomSafetyCheckService
+
     ) {
         $data = $request->validated();
         $isFinal = $request->boolean('submit_final');
         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
         $result = DB::transaction(function () use ($data, $service,$homeSafetyOutsideEntryService,
-        $completionService,$homeSafetyInsideResidenceService) {
+        $completionService,$homeSafetyInsideResidenceService,$hallwaysSafetyCheckService,$kitchenBathroomSafetyCheckService) {
             $user = Auth::user();
             if (!$user) {
                 abort(401, 'Unauthorized');
@@ -45,6 +50,9 @@ class HomeSafetyChecklistAssessmentController extends Controller
 
             $homeSafetyOutsideEntryService->save($data);
             $homeSafetyInsideResidenceService->save($data);
+
+            $hallwaysSafetyCheckService->save($data);
+            $kitchenBathroomSafetyCheckService->save($data);
 
             $completion = $completionService->calculate($assessment);
             $assessment->completion_percentage = $completion;
@@ -66,7 +74,7 @@ class HomeSafetyChecklistAssessmentController extends Controller
             }
 
             return ['homeSafetyChecklistAssessment' => $assessment->load([
-            'outsideEntry','insideResidence'
+            'outsideEntry','insideResidence','hallways','hallwaysSafetyAssessment'
 
             ]),
         ];
@@ -84,8 +92,8 @@ class HomeSafetyChecklistAssessmentController extends Controller
 public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $completionService)
 {
 
-    $assessment = HomeSafetyChecklistAssessment::with(['outsideEntry','insideResidence'
-
+    $assessment = HomeSafetyChecklistAssessment::with(['outsideEntry','insideResidence',
+    'hallways','hallwaysSafetyAssessment'
 
     ])->where('uuid', $uuid)->first();
 
@@ -110,7 +118,8 @@ public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $c
 
     public function exportPdf(string $uuid)
 {
-    $homeSafety = HomeSafetyChecklistAssessment::with('staff','outsideEntry','insideResidence')->where('uuid', $uuid)->firstOrFail();
+    $homeSafety = HomeSafetyChecklistAssessment::with('staff','outsideEntry',
+    'insideResidence','hallways','hallwaysSafetyAssessment')->where('uuid', $uuid)->firstOrFail();
 
     $pdf = Pdf::loadView('pdf.home_safety_checklist', compact('homeSafety'))
               ->setPaper('A4', 'portrait');

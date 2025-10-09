@@ -152,6 +152,7 @@
         <div class="section-header">Transport</div>
         @if($schedule->transport)
         <table>
+
             <tr>
                 <td><span class="label">Support Name</span><span class="value">{{ $schedule->transport->support_name ?? 'N/A' }}</span></td>
                 <td><span class="label">Description</span><span class="value">{{ $schedule->transport->description ?? 'N/A' }}</span></td>

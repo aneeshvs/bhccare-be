@@ -20,6 +20,8 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
             $this->homerules(),
             $this->outsiderules(),
             $this->insiderules(),
+            $this->hallwaysrules(),
+            $this->kitchenrules(),
 
 
         );
@@ -89,6 +91,74 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
             'step_ladder_ok_strategy' => 'nullable|string|max:1000',
             'cleaning_substances_ok' => 'nullable|in:Yes,No,N/A,Unsure',
             'cleaning_substances_ok_strategy' => 'nullable|string|max:1000',
+        ];
+    }
+
+    private function hallwaysrules(): array
+    {
+        return [
+
+            'hallways_lounge_dining_bedroom' => 'nullable|in:Yes,No,N/A,Unsure',
+            'hallways_lounge_dining_bedroom_strategy' => 'nullable|string|max:1000',
+            'pests_evidence' => 'nullable|in:Yes,No,N/A,Unsure',
+            'pests_evidence_strategy' => 'nullable|string|max:1000',
+            'lighting_workspace' => 'nullable|in:Yes,No,N/A,Unsure',
+            'lighting_workspace_strategy' => 'nullable|string|max:1000',
+            'furniture_stable' => 'nullable|in:Yes,No,N/A,Unsure',
+            'furniture_stable_strategy' => 'nullable|string|max:1000',
+            'bed_adjustable' => 'nullable|in:Yes,No,N/A,Unsure',
+            'bed_adjustable_strategy' => 'nullable|string|max:1000',
+            'electrical_switches' => 'nullable|in:Yes,No,N/A,Unsure',
+            'electrical_switches_strategy' => 'nullable|string|max:1000',
+            'private_sleep_space' => 'nullable|in:Yes,No,N/A,Unsure',
+            'private_sleep_space_strategy' => 'nullable|string|max:1000',
+            'hallways_fire_hazards' => 'nullable|in:Yes,No,N/A,Unsure',
+            'hallways_fire_hazards_strategy' => 'nullable|string|max:1000',
+        ];
+    }
+
+    private function kitchenrules(): array
+    {
+        return [
+
+            'floor_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'floor_condition_strategy' => 'nullable|string|max:1000',
+
+            'electrical_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'electrical_condition_strategy' => 'nullable|string|max:1000',
+
+            'ventilation_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'ventilation_condition_strategy' => 'nullable|string|max:1000',
+
+            'bench_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'bench_condition_strategy' => 'nullable|string|max:1000',
+
+            'stove_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'stove_condition_strategy' => 'nullable|string|max:1000',
+
+            'fridge_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'fridge_condition_strategy' => 'nullable|string|max:1000',
+
+            'bath_access' => 'nullable|in:Yes,No,N/A,Unsure',
+            'bath_access_strategy' => 'nullable|string|max:1000',
+
+            'toilet_access' => 'nullable|in:Yes,No,N/A,Unsure',
+            'toilet_access_strategy' => 'nullable|string|max:1000',
+
+            'privacy_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'privacy_condition_strategy' => 'nullable|string|max:1000',
+
+            'laundry_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'laundry_condition_strategy' => 'nullable|string|max:1000',
+
+            'ironing_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+            'ironing_condition_strategy' => 'nullable|string|max:1000',
+
+            'manual_handling_risks' => 'nullable|in:Yes,No,N/A,Unsure',
+            'manual_handling_strategy' => 'nullable|string|max:1000',
+
+            'kitchen_fire_hazards' => 'nullable|in:Yes,No,N/A,Unsure',
+            'kitchen_fire_hazards_strategy' => 'nullable|string|max:1000',
         ];
     }
 

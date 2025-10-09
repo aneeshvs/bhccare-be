@@ -43,6 +43,16 @@ public function insideResidence()
         return $this->hasOne(HomeSafetyInsideResidence::class, 'home_safety_checklist_assessment_id');
     }
 
+    public function hallways()
+{
+    return $this->hasOne(HallwaysSafetyCheck::class, 'home_safety_checklist_assessment_id');
+}
+
+public function hallwaysSafetyAssessment()
+{
+    return $this->hasOne(KitchenBathroomSafetyCheck::class,'home_safety_checklist_assessment_id');
+}
+
 
     public function getActivitylogOptions(): LogOptions
     {
