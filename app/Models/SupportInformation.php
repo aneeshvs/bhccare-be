@@ -43,23 +43,5 @@ class SupportInformation extends DefaultDBModel
             ->useLogName(self::$logName);
     }
 
-    public function getMaleAttribute($value)
-    {
-        return $value == 1 ? 'checked' : 'unchecked';
-    }
 
-    public function getFemaleAttribute($value)
-    {
-        return $value == 1 ? 'checked' : 'unchecked';
-    }
-
-    public function getNoPreferenceAttribute($value)
-    {
-        return $value == 1 ? 'checked' : 'unchecked';
-    }
-
-    public function getDescriptionForEvent(string $eventName): string
-    {
-        return "SupportInformation record was {$eventName}";
-    }
 }
