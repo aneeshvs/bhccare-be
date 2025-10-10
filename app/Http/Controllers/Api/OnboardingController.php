@@ -106,26 +106,24 @@ class OnboardingController extends UniversalController
 
 
 
-           if ($data['form_status'] === 'completed') {
-
-                $initial->form_status = 'completed';
-
-                // api call to core php
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+           try {
+                $response = Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
                     'uuid' => (string) $initial->uuid,
                     'form_name' => 'onboarding',
                     'completion_percentage' => $completion,
-                    'form_status' => 'completed',
-                ]);
-            } else {
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
-                    'uuid' => (string) $initial->uuid,
-                    'form_name' => 'onboarding',
-                    'completion_percentage' => $completion,
-                    'form_status' => 'in_progress',
+                    'form_status' => $data['form_status'] === 'completed' ? 'completed' : 'in_progress',
                 ]);
 
+                if ($response->failed()) {
+                    Log::warning('Core PHP update-form-status failed', [
+                        'uuid' => $initial->uuid,
+                        'status' => $response->status(),
+                        'body' => $response->body(),
+                    ]);
+                }
 
+            } catch (\Exception $e) {
+                Log::error('Error calling Core PHP update-form-status: ' . $e->getMessage());
             }
 
 

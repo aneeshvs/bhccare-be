@@ -75,8 +75,8 @@ class HomeSafetyChecklistCompletionService
         'electrical_switches_strategy',
         'private_sleep_space',
         'private_sleep_space_strategy',
-        'fire_hazards',
-        'fire_hazards_strategy',
+        'hallways_fire_hazards',
+        'hallways_fire_hazards_strategy',
         ],
        'hallwaysSafetyAssessment' =>[
         'floor_condition',
@@ -106,6 +106,60 @@ class HomeSafetyChecklistCompletionService
         'kitchen_fire_hazards',
         'kitchen_fire_hazards_strategy',
        ],
+
+       'outsideResidenceAssessment'=>[
+
+        'outside_paths_veranda_steps',
+        'outside_paths_veranda_steps_strategy',
+
+        'outside_pets_restrained',
+        'outside_pets_restrained_strategy',
+
+        'outside_lighting_adequate',
+        'outside_lighting_adequate_strategy',
+
+        'outside_door_easy_open',
+        'outside_door_easy_open_strategy',
+
+        'outside_lawn_mower_condition',
+        'outside_lawn_mower_condition_strategy',
+
+        'outside_electrical_condition',
+        'outside_electrical_condition_strategy',
+
+        'outside_fire_hazards',
+        'outside_fire_hazards_strategy',
+
+       ],
+
+       'miscellaneous'=>[
+          'misc_children_living_at_home',
+        'misc_children_living_at_home_strategy',
+
+        'misc_weapons_stored_appropriately',
+        'misc_weapons_stored_appropriately_strategy',
+
+        'misc_smoking_outside_only',
+        'misc_smoking_outside_only_strategy',
+
+        'misc_mobility_issues',
+        'misc_mobility_issues_strategy',
+
+        'misc_equipment_good_condition',
+        'misc_equipment_good_condition_strategy',
+
+        'misc_ppe_requirements',
+        'misc_ppe_requirements_strategy',
+
+        'misc_personal_threats',
+        'misc_personal_threats_strategy',
+
+        'misc_safe_neighbourhood',
+        'misc_safe_neighbourhood_strategy',
+
+        'misc_aggression_in_home',
+        'misc_aggression_in_home_strategy',
+       ]
 
 
 

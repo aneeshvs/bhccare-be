@@ -109,6 +109,9 @@ Route::get('/support-care-plan/export-pdf/{uuid}', [SupportCarePlanController::c
 Route::get('/support-care-plan/{uuid}/export-pdf', [SupportCarePlanController::class, 'exportFullFormPdf']);
 
 
+
+Route::delete('/supportcareplan/remove-section', [SupportCarePlanController::class, 'removeSectionSupportCarePlan']);
+
 // risk assessment
 
 Route::get('/risk-assessment/logs', [ActivityLogController::class, 'getLogsByUuidRiskAssessment']);
@@ -122,6 +125,9 @@ Route::get('/get-risk-assessment-uuid', [IndividualRiskAssessmentController::cla
 // 🔹 Export PDF (two options)
 Route::get('/risk-assessment/export-pdf/{uuid}', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
 Route::get('/risk-assessment/{uuid}/export-pdf', [IndividualRiskAssessmentController::class, 'exportFullFormPdf']);
+
+Route::delete('/risk-assessment/remove-section', [IndividualRiskAssessmentController::class, 'removeSectionRiskAssessment']);
+
 
 Route::get('/schedule-of-supports/logs', [ActivityLogController::class, 'getLogsByUuidSchedule']); // Logs by UUID
 

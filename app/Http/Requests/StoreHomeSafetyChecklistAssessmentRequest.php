@@ -22,6 +22,8 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
             $this->insiderules(),
             $this->hallwaysrules(),
             $this->kitchenrules(),
+            $this->assesmentrules(),
+             $this->miscerules(),
 
 
         );
@@ -161,6 +163,72 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
             'kitchen_fire_hazards_strategy' => 'nullable|string|max:1000',
         ];
     }
+
+    private function assesmentrules(): array
+    {
+        return [
+
+
+        'outside_paths_veranda_steps' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_paths_veranda_steps_strategy' => 'nullable|string',
+
+        'outside_pets_restrained' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_pets_restrained_strategy' => 'nullable|string',
+
+        'outside_lighting_adequate' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_lighting_adequate_strategy' => 'nullable|string',
+
+        'outside_door_easy_open' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_door_easy_open_strategy' => 'nullable|string',
+
+        'outside_lawn_mower_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_lawn_mower_condition_strategy' => 'nullable|string',
+
+        'outside_electrical_condition' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_electrical_condition_strategy' => 'nullable|string',
+
+        'outside_fire_hazards' => 'nullable|in:Yes,No,N/A,Unsure',
+        'outside_fire_hazards_strategy' => 'nullable|string'
+
+
+       ];
+    }
+
+
+    private function miscerules(): array
+    {
+        return [
+
+
+            'misc_children_living_at_home' => 'nullable|string|max:255',
+            'misc_children_living_at_home_strategy' => 'nullable|string|max:1000',
+
+            'misc_weapons_stored_appropriately' => 'nullable|string|max:255',
+            'misc_weapons_stored_appropriately_strategy' => 'nullable|string|max:1000',
+
+            'misc_smoking_outside_only' => 'nullable|string|max:255',
+            'misc_smoking_outside_only_strategy' => 'nullable|string|max:1000',
+
+            'misc_mobility_issues' => 'nullable|string|max:255',
+            'misc_mobility_issues_strategy' => 'nullable|string|max:1000',
+
+            'misc_equipment_good_condition' => 'nullable|string|max:255',
+            'misc_equipment_good_condition_strategy' => 'nullable|string|max:1000',
+
+            'misc_ppe_requirements' => 'nullable|string|max:255',
+            'misc_ppe_requirements_strategy' => 'nullable|string|max:1000',
+
+            'misc_personal_threats' => 'nullable|string|max:255',
+            'misc_personal_threats_strategy' => 'nullable|string|max:1000',
+
+            'misc_safe_neighbourhood' => 'nullable|string|max:255',
+            'misc_safe_neighbourhood_strategy' => 'nullable|string|max:1000',
+
+            'misc_aggression_in_home' => 'nullable|string|max:255',
+            'misc_aggression_in_home_strategy' => 'nullable|string|max:1000',
+        ];
+    }
+
 
     protected function failedValidation(Validator $validator)
     {

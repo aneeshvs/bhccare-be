@@ -163,4 +163,85 @@ class IndividualRiskAssessmentController extends Controller
 
         return response()->json(['uuid' => $assessment?->uuid], 200);
     }
+
+
+    public function removeSectionRiskAssessment(Request $request)
+{
+    $uuid = $request->input('uuid');
+    $table = $request->input('table'); // e.g., 'individual_risk_assessment_detail'
+    $field = $request->input('field'); // e.g., 'risk_title'
+    $value = $request->input('value'); // e.g., 'Slips and falls'
+
+    if (!$uuid || !$table || !$field || !$value) {
+        return response()->json([
+            'status' => false,
+            'message' => 'uuid, table, field, and value are required.',
+        ], 400);
+    }
+
+    // ✅ Validate UUID against main IndividualRiskAssessment
+    $riskAssessment = \App\Models\IndividualRiskAssessment::where('uuid', $uuid)->first();
+
+    if (!$riskAssessment) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid UUID. No Risk Assessment found.',
+        ], 404);
+    }
+
+    // ✅ Map table names to models
+    $modelMap = [
+
+        'plan_manual_handlings'=> \App\Models\PlanManualHandling::class,
+    ];
+
+    if (!array_key_exists($table, $modelMap)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid table name provided.',
+        ], 400);
+    }
+
+    $modelClass = $modelMap[$table];
+
+    // ✅ Find record for deletion
+    $record = $modelClass::where('individual_risk_assessment_id', $riskAssessment->id)
+        ->where($field, $value)
+        ->first();
+
+    if (!$record) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Record not found for deletion.',
+        ], 404);
+    }
+
+    // Capture old data before delete
+    $oldData = $record->getOriginal();
+
+    // ✅ Delete record
+    $record->delete();
+
+    // ✅ Log deletion in activity log
+    activity()
+        ->useLog($table)
+        ->performedOn($record)
+       ->causedBy(Auth::user())
+        ->withProperties([
+            'attributes' => [$field => $value],
+            'old' => $oldData,
+            'individual_risk_assessment_id' => $riskAssessment->id,
+            'uuid' => $uuid,
+            'user_id' => $riskAssessment->user_id,
+            'client_type' => $riskAssessment->client_type,
+            'staff_id' => $riskAssessment->staff_id,
+        ])
+        ->log(ucwords(str_replace('_', ' ', $table)) . ' record deleted');
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Record removed successfully.',
+    ]);
+}
+
 }

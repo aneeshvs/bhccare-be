@@ -196,4 +196,88 @@ class SupportCarePlanController extends Controller
         return response()->json(['uuid' => $plan->uuid], 200);
     }
 
+
+
+public function removeSectionSupportCarePlan(Request $request)
+{
+    $uuid = $request->input('uuid');
+    $table = $request->input('table'); // e.g., 'sil_goals'
+    $field = $request->input('field'); // e.g., 'goal_title'
+    $value = $request->input('value'); // e.g., 'Increase independence'
+
+    if (!$uuid || !$table || !$field || !$value) {
+        return response()->json([
+            'status' => false,
+            'message' => 'uuid, table, field, and value are required.',
+        ], 400);
+    }
+
+    $supportCarePlan = SupportCarePlan::where('uuid', $uuid)->first();
+
+    if (!$supportCarePlan) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid UUID. No Support Care Plan found.',
+        ], 404);
+    }
+
+    $modelMap = [
+    'alternate_decision_makers'              => \App\Models\AlternateDecisionMaker::class,
+    'sil_goals'                              => \App\Models\SilGoal::class,
+    'support_care_plan_communication'        => \App\Models\SupportCarePlanCommunicationPlan::class,
+    'support_care_plan_emergency_contacts'   => \App\Models\SupportCarePlanEmergencyContact::class,
+    'support_care_plan_important_contacts'   => \App\Models\SupportCarePlanImportantContact::class,
+    'support_care_plan_local_services'       => \App\Models\SupportCarePlanLocalServicesContact::class,
+    'support_care_plan_emergency_scenarios'  => \App\Models\SupportCarePlanEmergencyScenario::class,
+    'support_care_plan_emergency_disaster'   => \App\Models\SupportCarePlanEmergencyDisasterPlan::class,
+];
+
+
+    if (!array_key_exists($table, $modelMap)) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid table name provided.',
+        ], 400);
+    }
+
+    $modelClass = $modelMap[$table];
+
+    // ✅ Find record to delete
+    $record = $modelClass::where('support_care_plan_id', $supportCarePlan->id)
+        ->where($field, $value)
+        ->first();
+
+    if (!$record) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Record not found for deletion.',
+        ], 404);
+    }
+
+    $oldData = $record->getOriginal();
+    $record->delete();
+
+    // ✅ Log deletion
+    activity()
+        ->useLog($table)
+        ->performedOn($record)
+        ->causedBy(Auth::user())
+        ->withProperties([
+            'attributes' => [$field => $value],
+            'old' => $oldData,
+            'support_care_plan_id' => $supportCarePlan->id,
+            'uuid' => $uuid,
+            'user_id' => $supportCarePlan->user_id,
+            'client_type' => $supportCarePlan->client_type,
+            'staff_id' => $supportCarePlan->staff_id,
+        ])
+        ->log(ucwords(str_replace('_', ' ', $table)) . ' record deleted');
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Record removed successfully.',
+    ]);
+}
+
+
 }

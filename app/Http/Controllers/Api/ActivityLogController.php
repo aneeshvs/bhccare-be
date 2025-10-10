@@ -813,7 +813,9 @@ public function getLogsByUuidHomeSafety(Request $request)
             'home_safety_outside_entry',
             'home_safety_inside_residence',
             'hallways_safety_check',
-            'kitchen_bathroom_safety_check'
+            'kitchen_bathroom_safety_check',
+            'outside_residence_assessment',
+            'home_safety_miscellaneous'
         ]);
     }
 
