@@ -46,8 +46,8 @@ return new class extends Migration {
             $table->string('private_sleep_space_strategy')->nullable();
 
             // ✅ Fire hazards
-            $table->enum('fire_hazards', ['Yes', 'No', 'N/A', 'Unsure'])->nullable();
-            $table->string('fire_hazards_strategy')->nullable();
+            $table->enum('hallways_fire_hazards', ['Yes', 'No', 'N/A', 'Unsure'])->nullable();
+            $table->string('hallways_fire_hazards_strategy')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
