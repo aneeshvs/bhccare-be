@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
+
 
 
 class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
@@ -24,6 +26,7 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
             $this->kitchenrules(),
             $this->assesmentrules(),
              $this->miscerules(),
+             $this->residentrules(),
 
 
         );
@@ -226,6 +229,36 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
 
             'misc_aggression_in_home' => 'nullable|string|max:255',
             'misc_aggression_in_home_strategy' => 'nullable|string|max:1000',
+        ];
+    }
+
+    public function residentrules(): array
+    {
+        return [
+            
+           
+            'residence_house_type' => [
+                'nullable',
+                Rule::in(['Single / Double Storey', 'Private Rental', 'Care Facility'])
+            ],
+
+            
+            'residence_other_type' => [
+                'nullable',
+                Rule::in(['Unit', 'Caravan Park', 'Office Housing', 'Other'])
+            ],
+            
+            
+            'assessment_completed_with' => [
+                'nullable',
+                Rule::in(['Participant', 'Support Worker', 'Guardian / Next Of Kin'])
+            ],
+
+           
+            'name' => ['nullable', 'string', 'max:255'],
+            'position' => ['nullable', 'string', 'max:255'],
+            'review_date' => ['nullable', 'date'],
+            'care_facility' => ['nullable', 'string', 'max:255'],
         ];
     }
 

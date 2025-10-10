@@ -63,6 +63,12 @@ public function miscellaneous()
     return $this->hasOne(HomeSafetyMiscellaneous::class, 'home_safety_checklist_assessment_id');
 }
 
+public function residenceType()
+{
+    return $this->hasOne(HomeSafetyResidenceType::class, 'home_safety_checklist_assessment_id');
+}
+
+
 
 
 

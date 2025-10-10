@@ -159,7 +159,19 @@ class HomeSafetyChecklistCompletionService
 
         'misc_aggression_in_home',
         'misc_aggression_in_home_strategy',
-       ]
+       ],
+
+       'residenceType' =>[
+
+       'residence_house_type',
+        'residence_other_type',
+        
+        'assessment_completed_with',
+        'name',
+        'position',
+        'review_date',
+        'care_facility',
+       ],
 
 
 

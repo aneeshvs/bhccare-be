@@ -18,6 +18,7 @@ use App\HomeSafetyChecklistAssessmentService\HomeSafetyChecklistCompletionServic
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyInsideResidenceService;
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyMiscellaneousService;
 use App\HomeSafetyChecklistAssessmentService\HomeSafetyOutsideEntryService;
+use App\HomeSafetyChecklistAssessmentService\HomeSafetyResidenceTypeService;
 use App\HomeSafetyChecklistAssessmentService\KitchenBathroomSafetyCheckService;
 use App\HomeSafetyChecklistAssessmentService\OutsideResidenceAssessmentService;
 
@@ -33,7 +34,8 @@ class HomeSafetyChecklistAssessmentController extends Controller
         KitchenBathroomSafetyCheckService $kitchenBathroomSafetyCheckService,
         OutsideResidenceAssessmentService $outsideResidenceAssessmentService,
         HomeSafetyMiscellaneousService $homeSafetyMiscellaneousService,
-
+        HomeSafetyResidenceTypeService $homeSafetyResidenceTypeService
+       
 
     ) {
         $data = $request->validated();
@@ -43,6 +45,7 @@ class HomeSafetyChecklistAssessmentController extends Controller
         $result = DB::transaction(function () use ($data, $service,$homeSafetyOutsideEntryService,
         $completionService,$homeSafetyInsideResidenceService,$hallwaysSafetyCheckService,
         $kitchenBathroomSafetyCheckService,$outsideResidenceAssessmentService,$homeSafetyMiscellaneousService,
+        $homeSafetyResidenceTypeService,
 ) {
             $user = Auth::user();
             if (!$user) {
@@ -62,6 +65,7 @@ class HomeSafetyChecklistAssessmentController extends Controller
             $kitchenBathroomSafetyCheckService->save($data);
             $outsideResidenceAssessmentService->save($data);
             $homeSafetyMiscellaneousService->save($data);
+            $homeSafetyResidenceTypeService->save($data);
 
             $completion = $completionService->calculate($assessment);
             $assessment->completion_percentage = $completion;
@@ -84,7 +88,7 @@ class HomeSafetyChecklistAssessmentController extends Controller
 
             return ['homeSafetyChecklistAssessment' => $assessment->load([
             'outsideEntry','insideResidence','hallways',
-            'hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous'
+            'hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous','residenceType'
 
             ]),
         ];
@@ -103,7 +107,7 @@ public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $c
 {
 
     $assessment = HomeSafetyChecklistAssessment::with(['outsideEntry','insideResidence',
-    'hallways','hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous'
+    'hallways','hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous','residenceType'
 
     ])->where('uuid', $uuid)->first();
 
@@ -129,7 +133,7 @@ public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $c
     public function exportPdf(string $uuid)
 {
     $homeSafety = HomeSafetyChecklistAssessment::with('staff','outsideEntry',
-    'insideResidence','hallways','hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous')->where('uuid', $uuid)->firstOrFail();
+    'insideResidence','hallways','hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous','residenceType')->where('uuid', $uuid)->firstOrFail();
     $pdf = Pdf::loadView('pdf.home_safety_checklist', compact('homeSafety'))
               ->setPaper('A4', 'portrait');
 
