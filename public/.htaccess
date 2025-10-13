@@ -5,6 +5,18 @@
 
     RewriteEngine On
 
+    # -----------------------------------------------------
+    # 🔒 Redirect direct browser access to main domain
+    # (but keep API and asset requests working)
+    # -----------------------------------------------------
+    # Skip redirect for API routes and known assets
+    RewriteCond %{REQUEST_URI} !^/api [NC]
+    RewriteCond %{REQUEST_URI} !^/(storage|images|assets|favicon\.ico|index\.php) [NC]
+    # Redirect only if accessing backend domain directly
+    RewriteCond %{HTTP_HOST} ^backend\.bhccare\.com\.au$ [NC]
+    RewriteRule ^ https://bhccare.com.au [L,R=301]
+    # -----------------------------------------------------
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

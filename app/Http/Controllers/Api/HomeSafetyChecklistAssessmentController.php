@@ -130,13 +130,22 @@ public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $c
 }
 
 
-    public function exportPdf(string $uuid)
+    public function exportFullFormPdf(string $uuid)
 {
-    $homeSafety = HomeSafetyChecklistAssessment::with('staff','outsideEntry',
-    'insideResidence','hallways','hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous','residenceType')->where('uuid', $uuid)->firstOrFail();
-    $pdf = Pdf::loadView('pdf.home_safety_checklist', compact('homeSafety'))
+    $assessment = HomeSafetyChecklistAssessment::with([
+        'staff',
+        'outsideEntry',
+        'insideResidence',
+        'hallways',
+        'hallwaysSafetyAssessment',
+        'outsideResidenceAssessment',
+        'miscellaneous',
+        'residenceType'
+    ])->where('uuid', $uuid)->firstOrFail();
+    
+    $pdf = Pdf::loadView('pdf.home_safety_assessment', compact('assessment'))
               ->setPaper('A4', 'portrait');
-
+    
     return $pdf->download('Home_Safety_Checklist_' . ($homeSafety->staff->name ?? 'Unknown') . '.pdf');
 }
 
