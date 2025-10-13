@@ -53,7 +53,7 @@ class ScheduleOfSupportController extends Controller
                 Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
                     'uuid' => (string) $schedule->uuid,
                     'form_name' => 'schedule_of_support',
-                    'completion_percentage' => $schedule->completion_percentage,
+                    'completion_percentage' => $completion,
                     'form_status' => $schedule->form_status,
                 ]);
             } catch (\Exception $e) {
