@@ -21,13 +21,13 @@ class ScheduleOfSupportController extends Controller
 {
     public function update(StoreScheduleOfSupportRequest $request, ScheduleOfSupportService $service,
     FundedSupportService $fundedSupportService,
-     UnfundedSupportService  $unfundedSupportService,AgreementSignatureService  $agreementSignatureService)
+     UnfundedSupportService  $unfundedSupportService,AgreementSignatureService  $agreementSignatureService, ScheduleOfSupportsCompletionService $completionService)
     {
         $data = $request->validated();
         $isFinal = $request->boolean('submit_final');
         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        $result = DB::transaction(function () use ($data, $service,$fundedSupportService,$unfundedSupportService,$agreementSignatureService) {
+        $result = DB::transaction(function () use ($data, $service,$fundedSupportService,$unfundedSupportService,$agreementSignatureService,$completionService) {
             $user = Auth::user();
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -43,6 +43,10 @@ class ScheduleOfSupportController extends Controller
             $fundedSupportService->save($data);
             $unfundedSupportService->save($data);
             $agreementSignatureService->save($data);
+
+            // ✅ Calculate completion
+            $completion = $completionService->calculate($schedule);
+            $schedule->completion_percentage = $completion;
 
             // Report back to Core PHP
             try {
