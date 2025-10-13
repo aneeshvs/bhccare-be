@@ -35,4 +35,9 @@ return [
         ],
     ],
 
+    'core_php' => [
+    'base_url' => env('CORE_PHP_URL', 'https://bhccare.com.au'),
+],
+
+
 ];

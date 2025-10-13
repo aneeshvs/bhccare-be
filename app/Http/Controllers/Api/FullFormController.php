@@ -92,7 +92,7 @@ public function update(
         $finalDeclarationService->save($data);
 
         if ($data['form_status'] === 'completed') {
-            $response = Http::asForm()->post(env('CORE_PHP_URL') . '/php/update-form-status.php', [
+            $response =  Http::asForm()->post(config('services.core_php.base_url') . '/php/update-form-status.php', [
                 'uuid' => $uuid,
                 'form_status' => 'completed',
             ]);

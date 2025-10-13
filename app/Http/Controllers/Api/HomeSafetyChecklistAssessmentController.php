@@ -35,7 +35,7 @@ class HomeSafetyChecklistAssessmentController extends Controller
         OutsideResidenceAssessmentService $outsideResidenceAssessmentService,
         HomeSafetyMiscellaneousService $homeSafetyMiscellaneousService,
         HomeSafetyResidenceTypeService $homeSafetyResidenceTypeService
-       
+
 
     ) {
         $data = $request->validated();
@@ -70,12 +70,14 @@ class HomeSafetyChecklistAssessmentController extends Controller
             $completion = $completionService->calculate($assessment);
             $assessment->completion_percentage = $completion;
             $assessment->save();
+
+             $formStatus = $data['form_status'] ?? 'in_progress';
             try {
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+                 Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
                     'uuid' => (string) $assessment->uuid,
                     'form_name' => 'home_safety_checklist_assessment',
                     'completion_percentage' => $completion,
-                    'form_status' => $data['form_status'],
+                    'form_status' =>$formStatus,
                 ]);
             } catch (\Exception $e) {
                 Log::error('Error reporting Home Safety Checklist status: ' . $e->getMessage());
@@ -142,10 +144,10 @@ public function showByUuid(string $uuid, HomeSafetyChecklistCompletionService $c
         'miscellaneous',
         'residenceType'
     ])->where('uuid', $uuid)->firstOrFail();
-    
+
     $pdf = Pdf::loadView('pdf.home_safety_assessment', compact('assessment'))
               ->setPaper('A4', 'portrait');
-    
+
     return $pdf->download('Home_Safety_Checklist_' . ($homeSafety->staff->name ?? 'Unknown') . '.pdf');
 }
 

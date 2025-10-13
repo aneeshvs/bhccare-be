@@ -48,17 +48,20 @@ class ScheduleOfSupportController extends Controller
             $completion = $completionService->calculate($schedule);
             $schedule->completion_percentage = $completion;
 
+
+            $formStatus = $data['form_status'] ?? 'in_progress';
+
             // Report back to Core PHP
             try {
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
-                    'uuid' => (string) $schedule->uuid,
-                    'form_name' => 'schedule_of_support',
-                    'completion_percentage' => $completion,
-                    'form_status' => $schedule->form_status,
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Error reporting Schedule of Support status: ' . $e->getMessage());
-            }
+                    Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                        'uuid' => (string) $schedule->uuid,
+                        'form_name' => 'schedule_of_support',
+                        'completion_percentage' => $completion,
+                        'form_status' => $formStatus,
+                    ]);
+                } catch (\Exception $e) {
+                    Log::error('Error reporting Schedule of Support status: ' . $e->getMessage());
+                }
 
             return ['scheduleOfSupport' => $schedule->load([
                 'transport',

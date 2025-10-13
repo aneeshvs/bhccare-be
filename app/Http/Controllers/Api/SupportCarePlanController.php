@@ -96,7 +96,7 @@ class SupportCarePlanController extends Controller
             $formStatus = $data['form_status'] ?? 'in_progress';
 
             try {
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+                 Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
                     'uuid' => (string) $plan->uuid,
                     'form_name' => 'support_care_plan',
                     'completion_percentage' => $completion,

@@ -77,14 +77,15 @@ class IndividualRiskAssessmentController extends Controller
             $assessment->completion_percentage = $completion;
             $assessment->save();
 
+            $formStatus = $data['form_status'] ?? 'in_progress';
 
             // Report to Core PHP
             try {
-                Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+                Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
                     'uuid' => (string) $assessment->uuid,
                     'form_name' => 'individual_risk_assessment',
                     'completion_percentage' => $completion,
-                    'form_status' => $assessment->form_status,
+                    'form_status' => $formStatus,
                 ]);
             } catch (\Exception $e) {
                 Log::error('Error reporting Risk Assessment status: ' . $e->getMessage());

@@ -107,7 +107,7 @@ class OnboardingController extends UniversalController
 
 
            try {
-                $response = Http::asForm()->post(env('CORE_PHP_URL') . '/update-form-status.php', [
+                $response =  Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
                     'uuid' => (string) $initial->uuid,
                     'form_name' => 'onboarding',
                     'completion_percentage' => $completion,
