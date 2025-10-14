@@ -134,6 +134,23 @@
 @endif
 
 
+@if($form->consent)
+    <table>
+        <tr><td colspan="2" class="section-title">Written Participant Consent</td></tr>
+        <tr><th>Signature</th><td>{{ $form->consent->signature ?? '-' }}</td></tr>
+        <tr><th>Date</th><td>{{ $form->consent->signed_date ?? '-' }}</td></tr>
+        <tr><th>Signed By</th>
+            <td>
+                @if($form->consent->signed_by === 'participant') Participant @else Authorized Representative @endif
+            </td>
+        </tr>
+        <tr><th>Name</th><td>{{ $form->consent->name ?? '-' }}</td></tr>
+        <tr><th>Witnessed By</th><td>{{ $form->consent->witnessed_by ?? '-' }}</td></tr>
+    </table>
+@endif
+
+
+
 </div>
 </body>
 </html>

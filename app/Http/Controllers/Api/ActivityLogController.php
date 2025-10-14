@@ -916,7 +916,8 @@ public function getLogsByUuidConfidential(Request $request)
     } else {
         $query->whereIn('log_name', [
             'confidential_information_form',
-            'confidential_information_agency'
+            'confidential_information_agency',
+            'confidential_information_consent',
             // Add more log_names if needed
         ]);
     }

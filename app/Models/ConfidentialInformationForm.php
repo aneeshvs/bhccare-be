@@ -43,6 +43,12 @@ class ConfidentialInformationForm extends DefaultDBModel
     return $this->hasMany(ConfidentialInformationAgency::class);
 }
 
+public function consent()
+{
+    return $this->hasOne(ConfidentialInformationConsent::class, 'confidential_information_form_id');
+}
+
+
 
     public function getDescriptionForEvent(string $eventName): string
     {

@@ -28,6 +28,14 @@ class ConfidentialInformationFormCompletionService
         'agency_name',
         'service_type',
         'information_shared',
+        ],
+
+        'consent'=>[
+            'signature',
+        'signed_date',
+        'signed_by',
+        'name',
+        'witnessed_by',
         ]
 
 

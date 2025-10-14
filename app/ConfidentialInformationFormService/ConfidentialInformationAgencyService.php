@@ -6,6 +6,7 @@ use App\Models\ConfidentialInformationAgency;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
+use App\Models\ConfidentialInformationForm;
 
 class ConfidentialInformationAgencyService
 {
@@ -74,12 +75,15 @@ class ConfidentialInformationAgencyService
                 $oldValues = array_intersect_key($original, $changes);
 
                 $record->save();
+                $form = ConfidentialInformationForm::find($formId);
+
 
                 Log::info("ConfidentialInformationAgency: changes", [
                     'changes' => $changes,
                     'original' => $oldValues,
                     'goal_key' => $record->goal_key,
                 ]);
+
 
                 activity()
                     ->useLog('confidential_information_agency')
@@ -90,12 +94,12 @@ class ConfidentialInformationAgencyService
                         'old' => $oldValues,
                         'confidential_information_form_id' => $record->confidential_information_form_id,
 
-                        'uuid' => $agency['uuid'] ?? null,
-                        'user_id' => $data['user_id'] ?? null,
-                        'client_type' => $data['client_type'] ?? null,
-                        'staff_id' => $agency['staff_id'] ?? null,
-
+                       'staff_id' => $data['staff_id'] ?? optional($form)->staff_id,
+                        'user_id' => optional($form)->user_id,
+                        'client_type' => optional($form)->client_type,
+                        'uuid' => $record->uuid ?? optional($form)->uuid,
                     ])
+
                     ->log('Confidential Information Agency record updated');
             } else {
                 $record->save(); // still save if newly created

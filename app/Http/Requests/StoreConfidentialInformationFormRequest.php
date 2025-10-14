@@ -21,6 +21,7 @@ class StoreConfidentialInformationFormRequest extends FormRequest
         return array_merge(
             $this->formrules(),
             $this->agenciesrules(),
+            $this->concentrules(),
 
 
 
@@ -71,6 +72,18 @@ class StoreConfidentialInformationFormRequest extends FormRequest
         'agencies.*.information_shared' => 'nullable|string',
     ];
 }
+
+private function concentrules(): array
+    {
+        return [
+
+            'signature' => 'nullable|string',
+            'signed_date' => 'nullable|date',
+            'signed_by' => 'nullable|in:participant,authorized_rep',
+            'name' => 'nullable|string|max:255',
+            'witnessed_by' => 'nullable|string|max:255',
+        ];
+    }
 
 
     protected function failedValidation(Validator $validator)
