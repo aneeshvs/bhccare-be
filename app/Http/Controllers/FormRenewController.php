@@ -49,6 +49,7 @@ class FormRenewController extends Controller
                 'risk-assessment'     => [\App\Models\IndividualRiskAssessment::class, 'pdf.individual_risk_assessment', 'assessment'],
                 'schedule-of-support' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_support', 'schedule'],
                 'home-safety'         => [\App\Models\HomeSafetyChecklistAssessment::class, 'pdf.home_safety_assessment', 'assessment'],
+                'confidential-information'         => [\App\Models\ConfidentialInformationForm::class, 'pdf.confidentialinformationform', 'form'],
             ];
 
             if (!isset($formMap[$form])) {

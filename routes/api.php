@@ -16,6 +16,7 @@ use App\Http\Controllers\Api\IndividualRiskAssessmentController;
 use App\Http\Controllers\FormRenewController;
 use App\Http\Controllers\Api\ScheduleOfSupportController;
 use App\Http\Controllers\Api\HomeSafetyChecklistAssessmentController;
+use App\Http\Controllers\Api\ConfidentialInformationFormController;
 
 
 use Illuminate\Support\Facades\DB;
@@ -155,6 +156,17 @@ Route::get('/home-safety-assessment/{uuid}/export-pdf', [HomeSafetyChecklistAsse
 
 
 
+Route::get('/confidential-form/logs', [ActivityLogController::class, 'getLogsByUuidConfidential']); // Activity logs by UUID
+
+// ✅ Public (no auth required)
+Route::get('/get-confidential-form-uuid', [ConfidentialInformationFormController::class, 'getConfidentialFormUuid']);
+// Get UUID by user_id & client_type
+Route::get('/confidential-form/{uuid}', [ConfidentialInformationFormController::class, 'showByUuid']); // View by UUID
+
+Route::get('/confidential-form/{uuid}/export-pdf', [ConfidentialInformationFormController::class, 'exportFullFormPdf']); // Export PDF
+
+
+
 
 
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
@@ -173,7 +185,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::put('/schedule-of-support/update', [ScheduleOfSupportController::class, 'update']);
 
-     Route::put('/home-safety-assessment/update', [HomeSafetyChecklistAssessmentController::class, 'update']); // Save or update Home Safety form// Save/update schedule
+     Route::put('/home-safety-assessment/update', [HomeSafetyChecklistAssessmentController::class, 'update']);
+
+     Route::put('/confidential-form/update', [ConfidentialInformationFormController::class, 'update']);
 
 
 
