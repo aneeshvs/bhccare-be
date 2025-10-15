@@ -453,35 +453,34 @@ class StoreSupportPlanRequest extends FormRequest
         ];
     }
 
-    public function fallriskrules(): array
-    {
-        return [
+   private function fallriskrules(): array
+{
+    return [
+        'recent_falls'                         => ['nullable', 'boolean'],
+        'recent_falls_details'                 => ['nullable', 'string'],
 
-            'recent_falls' => ['nullable', 'boolean'],
-            'recent_falls_details' => ['nullable', 'string'],
+        'strategies_to_reduce_risk'            => ['nullable', 'boolean'],
+        'strategies_details'                   => ['nullable', 'string'],
 
-            'strategies_to_reduce_falls' => ['nullable', 'boolean'],
-            'strategies_details' => ['nullable', 'string'],
+        'has_safety_pendant'                   => ['nullable', 'boolean'],
+        'safety_pendant_details'               => ['nullable', 'string'],
 
-            'safety_pendant' => ['nullable', 'boolean'],
-            'safety_pendant_details' => ['nullable', 'string'],
+        'worried_about_falling'                => ['nullable', 'boolean'],
+        'worried_details'                      => ['nullable', 'string'],
 
-            'worried_about_falling' => ['nullable', 'boolean'],
-            'worried_about_falling_details' => ['nullable', 'string'],
+        'referral_falls_clinic'                => ['nullable', 'boolean'],
+        'referral_falls_clinic_details'        => ['nullable', 'string'],
 
-            'referral_falls_clinic' => ['nullable', 'boolean'],
-            'referral_falls_clinic_details' => ['nullable', 'string'],
+        'referral_ot'                          => ['nullable', 'boolean'],
+        'fallrisk_referral_ot_details'         => ['nullable', 'string'],
 
-            'referral_ot' => ['nullable', 'boolean'],
-            'fallrisk_referral_ot_details' => ['nullable', 'string'],
+        'referral_physio'                      => ['nullable', 'boolean'],
+        'referral_physio_details'              => ['nullable', 'string'],
+    ];
+}
 
-            'referral_physiotherapist' => ['nullable', 'boolean'],
-            'referral_physiotherapist_details' => ['nullable', 'string']
 
-        ];
-    }
-
-    public function cognitiverules(): array
+    private function cognitiverules(): array
     {
         return [
 
@@ -542,46 +541,46 @@ class StoreSupportPlanRequest extends FormRequest
     }
 
     public function behaiviourules(): array
-    {
-        return [
+{
+    return [
+        'feeling_agitation'                      => 'nullable|boolean',
+        'feeling_agitation_details'              => 'nullable|string',
 
+        'delusions_hallucinations'               => 'nullable|boolean',
+        'delusions_hallucinations_details'       => 'nullable|string',
 
-            'feeling_agitation'              => 'nullable|boolean',
-            'feeling_agitation_details'      => 'nullable|string',
+        'personality_changes'                    => 'nullable|boolean',
+        'personality_changes_details'            => 'nullable|string',
 
-            'delusions_hallucinations'       => 'nullable|boolean',
-            'delusions_hallucinations_details' => 'nullable|string',
+        'wandering_purpose'                      => 'nullable|boolean',
+        'wandering_purpose_details'              => 'nullable|string',
 
-            'personality_changes'            => 'nullable|boolean',
-            'personality_changes_details'    => 'nullable|string',
+        'absconding_concerns'                    => 'nullable|boolean',
+        'absconding_concerns_details'            => 'nullable|string',
 
-            'wandering'                      => 'nullable|boolean',
-            'wandering_details'              => 'nullable|string',
+        'verbal_threats'                         => 'nullable|boolean',
+        'verbal_threats_details'                 => 'nullable|string',
 
-            'absconding'                     => 'nullable|boolean',
-            'absconding_details'             => 'nullable|string',
+        'physical_assault'                       => 'nullable|boolean',
+        'physical_assault_details'               => 'nullable|string',
 
-            'verbal_threats'                 => 'nullable|boolean',
-            'verbal_threats_details'         => 'nullable|string',
+        'restrictive_interventions'              => 'nullable|boolean',
+        'restrictive_interventions_details'      => 'nullable|string',
 
-            'physical_assault'               => 'nullable|boolean',
-            'physical_assault_details'       => 'nullable|string',
+        'restrictive_physical'                   => 'nullable|boolean',
+        'restrictive_approved_by_practitioner'   => 'nullable|boolean',
+        'restrictive_practitioner_details'       => 'nullable|string',
 
-            'restrictive_interventions'      => 'nullable|boolean',
-            'restrictive_interventions_details' => 'nullable|string',
+        'current_strategies'                     => 'nullable|string',
 
-            'interventions_approved'         => 'nullable|boolean',
-            'interventions_approved_details' => 'nullable|string',
+        'referral_positive_behaviour_practitioner'        => 'nullable|boolean',
+        'referral_positive_behaviour_practitioner_details' => 'nullable|string',
 
-            'current_strategies'             => 'nullable|string',
+        'behaviour_support_plan_required'        => 'nullable|boolean',
+        'behaviour_support_plan_expiry'          => 'nullable|date',
+    ];
+}
 
-            'referral_pbsp'                  => 'nullable|boolean',
-            'referral_pbsp_details'          => 'nullable|string',
-
-            'bsp_required'                   => 'nullable|boolean',
-            'bsp_expiry_date'                => 'nullable|date',
-        ];
-    }
 
 
     public function plancarerules(): array
