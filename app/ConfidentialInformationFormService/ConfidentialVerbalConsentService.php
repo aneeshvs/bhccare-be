@@ -30,6 +30,7 @@ class ConfidentialVerbalConsentService
                 'original' => $original,
             ]);
 
+
             activity()
                 ->useLog('confidential_verbal_consent')
                 ->performedOn($record)
