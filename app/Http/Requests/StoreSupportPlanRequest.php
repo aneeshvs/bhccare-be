@@ -755,7 +755,7 @@ class StoreSupportPlanRequest extends FormRequest
 
             'pain_location' => 'nullable|string|max:255',
             'pain_frequency' => 'nullable|string|max:255',
-            'pain_scale' => 'nullable|integer|max:10',
+            'pain_scale' => 'nullable|integer',
 
             'supported_for_pain' => 'nullable|boolean',
             'supported_pain_details' => 'nullable|string',
