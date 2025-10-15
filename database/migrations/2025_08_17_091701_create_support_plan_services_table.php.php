@@ -14,6 +14,8 @@ return new class extends Migration {
             $table->unsignedBigInteger('support_plan_id')->index();
             $table->foreign('support_plan_id')->references('id')->on('support_plans')->onDelete('cascade');
 
+             $table->string('goal_key')->nullable();
+
             $table->string('name')->nullable();
             $table->string('service_provided')->nullable();
             $table->string('funded_by')->nullable();

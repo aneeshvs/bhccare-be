@@ -13,6 +13,7 @@ class SupportPlanService extends DefaultDBModel
     protected $fillable = [
         'support_plan_id',
         'name',
+        'goal_key',
         'service_provided',
         'funded_by',
         'duration_frequency',

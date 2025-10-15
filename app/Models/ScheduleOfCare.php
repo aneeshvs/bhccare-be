@@ -14,6 +14,7 @@ class ScheduleOfCare extends DefaultDBModel
         'initial_enquiry_id',
         'type_of_service',
         'primary_task_list',
+        'goal_key',
         'secondary_task_list',
     ];
 

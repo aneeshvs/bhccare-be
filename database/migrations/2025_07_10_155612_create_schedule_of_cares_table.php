@@ -1,4 +1,5 @@
 <?php
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,6 +11,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('initial_enquiry_id')->constrained('initial_enquiries')->onDelete('cascade');
 
+            $table->string('goal_key')->nullable(); // ✅ used same as in ndis_goals_onboarding
             $table->string('type_of_service')->nullable();
             $table->text('primary_task_list')->nullable();
             $table->text('secondary_task_list')->nullable();

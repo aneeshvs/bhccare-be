@@ -112,6 +112,7 @@ class StoreOnboardingRequest extends FormRequest
         'schedule_of_cares.*.type_of_service' => 'nullable|string|max:255',
         'schedule_of_cares.*.primary_task_list' => 'nullable|string',
         'schedule_of_cares.*.secondary_task_list' => 'nullable|string',
+        'schedule_of_cares.*.goal_key' => 'nullable|string|max:255',
             ];
         }
         private function culturalRules(): array

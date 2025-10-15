@@ -253,6 +253,7 @@ class StoreSupportPlanRequest extends FormRequest
             'support_plan_services.*.funded_by' => 'nullable|string|max:255',
             'support_plan_services.*.duration_frequency' => 'nullable|string|max:255',
             'support_plan_services.*.support_to_implement_by_us' => 'nullable|boolean',
+             'support_plan_services.*.goal_key' => 'nullable|string|max:255',
 
 
         ];
@@ -281,6 +282,8 @@ class StoreSupportPlanRequest extends FormRequest
             'support_plan_my_goals.*.who_will_support' => 'nullable|string|max:255',
             'support_plan_my_goals.*.participant_support' => 'nullable|string|max:255',
             'support_plan_my_goals.*.when_to_meet_goal' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.goal_key' => 'nullable|string|max:255',
+
         ];
     }
 

@@ -13,6 +13,7 @@ class SupportPlanMyGoal extends DefaultDBModel
     protected $fillable = [
         'support_plan_id',
         'goal',
+        'goal_key',
         'measure_progress',
         'success_look_like',
         'who_will_support',
