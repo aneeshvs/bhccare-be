@@ -9,6 +9,7 @@ use App\ConfidentialInformationFormService\ConfidentialInformationFormCompletion
 use App\ConfidentialInformationFormService\ConfidentialInformationFormService;
 use App\ConfidentialInformationFormService\ConfidentialInformationAgencyService;
 use App\ConfidentialInformationFormService\ConfidentialInformationConsentService;
+use App\ConfidentialInformationFormService\ConfidentialVerbalConsentService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class ConfidentialInformationFormController extends Controller
         ConfidentialInformationFormCompletionService $completionService,
         ConfidentialInformationAgencyService  $ConfidentialInformationAgencyService,
         ConfidentialInformationConsentService $confidentialInformationConsentService,
+        ConfidentialVerbalConsentService $confidentialVerbalConsentService,
 
     ) {
         $data = $request->validated();
@@ -39,6 +41,7 @@ class ConfidentialInformationFormController extends Controller
             $completionService,
             $ConfidentialInformationAgencyService,
             $confidentialInformationConsentService,
+            $confidentialVerbalConsentService,
         ) {
             $user = Auth::user();
             if (!$user) {
@@ -57,6 +60,7 @@ class ConfidentialInformationFormController extends Controller
 
              $ConfidentialInformationAgencyService->saveMany($data['agencies'] ?? [], $form->id);
               $confidentialInformationConsentService->save($data);
+              $confidentialVerbalConsentService->save($data);
 
 
             // ✅ Calculate completion (optional logic)
@@ -84,7 +88,7 @@ class ConfidentialInformationFormController extends Controller
 
             return [
                 'confidentialInformationForm' => $form->load([
-                    'agencies','consent'
+                    'agencies','consent','verbal'
 
                 ]),
             ];
@@ -104,7 +108,7 @@ class ConfidentialInformationFormController extends Controller
      */
     public function showByUuid(string $uuid, ConfidentialInformationFormCompletionService $completionService)
     {
-        $form = ConfidentialInformationForm::with(['staff','agencies','consent'])
+        $form = ConfidentialInformationForm::with(['staff','agencies','consent','verbal'])
             ->where('uuid', $uuid)
             ->first();
 
@@ -130,7 +134,7 @@ class ConfidentialInformationFormController extends Controller
      */
     public function exportFullFormPdf(string $uuid)
     {
-        $form = ConfidentialInformationForm::with(['staff','agencies','consent'])
+        $form = ConfidentialInformationForm::with(['staff','agencies','consent','verbal'])
             ->where('uuid', $uuid)
             ->firstOrFail();
 

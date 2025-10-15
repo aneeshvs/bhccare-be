@@ -698,7 +698,7 @@ class StoreSupportPlanRequest extends FormRequest
             'impacts_daily_activities'  => 'nullable|boolean',
             'impact_date'               => 'nullable|date',
             'pain_discomfort_level'     => 'nullable|string|max:255',
-            'pain_level_score'          => 'nullable|integer|max:10',
+            'pain_level_score'          => 'nullable|integer',
             'management_strategies'     => 'nullable|string',
             'skin_condition_worry'      => 'nullable|boolean',
             'worry_date'                => 'nullable|date',

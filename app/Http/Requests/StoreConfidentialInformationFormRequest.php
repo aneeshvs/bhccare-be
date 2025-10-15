@@ -22,6 +22,7 @@ class StoreConfidentialInformationFormRequest extends FormRequest
             $this->formrules(),
             $this->agenciesrules(),
             $this->concentrules(),
+            $this->verbalrules(),
 
 
 
@@ -73,7 +74,7 @@ class StoreConfidentialInformationFormRequest extends FormRequest
     ];
 }
 
-private function concentrules(): array
+    private function concentrules(): array
     {
         return [
 
@@ -82,6 +83,18 @@ private function concentrules(): array
             'signed_by' => 'nullable|in:participant,authorized_rep',
             'name' => 'nullable|string|max:255',
             'witnessed_by' => 'nullable|string|max:255',
+        ];
+    }
+
+
+    private function verbalrules(): array
+    {
+        return [
+
+            'verbal_signature' => 'nullable|string',
+            'signed_date' => 'nullable|date',
+            'verbal_name' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
         ];
     }
 

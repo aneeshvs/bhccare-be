@@ -918,6 +918,7 @@ public function getLogsByUuidConfidential(Request $request)
             'confidential_information_form',
             'confidential_information_agency',
             'confidential_information_consent',
+            'confidential_verbal_consent',
             // Add more log_names if needed
         ]);
     }
