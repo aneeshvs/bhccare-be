@@ -334,13 +334,26 @@ public function getLogsByUuidSupport(Request $request)
 
 
     // ✅ Map and format log data
-    $response = $logs->map(function ($log) use ($staffNames, $stafftypenames) {
-        $properties = $log->properties ?? [];
-        $attributes = $properties['attributes'] ?? [];
-        $old = $properties['old'] ?? [];
+    $response = $logs->map(function ($log) use ($staffNames, $stafftypenames, $field) {
+    $properties = $log->properties ?? [];
+    $attributes = $properties['attributes'] ?? [];
+    $old = $properties['old'] ?? [];
 
-        $formattedAttributes = collect($attributes)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
-       $formattedOld = collect($old)->map(fn($val) => ($val === true || $val === 1 || $val === '1') ? 'Yes' : (($val === false || $val === 0 || $val === '0') ? 'No' : $val));
+        // Limit to requested field only (if filtering by a specific one)
+            if (!empty($field) && $field !== 'all') {
+                $attributes = array_intersect_key($attributes, [$field => true]);
+                $old = array_intersect_key($old, [$field => true]);
+            }
+
+            $formattedAttributes = collect($attributes)->map(fn($val) =>
+                ($val === true || $val === 1 || $val === '1') ? 'Yes' :
+                (($val === false || $val === 0 || $val === '0') ? 'No' : $val)
+            );
+
+            $formattedOld = collect($old)->map(fn($val) =>
+                ($val === true || $val === 1 || $val === '1') ? 'Yes' :
+                (($val === false || $val === 0 || $val === '0') ? 'No' : $val)
+            );
 
         $staffId = $properties['staff_id'] ?? null;
         $stafftypeId = $properties['stafftype'] ?? null;
