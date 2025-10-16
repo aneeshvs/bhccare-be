@@ -870,24 +870,24 @@ class StoreSupportPlanRequest extends FormRequest
         return [
 
             'is_primary_caregiver' => 'nullable|boolean',
-            'primary_caregiver_details' => 'nullable|string',
+            'primary_caregiver_details' => 'nullable|string|max:65000',
 
             'receiving_help' => 'nullable|boolean',
-            'receiving_help_details' => 'nullable|string',
+            'receiving_help_details' => 'nullable|string|max:65000',
 
             'carer_lives_with_you' => 'nullable|boolean',
-            'carer_lives_with_you_details' => 'nullable|string',
+            'carer_lives_with_you_details' => 'nullable|string|max:65000',
 
             'carer_receives_pension' => 'nullable|boolean',
-            'carer_pension_details' => 'nullable|string',
+            'carer_pension_details' => 'nullable|string|max:65000',
 
             'factors_affecting_care' => 'nullable|boolean',
-            'factors_affecting_care_details' => 'nullable|string',
+            'factors_affecting_care_details' => 'nullable|string|max:65000',
 
             'caregiver_strain_index_required' => 'nullable|boolean',
 
             'carer_gateway_referral' => 'nullable|boolean',
-            'carer_gateway_referral_details' => 'nullable|string',
+            'carer_gateway_referral_details' => 'nullable|string|max:65000',
 
             'primary_caregiver_receives_allowance' => 'nullable|boolean',
         ];
@@ -899,25 +899,25 @@ class StoreSupportPlanRequest extends FormRequest
 
 
             'emergency_at_risk_of_abuse' => 'nullable|boolean',
-            'abuse_details' => 'nullable|string',
+            'abuse_details' => 'nullable|string|max:65000',
 
             'opan_referral_required' => 'nullable|boolean',
-            'opan_referral_details' => 'nullable|string',
+            'opan_referral_details' => 'nullable|string|max:65000',
 
             'risk_of_declining_services' => 'nullable|boolean',
-            'declining_services_details' => 'nullable|string',
+            'declining_services_details' => 'nullable|string|max:65000',
 
             'neglect_indicators' => 'nullable|boolean',
-            'neglect_indicators_details' => 'nullable|string',
+            'neglect_indicators_details' => 'nullable|string|max:65000',
 
             'emergency_accessible' => 'nullable|boolean',
-            'emergency_accessible_details' => 'nullable|string',
+            'emergency_accessible_details' => 'nullable|string|max:65000',
 
             'emergency_support_available' => 'nullable|boolean',
-            'emergency_support_details' => 'nullable|string',
+            'emergency_support_details' => 'nullable|string|max:65000',
 
             'vpr_required' => 'nullable|boolean',
-            'vpr_details' => 'nullable|string',
+            'vpr_details' => 'nullable|string|max:65000',
         ];
     }
 
