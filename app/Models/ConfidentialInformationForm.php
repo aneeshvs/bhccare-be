@@ -53,6 +53,12 @@ public function verbal()
     return $this->hasOne(ConfidentialVerbalConsent::class,'confidential_information_form_id');
 }
 
+public function preConsentDisclosure()
+{
+    return $this->hasOne(PreConsentDisclosure::class, 'confidential_information_form_id');
+}
+
+
 
 
 

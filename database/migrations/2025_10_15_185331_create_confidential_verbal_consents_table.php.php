@@ -17,7 +17,7 @@ return new class extends Migration {
 
             // 🖋️ Verbal Consent fields
             $table->binary('verbal_signature')->nullable(); // for signature (image or base64)
-            $table->date('signed_date')->nullable(); // date field
+            $table->date('verbal_signed_date')->nullable(); // date field
             $table->string('verbal_name')->nullable(); // name of person providing consent
             $table->string('position')->nullable(); // position of staff obtaining consent
 

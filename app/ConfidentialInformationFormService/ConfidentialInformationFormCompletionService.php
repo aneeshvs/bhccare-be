@@ -36,7 +36,16 @@ class ConfidentialInformationFormCompletionService
         'signed_by',
         'name',
         'witnessed_by',
+        ],
+
+        'preConsentDisclosure'=>[
+
+        'discuss_referral_services',
+        'explain_release_agreement',
+        'explain_share_without_consent',
+        'provide_privacy_information',
         ]
+
 
 
     ];

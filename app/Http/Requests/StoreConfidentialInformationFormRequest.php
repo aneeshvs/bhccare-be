@@ -23,6 +23,7 @@ class StoreConfidentialInformationFormRequest extends FormRequest
             $this->agenciesrules(),
             $this->concentrules(),
             $this->verbalrules(),
+            $this->discussrules(),
 
 
 
@@ -92,9 +93,20 @@ class StoreConfidentialInformationFormRequest extends FormRequest
         return [
 
             'verbal_signature' => 'nullable|string',
-            'signed_date' => 'nullable|date',
+            'verbal_signed_date' => 'nullable|date',
             'verbal_name' => 'nullable|string|max:255',
             'position' => 'nullable|string|max:255',
+        ];
+    }
+
+    private function discussrules(): array
+    {
+        return [
+
+            'discuss_referral_services' => 'nullable|boolean',
+            'explain_release_agreement' => 'nullable|boolean',
+            'explain_share_without_consent' => 'nullable|boolean',
+            'provide_privacy_information' => 'nullable|boolean',
         ];
     }
 

@@ -6,18 +6,23 @@ use App\Models\Classes\DefaultDBModel;
 use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Activitylog\LogOptions;
 
-class ConfidentialVerbalConsent extends DefaultDBModel
+class PreConsentDisclosure extends DefaultDBModel
 {
     use LogsActivity;
 
-    protected $table = 'verbal_consents';
-
     protected $fillable = [
         'confidential_information_form_id',
-        'verbal_signature',
-        'verbal_signed_date',
-        'verbal_name',
-        'position',
+        'discuss_referral_services',
+        'explain_release_agreement',
+        'explain_share_without_consent',
+        'provide_privacy_information',
+    ];
+
+    protected $casts = [
+        'discuss_referral_services' => 'boolean',
+        'explain_release_agreement' => 'boolean',
+        'explain_share_without_consent' => 'boolean',
+        'provide_privacy_information' => 'boolean',
     ];
 
     public function form()
@@ -30,11 +35,11 @@ class ConfidentialVerbalConsent extends DefaultDBModel
         return LogOptions::defaults()
             ->logAll()
             ->logOnlyDirty()
-            ->useLogName('confidential_verbal_consent');
+            ->useLogName('pre_consent_disclosure');
     }
 
     public function getDescriptionForEvent(string $eventName): string
     {
-        return "Confidential Verbal Consent was {$eventName}";
+        return "Pre-Consent Disclosure record was {$eventName}";
     }
 }
