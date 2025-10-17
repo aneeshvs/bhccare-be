@@ -137,7 +137,7 @@
 @if($form->consent)
     <table>
         <tr><td colspan="2" class="section-title">Written Participant Consent</td></tr>
-        <tr><th>Signature</th><td>{{ $form->consent->signature ?? '-' }}</td></tr>
+
         <tr><th>Date</th><td>{{ $form->consent->signed_date ?? '-' }}</td></tr>
         <tr><th>Signed By</th>
             <td>
