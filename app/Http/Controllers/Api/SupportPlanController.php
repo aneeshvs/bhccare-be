@@ -339,6 +339,20 @@ public function exportFullFormPdf(string $uuid)
         ->where('uuid', $uuid)
         ->firstOrFail();
 
+    if (!empty($supportPlan->approval->signature)) {
+        $binaryData = $supportPlan->approval->signature;
+
+        // Ensure it's valid binary data before encoding
+        if (is_resource($binaryData)) {
+            $binaryData = stream_get_contents($binaryData);
+        }
+
+        $supportPlan->approval->signature_base64 =
+            'data:image/png;base64,' . base64_encode($binaryData);
+    } else {
+        $supportPlan->approval->signature_base64 = null;
+    }
+
     $pdf = Pdf::loadView('pdf.supportplan', compact('supportPlan'))
         ->setPaper('A4', 'portrait');
 

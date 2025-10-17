@@ -149,6 +149,60 @@
     </table>
 @endif
 
+{{-- ✅ Verbal Consent Section --}}
+@if($form->verbal)
+    <table>
+        <tr><td colspan="2" class="section-title">Verbal Consent</td></tr>
+        <tr>
+            <th>Verbal Signature</th>
+            <td>
+                @if(!empty($form->verbal->verbal_signature))
+                    <img src="data:image/png;base64,{{ $form->verbal->verbal_signature }}" alt="Verbal Signature" style="max-height: 80px;">
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Signed Date</th>
+            <td>{{ $form->verbal->verbal_signed_date ?? '-' }}</td>
+        </tr>
+        <tr>
+            <th>Name</th>
+            <td>{{ $form->verbal->verbal_name ?? '-' }}</td>
+        </tr>
+        <tr>
+            <th>Position</th>
+            <td>{{ $form->verbal->position ?? '-' }}</td>
+        </tr>
+    </table>
+@endif
+
+
+{{-- ✅ Pre-Consent Disclosure Checklist --}}
+@if($form->preConsentDisclosure)
+    <table>
+        <tr><td colspan="2" class="section-title">Pre-Consent Disclosure Checklist</td></tr>
+        <tr>
+            <th>Discussed referral to other services/agencies</th>
+            <td>{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Explained release agreement and service provision</th>
+            <td>{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Explained sharing without consent (health/safety/legal)</th>
+            <td>{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Provided privacy information if requested</th>
+            <td>{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</td>
+        </tr>
+    </table>
+@endif
+
+
 
 
 </div>

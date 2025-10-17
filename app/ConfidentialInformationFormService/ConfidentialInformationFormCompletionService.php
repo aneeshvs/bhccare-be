@@ -38,6 +38,16 @@ class ConfidentialInformationFormCompletionService
         'witnessed_by',
         ],
 
+        'verbal'=>[
+
+        'verbal_signature',
+        'verbal_signed_date',
+        'verbal_name',
+        'position',
+        ],
+
+
+
         'preConsentDisclosure'=>[
 
         'discuss_referral_services',

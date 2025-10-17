@@ -143,12 +143,20 @@
                     </span>
                 </td>
                 <td>
-                    <span class="label">Signature</span>
-                    <span class="value">{{ $supportPlan->approval->signature ?? 'N/A' }}</span>
+                    <span class="label">Signature</span><br>
+                    @if(!empty($supportPlan->approval->signature_base64))
+                        <img src="{{ $supportPlan->approval->signature_base64 }}"
+                            alt="Signature"
+                            style="max-width: 150px; height: auto;">
+                    @else
+                        N/A
+                    @endif
                 </td>
+
             </tr>
         </table>
     </div>
+
     {{-- ✅ If participant unable to approve / co-approval needed --}}
 <div class="section">
     <div class="section-header">Support Representative Approval</div>

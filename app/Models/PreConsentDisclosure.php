@@ -18,12 +18,6 @@ class PreConsentDisclosure extends DefaultDBModel
         'provide_privacy_information',
     ];
 
-    protected $casts = [
-        'discuss_referral_services' => 'boolean',
-        'explain_release_agreement' => 'boolean',
-        'explain_share_without_consent' => 'boolean',
-        'provide_privacy_information' => 'boolean',
-    ];
 
     public function form()
     {

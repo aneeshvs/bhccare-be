@@ -163,7 +163,7 @@ Route::get('/get-confidential-form-uuid', [ConfidentialInformationFormController
 // Get UUID by user_id & client_type
 Route::get('/confidential-form/{uuid}', [ConfidentialInformationFormController::class, 'showByUuid']); // View by UUID
 
-Route::get('/confidential-form/{uuid}/export-pdf', [ConfidentialInformationFormController::class, 'exportFullFormPdf']); // Export PDF
+Route::get('/confidential-form/export-pdf/{uuid}', [ConfidentialInformationFormController::class, 'exportFullFormPdf']); // Export PDF
 
 
 Route::delete('/confidential-form/remove-section', [ConfidentialInformationFormController::class, 'removeSectionConfidentialForm']);
