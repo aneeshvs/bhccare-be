@@ -50,6 +50,9 @@ class FormRenewController extends Controller
                 'schedule-of-support' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_support', 'schedule'],
                 'home-safety'         => [\App\Models\HomeSafetyChecklistAssessment::class, 'pdf.home_safety_assessment', 'assessment'],
                 'confidential-information'         => [\App\Models\ConfidentialInformationForm::class, 'pdf.confidentialinformationform', 'form'],
+
+                'participant-signature'   => [\App\Models\ParticipantSignature::class, 'pdf.participant_signature', 'signature'],
+
             ];
 
             if (!isset($formMap[$form])) {

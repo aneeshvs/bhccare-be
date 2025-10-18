@@ -17,6 +17,7 @@ use App\Http\Controllers\FormRenewController;
 use App\Http\Controllers\Api\ScheduleOfSupportController;
 use App\Http\Controllers\Api\HomeSafetyChecklistAssessmentController;
 use App\Http\Controllers\Api\ConfidentialInformationFormController;
+use App\Http\Controllers\Api\ParticipantSignatureController;
 
 
 use Illuminate\Support\Facades\DB;
@@ -170,6 +171,17 @@ Route::delete('/confidential-form/remove-section', [ConfidentialInformationFormC
 
 
 
+// ✅ Activity Logs for Participant Signature
+Route::get('/multiple-supports/logs', [ActivityLogController::class, 'getLogsByUuidParticipantSignature']); // Activity logs by UUID
+
+// ✅ Public (no auth required)
+Route::get('/get-multiple-supports-uuid', [ParticipantSignatureController::class, 'getParticipantSignatureUuid']); // Get UUID by user_id & client_type
+Route::get('/multiple-supports/{uuid}', [ParticipantSignatureController::class, 'showByUuid']); // View by UUID
+Route::get('/multiple-supports/export-pdf/{uuid}', [ParticipantSignatureController::class, 'exportFullFormPdf']); // Export PDF
+
+
+
+
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
@@ -189,6 +201,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
      Route::put('/home-safety-assessment/update', [HomeSafetyChecklistAssessmentController::class, 'update']);
 
      Route::put('/confidential-form/update', [ConfidentialInformationFormController::class, 'update']);
+
+    Route::put('/multiple-supports/update', [ParticipantSignatureController::class, 'update']);
 
 
 
