@@ -15,14 +15,7 @@ class ParticipantSignatureService
             'client_type' => $data['client_type'],
         ]);
 
-        // Convert base64 signature to binary if sent as base64
-        if (!empty($data['participant_signature']) && is_string($data['participant_signature'])) {
-            if (str_starts_with($data['participant_signature'], 'data:image')) {
-                $data['participant_signature'] = base64_decode(
-                    preg_replace('#^data:image/\w+;base64,#i', '', $data['participant_signature'])
-                );
-            }
-        }
+
 
         $record->fill($data);
 

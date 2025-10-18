@@ -51,7 +51,7 @@ class FormRenewController extends Controller
                 'home-safety'         => [\App\Models\HomeSafetyChecklistAssessment::class, 'pdf.home_safety_assessment', 'assessment'],
                 'confidential-information'         => [\App\Models\ConfidentialInformationForm::class, 'pdf.confidentialinformationform', 'form'],
 
-                'participant-signature'   => [\App\Models\ParticipantSignature::class, 'pdf.participant_signature', 'signature'],
+                'multiple-supports'   => [\App\Models\ParticipantSignature::class, 'pdf.participant_signature', 'signature'],
 
             ];
 
