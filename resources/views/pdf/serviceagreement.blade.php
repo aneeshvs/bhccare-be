@@ -106,6 +106,8 @@
         <tr><td colspan="2" class="section-title">Service Agreement Term</td></tr>
         <tr><th>Start Date</th><td>{{ $serviceAgreement->term_start_date ?? '-' }}</td></tr>
         <tr><th>End Date</th><td>{{ $serviceAgreement->term_end_date ?? '-' }}</td></tr>
+        <tr><td colspan="2">{{ $serviceAgreement->area_of_support ?? '-' }}</td></tr>
+
     </table>
 
     {{-- Area of Support --}}
@@ -124,16 +126,40 @@
     </table>
 
 
-
-
-    {{-- Staff Details (optional) --}}
-    @if($serviceAgreement->staff)
+   @if($serviceAgreement->consent)
     <table>
-        <tr><td colspan="2" class="section-title">Staff Details</td></tr>
-        <tr><th>Name</th><td>{{ $serviceAgreement->staff->name ?? '-' }}</td></tr>
-        <tr><th>Type</th><td>{{ $serviceAgreement->staff->stafftype ?? '-' }}</td></tr>
+        <tr><td colspan="2" class="section-title">Consent Details</td></tr>
+
+        <tr><th>Accepted Name</th><td>{{ $serviceAgreement->consent->accepted_name ?? '-' }}</td></tr>
+        <tr><th>Accepted Position</th><td>{{ $serviceAgreement->consent->accepted_position ?? '-' }}</td></tr>
+
+        <tr><th>Accepted Date</th><td>{{ $serviceAgreement->consent->accepted_date ?? '-' }}</td></tr>
+
+        <tr><th>Participant Name</th><td>{{ $serviceAgreement->consent->consents_participant_name ?? '-' }}</td></tr>
+        <tr><th>Participant Role</th><td>{{ $serviceAgreement->consent->participant_role ?? '-' }}</td></tr>
+
+        <tr><th>Participant Date</th><td>{{ $serviceAgreement->consent->participant_date ?? '-' }}</td></tr>
+
+        <tr><th>Witness Name</th><td>{{ $serviceAgreement->consent->witness_name ?? '-' }}</td></tr>
+
+        <tr><th>Witness Date</th><td>{{ $serviceAgreement->consent->witness_date ?? '-' }}</td></tr>
+
+        <tr><th>Verbal Staff Name</th><td>{{ $serviceAgreement->consent->verbal_staff_name ?? '-' }}</td></tr>
+        <tr><th>Verbal Staff Position</th><td>{{ $serviceAgreement->consent->verbal_staff_position ?? '-' }}</td></tr>
+
+        <tr><th>Verbal Date</th><td>{{ $serviceAgreement->consent->verbal_date ?? '-' }}</td></tr>
+
+        <tr><th>Other Notes</th><td>{{ $serviceAgreement->consent->other_notes ?? '-' }}</td></tr>
+        <tr><th>Received Signed Copy</th><td>{{ $serviceAgreement->consent->received_signed_copy ? 'Yes' : 'No' }}</td></tr>
+        <tr><th>Agreed Verbally</th><td>{{ $serviceAgreement->consent->agreed_verbally ? 'Yes' : 'No' }}</td></tr>
+        <tr><th>CMS Comments Entered</th><td>{{ $serviceAgreement->consent->cms_comments_entered ?? '-' }}</td></tr>
     </table>
-    @endif
+@endif
+
+
+
+
+
 </div>
 </body>
 </html>
