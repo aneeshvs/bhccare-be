@@ -87,12 +87,12 @@ class StoreServiceAgreementRequest extends FormRequest
             'verbal_date'           => 'nullable|date',
 
             // ✅ Other Notes
-            'other_notes' => 'nullable|string|max:2000',
+            'other_notes' => 'nullable|string|max:65000',
 
             // ✅ Office Use
-            'received_signed_copy' => 'nullable|in:yes,no',
-            'agreed_verbally'      => 'nullable|in:yes,no',
-            'cms_comments_entered' => 'nullable|in:yes,no',
+            'received_signed_copy' => 'nullable|in:Yes,No',
+            'agreed_verbally'      => 'nullable|in:Yes,No',
+            'cms_comments_entered' => 'nullable|in:Yes,No',
         ];
     }
 

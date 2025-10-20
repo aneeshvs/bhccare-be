@@ -41,9 +41,9 @@ return new class extends Migration {
             $table->text('other_notes')->nullable();
 
             // Office use only
-            $table->enum('received_signed_copy', ['yes', 'no'])->nullable();
-            $table->enum('agreed_verbally', ['yes', 'no'])->nullable();
-            $table->enum('cms_comments_entered', ['yes', 'no'])->nullable();
+            $table->enum('received_signed_copy', ['Yes', 'No'])->nullable();
+            $table->enum('agreed_verbally', ['Yes', 'No'])->nullable();
+            $table->enum('cms_comments_entered', ['Yes', 'No'])->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });

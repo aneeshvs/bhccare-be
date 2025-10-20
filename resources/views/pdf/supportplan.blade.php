@@ -1360,7 +1360,7 @@
                 <td colspan="2">
                     <span class="label">Referral to Physiotherapist?</span>
                     <span class="value">
-                        {{ $supportPlan->fallsRisk->referral_physiotherapist ? 'Yes' : 'No' }}
+                        {{ $supportPlan->fallsRisk->referral_physio ? 'Yes' : 'No' }}
                         {{ $supportPlan->fallsRisk->referral_physiotherapist_details ?? '' }}
                     </span>
                 </td>
