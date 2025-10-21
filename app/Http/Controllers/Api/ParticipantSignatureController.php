@@ -57,7 +57,7 @@ class ParticipantSignatureController extends Controller
             try {
                 Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
                     'uuid' => (string) $record->uuid,
-                    'form_name' => 'participant_signature',
+                    'form_name' => 'multiple-supports',
                     'completion_percentage' => $completion,
                     'form_status' => $data['form_status'],
                 ]);
