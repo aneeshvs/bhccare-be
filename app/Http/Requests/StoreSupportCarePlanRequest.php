@@ -151,7 +151,7 @@ class StoreSupportCarePlanRequest extends FormRequest
 
             'participant_name'     => 'nullable|string|max:255',
             'date'                 => 'nullable|date',
-            'review_date'          => 'nullable|date|after_or_equal:date',
+            'review_date'          => 'nullable|date',
             'user_id'              => 'nullable|integer', // for activity log
         ];
     }
