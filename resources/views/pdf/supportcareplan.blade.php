@@ -178,11 +178,31 @@
 
     <table>
         @foreach($supportCarePlan->communicationPlans as $communication)
+            @php
+                // Normalize helps_me_talk
+                $helpsMeTalk = $communication->helps_me_talk;
+                if (is_string($helpsMeTalk)) {
+                    $decoded = json_decode($helpsMeTalk, true);
+                    $helpsMeTalk = is_array($decoded) ? $decoded : [$helpsMeTalk];
+                } elseif (!is_array($helpsMeTalk)) {
+                    $helpsMeTalk = [];
+                }
+
+                // Normalize helps_me_understand
+                $helpsMeUnderstand = $communication->helps_me_understand;
+                if (is_string($helpsMeUnderstand)) {
+                    $decoded = json_decode($helpsMeUnderstand, true);
+                    $helpsMeUnderstand = is_array($decoded) ? $decoded : [$helpsMeUnderstand];
+                } elseif (!is_array($helpsMeUnderstand)) {
+                    $helpsMeUnderstand = [];
+                }
+            @endphp
+
             <tr>
                 <td>
                     <span class="label">Helps me talk</span>
                     <span class="value">
-                        {{ implode(', ', json_decode($communication->helps_me_talk ?? '[]', true)) }}
+                        {{ implode(', ', $helpsMeTalk) }}
                     </span>
                 </td>
             </tr>
@@ -190,7 +210,7 @@
                 <td>
                     <span class="label">Helps me understand</span>
                     <span class="value">
-                        {{ implode(', ', json_decode($communication->helps_me_understand ?? '[]', true)) }}
+                        {{ implode(', ', $helpsMeUnderstand) }}
                     </span>
                 </td>
             </tr>
@@ -204,6 +224,7 @@
     </table>
 </div>
 @endif
+
 
 
 
