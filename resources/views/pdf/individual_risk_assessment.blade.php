@@ -89,30 +89,35 @@
 
     <!-- Client Details -->
     <div class="section">
-        <div class="section-header">Client Details</div>
-        <table>
-            <tr>
-                <td>
-                    <span class="label">Client Name</span>
-                    <span class="value">{{ $assessment->client_name ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Site Address</span>
-                    <span class="value">{{ $assessment->site_address ?? 'N/A' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="label">Date of Assessment</span>
-                    <span class="value">{{ $assessment->assessment_date ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Planned Review Date</span>
-                    <span class="value">{{ $assessment->planned_review_date ?? 'N/A' }}</span>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <div class="section-header">Client Details</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Client Name</span>
+                <span class="value">{{ $assessment->client_name ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Site Address</span>
+                <span class="value">{{ $assessment->site_address ?? 'N/A' }}</span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Date of Assessment</span>
+                <span class="value">
+                    {{ $assessment->assessment_date ? \Carbon\Carbon::parse($assessment->assessment_date)->format('d/m/Y') : 'N/A' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">Planned Review Date</span>
+                <span class="value">
+                    {{ $assessment->planned_review_date ? \Carbon\Carbon::parse($assessment->planned_review_date)->format('d/m/Y') : 'N/A' }}
+                </span>
+            </td>
+        </tr>
+    </table>
+</div>
+
 
     <!-- Details -->
     <!-- Details -->
@@ -130,7 +135,7 @@
             </td>
             <td>
                 <span class="label">Dependent on Homecare</span>
-                <span class="value">{{ $assessment->details->dependent_on_homecare ?? 'N/A' }}</span>
+                <span class="value">{{ $assessment->details->dependent_on_homecare ? 'Yes' : 'No' }}</span>
             </td>
         </tr>
     </table>

@@ -99,30 +99,32 @@
 
     <!-- Participant Details -->
     <div class="section">
-        <div class="section-header">Participant Details</div>
-        <table>
-            <tr>
-                <td>
-                    <span class="label">Participant Name</span>
-                    <span class="value">{{ $schedule->participant_name ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Schedule Creation Date</span>
-                    <span class="value">{{ $schedule->creation_date ?? now()->toDateString() }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <span class="label">Service Agreement & Funding Review Date</span>
-                    <span class="value">{{ $schedule->review_date ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Prepared By</span>
-                    <span class="value">{{ $schedule->staff->name ?? 'N/A' }}</span>
-                </td>
-            </tr>
-        </table>
-    </div>
+    <div class="section-header">Participant Details</div>
+    <table>
+        <tr>
+            <td>
+                <span class="label">Participant Name</span>
+                <span class="value">{{ $schedule->participant_name ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Schedule Creation Date</span>
+                <span class="value">
+                    {{ $schedule->creation_date ? \Carbon\Carbon::parse($schedule->creation_date)->format('d/m/Y') : \Carbon\Carbon::now()->format('d/m/Y') }}
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Service Agreement & Funding Review Date</span>
+                <span class="value">
+                    {{ $schedule->funding_review_date ? \Carbon\Carbon::parse($schedule->funding_review_date)->format('d/m/Y') : 'N/A' }}
+                </span>
+            </td>
+
+        </tr>
+    </table>
+</div>
+
 
     <!-- Public Holiday Preferences -->
     <div class="section">
@@ -149,7 +151,7 @@
 
     <!-- Transport Section -->
     <div class="section">
-        <div class="section-header">Transport</div>
+        <div class="section-header">Funded Support</div>
         @if($schedule->transport)
         <table>
 
@@ -196,6 +198,38 @@
         <p>No unfunded support details available.</p>
         @endif
     </div>
+
+
+    <!-- Agreement / Signature Section -->
+<div class="section">
+    <div class="section-header">Agreement Section</div>
+    <table class="signature-table">
+        <tr>
+            <td>
+
+                <div class="value"><strong>Agreement_Participant_Name</strong> {{ $schedule->agreementSignature->agreement_participant_name ?? 'N/A' }}</div>
+                <div class="value"><strong>Participant_Date</strong>
+                    {{ isset($schedule->agreementSignature->participant_date)
+                        ? \Carbon\Carbon::parse($schedule->agreementSignature->participant_date)->format('d/m/Y')
+                        : 'N/A' }}
+                </div>
+            </td>
+
+            <td>
+
+                <div class="value"><strong>Representative_Name</strong> {{ $schedule->agreementSignature->representative_name ?? 'N/A' }}</div>
+                <div class="value"><strong>Representative_Date</strong>
+                    {{ isset($schedule->agreementSignature->representative_date)
+                        ? \Carbon\Carbon::parse($schedule->agreementSignature->representative_date)->format('d/m/Y')
+                        : 'N/A' }}
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
 
 
 </div>
