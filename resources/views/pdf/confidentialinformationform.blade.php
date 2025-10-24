@@ -22,7 +22,6 @@
             padding: 20px 30px;
         }
 
-        /* Header */
         .header {
             position: relative;
             text-align: center;
@@ -42,7 +41,6 @@
             margin: 0;
         }
 
-        /* Section titles */
         .section-title {
             background-color: #f3f4f6;
             font-weight: bold;
@@ -53,7 +51,6 @@
             margin-bottom: 8px;
         }
 
-        /* Tables */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -71,7 +68,6 @@
             width: 30%;
         }
 
-        /* Page breaks for multi-page PDFs */
         .page-break {
             page-break-before: always;
             break-before: page;
@@ -80,17 +76,22 @@
 </head>
 <body>
 <div class="container">
-    {{-- Header with Logo --}}
+
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
         <h2>Confidential Information Form</h2>
     </div>
 
-    {{-- Participant Information --}}
+    @php
+        function formatDate($date) {
+            return $date ? \Carbon\Carbon::parse($date)->format('d/m/Y') : '-';
+        }
+    @endphp
+
     <table>
         <tr><td colspan="2" class="section-title">Participant Information</td></tr>
         <tr><th>Full Name</th><td>{{ $form->participant_name ?? '-' }}</td></tr>
-        <tr><th>Date of Birth</th><td>{{ $form->date_of_birth ?? '-' }}</td></tr>
+        <tr><th>Date of Birth</th><td>{{ formatDate($form->date_of_birth) }}</td></tr>
         <tr><th>Address</th><td>{{ $form->address ?? '-' }}</td></tr>
         <tr><th>Post Code</th><td>{{ $form->post_code ?? '-' }}</td></tr>
         <tr><th>Phone</th><td>{{ $form->phone ?? '-' }}</td></tr>
@@ -98,112 +99,64 @@
         <tr><th>Email Address</th><td>{{ $form->email ?? '-' }}</td></tr>
     </table>
 
+
     @if($form->agencies->count())
     <table>
         <tr><td colspan="2" class="section-title">Confidential Information Agencies</td></tr>
 
         @foreach($form->agencies as $agency)
-            <tr>
-                <th>Name</th>
-                <td>{{ $agency->name ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Role / Position</th>
-                <td>{{ $agency->role ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Contact</th>
-                <td>{{ $agency->contact ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Agency Name</th>
-                <td>{{ $agency->agency_name ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Type of Service</th>
-                <td>{{ $agency->service_type ?? '-' }}</td>
-            </tr>
-            <tr>
-                <th>Information Shared</th>
-                <td>{{ $agency->information_shared ?? '-' }}</td>
-            </tr>
-
-
+            <tr><th>Name</th><td>{{ $agency->name ?? '-' }}</td></tr>
+            <tr><th>Role / Position</th><td>{{ $agency->role ?? '-' }}</td></tr>
+            <tr><th>Contact</th><td>{{ $agency->contact ?? '-' }}</td></tr>
+            <tr><th>Agency Name</th><td>{{ $agency->agency_name ?? '-' }}</td></tr>
+            <tr><th>Type of Service</th><td>{{ $agency->service_type ?? '-' }}</td></tr>
+            <tr><th>Information Shared</th><td>{{ $agency->information_shared ?? '-' }}</td></tr>
         @endforeach
     </table>
-@endif
+    @endif
 
 
-@if($form->consent)
-    <table>
-        <tr><td colspan="2" class="section-title">Written Participant Consent</td></tr>
+    @if($form->consent)
+        <table>
+            <tr><td colspan="2" class="section-title">Written Participant Consent</td></tr>
 
-        <tr><th>Date</th><td>{{ $form->consent->signed_date ?? '-' }}</td></tr>
-        <tr><th>Signed By</th>
-            <td>
-                @if($form->consent->signed_by === 'participant') Participant @else Authorized Representative @endif
-            </td>
-        </tr>
-        <tr><th>Name</th><td>{{ $form->consent->name ?? '-' }}</td></tr>
-        <tr><th>Witnessed By</th><td>{{ $form->consent->witnessed_by ?? '-' }}</td></tr>
-    </table>
-@endif
-
-{{-- ✅ Verbal Consent Section --}}
-@if($form->verbal)
-    <table>
-        <tr><td colspan="2" class="section-title">Verbal Consent</td></tr>
-        <tr>
-            <th>Verbal Signature</th>
-            <td>
-                @if(!empty($form->verbal->verbal_signature))
-                    <img src="data:image/png;base64,{{ $form->verbal->verbal_signature }}" alt="Verbal Signature" style="max-height: 80px;">
-                @else
-                    -
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Signed Date</th>
-            <td>{{ $form->verbal->verbal_signed_date ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Name</th>
-            <td>{{ $form->verbal->verbal_name ?? '-' }}</td>
-        </tr>
-        <tr>
-            <th>Position</th>
-            <td>{{ $form->verbal->position ?? '-' }}</td>
-        </tr>
-    </table>
-@endif
+            <tr><th>Date</th><td>{{ formatDate($form->consent->signed_date) }}</td></tr>
+            <tr><th>Signed By</th><td>{{ $form->consent->signed_by === 'participant' ? 'Participant' : 'Authorized Representative' }}</td></tr>
+            <tr><th>Name</th><td>{{ $form->consent->name ?? '-' }}</td></tr>
+            <tr><th>Witnessed By</th><td>{{ $form->consent->witnessed_by ?? '-' }}</td></tr>
+        </table>
+    @endif
 
 
-{{-- ✅ Pre-Consent Disclosure Checklist --}}
-@if($form->preConsentDisclosure)
-    <table>
-        <tr><td colspan="2" class="section-title">Pre-Consent Disclosure Checklist</td></tr>
-        <tr>
-            <th>Discussed referral to other services/agencies</th>
-            <td>{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Explained release agreement and service provision</th>
-            <td>{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Explained sharing without consent (health/safety/legal)</th>
-            <td>{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</td>
-        </tr>
-        <tr>
-            <th>Provided privacy information if requested</th>
-            <td>{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</td>
-        </tr>
-    </table>
-@endif
+    @if($form->verbal)
+        <table>
+            <tr><td colspan="2" class="section-title">Verbal Consent</td></tr>
+            <tr>
+                <th>Verbal Signature</th>
+                <td>
+                    @if(!empty($form->verbal->verbal_signature))
+                        <img src="data:image/png;base64,{{ $form->verbal->verbal_signature }}" style="max-height: 80px;">
+                    @else
+                        -
+                    @endif
+                </td>
+            </tr>
+            <tr><th>Signed Date</th><td>{{ formatDate($form->verbal->verbal_signed_date) }}</td></tr>
+            <tr><th>Name</th><td>{{ $form->verbal->verbal_name ?? '-' }}</td></tr>
+            <tr><th>Position</th><td>{{ $form->verbal->position ?? '-' }}</td></tr>
+        </table>
+    @endif
 
 
-
+    @if($form->preConsentDisclosure)
+        <table>
+            <tr><td colspan="2" class="section-title">Pre-Consent Disclosure Checklist</td></tr>
+            <tr><th>Discussed referral to other services/agencies</th><td>{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</td></tr>
+            <tr><th>Explained release agreement and service provision</th><td>{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</td></tr>
+            <tr><th>Explained sharing without consent (health/safety/legal)</th><td>{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</td></tr>
+            <tr><th>Provided privacy information if requested</th><td>{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</td></tr>
+        </table>
+    @endif
 
 </div>
 </body>
