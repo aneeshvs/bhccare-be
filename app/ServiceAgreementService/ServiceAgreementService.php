@@ -16,16 +16,23 @@ class ServiceAgreementService
         ];
 
         $agreement = ServiceAgreement::firstOrNew($conditions);
+        $isNew = !$agreement->exists; // Detect create vs update
+
+        // Keep before-fill original values
+        $original = $agreement->getOriginal();
+
+        // Apply changes
         $agreement->fill($data);
 
-        if ($agreement->isDirty()) {
-            $changes = $agreement->getDirty();
-            $original = array_intersect_key($agreement->getOriginal(), $changes);
+        // Detect changed columns
+        $changes = $agreement->getDirty();
+        $oldValues = $isNew ? [] : array_intersect_key($original, $changes);
 
-            Log::info('ServiceAgreement Changes', [
-                'dirty' => $changes,
-                'original' => $original,
-            ]);
+        // Save before logging
+        $agreement->save();
+
+        // Log only if new record or updates happened
+        if ($isNew || !empty($changes)) {
 
             activity()
                 ->useLog('service_agreement')
@@ -33,16 +40,23 @@ class ServiceAgreementService
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
-                    'old' => $original,
+                    'old' => $isNew ? null : $oldValues,
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $agreement->user_id,
                     'client_type' => $agreement->client_type,
                     'uuid' => $agreement->uuid,
                     'service_agreement_id' => $agreement->id,
                 ])
-                ->log('Service Agreement record has been updated');
+                ->log($isNew
+                    ? 'Service Agreement record created'
+                    : 'Service Agreement record updated'
+                );
 
-            $agreement->save();
+            Log::info('ServiceAgreement Change Logged', [
+                'is_new' => $isNew,
+                'changes' => $changes,
+                'original' => $oldValues,
+            ]);
         }
 
         return $agreement;

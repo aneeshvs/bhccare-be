@@ -11,38 +11,46 @@ class ConfidentialInformationFormService
     public function save(array $data): ConfidentialInformationForm
     {
         $conditions = [
-            'user_id' => $data['user_id'],
+            'user_id'     => $data['user_id'],
             'client_type' => $data['client_type'],
         ];
 
         $record = ConfidentialInformationForm::firstOrNew($conditions);
+        $isNew = !$record->exists; // Detect first-time creation
+
         $record->fill($data);
 
-        if ($record->isDirty()) {
-            $changes = $record->getDirty();
-            $original = array_intersect_key($record->getOriginal(), $changes);
+        // Detect changes before save
+        $changes = $record->getDirty();
+        $original = $isNew ? [] : array_intersect_key($record->getOriginal(), $changes);
 
-            Log::info('ConfidentialInformationForm Changes', [
-                'dirty' => $changes,
-                'original' => $original,
-            ]);
+        // Save first so ID/UUID exists in DB
+        $record->save();
 
+        if ($isNew || !empty($changes)) {
             activity()
                 ->useLog('confidential_information_form')
                 ->performedOn($record)
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
-                    'old' => $original,
-                    'staff_id' => $data['staff_id'] ?? null,
-                    'user_id' => $record->user_id,
-                    'client_type' => $record->client_type,
-                    'uuid' => $record->uuid,
+                    'old'        => $isNew ? null : $original,
+                    'staff_id'   => $data['staff_id'] ?? null,
+                    'user_id'    => $record->user_id,
+                    'client_type'=> $record->client_type,
+                    'uuid'       => $record->uuid,
                     'confidential_information_form_id' => $record->id,
                 ])
-                ->log('Confidential Information Form updated');
+                ->log($isNew
+                    ? 'Confidential Information Form created'
+                    : 'Confidential Information Form updated'
+                );
 
-            $record->save();
+            Log::info('ConfidentialInformationForm Change Logged', [
+                'is_new' => $isNew,
+                'changes' => $changes,
+                'original' => $original,
+            ]);
         }
 
         return $record;

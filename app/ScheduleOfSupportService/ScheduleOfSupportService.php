@@ -16,16 +16,23 @@ class ScheduleOfSupportService
         ];
 
         $schedule = ScheduleOfSupport::firstOrNew($conditions);
+        $isNew = !$schedule->exists; // Check if creating first time
+
+        // Store original values before fill
+        $original = $schedule->getOriginal();
+
+        // Apply new values
         $schedule->fill($data);
 
-        if ($schedule->isDirty()) {
-            $changes = $schedule->getDirty();
-            $original = array_intersect_key($schedule->getOriginal(), $changes);
+        // Detect changed fields
+        $changes = $schedule->getDirty();
+        $oldValues = $isNew ? [] : array_intersect_key($original, $changes);
 
-            Log::info('ScheduleOfSupport Changes', [
-                'dirty' => $changes,
-                'original' => $original,
-            ]);
+        // Save first (important)
+        $schedule->save();
+
+        // Log only when created or updated
+        if ($isNew || !empty($changes)) {
 
             activity()
                 ->useLog('schedule_of_support')
@@ -33,16 +40,23 @@ class ScheduleOfSupportService
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
-                    'old' => $original,
+                    'old' => $isNew ? null : $oldValues,
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $schedule->user_id,
                     'client_type' => $schedule->client_type,
                     'uuid' => $schedule->uuid,
                     'schedule_of_support_id' => $schedule->id,
                 ])
-                ->log('Schedule of Support record has been updated');
+                ->log($isNew
+                    ? 'Schedule of Support record created'
+                    : 'Schedule of Support record updated'
+                );
 
-            $schedule->save();
+            Log::info('ScheduleOfSupport Change Logged', [
+                'is_new' => $isNew,
+                'changes' => $changes,
+                'original' => $oldValues,
+            ]);
         }
 
         return $schedule;

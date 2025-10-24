@@ -11,39 +11,47 @@ class IndividualRiskAssessmentService
     public function save(array $data): IndividualRiskAssessment
     {
         $conditions = [
-
             'user_id' => $data['user_id'] ?? null,
             'client_type' => $data['client_type'] ?? null,
         ];
 
         $assessment = IndividualRiskAssessment::firstOrNew($conditions);
+        $isNew = !$assessment->exists; // Detect first-time insert
+
         $assessment->fill($data);
 
-        if ($assessment->isDirty()) {
-            $changes = $assessment->getDirty();
-            $original = array_intersect_key($assessment->getOriginal(), $changes);
+        // Detect changes before saving
+        $changes = $assessment->getDirty();
+        $original = $isNew ? [] : array_intersect_key($assessment->getOriginal(), $changes);
 
-            Log::info('IndividualRiskAssessment Changes', [
-                'dirty' => $changes,
-                'original' => $original,
-            ]);
+        // Save first so ID & UUID exist
+        $assessment->save();
 
+        // Log on create OR update
+        if ($isNew || !empty($changes)) {
             activity()
                 ->useLog('individual_risk_assessment')
                 ->performedOn($assessment)
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
-                    'old' => $original,
+                    'old' => $isNew ? null : $original,
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $assessment->user_id,
                     'client_type' => $assessment->client_type,
                     'uuid' => $assessment->uuid,
                     'individual_risk_assessment_id' => $assessment->id,
                 ])
-                ->log('Individual Risk Assessment record has been updated');
+                ->log($isNew
+                    ? 'Individual Risk Assessment record created'
+                    : 'Individual Risk Assessment record updated'
+                );
 
-            $assessment->save();
+            Log::info('IndividualRiskAssessment Change Logged', [
+                'is_new' => $isNew,
+                'changes' => $changes,
+                'original' => $original,
+            ]);
         }
 
         return $assessment;
