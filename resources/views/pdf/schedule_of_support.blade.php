@@ -200,29 +200,65 @@
     </div>
 
 
-    <!-- Agreement / Signature Section -->
 <div class="section">
     <div class="section-header">Agreement Section</div>
-    <table class="signature-table">
+
+    <table>
+        <tr><td colspan="2" class="section-title">Participant Agreement</td></tr>
+
         <tr>
-            <td>
+            <th>Participant Name</th>
+            <td>{{ $schedule->agreementSignature->agreement_participant_name ?? 'N/A' }}</td>
+        </tr>
 
-                <div class="value"><strong>Agreement_Participant_Name</strong> {{ $schedule->agreementSignature->agreement_participant_name ?? 'N/A' }}</div>
-                <div class="value"><strong>Participant_Date</strong>
-                    {{ isset($schedule->agreementSignature->participant_date)
-                        ? \Carbon\Carbon::parse($schedule->agreementSignature->participant_date)->format('d/m/Y')
-                        : 'N/A' }}
-                </div>
+        <tr>
+            <th>Participant Signature</th>
+            <td>
+                @if(!empty($schedule->agreementSignature->participant_signature))
+                    <img src="{{ $schedule->agreementSignature->participant_signature }}"
+                         alt="Participant Signature"
+                         style="max-width:150px; height:auto;">
+                @else
+                    -
+                @endif
             </td>
+        </tr>
 
+        <tr>
+            <th>Participant Date</th>
             <td>
+                {{ isset($schedule->agreementSignature->participant_date)
+                    ? \Carbon\Carbon::parse($schedule->agreementSignature->participant_date)->format('d/m/Y')
+                    : 'N/A' }}
+            </td>
+        </tr>
 
-                <div class="value"><strong>Representative_Name</strong> {{ $schedule->agreementSignature->representative_name ?? 'N/A' }}</div>
-                <div class="value"><strong>Representative_Date</strong>
-                    {{ isset($schedule->agreementSignature->representative_date)
-                        ? \Carbon\Carbon::parse($schedule->agreementSignature->representative_date)->format('d/m/Y')
-                        : 'N/A' }}
-                </div>
+        <tr><td colspan="2" class="section-title">Representative Agreement</td></tr>
+
+        <tr>
+            <th>Representative Name</th>
+            <td>{{ $schedule->agreementSignature->representative_name ?? 'N/A' }}</td>
+        </tr>
+
+        <tr>
+            <th>Representative Signature</th>
+            <td>
+                @if(!empty($schedule->agreementSignature->representative_signature))
+                    <img src="{{ $schedule->agreementSignature->representative_signature }}"
+                         alt="Representative Signature"
+                         style="max-width:150px; height:auto;">
+                @else
+                    -
+                @endif
+            </td>
+        </tr>
+
+        <tr>
+            <th>Representative Date</th>
+            <td>
+                {{ isset($schedule->agreementSignature->representative_date)
+                    ? \Carbon\Carbon::parse($schedule->agreementSignature->representative_date)->format('d/m/Y')
+                    : 'N/A' }}
             </td>
         </tr>
     </table>
