@@ -15,35 +15,36 @@ class ParticipantSignatureService
             'client_type' => $data['client_type'],
         ]);
 
-
+        $isNew = !$record->exists;
 
         $record->fill($data);
 
-        if ($record->isDirty()) {
-            $changes = $record->getDirty();
-            $original = array_intersect_key($record->getOriginal(), $changes);
+        $changes = $record->getDirty();
+        $original = $isNew ? [] : array_intersect_key($record->getOriginal(), $changes);
 
-            Log::info('Participant Signature Changes', [
-                'dirty' => $changes,
-                'original' => $original,
-            ]);
+        $record->save(); // save first so uuid and id exist
 
-            $record->save();
-
+        if ($isNew || !empty($changes)) {
             activity()
                 ->useLog('participant_signature')
                 ->performedOn($record)
                 ->causedBy(Auth::user())
                 ->withProperties([
                     'attributes' => $changes,
-                    'old' => $original,
+                    'old' => $isNew ? null : $original,
                     'staff_id' => $data['staff_id'] ?? null,
                     'user_id' => $record->user_id,
                     'client_type' => $record->client_type,
                     'uuid' => $record->uuid,
-                    'participant_signature_id' =>$record->id,
+                    'participant_signature_id' => $record->id,
                 ])
-                ->log('Participant Signature updated');
+                ->log($isNew ? 'Participant Signature created' : 'Participant Signature updated');
+
+            Log::info('ParticipantSignature Log:', [
+                'is_new' => $isNew,
+                'changes' => $changes,
+                'original' => $original,
+            ]);
         }
 
         return $record;

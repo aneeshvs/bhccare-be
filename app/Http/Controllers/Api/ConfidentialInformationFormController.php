@@ -138,18 +138,25 @@ class ConfidentialInformationFormController extends Controller
      * Export Confidential Information Form as PDF.
      */
     public function exportFullFormPdf(string $uuid)
-    {
-        $form = ConfidentialInformationForm::with(['staff','agencies','consent','verbal','preConsentDisclosure'])
-            ->where('uuid', $uuid)
-            ->firstOrFail();
+{
+    $form = ConfidentialInformationForm::with(['staff','agencies','consent','verbal','preConsentDisclosure'])
+        ->where('uuid', $uuid)
+        ->firstOrFail();
 
-        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.confidentialinformationform', compact('form'))
-            ->setPaper('A4', 'portrait');
+    // ✅ If signature is stored Base64 already:
+    $signatureImage = $form->consent->signature ?? null;
 
-        $fileName = 'Confidential_Information_Form_' . ($form->staff->name ?? 'Unknown') . '.pdf';
+    // If signature is stored binary:
+    // $signatureImage = $form->consent->signature ? 'data:image/png;base64,' . base64_encode($form->consent->signature) : null;
 
-        return $pdf->download($fileName);
-    }
+    $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('pdf.confidentialinformationform', [
+        'form' => $form,
+        'signatureImage' => $signatureImage // ✅ pass to view
+    ])->setPaper('A4', 'portrait');
+
+    return $pdf->download('Confidential_Information_Form_' . ($form->staff->name ?? 'Unknown') . '.pdf');
+}
+
 
     /**
      * Get Confidential Information Form UUID by user + client_type.

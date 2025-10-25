@@ -107,18 +107,25 @@ class ParticipantSignatureController extends Controller
      * Export Participant Signature form as PDF
      */
     public function exportFullFormPdf(string $uuid)
-    {
-        $record = ParticipantSignature::with('staff')
-            ->where('uuid', $uuid)
-            ->firstOrFail();
+{
+    $record = ParticipantSignature::with('staff')
+        ->where('uuid', $uuid)
+        ->firstOrFail();
 
-        $pdf = Pdf::loadView('pdf.participantsignature', compact('record'))
-            ->setPaper('A4', 'portrait');
+    // ✅ Signature is already Base64 stored, just use it directly
+    $signatureImage = $record->participant_signature ?? null;
 
-        $fileName = 'Participant_Signature_' . ($record->staff->name ?? 'Unknown') . '.pdf';
+    $pdf = Pdf::loadView('pdf.participantsignature', [
+        'record' => $record,
+        'signatureImage' => $signatureImage,
+    ])->setPaper('A4', 'portrait');
 
-        return $pdf->download($fileName);
-    }
+    $fileName = 'Participant_Signature_' . ($record->staff->name ?? 'Unknown') . '.pdf';
+
+    return $pdf->download($fileName);
+}
+
+
 
     /**
      * Get Participant Signature UUID by user + client_type

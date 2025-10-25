@@ -124,6 +124,20 @@
             <tr><th>Signed By</th><td>{{ $form->consent->signed_by === 'participant' ? 'Participant' : 'Authorized Representative' }}</td></tr>
             <tr><th>Name</th><td>{{ $form->consent->name ?? '-' }}</td></tr>
             <tr><th>Witnessed By</th><td>{{ $form->consent->witnessed_by ?? '-' }}</td></tr>
+            <tr>
+                <th>Participant Signature:</th>
+                <td>
+                    @if($signatureImage)
+                        <img src="{{ $signatureImage }}" style="width:150px; height:auto;">
+                    @else
+                        <span>No signature available</span>
+                    @endif
+                </td>
+            </tr>
+
+
+
+            </div>
         </table>
     @endif
 
@@ -131,21 +145,24 @@
     @if($form->verbal)
         <table>
             <tr><td colspan="2" class="section-title">Verbal Consent</td></tr>
+
             <tr>
-                <th>Verbal Signature</th>
+                <th>Verbal Signature:</th>
                 <td>
                     @if(!empty($form->verbal->verbal_signature))
-                        <img src="data:image/png;base64,{{ $form->verbal->verbal_signature }}" style="max-height: 80px;">
+                        <img src="{{ $form->verbal->verbal_signature }}" style="width:150px; height:auto;">
                     @else
-                        -
+                        <span>No signature available</span>
                     @endif
                 </td>
             </tr>
-            <tr><th>Signed Date</th><td>{{ formatDate($form->verbal->verbal_signed_date) }}</td></tr>
+
+            <tr><th>Date Signed</th><td>{{ formatDate($form->verbal->verbal_signed_date) }}</td></tr>
             <tr><th>Name</th><td>{{ $form->verbal->verbal_name ?? '-' }}</td></tr>
             <tr><th>Position</th><td>{{ $form->verbal->position ?? '-' }}</td></tr>
         </table>
     @endif
+
 
 
     @if($form->preConsentDisclosure)
