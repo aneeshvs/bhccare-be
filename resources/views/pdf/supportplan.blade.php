@@ -144,14 +144,14 @@
                 </td>
                 <td>
                     <span class="label">Signature</span><br>
-                    @if(!empty($supportPlan->approval->signature_base64))
-                        <img src="{{ $supportPlan->approval->signature_base64 }}"
-                            alt="Signature"
-                            style="max-width: 150px; height: auto;">
+
+                    @if(!empty($signatureImage))
+                        <img src="{{ $signatureImage }}" style="width:150px; height:auto;">
                     @else
-                        N/A
+                        <span>N/A</span>
                     @endif
                 </td>
+
 
             </tr>
         </table>
