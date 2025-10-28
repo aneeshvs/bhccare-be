@@ -82,6 +82,15 @@ class OnboardingPackingSignoff extends DefaultDBModel
         return $this->belongsTo(Staff::class);
     }
 
+
+public function disabilityActDiscussion()
+{
+    return $this->hasOne(
+        \App\Models\OnboardingPackingSignoffDisabilityActDiscussion::class,
+        'onboarding_packing_signoff_id'
+    );
+}
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

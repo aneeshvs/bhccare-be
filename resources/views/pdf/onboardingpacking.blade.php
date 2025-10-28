@@ -143,6 +143,27 @@
         <tr><th>Date</th><td>{{ formatDate($record->sda_residency_statement_date) }}</td></tr>
     </table>
 
+    <table>
+        <tr><td colspan="2" class="section-title">Disability Act Discussion</td></tr>
+        <tr>
+            <th>Clarify the type of services provided by the organisation</th>
+            <td>{{ $record->disabilityActDiscussion?->clarify_services_provided ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Provide verbal information about intake process: steps and expected timeline</th>
+            <td>{{ $record->disabilityActDiscussion?->verbal_information_intake_process ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Cost of services of all scheduled services</th>
+            <td>{{ $record->disabilityActDiscussion?->cost_of_services ? 'Yes' : 'No' }}</td>
+        </tr>
+        <tr>
+            <th>Participant rights (Handbook) including complaint, feedback, safety, incident</th>
+            <td>{{ $record->disabilityActDiscussion?->participant_rights_handbook ? 'Yes' : 'No' }}</td>
+        </tr>
+</table>
+
+
     {{-- Summary --}}
     <table>
         <tr><td colspan="2" class="section-title">Summary</td></tr>

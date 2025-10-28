@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class StoreOnboardingPackingSignoffRequest extends FormRequest
 {
@@ -11,7 +13,18 @@ class StoreOnboardingPackingSignoffRequest extends FormRequest
         return true;
     }
 
-    public function rules(): array
+    public function rules()
+    {
+        return array_merge(
+            $this->onboardingrules(),
+            $this->discussrules(),
+
+
+
+        );
+    }
+
+    private function onboardingrules(): array
     {
         return [
             // 🔗 Relations & identifiers
@@ -75,6 +88,25 @@ class StoreOnboardingPackingSignoffRequest extends FormRequest
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',
         ];
+    }
+
+    private function discussrules(): array
+    {
+        return [
+
+            'clarify_services_provided' => 'nullable|boolean',
+            'verbal_information_intake_process' => 'nullable|boolean',
+            'cost_of_services' => 'nullable|boolean',
+            'participant_rights_handbook' => 'nullable|boolean',
+        ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'success' => false,
+            'errors'  => $validator->errors(),
+        ], 422));
     }
 
 
