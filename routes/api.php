@@ -19,6 +19,9 @@ use App\Http\Controllers\Api\HomeSafetyChecklistAssessmentController;
 use App\Http\Controllers\Api\ConfidentialInformationFormController;
 use App\Http\Controllers\Api\ParticipantSignatureController;
 
+use App\Http\Controllers\Api\OnboardingPackingSignoffController;
+
+
 
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -180,6 +183,15 @@ Route::get('/multiple-supports/{uuid}', [ParticipantSignatureController::class, 
 Route::get('/multiple-supports/export-pdf/{uuid}', [ParticipantSignatureController::class, 'exportFullFormPdf']); // Export PDF
 
 
+Route::get('/onboarding-packing-signoff/logs', [ActivityLogController::class, 'getLogsByUuidOnboardingPackingSignoff']);
+
+// ✅ Public (no auth)
+Route::get('/get-onboarding-packing-signoff-uuid', [OnboardingPackingSignoffController::class, 'getUuid']);
+Route::get('/onboarding-packing-signoff/{uuid}', [OnboardingPackingSignoffController::class, 'showByUuid']);
+Route::get('/onboarding-packing-signoff/export-pdf/{uuid}', [OnboardingPackingSignoffController::class, 'exportFullFormPdf']);
+
+
+
 
 
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
@@ -203,6 +215,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
      Route::put('/confidential-form/update', [ConfidentialInformationFormController::class, 'update']);
 
     Route::put('/multiple-supports/update', [ParticipantSignatureController::class, 'update']);
+
+     Route::put('/onboarding-packing-signoff/update', [OnboardingPackingSignoffController::class, 'update']);
 
 
 
