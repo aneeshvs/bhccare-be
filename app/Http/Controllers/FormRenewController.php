@@ -53,6 +53,7 @@ class FormRenewController extends Controller
 
                'multiple-supports' => [\App\Models\ParticipantSignature::class, 'pdf.participantsignature', 'participantSignature'],
 
+               'onboarding-packing-signoff'=>[\App\Models\OnboardingPackingSignoff::class,'pdf.onboardingpacking','record'],
             ];
 
             if (!isset($formMap[$form])) {

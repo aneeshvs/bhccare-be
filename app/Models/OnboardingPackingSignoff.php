@@ -91,6 +91,12 @@ public function disabilityActDiscussion()
     );
 }
 
+public function participantDeclaration()
+{
+    return $this->hasOne(OnboardingPackingSignoffParticipantDeclaration::class, 'onboarding_packing_signoff_id');
+}
+
+
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()

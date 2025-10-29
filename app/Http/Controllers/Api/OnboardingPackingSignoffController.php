@@ -8,6 +8,7 @@ use App\Models\OnboardingPackingSignoff;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffService;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffCompletionService;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffDisabilityActDiscussionService;
+use App\OnboardingPackingSignoffService\OnboardingPackingSignoffParticipantDeclarationService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,13 +20,15 @@ class OnboardingPackingSignoffController extends Controller
 {
     public function update(StoreOnboardingPackingSignoffRequest $request, OnboardingPackingSignoffService $service,
     OnboardingPackingSignoffCompletionService $completionService,
-    OnboardingPackingSignoffDisabilityActDiscussionService $DisabilityActDiscussionService)
+    OnboardingPackingSignoffDisabilityActDiscussionService $DisabilityActDiscussionService,
+    OnboardingPackingSignoffParticipantDeclarationService $ParticipantDeclarationService )
     {
         $data = $request->validated();
         $isFinal = $request->boolean('submit_final');
         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        $result = DB::transaction(function () use ($data, $service,$completionService,$DisabilityActDiscussionService) {
+        $result = DB::transaction(function () use ($data, $service,$completionService,
+        $DisabilityActDiscussionService, $ParticipantDeclarationService) {
             $user = Auth::user();
             if (!$user) {
                 return response()->json(['message' => 'Unauthorized'], 401);
@@ -39,6 +42,7 @@ class OnboardingPackingSignoffController extends Controller
             $data['onboarding_packing_signoff_id'] = $record->id;
 
             $DisabilityActDiscussionService->save($data);
+             $ParticipantDeclarationService->save($data);
 
 
            $completion = $completionService->calculate($record);
@@ -62,7 +66,7 @@ class OnboardingPackingSignoffController extends Controller
                 Log::error('Error reporting Onboarding Packing Signoff status: ' . $e->getMessage());
             }
 
-            return ['onboardingPackingSignoff' => $record->load('staff','disabilityActDiscussion')];
+            return ['onboardingPackingSignoff' => $record->load('staff','disabilityActDiscussion','participantDeclaration')];
         });
 
         return response()->json([
@@ -81,7 +85,7 @@ class OnboardingPackingSignoffController extends Controller
     public function showByUuid(string $uuid, OnboardingPackingSignoffCompletionService $completionService)
     {
         // Load staff relationship (if any)
-        $record = OnboardingPackingSignoff::with('staff','disabilityActDiscussion')
+        $record = OnboardingPackingSignoff::with('staff','disabilityActDiscussion','participantDeclaration')
             ->where('uuid', $uuid)
             ->first();
 
@@ -111,7 +115,7 @@ class OnboardingPackingSignoffController extends Controller
 
         public function exportFullFormPdf(string $uuid)
     {
-        $record = OnboardingPackingSignoff::with('staff','disabilityActDiscussion')->where('uuid', $uuid)->firstOrFail();
+        $record = OnboardingPackingSignoff::with('staff','disabilityActDiscussion','participantDeclaration')->where('uuid', $uuid)->firstOrFail();
 
         $pdf = Pdf::loadView('pdf.onboardingpacking', [
             'record' => $record,

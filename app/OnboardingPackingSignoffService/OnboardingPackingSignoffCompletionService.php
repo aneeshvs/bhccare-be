@@ -48,6 +48,23 @@ class OnboardingPackingSignoffCompletionService
         'sda_residency_statement_date',
 
         ],
+
+
+     'disabilityActDiscussion'=>[
+        'clarify_services_provided',
+        'verbal_information_intake_process',
+        'cost_of_services',
+        'participant_rights_handbook'
+     ],
+
+
+        'participantDeclaration'=>[
+        'participant_name',
+        'relationship_to_participant',
+        'participant_signature',
+        'signed_date'
+        ]
+
     ];
 
     /**

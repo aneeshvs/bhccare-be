@@ -33,7 +33,7 @@ class StoreScheduleOfSupportRequest extends FormRequest
 
             'participant_name' => 'nullable|string|max:255',
             'creation_date' => 'nullable|date',
-            'funding_review_date' => 'nullable|date|after_or_equal:creation_date',
+            'funding_review_date' => 'nullable|date',
 
             'support_on_public_holiday' => 'boolean',
 

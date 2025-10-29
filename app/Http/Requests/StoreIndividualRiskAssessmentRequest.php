@@ -60,7 +60,7 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
             'client_name'          => 'nullable|string|max:255',
             'site_address'         => 'nullable|string|max:255',
             'assessment_date'      => 'nullable|date',
-            'planned_review_date'  => 'nullable|date|after_or_equal:assessment_date',
+            'planned_review_date'  => 'nullable|date',
 
 
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
