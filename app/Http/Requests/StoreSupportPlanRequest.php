@@ -83,7 +83,7 @@ class StoreSupportPlanRequest extends FormRequest
             'user_id' => 'required|integer',
             'client_type' => 'required|in:1,2',
             'effective_date' => 'nullable|date',
-            'review_date' => 'nullable|date|after_or_equal:effective_date',
+            'review_date' => 'nullable|date',
             'confirmation_date' => 'nullable|date',
             'developed_by' => 'nullable|string',
             'invited_but_not_participated' => 'nullable|string',

@@ -79,7 +79,7 @@ class StoreSupportCarePlanRequest extends FormRequest
             'consents_participant_surname' => 'nullable|string|max:255',
             'consents_participant_dob' => 'nullable|date',
             'consents_goal_plan_start_date' => 'nullable|date',
-            'consents_goal_plan_review_date' => 'nullable|date|after_or_equal:consents_goal_plan_start_date',
+            'consents_goal_plan_review_date' => 'nullable|date',
 
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',

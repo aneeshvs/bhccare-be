@@ -133,7 +133,7 @@ class StoreFullFormRequest extends FormRequest
             'ndis_plan_approved'              => 'nullable|in:Yes,No,Pending',
             'ndis_number'                     => 'nullable|string|max:50',
             'ndis_plan_start_date'           => 'nullable|date',
-            'ndis_plan_end_date'             => 'nullable|date|after_or_equal:ndis_plan_start_date',
+            'ndis_plan_end_date'             => 'nullable|date',
 
             'plan_manager_name'              => 'nullable|string|max:255',
             'plan_manager_contact_mobile'    => 'nullable|string|max:255',

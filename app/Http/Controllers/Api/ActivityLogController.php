@@ -1132,7 +1132,8 @@ public function getLogsByUuidParticipantSignature(Request $request)
         } else {
             $query->whereIn('log_name', [
                 'onboarding_packing_signoff',
-                'onboarding_packing_signoff_disability_act_discussion'
+                'onboarding_packing_signoff_disability_act_discussion',
+                'onboarding_packing_signoff_participant_declaration'
 
             ]);
         }

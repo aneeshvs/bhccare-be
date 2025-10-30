@@ -18,6 +18,7 @@ class StoreOnboardingPackingSignoffRequest extends FormRequest
         return array_merge(
             $this->onboardingrules(),
             $this->discussrules(),
+            $this->declarationrules(),
 
 
 
@@ -98,6 +99,17 @@ class StoreOnboardingPackingSignoffRequest extends FormRequest
             'verbal_information_intake_process' => 'nullable|boolean',
             'cost_of_services' => 'nullable|boolean',
             'participant_rights_handbook' => 'nullable|boolean',
+        ];
+    }
+
+    private function declarationrules(): array
+    {
+        return [
+
+            'participant_name' => 'nullable|string|max:255',
+            'relationship_to_participant' => 'nullable|string|max:255',
+            'participant_signature' => 'nullable|string',
+            'signed_date' => 'nullable|date',
         ];
     }
 

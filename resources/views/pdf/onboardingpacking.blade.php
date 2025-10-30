@@ -163,13 +163,52 @@
         </tr>
 </table>
 
+<table style="width:100%; border-collapse: collapse; margin-top:30px;">
+    <tr>
+        <td colspan="2" class="section-title" style="font-weight:bold; background:#f3f4f6; padding:10px;">
+            Participant Declaration
+        </td>
+    </tr>
 
-    {{-- Summary --}}
-    <table>
-        <tr><td colspan="2" class="section-title">Summary</td></tr>
-        <tr><th>Completion Percentage</th><td>{{ $record->completion_percentage ?? 0 }}%</td></tr>
-        <tr><th>Form Status</th><td>{{ ucfirst($record->form_status ?? 'Pending') }}</td></tr>
-    </table>
+    <tr>
+        <td colspan="2" style="padding:10px;">
+            Participant to sign to indicate that you have been provided with a copy of the items
+            identified on the above list, with contents explained and understood.
+        </td>
+    </tr>
+
+    <tr>
+        <th style="text-align:left; width:35%; padding:8px;">Participant Name</th>
+        <td style="padding:8px;">{{ $record->participantDeclaration?->participant_name ?? '—' }}</td>
+    </tr>
+
+    <tr>
+        <th style="text-align:left; width:35%; padding:8px;">Relationship to Participant (if applicable)</th>
+        <td style="padding:8px;">{{ $record->participantDeclaration?->relationship_to_participant ?? '—' }}</td>
+    </tr>
+
+    <tr>
+        <th style="text-align:left; width:35%; padding:8px;">Signature</th>
+        <td style="padding:8px;">
+            @if(!empty($record->participantDeclaration?->participant_signature))
+                <img src="{{ $record->participantDeclaration->participant_signature }}"
+                     alt="Participant Signature"
+                     style="max-height:70px; border:1px solid #ccc; padding:4px;">
+            @else
+                <span>—</span>
+            @endif
+        </td>
+    </tr>
+
+    <tr>
+        <th style="text-align:left; width:35%; padding:8px;">Date</th>
+        <td style="padding:8px;">{{ formatDate($record->participantDeclaration?->signed_date) ?? '—' }}</td>
+    </tr>
+</table>
+
+
+
+
 </div>
 
 </body>

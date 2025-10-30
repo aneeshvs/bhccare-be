@@ -87,7 +87,7 @@ class StoreOnboardingRequest extends FormRequest
             'funding_contact_person' => 'nullable|string|max:255',
             'ndis_plan_attached' => 'nullable|boolean',
             'ndis_plan_start_date' => 'nullable|date',
-            'ndis_plan_end_date' => 'nullable|date|after_or_equal:ndis_plan_start_date',
+            'ndis_plan_end_date' => 'nullable|date',
             'plan_manager_name' => 'nullable|string|max:255',
             'plan_manager_email' => 'nullable|email|max:255',
             'plan_manager_phone' => 'nullable|string|max:20',
