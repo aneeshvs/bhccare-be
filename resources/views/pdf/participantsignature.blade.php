@@ -70,7 +70,7 @@
         <strong>Participant Signature:</strong><br>
 
         @if($signatureImage)
-            <img src="{{ $signatureImage }}" class="signature-img">
+            <img src="{{ $signatureImage }}" class="signature-img" style="max-height:70px; border:1px solid #ccc; padding:4px;">
         @else
             <span>No signature available</span>
         @endif

@@ -213,16 +213,18 @@
         </tr>
 
         <tr>
-            <th>Participant Signature</th>
-            <td>
+            <th style="text-align:left; width:35%; padding:8px;">Participant Signature</th>
+            <td style="padding:8px;">
                 @if(!empty($schedule->agreementSignature->participant_signature))
                     <img src="{{ $schedule->agreementSignature->participant_signature }}"
                          alt="Participant Signature"
-                         style="max-width:150px; height:auto;">
+                         style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else
                     -
                 @endif
             </td>
+
+
         </tr>
 
         <tr>
@@ -247,7 +249,7 @@
                 @if(!empty($schedule->agreementSignature->representative_signature))
                     <img src="{{ $schedule->agreementSignature->representative_signature }}"
                          alt="Representative Signature"
-                         style="max-width:150px; height:auto;">
+                        style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else
                     -
                 @endif

@@ -132,10 +132,10 @@
         <tr><th>Accepted Position</th><td>{{ $serviceAgreement->consent->accepted_position ?? '-' }}</td></tr>
 
         <tr>
-            <th>Accepted Signature</th>
-            <td>
+            <th style="text-align:left; width:35%; padding:8px;">Acceptance Signature</th>
+            <td style="padding:8px;">
                 @if(!empty($serviceAgreement->consent->accepted_signature))
-                    <img src="{{ $serviceAgreement->consent->accepted_signature }}" alt="Signature" style="max-width:150px;height:auto;">
+                    <img src="{{ $serviceAgreement->consent->accepted_signature }}" alt="Signature"  style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else -
                 @endif
             </td>
@@ -147,10 +147,10 @@
         <tr><th>Participant Role</th><td>{{ $serviceAgreement->consent->participant_role ?? '-' }}</td></tr>
 
         <tr>
-            <th>Participant Signature</th>
-            <td>
+            <th style="text-align:left; width:35%; padding:8px;"> Partcipant Signature</th>
+            <td style="padding:8px;">
                 @if(!empty($serviceAgreement->consent->participant_signature))
-                    <img src="{{ $serviceAgreement->consent->participant_signature }}" alt="Signature" style="max-width:150px;height:auto;">
+                    <img src="{{ $serviceAgreement->consent->participant_signature }}" alt="Signature" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else -
                 @endif
             </td>
@@ -164,7 +164,7 @@
             <th>Witness Signature</th>
             <td>
                 @if(!empty($serviceAgreement->consent->witness_signature))
-                    <img src="{{ $serviceAgreement->consent->witness_signature }}" alt="Signature" style="max-width:150px;height:auto;">
+                    <img src="{{ $serviceAgreement->consent->witness_signature }}" alt="Signature" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else -
                 @endif
             </td>
@@ -176,10 +176,10 @@
         <tr><th>Verbal Staff Position</th><td>{{ $serviceAgreement->consent->verbal_staff_position ?? '-' }}</td></tr>
 
         <tr>
-            <th>Verbal Staff Signature</th>
-            <td>
+            <th style="text-align:left; width:35%; padding:8px;">Verbal Signature</th>
+            <td style="padding:8px;">
                 @if(!empty($serviceAgreement->consent->verbal_staff_signature))
-                    <img src="{{ $serviceAgreement->consent->verbal_staff_signature }}" alt="Signature" style="max-width:150px;height:auto;">
+                    <img src="{{ $serviceAgreement->consent->verbal_staff_signature }}" alt="Signature" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                 @else -
                 @endif
             </td>

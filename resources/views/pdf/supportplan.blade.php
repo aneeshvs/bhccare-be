@@ -142,15 +142,17 @@
                         {{ $supportPlan->approval->date_of_approval ? \Carbon\Carbon::parse($supportPlan->approval->date_of_approval)->format('d-m-Y') : 'N/A' }}
                     </span>
                 </td>
-                <td>
-                    <span class="label">Signature</span><br>
+                <th style="text-align:left; width:35%; padding:8px;"> Signature</th>
+                <td style="padding:8px;">
 
                     @if(!empty($signatureImage))
-                        <img src="{{ $signatureImage }}" style="width:150px; height:auto;">
+                        <img src="{{ $signatureImage }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                     @else
                         <span>N/A</span>
                     @endif
                 </td>
+
+
 
 
             </tr>

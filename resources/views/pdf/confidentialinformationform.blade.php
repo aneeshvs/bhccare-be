@@ -128,7 +128,7 @@
                 <th>Participant Signature:</th>
                 <td>
                     @if($signatureImage)
-                        <img src="{{ $signatureImage }}" style="width:150px; height:auto;">
+                        <img src="{{ $signatureImage }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                     @else
                         <span>No signature available</span>
                     @endif
@@ -150,7 +150,7 @@
                 <th>Verbal Signature:</th>
                 <td>
                     @if(!empty($form->verbal->verbal_signature))
-                        <img src="{{ $form->verbal->verbal_signature }}" style="width:150px; height:auto;">
+                        <img src="{{ $form->verbal->verbal_signature }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                     @else
                         <span>No signature available</span>
                     @endif
