@@ -100,10 +100,7 @@ class OnboardingPackingSignoffController extends Controller
         // Return structured response
         return response()->json([
             'success' => true,
-            'data' => [
-                'onboarding_packing_signoff' => $record,
-                'completion_percentage' => $completionPercentage,
-            ],
+            'data' => $record->toArray(),
         ]);
     }
 
