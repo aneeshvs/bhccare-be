@@ -44,11 +44,15 @@
         }
 
         .section-title {
-            background-color: #f3f4f6;
+
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 10px 15px;
             font-weight: bold;
-            padding: 8px 12px;
-            border-left: 4px solid #4f46e5;
-            font-size: 13px;
+            border-left: 4px solid #0284c7;
+            margin-bottom: 10px;
+            border-radius: 4px;
+
         }
 
         table {
@@ -90,7 +94,7 @@
 
     {{-- Onboarding Items --}}
     <table>
-        <tr><td colspan="2" class="section-title">Documents & Procedures</td></tr>
+        <tr><td colspan="2" class="section-title">1.Documents & Procedures</td></tr>
         <tr><th>Service Agreement Provided</th><td>{{ $record->service_agreement_provided ? 'Yes' : 'No' }}</td></tr>
         <tr><th>Date</th><td>{{ formatDate($record->service_agreement_date) }}</td></tr>
 
@@ -144,7 +148,7 @@
     </table>
 
     <table>
-        <tr><td colspan="2" class="section-title">Disability Act Discussion</td></tr>
+        <tr><td colspan="2" class="section-title">2.Disability Act Discussion</td></tr>
         <tr>
             <th>Clarify the type of services provided by the organisation</th>
             <td>{{ $record->disabilityActDiscussion?->clarify_services_provided ? 'Yes' : 'No' }}</td>
@@ -166,7 +170,7 @@
 <table style="width:100%; border-collapse: collapse; margin-top:30px;">
     <tr>
         <td colspan="2" class="section-title" style="font-weight:bold; background:#f3f4f6; padding:10px;">
-            Participant Declaration
+            3.Participant Declaration
         </td>
     </tr>
 

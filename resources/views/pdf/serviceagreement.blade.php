@@ -41,12 +41,17 @@
             margin: 0;
         }
 
+
         .section-title {
-            background-color: #f3f4f6;
+
+            background-color: #e0f2fe;
+            color: #0369a1;
+            padding: 10px 15px;
             font-weight: bold;
-            padding: 8px 12px;
-            border-left: 4px solid #4f46e5;
-            font-size: 13px;
+            border-left: 4px solid #0284c7;
+            margin-bottom: 10px;
+            border-radius: 4px;
+
         }
 
         table {
@@ -84,49 +89,36 @@
 
     {{-- Participant Details --}}
     <table>
-        <tr><td colspan="2" class="section-title">Participant Details</td></tr>
+        <tr><td colspan="2" class="section-title">1.Participant Details</td></tr>
         <tr><th>Name</th><td>{{ $serviceAgreement->participant_name ?? '-' }}</td></tr>
         <tr><th>NDIS Number</th><td>{{ $serviceAgreement->ndis_number ?? '-' }}</td></tr>
         <tr><th>Date of Birth</th><td>{{ formatDate($serviceAgreement->dob) }}</td></tr>
         <tr><th>Contact</th><td>{{ $serviceAgreement->contact ?? '-' }}</td></tr>
         <tr><th>Email</th><td>{{ $serviceAgreement->email ?? '-' }}</td></tr>
         <tr><th>Address</th><td>{{ $serviceAgreement->address ?? '-' }}</td></tr>
-    </table>
 
-    {{-- Plan Dates --}}
-    <table>
-        <tr><td colspan="2" class="section-title">NDIS Plan</td></tr>
-        <tr><th>Start Date</th><td>{{ formatDate($serviceAgreement->ndis_plan_start_date) }}</td></tr>
-        <tr><th>End Date</th><td>{{ formatDate($serviceAgreement->ndis_plan_end_date) }}</td></tr>
-    </table>
 
-    {{-- Service Agreement Term --}}
-    <table>
-        <tr><td colspan="2" class="section-title">Service Agreement Term</td></tr>
-        <tr><th>Start Date</th><td>{{ formatDate($serviceAgreement->term_start_date) }}</td></tr>
-        <tr><th>End Date</th><td>{{ formatDate($serviceAgreement->term_end_date) }}</td></tr>
-        <tr><td colspan="2">{{ $serviceAgreement->area_of_support ?? '-' }}</td></tr>
-    </table>
+        <tr><th>NDIS Start Date</th><td>{{ formatDate($serviceAgreement->ndis_plan_start_date) }}</td></tr>
+        <tr><th>NDIS End Date</th><td>{{ formatDate($serviceAgreement->ndis_plan_end_date) }}</td></tr>
 
-    {{-- Area of Support --}}
-    <table>
-        <tr><td colspan="2" class="section-title">Area of Support</td></tr>
-        <tr><td colspan="2">{{ $serviceAgreement->area_of_support ?? '-' }}</td></tr>
-    </table>
 
-    {{-- Representative Details --}}
-    <table>
-        <tr><td colspan="2" class="section-title">Representative Details</td></tr>
-        <tr><th>Name</th><td>{{ $serviceAgreement->representative_name ?? '-' }}</td></tr>
-        <tr><th>Relationship</th><td>{{ $serviceAgreement->representative_relationship ?? '-' }}</td></tr>
-        <tr><th>Contact</th><td>{{ $serviceAgreement->representative_contact ?? '-' }}</td></tr>
-        <tr><th>Email</th><td>{{ $serviceAgreement->representative_email ?? '-' }}</td></tr>
+        <tr><th>Agreement Term Start Date</th><td>{{ formatDate($serviceAgreement->term_start_date) }}</td></tr>
+        <tr><th>Agreement Term End Date</th><td>{{ formatDate($serviceAgreement->term_end_date) }}</td></tr>
+        <tr><th>Area of Support</th><td colspan="2">{{ $serviceAgreement->area_of_support ?? '-' }}</td></tr>
+
+
+
+
+        <tr><th>Representative Name</th><td>{{ $serviceAgreement->representative_name ?? '-' }}</td></tr>
+        <tr><th>Representative Relationship</th><td>{{ $serviceAgreement->representative_relationship ?? '-' }}</td></tr>
+        <tr><th>Representative Contact</th><td>{{ $serviceAgreement->representative_contact ?? '-' }}</td></tr>
+        <tr><th>Representative Email</th><td>{{ $serviceAgreement->representative_email ?? '-' }}</td></tr>
     </table>
 
     {{-- Consent --}}
     @if($serviceAgreement->consent)
     <table>
-        <tr><td colspan="2" class="section-title">Consent Details</td></tr>
+        <tr><td colspan="2" class="section-title">2.Service Agreement</td></tr>
 
         <tr><th>Accepted Name</th><td>{{ $serviceAgreement->consent->accepted_name ?? '-' }}</td></tr>
         <tr><th>Accepted Position</th><td>{{ $serviceAgreement->consent->accepted_position ?? '-' }}</td></tr>

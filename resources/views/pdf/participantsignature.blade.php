@@ -22,6 +22,7 @@
     </style>
 </head>
 
+
 <body>
 <div class="container">
 
@@ -67,7 +68,7 @@
 
     <!-- Signature Section -->
     <div class="signature-box">
-        <strong>Participant Signature:</strong><br>
+        <strong>1.Participant Signature:</strong><br>
 
         @if($signatureImage)
             <img src="{{ $signatureImage }}" class="signature-img" style="max-height:70px; border:1px solid #ccc; padding:4px;">

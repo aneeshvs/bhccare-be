@@ -56,11 +56,13 @@
         }
 
         .section-header {
-            background-color: #f3f4f6;
+            background-color: #e0f2fe;
+            color: #0369a1;
             padding: 10px 15px;
             font-weight: bold;
-            border-left: 4px solid #4f46e5;
+            border-left: 4px solid #0284c7;
             margin-bottom: 10px;
+            border-radius: 4px;
         }
 
         table {
@@ -108,7 +110,7 @@
 
     <!-- Main Assessment Information -->
     <div class="section">
-        <div class="section-header">Participant Information</div>
+        <div class="section-header">1.Home Safety Information</div>
         <table>
             <tr>
                 <td>
@@ -153,7 +155,7 @@
 
 @if($assessment->outsideEntry)
     <div class="section">
-        <div class="section-header">Outside Entry Assessment</div>
+        <div class="section-header">2.Outside Entry Assessment</div>
         <table>
             <tr>
                 <td>
@@ -212,7 +214,7 @@
 <!-- Inside Residence Assessment -->
 @if($assessment->insideResidence)
 <div class="section">
-    <div class="section-header">Inside Residence Assessment</div>
+    <div class="section-header">3.Inside Residence Assessment</div>
     <table>
         <tr>
             <td>
@@ -321,7 +323,7 @@
 <!-- Hallways Assessment -->
 @if($assessment->hallways)
 <div class="section">
-    <div class="section-header">Hallways Assessment</div>
+    <div class="section-header">4.Hallways Assessment</div>
     <table>
         <tr>
             <td>
@@ -410,7 +412,7 @@
 <!-- Hallways Safety Assessment -->
 @if($assessment->hallwaysSafetyAssessment)
 <div class="section">
-    <div class="section-header">Kitchen & Bathroom Safety Assessment</div>
+    <div class="section-header">5.Kitchen & Bathroom Safety Assessment</div>
     <table>
         <tr>
             <td>
@@ -549,7 +551,7 @@
 <!-- Outside Residence Assessment -->
 @if($assessment->outsideResidenceAssessment)
 <div class="section">
-    <div class="section-header">Outside Residence Assessment</div>
+    <div class="section-header">6.Outside Residence Assessment</div>
     <table>
         <tr>
             <td>
@@ -628,7 +630,7 @@
 <!-- Miscellaneous Assessment -->
 @if($assessment->miscellaneous)
 <div class="section">
-    <div class="section-header">Miscellaneous Safety Assessment</div>
+    <div class="section-header">7.Miscellaneous Safety Assessment</div>
     <table>
         <tr>
             <td>
@@ -727,7 +729,7 @@
     <!-- Residence Type -->
     @if($assessment->residenceType)
     <div class="section">
-        <div class="section-header">Residence Type & Completion Details</div>
+        <div class="section-header">8.Residence Type & Completion Details</div>
         <table>
             <tr>
                 <td>

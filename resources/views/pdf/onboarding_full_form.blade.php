@@ -11,6 +11,7 @@
             color: #111827;
             margin: 0;
             padding: 20px;
+            counter-reset: section;
         }
 
         .container {
@@ -55,12 +56,22 @@
             margin-bottom: 30px;
         }
 
-        .section-header {
-            background-color: #f3f4f6;
+       .section-header {
+            counter-increment: section;
+            background-color: #e0f2fe;
+            color: #0369a1;
             padding: 10px 15px;
             font-weight: bold;
-            border-left: 4px solid #4f46e5;
+            border-left: 4px solid #0284c7;
             margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .section-header::before {
+            content: counter(section) ". ";
+            font-weight: bold;
+            color: #0284c7;
+            margin-right: 6px;
         }
 
         table {
@@ -88,10 +99,30 @@
             break-before: page; /* For added browser support */
         }
 
+.enum-field {
+    display: flex;
+    gap: 8px;
+    margin-top: 5px;
+}
 
+.enum-option {
+    padding: 4px 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    background-color: #f9fafb;
+    color: #374151;
+    font-size: 12px;
+    font-weight: 500;
+}
 
+.enum-option.selected {
+    background-color: #0284c7;
+    color: #ffffff;
+    border-color: #0369a1;
+    font-weight: bold;
+}
 
-    </style>
+</style>
 </head>
 <body>
 
@@ -119,8 +150,15 @@
                 </td>
                 <td>
                     <span class="label">Gender</span>
-                    <span class="value">{{ ucfirst($initial->gender) }}</span>
+                    <div class="enum-field">
+                        @foreach(['male', 'female', 'other'] as $option)
+                            <span class="enum-option {{ $initial->gender === $option ? 'selected' : '' }}">
+                                {{ ucfirst($option) }}
+                            </span>
+                        @endforeach
+                    </div>
                 </td>
+
                 <td>
                     <span class="label">Date of Birth</span>
                     <span class="value">{{ \Carbon\Carbon::parse($initial->date_of_birth)->format('d-m-Y') }}</span>
@@ -235,7 +273,7 @@
         </table>
     </div>
         {{-- PART D – SCHEDULE OF CARES --}}
-    @if ($initial->scheduleOfCares && $initial->scheduleOfCares->count())
+    @if ($initial->scheduleOfCares && $initial->scheduleOfCares)
         <div class="section">
             <div class="section-header">PART D – SCHEDULE OF CARES</div>
             <table>
@@ -303,7 +341,7 @@
         </div>
     @endif
 
-    @if ($initial->ndisGoals && $initial->ndisGoals->count())
+    @if ($initial->ndisGoals && $initial->ndisGoals)
     <div class="section">
         <div class="section-header">PART F – NDIS GOALS</div>
         <div class="section-body">
@@ -319,7 +357,7 @@
     </div>
 @endif
 
-@if ($initial->healthProfessionalDetails && $initial->healthProfessionalDetails->count())
+@if ($initial->healthProfessionalDetails)
     <div class="section">
         <div class="section-header">PART G – HEALTH PROFESSIONAL DETAILS</div>
         <div class="section-body">

@@ -11,6 +11,9 @@
             color: #111827;
             margin: 0;
             padding: 20px;
+
+           counter-reset: section;
+
         }
         .container {
             max-width: 950px;
@@ -48,11 +51,21 @@
             margin-bottom: 30px;
         }
         .section-header {
-            background-color: #f3f4f6;
+            counter-increment: section;
+            background-color: #e0f2fe;
+            color: #0369a1;
             padding: 10px 15px;
             font-weight: bold;
-            border-left: 4px solid #4f46e5;
+            border-left: 4px solid #0284c7;
             margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .section-header::before {
+            content: counter(section) ". ";
+            font-weight: bold;
+            color: #0284c7;
+            margin-right: 6px;
         }
         table {
             width: 100%;
@@ -89,7 +102,7 @@
 
     <!-- Client Details -->
     <div class="section">
-    <div class="section-header">Client Details</div>
+    <div class="section-header">Assessment Client Details</div>
     <table>
         <tr>
             <td>
@@ -145,7 +158,7 @@
     <!-- Communications -->
     @if($assessment->communications)
 <div class="section">
-    <div class="section-header">Communications</div>
+    <div class="section-header">Assessment Communications</div>
     <table>
         <tr>
             <td><span class="label">Hearing Impairment</span>
@@ -182,7 +195,7 @@
 
     @if($assessment->cognitions)
 <div class="section">
-    <div class="section-header">Cognition</div>
+    <div class="section-header">Assessment Cognition</div>
     <table>
         <tr>
             <td><span class="label">Oriented in Time/Place</span>
@@ -226,7 +239,7 @@
     <!-- Mobility -->
     @if($assessment->mobilities)
 <div class="section">
-    <div class="section-header">Mobility</div>
+    <div class="section-header">Assessment Mobility</div>
     <table>
         <tr>
             <td><span class="label">Walk Unaided</span>
@@ -317,7 +330,7 @@
    <!-- Personal Care & Support -->
 @if($assessment->personalCareSupport)
 <div class="section">
-    <div class="section-header">Personal Care & Support</div>
+    <div class="section-header">Assessment Personal Care & Support</div>
     <table>
         <tr>
             <td><span class="label">Showering</span>
@@ -414,9 +427,9 @@
 
 
     <!-- Manual Handling -->
-@if($assessment->manualHandlings->count())
+@if($assessment->manualHandlings)
 <div class="section">
-    <div class="section-header">Manual Handling</div>
+    <div class="section-header">Assessment Plan Manual Handling</div>
     <table>
         @foreach($assessment->manualHandlings as $mh)
         <tr>
@@ -446,6 +459,7 @@
 </div>
 @endif
 
+<div style="page-break-before: always;"></div>
 
 
   @if($assessment->violenceRisk)

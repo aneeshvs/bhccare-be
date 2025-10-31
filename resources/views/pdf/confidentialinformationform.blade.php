@@ -37,18 +37,20 @@
         .header h2 {
             font-size: 22px;
             font-weight: bold;
-            text-transform: uppercase;
+            color: #1e40af;
             margin: 0;
         }
 
         .section-title {
-            background-color: #f3f4f6;
+            background-color: #e0f2fe;
+            color: #0369a1;
             font-weight: bold;
-            padding: 8px 12px;
-            border-left: 4px solid #4f46e5;
+            padding: 10px 15px;
+            border-left: 4px solid #0284c7;
             font-size: 13px;
             margin-top: 30px;
             margin-bottom: 8px;
+            border-radius: 4px;
         }
 
         table {
@@ -68,6 +70,15 @@
             width: 30%;
         }
 
+        .value {
+            color: #6b7280;
+        }
+
+        .empty-field {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
         .page-break {
             page-break-before: always;
             break-before: page;
@@ -84,96 +95,122 @@
 
     @php
         function formatDate($date) {
-            return $date ? \Carbon\Carbon::parse($date)->format('d/m/Y') : '-';
+            return $date ? \Carbon\Carbon::parse($date)->format('d/m/Y') : 'N/A';
         }
     @endphp
 
+    <!-- Participant Information -->
     <table>
-        <tr><td colspan="2" class="section-title">Participant Information</td></tr>
-        <tr><th>Full Name</th><td>{{ $form->participant_name ?? '-' }}</td></tr>
-        <tr><th>Date of Birth</th><td>{{ formatDate($form->date_of_birth) }}</td></tr>
-        <tr><th>Address</th><td>{{ $form->address ?? '-' }}</td></tr>
-        <tr><th>Post Code</th><td>{{ $form->post_code ?? '-' }}</td></tr>
-        <tr><th>Phone</th><td>{{ $form->phone ?? '-' }}</td></tr>
-        <tr><th>Mobile Number</th><td>{{ $form->mobile_no ?? '-' }}</td></tr>
-        <tr><th>Email Address</th><td>{{ $form->email ?? '-' }}</td></tr>
+        <tr><td colspan="2" class="section-title">1.Confidential Information</td></tr>
+        <tr><th>Full Name</th><td><span class="value">{{ $form->participant_name ?? 'N/A' }}</span></td></tr>
+        <tr><th>Date of Birth</th><td><span class="value">{{ formatDate($form->date_of_birth) }}</span></td></tr>
+        <tr><th>Address</th><td><span class="value">{{ $form->address ?? 'N/A' }}</span></td></tr>
+        <tr><th>Post Code</th><td><span class="value">{{ $form->post_code ?? 'N/A' }}</span></td></tr>
+        <tr><th>Phone</th><td><span class="value">{{ $form->phone ?? 'N/A' }}</span></td></tr>
+        <tr><th>Mobile Number</th><td><span class="value">{{ $form->mobile_no ?? 'N/A' }}</span></td></tr>
+        <tr><th>Email Address</th><td><span class="value">{{ $form->email ?? 'N/A' }}</span></td></tr>
     </table>
 
-
-    @if($form->agencies->count())
+    <!-- Confidential Information Agencies -->
     <table>
-        <tr><td colspan="2" class="section-title">Confidential Information Agencies</td></tr>
-
-        @foreach($form->agencies as $agency)
-            <tr><th>Name</th><td>{{ $agency->name ?? '-' }}</td></tr>
-            <tr><th>Role / Position</th><td>{{ $agency->role ?? '-' }}</td></tr>
-            <tr><th>Contact</th><td>{{ $agency->contact ?? '-' }}</td></tr>
-            <tr><th>Agency Name</th><td>{{ $agency->agency_name ?? '-' }}</td></tr>
-            <tr><th>Type of Service</th><td>{{ $agency->service_type ?? '-' }}</td></tr>
-            <tr><th>Information Shared</th><td>{{ $agency->information_shared ?? '-' }}</td></tr>
-        @endforeach
+        <tr><td colspan="2" class="section-title">2.Confidential Information Agencies</td></tr>
+        @if($form->agencies && $form->agencies->count() > 0)
+            @foreach($form->agencies as $index => $agency)
+                @if($index > 0)
+                    <tr><td colspan="2" style="background-color: #f3f4f6; padding: 5px;"></td></tr>
+                @endif
+                <tr><th>Name</th><td><span class="value">{{ $agency->name ?? 'N/A' }}</span></td></tr>
+                <tr><th>Role / Position</th><td><span class="value">{{ $agency->role ?? 'N/A' }}</span></td></tr>
+                <tr><th>Contact</th><td><span class="value">{{ $agency->contact ?? 'N/A' }}</span></td></tr>
+                <tr><th>Agency Name</th><td><span class="value">{{ $agency->agency_name ?? 'N/A' }}</span></td></tr>
+                <tr><th>Type of Service</th><td><span class="value">{{ $agency->service_type ?? 'N/A' }}</span></td></tr>
+                <tr><th>Information Shared</th><td><span class="value">{{ $agency->information_shared ?? 'N/A' }}</span></td></tr>
+            @endforeach
+        @else
+            <tr><th>Name</th><td><span class="value empty-field">No agency data available</span></td></tr>
+            <tr><th>Role / Position</th><td><span class="value empty-field">No agency data available</span></td></tr>
+            <tr><th>Contact</th><td><span class="value empty-field">No agency data available</span></td></tr>
+            <tr><th>Agency Name</th><td><span class="value empty-field">No agency data available</span></td></tr>
+            <tr><th>Type of Service</th><td><span class="value empty-field">No agency data available</span></td></tr>
+            <tr><th>Information Shared</th><td><span class="value empty-field">No agency data available</span></td></tr>
+        @endif
     </table>
-    @endif
 
-
-    @if($form->consent)
-        <table>
-            <tr><td colspan="2" class="section-title">Written Participant Consent</td></tr>
-
-            <tr><th>Date</th><td>{{ formatDate($form->consent->signed_date) }}</td></tr>
-            <tr><th>Signed By</th><td>{{ $form->consent->signed_by === 'participant' ? 'Participant' : 'Authorized Representative' }}</td></tr>
-            <tr><th>Name</th><td>{{ $form->consent->name ?? '-' }}</td></tr>
-            <tr><th>Witnessed By</th><td>{{ $form->consent->witnessed_by ?? '-' }}</td></tr>
+    <!-- Written Participant Consent -->
+    <table>
+        <tr><td colspan="2" class="section-title">3.Confidential Consent</td></tr>
+        @if($form->consent)
+            <tr><th>Date</th><td><span class="value">{{ formatDate($form->consent->signed_date) }}</span></td></tr>
+            <tr><th>Signed By</th><td><span class="value">
+                @if($form->consent->signed_by === 'participant')
+                    Participant
+                @elseif($form->consent->signed_by === 'representative')
+                    Authorized Representative
+                @else
+                    {{ $form->consent->signed_by ?? 'N/A' }}
+                @endif
+            </span></td></tr>
+            <tr><th>Name</th><td><span class="value">{{ $form->consent->name ?? 'N/A' }}</span></td></tr>
+            <tr><th>Witnessed By</th><td><span class="value">{{ $form->consent->witnessed_by ?? 'N/A' }}</span></td></tr>
             <tr>
-                <th>Participant Signature:</th>
+                <th>Participant Signature</th>
                 <td>
-                    @if($signatureImage)
+                    @if(isset($signatureImage) && $signatureImage)
                         <img src="{{ $signatureImage }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                     @else
-                        <span>No signature available</span>
+                        <span class="value empty-field">No signature available</span>
                     @endif
                 </td>
             </tr>
+        @else
+            <tr><th>Date</th><td><span class="value empty-field">No consent data available</span></td></tr>
+            <tr><th>Signed By</th><td><span class="value empty-field">No consent data available</span></td></tr>
+            <tr><th>Name</th><td><span class="value empty-field">No consent data available</span></td></tr>
+            <tr><th>Witnessed By</th><td><span class="value empty-field">No consent data available</span></td></tr>
+            <tr><th>Participant Signature</th><td><span class="value empty-field">No signature available</span></td></tr>
+        @endif
+    </table>
 
-
-
-            </div>
-        </table>
-    @endif
-
-
-    @if($form->verbal)
-        <table>
-            <tr><td colspan="2" class="section-title">Verbal Consent</td></tr>
-
+    <!-- Verbal Consent -->
+    <table>
+        <tr><td colspan="2" class="section-title">4.Verbal Consent</td></tr>
+        @if($form->verbal)
             <tr>
-                <th>Verbal Signature:</th>
+                <th>Verbal Signature</th>
                 <td>
                     @if(!empty($form->verbal->verbal_signature))
                         <img src="{{ $form->verbal->verbal_signature }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
                     @else
-                        <span>No signature available</span>
+                        <span class="value empty-field">No signature available</span>
                     @endif
                 </td>
             </tr>
+            <tr><th>Date Signed</th><td><span class="value">{{ formatDate($form->verbal->verbal_signed_date) }}</span></td></tr>
+            <tr><th>Name</th><td><span class="value">{{ $form->verbal->verbal_name ?? 'N/A' }}</span></td></tr>
+            <tr><th>Position</th><td><span class="value">{{ $form->verbal->position ?? 'N/A' }}</span></td></tr>
+        @else
+            <tr><th>Verbal Signature</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
+            <tr><th>Date Signed</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
+            <tr><th>Name</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
+            <tr><th>Position</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
+        @endif
+    </table>
 
-            <tr><th>Date Signed</th><td>{{ formatDate($form->verbal->verbal_signed_date) }}</td></tr>
-            <tr><th>Name</th><td>{{ $form->verbal->verbal_name ?? '-' }}</td></tr>
-            <tr><th>Position</th><td>{{ $form->verbal->position ?? '-' }}</td></tr>
-        </table>
-    @endif
-
-
-
-    @if($form->preConsentDisclosure)
-        <table>
-            <tr><td colspan="2" class="section-title">Pre-Consent Disclosure Checklist</td></tr>
-            <tr><th>Discussed referral to other services/agencies</th><td>{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</td></tr>
-            <tr><th>Explained release agreement and service provision</th><td>{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</td></tr>
-            <tr><th>Explained sharing without consent (health/safety/legal)</th><td>{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</td></tr>
-            <tr><th>Provided privacy information if requested</th><td>{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</td></tr>
-        </table>
-    @endif
+    <!-- Pre-Consent Disclosure Checklist -->
+    <table>
+        <tr><td colspan="2" class="section-title">5.Pre-Consent Disclosure Checklist</td></tr>
+        @if($form->preConsentDisclosure)
+            <tr><th>Discussed referral to other services/agencies</th><td><span class="value">{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</span></td></tr>
+            <tr><th>Explained release agreement and service provision</th><td><span class="value">{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</span></td></tr>
+            <tr><th>Explained sharing without consent (health/safety/legal)</th><td><span class="value">{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</span></td></tr>
+            <tr><th>Provided privacy information if requested</th><td><span class="value">{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</span></td></tr>
+        @else
+            <tr><th>Discussed referral to other services/agencies</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
+            <tr><th>Explained release agreement and service provision</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
+            <tr><th>Explained sharing without consent (health/safety/legal)</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
+            <tr><th>Provided privacy information if requested</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
+        @endif
+    </table>
 
 </div>
 </body>

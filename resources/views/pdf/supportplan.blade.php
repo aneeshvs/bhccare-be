@@ -11,6 +11,10 @@
             color: #111827;
             margin: 0;
             padding: 20px;
+            counter-reset: section;
+
+
+
         }
 
         .container {
@@ -55,11 +59,21 @@
         }
 
         .section-header {
-            background-color: #f3f4f6;
+            counter-increment: section;
+            background-color: #e0f2fe;
+            color: #0369a1;
             padding: 10px 15px;
             font-weight: bold;
-            border-left: 4px solid #4f46e5;
+            border-left: 4px solid #0284c7;
             margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .section-header::before {
+            content: counter(section) ". ";
+            font-weight: bold;
+            color: #0284c7;
+            margin-right: 6px;
         }
 
         table {
@@ -292,79 +306,90 @@
     </table>
 </div>
 
-<!--non_responsive -->
 
+
+{{-- ===================== Non-Responsive Visit Plan ===================== --}}
+@if(!empty($supportPlan->non_responsive))
 <div class="section">
-    <div class="section-header">Access & Contact Details</div>
-    <table>
+    <div class="section-header">Non-Responsive Visit Plan</div>
+
+    <table width="100%" cellspacing="0" cellpadding="6" style="border-collapse: collapse; font-size: 13px;">
         <tr>
-            <td>
-                <span class="label">Telephone (Home or Mobile)</span>
-                <span class="value">{{ $supportPlan->non_responsive->telephone_home_or_mobile ?? 'N/A' }}</span>
+            <td width="50%">
+                <span class="label">Telephone (Home or Mobile)</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->telephone_home_or_mobile ? 'Yes' : 'No' }}</span>
             </td>
-            <td>
-                <span class="label">Telephone Details</span>
+            <td width="50%">
+                <span class="label">Telephone Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->telephone_details ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Emergency Contact</span>
-                <span class="value">{{ $supportPlan->non_responsive->contact_emergency_contact ?? 'N/A' }}</span>
+                <span class="label">Contact Emergency Contact</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->contact_emergency_contact ? 'Yes' : 'No' }}</span>
             </td>
             <td>
-                <span class="label">Emergency Contact Details</span>
+                <span class="label">Emergency Contact Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->emergency_contact_details ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Access Spare Key</span>
-                <span class="value">{{ $supportPlan->non_responsive->access_spare_key ?? 'N/A' }}</span>
+                <span class="label">Access Spare Key</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->access_spare_key ? 'Yes' : 'No' }}</span>
             </td>
-        </tr>
-        <tr>
             <td>
-                <span class="label">Spare Key Details</span>
+                <span class="label">Spare Key Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->spare_key_details ?? 'N/A' }}</span>
             </td>
-            <td>
-                <span class="label">Contact Other Persons</span>
-                <span class="value">{{ $supportPlan->non_responsive->contact_other_persons ?? 'N/A' }}</span>
-            </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Other Persons Details</span>
+                <span class="label">Contact Other Persons</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->contact_other_persons ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Other Persons Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->other_persons_details ?? 'N/A' }}</span>
             </td>
-            <td>
-                <span class="label">Contact Police If No Key</span>
-                <span class="value">{{ $supportPlan->non_responsive->contact_police_if_no_key ?? 'N/A' }}</span>
-            </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Police Contact Details</span>
+                <span class="label">Contact Police If No Spare Key</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->contact_police_if_no_key ? 'Yes' : 'No' }}</span>
+            </td>
+            <td>
+                <span class="label">Police Contact Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->police_contact_details ?? 'N/A' }}</span>
             </td>
-            <td>
-                <span class="label">Access Key Lock</span>
-                <span class="value">{{ $supportPlan->non_responsive->access_key_lock ?? 'N/A' }}</span>
-            </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Key Lock Code</span>
-                <span class="value">{{ $supportPlan->non_responsive->key_lock_code ?? 'N/A' }}</span>
+                <span class="label">Access Key Lock</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->access_key_lock ? 'Yes' : 'No' }}</span>
             </td>
             <td>
-                <span class="label">Key Lock Details</span>
+                <span class="label">Key Lock Code</span><br>
+                <span class="value">{{ $supportPlan->non_responsive->key_lock_code ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2">
+                <span class="label">Key Lock Details</span><br>
                 <span class="value">{{ $supportPlan->non_responsive->key_lock_details ?? 'N/A' }}</span>
             </td>
         </tr>
     </table>
 </div>
+@endif
+
 
 <!--participant deatils  -->
 
@@ -427,7 +452,7 @@
             </td>
             <td>
                 <span class="label">Living in Rural Area</span>
-                <span class="value">{{ $supportPlan->contactDetail->is_rural_area ?? 'N/A'}}</span>
+                <span class="value">{{ $supportPlan->contactDetail->is_rural_area ? 'Yes' : 'No'}}</span>
             </td>
         </tr>
         <tr>
@@ -598,7 +623,7 @@
 </div>
  <!--service section -->
   <div class="section">
-    <div class="section-header">PART H – SUPPORT PLAN SERVICES</div>
+    <div class="section-header"> SUPPORT PLAN SERVICES</div>
     <div class="section-body">
         <table>
             <thead>
@@ -655,7 +680,7 @@
 
 <!--mygoals -->
 <div class="section">
-    <div class="section-header">PART H – SUPPORT PLAN MY GOALS</div>
+    <div class="section-header"> SUPPORT PLAN MY GOALS</div>
     <div class="section-body">
         <table>
             <thead>

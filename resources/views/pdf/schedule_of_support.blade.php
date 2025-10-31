@@ -12,6 +12,8 @@
             color: #111827;
             margin: 0;
             padding: 20px;
+
+            counter-reset: section;
         }
         .container {
             max-width: 950px;
@@ -49,11 +51,21 @@
             margin-bottom: 30px;
         }
         .section-header {
-            background-color: #f3f4f6;
+            counter-increment: section;
+            background-color: #e0f2fe;
+            color: #0369a1;
             padding: 10px 15px;
             font-weight: bold;
-            border-left: 4px solid #4f46e5;
+            border-left: 4px solid #0284c7;
             margin-bottom: 10px;
+            border-radius: 4px;
+        }
+
+        .section-header::before {
+            content: counter(section) ". ";
+            font-weight: bold;
+            color: #0284c7;
+            margin-right: 6px;
         }
         table {
             width: 100%;
@@ -99,7 +111,7 @@
 
     <!-- Participant Details -->
     <div class="section">
-    <div class="section-header">Participant Details</div>
+    <div class="section-header">Schedule of Supports</div>
     <table>
         <tr>
             <td>
@@ -123,13 +135,7 @@
 
         </tr>
     </table>
-</div>
-
-
-    <!-- Public Holiday Preferences -->
-    <div class="section">
-        <div class="section-header">Public Holiday Preferences</div>
-        <table>
+    <table>
             <tr>
                 <td>
                     <span class="label">Support required on a Public Holiday</span>
@@ -147,7 +153,13 @@
             <strong>Note:</strong> Shifts on a Public Holiday will incur a higher rate per hour and will be priced in the Schedule of Supports.
             This may impact on scope of support and lower the hours of support available.
         </p>
-    </div>
+</div>
+
+
+
+
+
+
 
     <!-- Transport Section -->
     <div class="section">
