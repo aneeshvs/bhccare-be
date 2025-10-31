@@ -195,6 +195,7 @@
             <tr><th>Position</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
         @endif
     </table>
+<div style="page-break-before: always;"></div>
 
     <!-- Pre-Consent Disclosure Checklist -->
     <table>

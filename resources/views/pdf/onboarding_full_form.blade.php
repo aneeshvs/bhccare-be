@@ -122,6 +122,16 @@
     font-weight: bold;
 }
 
+.section table {
+            margin-bottom: 0;
+        }
+
+        /* Ensure consistent row heights */
+        tr {
+            height: auto;
+            min-height: 35px;
+        }
+
 </style>
 </head>
 <body>
@@ -192,10 +202,10 @@
                     <span class="value">{{ $initial->agreement == 1 ? 'Yes' : 'No' }}</span>
                 </td>
                 <td>
-                    @if($initial->description)
+
                         <span class="label">Description</span>
-                        <span class="value">{{ $initial->description }}</span>
-                    @endif
+                        <span class="value">{{ $initial->description ?? 'N/A' }}</span>
+
                 </td>
             </tr>
         </table>
@@ -219,14 +229,29 @@
                 </td>
                 <td>
                     <span class="label">NDIS Plan Start Date</span>
-                    <span class="value">{{ \Carbon\Carbon::parse($initial->funding->ndis_plan_start_date)->format('d-m-Y') }}</span>
+                    <span class="value">
+                        @if(!empty($initial->funding->ndis_plan_start_date) && $initial->funding->ndis_plan_start_date != '0000-00-00')
+                            {{ \Carbon\Carbon::parse($initial->funding->ndis_plan_start_date)->format('d-m-Y') }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
                 </td>
             </tr>
             <tr>
                 <td>
                     <span class="label">NDIS Plan End Date</span>
-                    <span class="value">{{ \Carbon\Carbon::parse($initial->funding->ndis_plan_end_date)->format('d-m-Y') }}</span>
+                    <span class="value">
+                        @if(!empty($initial->funding->ndis_plan_end_date) && $initial->funding->ndis_plan_end_date != '0000-00-00')
+                            {{ \Carbon\Carbon::parse($initial->funding->ndis_plan_end_date)->format('d-m-Y') }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
                 </td>
+
+
+
                 <td>
                     <span class="label">Plan Manager Name</span>
                     <span class="value">{{ $initial->funding->plan_manager_name }}</span>
@@ -340,6 +365,9 @@
             </table>
         </div>
     @endif
+
+    <div style="page-break-before: always;"></div>
+
 
     @if ($initial->ndisGoals && $initial->ndisGoals)
     <div class="section">
@@ -481,6 +509,8 @@
         </div>
     </div>
 @endif
+
+
 
 {{-- PART K: BEHAVIOUR SUPPORT --}}
 @if ($initial->behaviourSupport)

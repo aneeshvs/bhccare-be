@@ -121,7 +121,7 @@
             <td>
                 <span class="label">Schedule Creation Date</span>
                 <span class="value">
-                    {{ $schedule->creation_date ? \Carbon\Carbon::parse($schedule->creation_date)->format('d/m/Y') : \Carbon\Carbon::now()->format('d/m/Y') }}
+                    {{ $schedule->creation_date ? \Carbon\Carbon::parse($schedule->creation_date)->format('d/m/Y') : 'N/A' }}
                 </span>
             </td>
         </tr>
