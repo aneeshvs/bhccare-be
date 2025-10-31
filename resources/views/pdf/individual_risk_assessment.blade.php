@@ -427,37 +427,76 @@
 
 
     <!-- Manual Handling -->
-@if($assessment->manualHandlings)
+@if($assessment->manualHandlings && $assessment->manualHandlings->isNotEmpty())
 <div class="section">
-    <div class="section-header">Assessment Plan Manual Handling</div>
+    <div class="section-header">Assessment Plan - Manual Handling</div>
     <table>
         @foreach($assessment->manualHandlings as $mh)
-        <tr>
-            <td><span class="label">Training Provided</span>
-                <span class="value">{{ $mh->training_provided ? 'Yes' : 'No' }}</span>
-            </td>
-            <td><span class="label">Hazards</span>
-                <span class="value">{{ $mh->training_hazards ?? 'N/A' }}</span>
-            </td>
-            <td><span class="label">Management Plan</span>
-                <span class="value">{{ $mh->training_management_plan ?? 'N/A' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td><span class="label">Tasks Safe</span>
-                <span class="value">{{ $mh->tasks_safe ? 'Yes' : 'No' }}</span>
-            </td>
-            <td><span class="label">Hazards</span>
-                <span class="value">{{ $mh->tasks_hazards ?? 'N/A' }}</span>
-            </td>
-            <td><span class="label">Management Plan</span>
-                <span class="value">{{ $mh->tasks_management_plan ?? 'N/A' }}</span>
-            </td>
-        </tr>
+            @php
+                $hasTrainingData = $mh->training_provided || !empty($mh->training_hazards) || !empty($mh->training_management_plan);
+                $hasTaskData = $mh->tasks_safe || !empty($mh->tasks_hazards) || !empty($mh->tasks_management_plan);
+            @endphp
+
+            {{-- Training Provided Row --}}
+            @if($hasTrainingData)
+            <tr>
+                <td>
+                    <span class="label">Training Provided</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($mh->training_provided ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                <span class="radio-dot"></span> {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                @if(!empty($mh->training_hazards))
+                <td>
+                    <span class="label">Hazards</span>
+                    <span class="value">{{ $mh->training_hazards }}</span>
+                </td>
+                @endif
+                @if(!empty($mh->training_management_plan))
+                <td>
+                    <span class="label">Management Plan</span>
+                    <span class="value">{{ $mh->training_management_plan }}</span>
+                </td>
+                @endif
+            </tr>
+            @endif
+
+            {{-- Tasks Safe Row --}}
+            @if($hasTaskData)
+            <tr>
+                <td>
+                    <span class="label">Tasks Safe</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($mh->tasks_safe ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                <span class="radio-dot"></span> {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                @if(!empty($mh->tasks_hazards))
+                <td>
+                    <span class="label">Hazards</span>
+                    <span class="value">{{ $mh->tasks_hazards }}</span>
+                </td>
+                @endif
+                @if(!empty($mh->tasks_management_plan))
+                <td>
+                    <span class="label">Management Plan</span>
+                    <span class="value">{{ $mh->tasks_management_plan }}</span>
+                </td>
+                @endif
+            </tr>
+            @endif
         @endforeach
     </table>
 </div>
 @endif
+
 
 <div style="page-break-before: always;"></div>
 
