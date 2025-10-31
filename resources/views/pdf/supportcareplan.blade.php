@@ -208,61 +208,100 @@
 
     <!-- Goals Section -->
     @php
-    $goalCategories = [
-        'silGoals' => 'SIL Goals',
-        'homecareGoals' => 'Homecare Goals',
-        'supportCoordinationGoals' => 'Support Coordination Goals',
-    ];
-    @endphp
+$goalCategories = [
+    'silGoals' => 'SIL Goals',
+    'homecareGoals' => 'Homecare Goals',
+    'supportCoordinationGoals' => 'Support Coordination Goals',
+];
+@endphp
 
-    @foreach($goalCategories as $relation => $title)
-        <div class="section">
-            <div class="section-header">{{ $title }}</div>
+@foreach($goalCategories as $relation => $title)
+    <div class="section">
+        <div class="section-header">{{ $title }}</div>
 
-            @php
-                $goals = $supportCarePlan->$relation ?? collect();
-            @endphp
+        @php
+            $goals = $supportCarePlan->$relation ?? collect();
+        @endphp
 
-            @if($goals->isNotEmpty())
-                @foreach($goals as $index => $goal)
-                    <div style="margin-top: 10px; font-weight: bold; color: #374151;">{{ $title }} {{ $index + 1 }}</div>
-                    <table>
-                        <tr>
-                            <td>
-                                <span class="label">Goal Title</span>
-                                <span class="value">{{ $goal->goal_title ?? 'N/A' }}</span>
-                            </td>
-                            <td>
-                                <span class="label">Goals of Support</span>
-                                <span class="value">{{ $goal->goals_of_support ?? 'N/A' }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="label">Steps</span>
-                                <span class="value">{{ $goal->steps ?? 'N/A' }}</span>
-                            </td>
-                            <td>
-                                <span class="label">Organisation Steps</span>
-                                <span class="value">{{ $goal->organisation_steps ?? 'N/A' }}</span>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <span class="label">Risk</span>
-                                <span class="value">{{ $goal->risk ?? 'N/A' }}</span>
-                            </td>
-                            <td>
-                                <span class="label">Risk Strategies</span>
-                                <span class="value">{{ $goal->risk_management_strategies ?? 'N/A' }}</span>
-                            </td>
-                        </tr>
-                    </table>
-                @endforeach
-
-            @endif
-        </div>
-    @endforeach
+        {{-- ✅ If there are saved goals, show them --}}
+        @if($goals->isNotEmpty())
+            @foreach($goals as $index => $goal)
+                <div style="margin-top: 10px; font-weight: bold; color: #374151;">
+                    {{ $title }} {{ $index + 1 }}
+                </div>
+                <table>
+                    <tr>
+                        <td>
+                            <span class="label">Goal Title</span>
+                            <span class="value">{{ $goal->goal_title ?? 'N/A' }}</span>
+                        </td>
+                        <td>
+                            <span class="label">Goals of Support</span>
+                            <span class="value">{{ $goal->goals_of_support ?? 'N/A' }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="label">Steps</span>
+                            <span class="value">{{ $goal->steps ?? 'N/A' }}</span>
+                        </td>
+                        <td>
+                            <span class="label">Organisation Steps</span>
+                            <span class="value">{{ $goal->organisation_steps ?? 'N/A' }}</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <span class="label">Risk</span>
+                            <span class="value">{{ $goal->risk ?? 'N/A' }}</span>
+                        </td>
+                        <td>
+                            <span class="label">Risk Strategies</span>
+                            <span class="value">{{ $goal->risk_management_strategies ?? 'N/A' }}</span>
+                        </td>
+                    </tr>
+                </table>
+            @endforeach
+        @else
+            {{-- ✅ No goals found → show one empty table --}}
+            <div style="margin-top: 10px; font-weight: bold; color: #374151;">
+                {{ $title }} 1
+            </div>
+            <table>
+                <tr>
+                    <td>
+                        <span class="label">Goal Title</span>
+                        <span class="value">N/A</span>
+                    </td>
+                    <td>
+                        <span class="label">Goals of Support</span>
+                        <span class="value">N/A</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="label">Steps</span>
+                        <span class="value">N/A</span>
+                    </td>
+                    <td>
+                        <span class="label">Organisation Steps</span>
+                        <span class="value">N/A</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <span class="label">Risk</span>
+                        <span class="value">N/A</span>
+                    </td>
+                    <td>
+                        <span class="label">Risk Strategies</span>
+                        <span class="value">N/A</span>
+                    </td>
+                </tr>
+            </table>
+        @endif
+    </div>
+@endforeach
 
     <!-- Communication Plans -->
     <div class="section">
@@ -373,15 +412,7 @@
                 <td><span class="label">Location</span> <span class="value">{{ $contact->location ?? 'N/A' }}</span></td>
             </tr>
             @endforeach
-        @else
-            <!-- Display empty row with N/A when no emergency contacts exist -->
-            <tr>
-                <td><span class="label">Name</span> <span class="value">N/A</span></td>
-                <td><span class="label">Relationship</span> <span class="value">N/A</span></td>
-                <td><span class="label">Phone</span> <span class="value">N/A</span></td>
-                <td><span class="label">Email</span> <span class="value">N/A</span></td>
-                <td><span class="label">Location</span> <span class="value">N/A</span></td>
-            </tr>
+
         @endif
     </table>
 </div>
