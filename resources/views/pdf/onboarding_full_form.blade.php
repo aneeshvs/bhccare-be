@@ -620,7 +620,6 @@
                     <td>
                         <span class="label">Last Dental Check</span>
                          <span class="value">{{ \Carbon\Carbon::parse($initial->preventiveHealthSummary->last_dental_check)->format('d-m-Y') }}</span>
-                        <span class="value">{{ $initial->preventiveHealthSummary->last_dental_check }}</span>
                     </td>
                     <td>
                         <span class="label">Last Hearing Check</span>
