@@ -23,10 +23,11 @@
             padding: 20px 30px;
         }
 
-       .header {
+        .header {
             position: relative;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
+            padding-top: 10px;
         }
 
         .logo {
@@ -37,15 +38,16 @@
             height: auto;
         }
 
-
         .header-title {
             font-size: 20px;
             font-weight: bold;
+            margin-top: 8px;
         }
 
         .document-number {
             font-size: 14px;
             font-weight: 600;
+            margin-bottom: 5px;
         }
 
         .document-number span {
@@ -53,17 +55,18 @@
         }
 
         .section {
-            margin-bottom: 30px;
+            margin-bottom: 20px;
+            page-break-inside: avoid;
         }
 
-       .section-header {
+        .section-header {
             counter-increment: section;
             background-color: #e0f2fe;
             color: #0369a1;
-            padding: 10px 15px;
+            padding: 8px 12px;
             font-weight: bold;
             border-left: 4px solid #0284c7;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             border-radius: 4px;
         }
 
@@ -77,6 +80,7 @@
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-bottom: 0;
         }
 
         td {
@@ -85,149 +89,192 @@
             border: 1px solid #e5e7eb;
         }
 
+        th {
+            padding: 8px 10px;
+            background-color: #f8fafc;
+            font-weight: bold;
+            border: 1px solid #e5e7eb;
+            text-align: left;
+        }
+
         .label {
             font-weight: bold;
             display: block;
+            margin-bottom: 2px;
+            font-size: 11px;
+            color: #374151;
         }
 
         .value {
+            display: block;
             margin-top: 2px;
+            line-height: 1.3;
         }
 
         .page-break {
             page-break-before: always;
-            break-before: page; /* For added browser support */
+            break-before: page;
         }
 
-.enum-field {
-    display: flex;
-    gap: 8px;
-    margin-top: 5px;
-}
-
-.enum-option {
-    padding: 4px 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-    background-color: #f9fafb;
-    color: #374151;
-    font-size: 12px;
-    font-weight: 500;
-}
-
-.enum-option.selected {
-    background-color: #0284c7;
-    color: #ffffff;
-    border-color: #0369a1;
-    font-weight: bold;
-}
-
-.section table {
-            margin-bottom: 0;
+        .enum-field {
+            display: flex;
+            gap: 6px;
+            margin-top: 4px;
         }
 
-        /* Ensure consistent row heights */
+        .enum-option {
+            padding: 3px 6px;
+            border: 1px solid #d1d5db;
+            border-radius: 3px;
+            background-color: #f9fafb;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        .enum-option.selected {
+            background-color: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+            font-weight: bold;
+        }
+
+        .section-body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .empty-field {
+            color: #6b7280;
+            font-style: italic;
+        }
+
+        ul {
+            margin: 6px 0;
+            padding-left: 18px;
+        }
+
+        li {
+            margin-bottom: 3px;
+            line-height: 1.3;
+        }
+
+        /* Consistent row heights */
         tr {
             height: auto;
-            min-height: 35px;
+            min-height: 32px;
         }
-
-</style>
+    </style>
 </head>
 <body>
 
 <div class="container">
-
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="Company Logo">
-
         <div class="document-number">Document Number: <span>Form F-18</span></div>
         <div class="header-title">Client Profile - Onboarding</div>
     </div>
 
-
+    <!-- PART A – INITIAL ENQUIRY -->
     <div class="section">
         <div class="section-header">PART A – INITIAL ENQUIRY</div>
         <table>
             <tr>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Full Name</span>
-                    <span class="value">{{ $initial->full_name }}</span>
+                    <span class="value">{{ $initial->full_name ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Preferred Name</span>
-                    <span class="value">{{ $initial->preferred_name }}</span>
+                    <span class="value">{{ $initial->preferred_name ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Gender</span>
                     <div class="enum-field">
                         @foreach(['male', 'female', 'other'] as $option)
-                            <span class="enum-option {{ $initial->gender === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($initial->gender ?? '') === $option ? 'selected' : '' }}">
                                 {{ ucfirst($option) }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-
-                <td>
+                <td style="width: 25%">
                     <span class="label">Date of Birth</span>
-                    <span class="value">{{ \Carbon\Carbon::parse($initial->date_of_birth)->format('d-m-Y') }}</span>
+                    <span class="value">
+                        @if(!empty($initial->date_of_birth) && $initial->date_of_birth != '0000-00-00')
+                            {{ \Carbon\Carbon::parse($initial->date_of_birth)->format('d-m-Y') }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
                 </td>
             </tr>
             <tr>
                 <td>
                     <span class="label">Address</span>
-                    <span class="value">{{ $initial->address }}</span>
+                    <span class="value">{{ $initial->address ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Postcode</span>
-                    <span class="value">{{ $initial->postcode }}</span>
+                    <span class="value">{{ $initial->postcode ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Phone Number</span>
-                    <span class="value">{{ $initial->phone_number }}</span>
+                    <span class="value">{{ $initial->phone_number ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Mobile Number</span>
-                    <span class="value">{{ $initial->mobile_number }}</span>
+                    <span class="value">{{ $initial->mobile_number ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     <span class="label">Email</span>
-                    <span class="value">{{ $initial->email }}</span>
+                    <span class="value">{{ $initial->email ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Needs Assistance</span>
-                    <span class="value">{{ $initial->agreement == 1 ? 'Yes' : 'No' }}</span>
+                    <span class="value">
+                        @if(isset($initial->agreement))
+                            {{ $initial->agreement == 1 ? 'Yes' : 'No' }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
                 </td>
                 <td>
-
-                        <span class="label">Description</span>
-                        <span class="value">{{ $initial->description ?? 'N/A' }}</span>
-
+                    <span class="label">Description</span>
+                    <span class="value">{{ $initial->description ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
             </tr>
         </table>
     </div>
 
+    <!-- PART B – FUNDING DETAILS -->
+    @if(isset($initial->funding))
     <div class="section">
         <div class="section-header">PART B – FUNDING DETAILS</div>
         <table>
             <tr>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Type of Funding</span>
-                    <span class="value">{{ $initial->funding->type_of_funding }}</span>
+                    <span class="value">{{ $initial->funding->type_of_funding ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Funding Contact Person</span>
-                    <span class="value">{{ $initial->funding->funding_contact_person }}</span>
+                    <span class="value">{{ $initial->funding->funding_contact_person ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">NDIS Plan Attached</span>
-                    <span class="value">{{ $initial->funding->ndis_plan_attached == 1 ? 'Yes' : 'No' }}</span>
+                    <span class="value">
+                        @if(isset($initial->funding->ndis_plan_attached))
+                            {{ $initial->funding->ndis_plan_attached == 1 ? 'Yes' : 'No' }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">NDIS Plan Start Date</span>
                     <span class="value">
                         @if(!empty($initial->funding->ndis_plan_start_date) && $initial->funding->ndis_plan_start_date != '0000-00-00')
@@ -249,167 +296,190 @@
                         @endif
                     </span>
                 </td>
-
-
-
                 <td>
                     <span class="label">Plan Manager Name</span>
-                    <span class="value">{{ $initial->funding->plan_manager_name }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_name ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Plan Manager Email</span>
-                    <span class="value">{{ $initial->funding->plan_manager_email }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_email ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
                 <td>
                     <span class="label">Plan Manager Phone</span>
-                    <span class="value">{{ $initial->funding->plan_manager_phone }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_phone ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
             </tr>
         </table>
     </div>
+    @endif
 
+    <!-- PART C – EMERGENCY CONTACT DETAILS -->
+    @if(isset($initial->emergencyContact))
     <div class="section">
         <div class="section-header">PART C – EMERGENCY CONTACT DETAILS</div>
         <table>
             <tr>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Name</span>
-                    <span class="value">{{ $initial->emergencyContact->name }}</span>
+                    <span class="value">{{ $initial->emergencyContact->name ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Relationship</span>
-                    <span class="value">{{ $initial->emergencyContact->relationship }}</span>
+                    <span class="value">{{ $initial->emergencyContact->relationship ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Phone</span>
-                    <span class="value">{{ $initial->emergencyContact->phone }}</span>
+                    <span class="value">{{ $initial->emergencyContact->phone ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
-                <td>
+                <td style="width: 25%">
                     <span class="label">Mobile</span>
-                    <span class="value">{{ $initial->emergencyContact->mobile }}</span>
+                    <span class="value">{{ $initial->emergencyContact->mobile ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
                     <span class="label">Work Contact</span>
-                    <span class="value">{{ $initial->emergencyContact->work_contact }}</span>
+                    <span class="value">{{ $initial->emergencyContact->work_contact ?? '<span class="empty-field">Not provided</span>' }}</span>
                 </td>
             </tr>
         </table>
     </div>
-        {{-- PART D – SCHEDULE OF CARES --}}
-    @if ($initial->scheduleOfCares && $initial->scheduleOfCares)
-        <div class="section">
-            <div class="section-header">PART D – SCHEDULE OF CARES</div>
-            <table>
-                <thead>
-                    <tr>
-                        <td><strong>Type of Service</strong></td>
-                        <td><strong>Primary Task List</strong></td>
-                        <td><strong>Secondary Task List</strong></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($initial->scheduleOfCares as $schedule)
-                        <tr>
-                            <td>{{ $schedule->type_of_service }}</td>
-                            <td>{{ $schedule->primary_task_list }}</td>
-                            <td>{{ $schedule->secondary_task_list }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @endif
-        {{-- PART E – CULTURAL BACKGROUND --}}
-    @if ($initial->culturalBackground)
-        <div class="section">
-            <div class="section-header">PART E – CULTURAL BACKGROUND</div>
-            <table>
-                <tr>
-                    <td>
-                        <span class="label">Has Children Under 18</span>
-                        <span class="value">{{ $initial->culturalBackground->has_children_under_18 ? 'Yes' : 'No' }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Country of Birth</span>
-                        <span class="value">{{ $initial->culturalBackground->country_of_birth }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Preferred Language</span>
-                        <span class="value">{{ $initial->culturalBackground->preferred_language }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Religion</span>
-                        <span class="value">{{ $initial->culturalBackground->religion }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="label">Other Languages</span>
-                        <span class="value">{{ $initial->culturalBackground->other_languages }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Cultural Needs</span>
-                        <span class="value">{{ $initial->culturalBackground->cultural_needs }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Interpreter Required</span>
-                        <span class="value">{{ $initial->culturalBackground->interpreter_required ? 'Yes' : 'No' }}</span>
-                    </td>
-                    <td>
-                        <span class="label">AUSLAN Required</span>
-                        <span class="value">{{ $initial->culturalBackground->auslan_required ? 'Yes' : 'No' }}</span>
-                    </td>
-                </tr>
-            </table>
-        </div>
     @endif
 
+    <!-- PART D – SCHEDULE OF CARES -->
+    @if(isset($initial->scheduleOfCares) && count($initial->scheduleOfCares) > 0)
+    <div class="section">
+        <div class="section-header">PART D – SCHEDULE OF CARES</div>
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 30%">Type of Service</th>
+                    <th style="width: 35%">Primary Task List</th>
+                    <th style="width: 35%">Secondary Task List</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($initial->scheduleOfCares as $schedule)
+                    <tr>
+                        <td>{{ $schedule->type_of_service ?? '<span class="empty-field">Not provided</span>' }}</td>
+                        <td>{{ $schedule->primary_task_list ?? '<span class="empty-field">Not provided</span>' }}</td>
+                        <td>{{ $schedule->secondary_task_list ?? '<span class="empty-field">Not provided</span>' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
+
+    <!-- PART E – CULTURAL BACKGROUND -->
+    @if(isset($initial->culturalBackground))
+    <div class="section">
+        <div class="section-header">PART E – CULTURAL BACKGROUND</div>
+        <table>
+            <tr>
+                <td style="width: 25%">
+                    <span class="label">Has Children Under 18</span>
+                    <span class="value">
+                        @if(isset($initial->culturalBackground->has_children_under_18))
+                            {{ $initial->culturalBackground->has_children_under_18 ? 'Yes' : 'No' }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
+                </td>
+                <td style="width: 25%">
+                    <span class="label">Country of Birth</span>
+                    <span class="value">{{ $initial->culturalBackground->country_of_birth ?? '<span class="empty-field">Not provided</span>' }}</span>
+                </td>
+                <td style="width: 25%">
+                    <span class="label">Preferred Language</span>
+                    <span class="value">{{ $initial->culturalBackground->preferred_language ?? '<span class="empty-field">Not provided</span>' }}</span>
+                </td>
+                <td style="width: 25%">
+                    <span class="label">Religion</span>
+                    <span class="value">{{ $initial->culturalBackground->religion ?? '<span class="empty-field">Not provided</span>' }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Other Languages</span>
+                    <span class="value">{{ $initial->culturalBackground->other_languages ?? '<span class="empty-field">Not provided</span>' }}</span>
+                </td>
+                <td>
+                    <span class="label">Cultural Needs</span>
+                    <span class="value">{{ $initial->culturalBackground->cultural_needs ?? '<span class="empty-field">Not provided</span>' }}</span>
+                </td>
+                <td>
+                    <span class="label">Interpreter Required</span>
+                    <span class="value">
+                        @if(isset($initial->culturalBackground->interpreter_required))
+                            {{ $initial->culturalBackground->interpreter_required ? 'Yes' : 'No' }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
+                </td>
+                <td>
+                    <span class="label">AUSLAN Required</span>
+                    <span class="value">
+                        @if(isset($initial->culturalBackground->auslan_required))
+                            {{ $initial->culturalBackground->auslan_required ? 'Yes' : 'No' }}
+                        @else
+                            <span class="empty-field">Not provided</span>
+                        @endif
+                    </span>
+                </td>
+            </tr>
+        </table>
+    </div>
+    @endif
+
+    <!-- Page break before PART F -->
     <div style="page-break-before: always;"></div>
 
-
-    @if ($initial->ndisGoals && $initial->ndisGoals)
+    <!-- PART F – NDIS GOALS -->
+    @if(isset($initial->ndisGoals) && count($initial->ndisGoals) > 0)
     <div class="section">
         <div class="section-header">PART F – NDIS GOALS</div>
         <div class="section-body">
             <div class="field">
                 <span class="label">What are the NDIS Goals that you would like assistance from BHC with?</span>
-                <ul style="margin-top: 10px; padding-left: 20px;">
+                <ul>
                     @foreach ($initial->ndisGoals as $goal)
-                        <li style="margin-bottom: 6px;">{{ $goal->goal_description }}</li>
+                        <li>{{ $goal->goal_description ?? '<span class="empty-field">Not provided</span>' }}</li>
                     @endforeach
                 </ul>
             </div>
         </div>
     </div>
-@endif
+    @endif
 
-@if ($initial->healthProfessionalDetails)
+    <!-- PART G – HEALTH PROFESSIONAL DETAILS -->
+    @if(isset($initial->healthProfessionalDetails) && count($initial->healthProfessionalDetails) > 0)
     <div class="section">
         <div class="section-header">PART G – HEALTH PROFESSIONAL DETAILS</div>
         <div class="section-body">
             <table>
                 <thead>
                     <tr>
-                        <td><span class="label">Role</span></td>
-                        <td><span class="label">Name</span></td>
-                        <td><span class="label">Contact Number</span></td>
+                        <th style="width: 30%">Role</th>
+                        <th style="width: 40%">Name</th>
+                        <th style="width: 30%">Contact Number</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($initial->healthProfessionalDetails as $prof)
                         <tr>
-                            <td><span class="value">{{ $prof->role }}</span></td>
-                            <td><span class="value">{{ $prof->name }}</span></td>
-                            <td><span class="value">{{ $prof->contact_number }}</span></td>
+                            <td>{{ $prof->role ?? '<span class="empty-field">Not provided</span>' }}</td>
+                            <td>{{ $prof->name ?? '<span class="empty-field">Not provided</span>' }}</td>
+                            <td>{{ $prof->contact_number ?? '<span class="empty-field">Not provided</span>' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
     </div>
-@endif
+    @endif
 {{-- PART H: DIAGNOSIS SUMMARY --}}
 @if ($initial->diagnosisSummary)
     <div class="section">
@@ -513,26 +583,37 @@
 
 
 {{-- PART K: BEHAVIOUR SUPPORT --}}
-@if ($initial->behaviourSupport)
+@if(isset($initial->behaviourSupport))
     <div class="section">
         <div class="section-header">PART K – BEHAVIOUR SUPPORT</div>
         <div class="section-body">
             <table>
                 <tr>
-                    <td>
+                    <td style="width: 50%">
                         <span class="label">Has Behaviour Support Plan</span>
-                        <span class="value">{{ $initial->behaviourSupport->has_support_plan == 1 ? 'Yes' : 'No' }}</span>
+                        <span class="value">
+                            @if(isset($initial->behaviourSupport->has_support_plan))
+                                {{ $initial->behaviourSupport->has_support_plan == 1 ? 'Yes' : 'No' }}
+                            @else
+                                <span class="empty-field">Not provided</span>
+                            @endif
+                        </span>
                     </td>
-                    <td>
+                    <td style="width: 50%">
                         <span class="label">Plan Copy Received</span>
-                        <span class="value">{{ $initial->behaviourSupport->plan_copy_received == 1 ? 'Yes' : 'No' }}</span>
+                        <span class="value">
+                            @if(isset($initial->behaviourSupport->plan_copy_received))
+                                {{ $initial->behaviourSupport->plan_copy_received == 1 ? 'Yes' : 'No' }}
+                            @else
+                                <span class="empty-field">Not provided</span>
+                            @endif
+                        </span>
                     </td>
-
                 </tr>
             </table>
         </div>
     </div>
-@endif
+    @endif
 
 {{-- PART L – MEDICAL ALERT --}}
 @if ($initial->medicalAlert)
@@ -691,14 +772,6 @@
         </div>
     </div>
 @endif
-
-
-
-
-
-
-
-
 
 </div>
 </body>
