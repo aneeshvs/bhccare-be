@@ -182,11 +182,11 @@
             <tr>
                 <td style="width: 25%">
                     <span class="label">Full Name</span>
-                    <span class="value">{{ $initial->full_name ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->full_name ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Preferred Name</span>
-                    <span class="value">{{ $initial->preferred_name ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->preferred_name ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Gender</span>
@@ -212,25 +212,25 @@
             <tr>
                 <td>
                     <span class="label">Address</span>
-                    <span class="value">{{ $initial->address ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->address ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Postcode</span>
-                    <span class="value">{{ $initial->postcode ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->postcode ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Phone Number</span>
-                    <span class="value">{{ $initial->phone_number ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->phone_number ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Mobile Number</span>
-                    <span class="value">{{ $initial->mobile_number ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->mobile_number ?? 'N/A' }}</span>
                 </td>
             </tr>
             <tr>
                 <td colspan="2">
                     <span class="label">Email</span>
-                    <span class="value">{{ $initial->email ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->email ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Needs Assistance</span>
@@ -244,7 +244,7 @@
                 </td>
                 <td>
                     <span class="label">Description</span>
-                    <span class="value">{{ $initial->description ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->description ?? 'N/A' }}</span>
                 </td>
             </tr>
         </table>
@@ -258,11 +258,11 @@
             <tr>
                 <td style="width: 25%">
                     <span class="label">Type of Funding</span>
-                    <span class="value">{{ $initial->funding->type_of_funding ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->funding->type_of_funding ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Funding Contact Person</span>
-                    <span class="value">{{ $initial->funding->funding_contact_person ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->funding->funding_contact_person ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">NDIS Plan Attached</span>
@@ -298,15 +298,15 @@
                 </td>
                 <td>
                     <span class="label">Plan Manager Name</span>
-                    <span class="value">{{ $initial->funding->plan_manager_name ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_name ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Plan Manager Email</span>
-                    <span class="value">{{ $initial->funding->plan_manager_email ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_email ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Plan Manager Phone</span>
-                    <span class="value">{{ $initial->funding->plan_manager_phone ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->funding->plan_manager_phone ?? 'N/A' }}</span>
                 </td>
             </tr>
         </table>
@@ -321,25 +321,25 @@
             <tr>
                 <td style="width: 25%">
                     <span class="label">Name</span>
-                    <span class="value">{{ $initial->emergencyContact->name ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->emergencyContact->name ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Relationship</span>
-                    <span class="value">{{ $initial->emergencyContact->relationship ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->emergencyContact->relationship ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Phone</span>
-                    <span class="value">{{ $initial->emergencyContact->phone ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->emergencyContact->phone ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Mobile</span>
-                    <span class="value">{{ $initial->emergencyContact->mobile ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->emergencyContact->mobile ?? 'N/A' }}</span>
                 </td>
             </tr>
             <tr>
                 <td colspan="4">
                     <span class="label">Work Contact</span>
-                    <span class="value">{{ $initial->emergencyContact->work_contact ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->emergencyContact->work_contact ?? 'N/A' }}</span>
                 </td>
             </tr>
         </table>
@@ -361,9 +361,9 @@
             <tbody>
                 @foreach ($initial->scheduleOfCares as $schedule)
                     <tr>
-                        <td>{{ $schedule->type_of_service ?? '<span class="empty-field">Not provided</span>' }}</td>
-                        <td>{{ $schedule->primary_task_list ?? '<span class="empty-field">Not provided</span>' }}</td>
-                        <td>{{ $schedule->secondary_task_list ?? '<span class="empty-field">Not provided</span>' }}</td>
+                        <td>{{ $schedule->type_of_service ?? 'N/A' }}</td>
+                        <td>{{ $schedule->primary_task_list ?? 'N/A' }}</td>
+                        <td>{{ $schedule->secondary_task_list ?? 'N/A' }}</td>
                     </tr>
                 @endforeach
             </tbody>
@@ -389,25 +389,25 @@
                 </td>
                 <td style="width: 25%">
                     <span class="label">Country of Birth</span>
-                    <span class="value">{{ $initial->culturalBackground->country_of_birth ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->culturalBackground->country_of_birth ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Preferred Language</span>
-                    <span class="value">{{ $initial->culturalBackground->preferred_language ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->culturalBackground->preferred_language ?? 'N/A' }}</span>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Religion</span>
-                    <span class="value">{{ $initial->culturalBackground->religion ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->culturalBackground->religion ?? 'N/A' }}</span>
                 </td>
             </tr>
             <tr>
                 <td>
                     <span class="label">Other Languages</span>
-                    <span class="value">{{ $initial->culturalBackground->other_languages ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->culturalBackground->other_languages ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Cultural Needs</span>
-                    <span class="value">{{ $initial->culturalBackground->cultural_needs ?? '<span class="empty-field">Not provided</span>' }}</span>
+                    <span class="value">{{ $initial->culturalBackground->cultural_needs ?? 'N/A' }}</span>
                 </td>
                 <td>
                     <span class="label">Interpreter Required</span>
@@ -446,7 +446,7 @@
                 <span class="label">What are the NDIS Goals that you would like assistance from BHC with?</span>
                 <ul>
                     @foreach ($initial->ndisGoals as $goal)
-                        <li>{{ $goal->goal_description ?? '<span class="empty-field">Not provided</span>' }}</li>
+                        <li>{{ $goal->goal_description ?? 'N/A' }}</li>
                     @endforeach
                 </ul>
             </div>
@@ -470,9 +470,9 @@
                 <tbody>
                     @foreach ($initial->healthProfessionalDetails as $prof)
                         <tr>
-                            <td>{{ $prof->role ?? '<span class="empty-field">Not provided</span>' }}</td>
-                            <td>{{ $prof->name ?? '<span class="empty-field">Not provided</span>' }}</td>
-                            <td>{{ $prof->contact_number ?? '<span class="empty-field">Not provided</span>' }}</td>
+                            <td>{{ $prof->role ?? 'N/A' }}</td>
+                            <td>{{ $prof->name ?? 'N/A' }}</td>
+                            <td>{{ $prof->contact_number ?? 'N/A' }}</td>
                         </tr>
                     @endforeach
                 </tbody>
