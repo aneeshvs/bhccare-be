@@ -399,23 +399,36 @@ $goalCategories = [
     </div>
 
     <!-- Emergency Contacts -->
-    <div class="section">
+<div class="section">
     <div class="section-header">Emergency Contacts</div>
     <table>
-        @if($supportCarePlan->emergencyContacts)
-            @foreach($supportCarePlan->emergencyContacts as $contact)
-            <tr>
-                <td><span class="label">Name</span> <span class="value">{{ $contact->name ?? 'N/A' }}</span></td>
-                <td><span class="label">Relationship</span> <span class="value">{{ $contact->relationship ?? 'N/A' }}</span></td>
-                <td><span class="label">Phone</span> <span class="value">{{ $contact->phone ?? 'N/A' }}</span></td>
-                <td><span class="label">Email</span> <span class="value">{{ $contact->email ?? 'N/A' }}</span></td>
-                <td><span class="label">Location</span> <span class="value">{{ $contact->location ?? 'N/A' }}</span></td>
-            </tr>
-            @endforeach
+        @php
+            $contacts = $supportCarePlan->emergencyContacts ?? collect();
+        @endphp
 
+        @if($contacts->isNotEmpty())
+            @foreach($contacts as $index => $contact)
+                <tr>
+                    <td><span class="label">Name</span> <span class="value">{{ $contact->name ?? 'N/A' }}</span></td>
+                    <td><span class="label">Relationship</span> <span class="value">{{ $contact->relationship ?? 'N/A' }}</span></td>
+                    <td><span class="label">Phone</span> <span class="value">{{ $contact->phone ?? 'N/A' }}</span></td>
+                    <td><span class="label">Email</span> <span class="value">{{ $contact->email ?? 'N/A' }}</span></td>
+                    <td><span class="label">Location</span> <span class="value">{{ $contact->location ?? 'N/A' }}</span></td>
+                </tr>
+            @endforeach
+        @else
+            {{-- ✅ No data: show one empty row --}}
+            <tr>
+                <td><span class="label">Name</span> <span class="value">N/A</span></td>
+                <td><span class="label">Relationship</span> <span class="value">N/A</span></td>
+                <td><span class="label">Phone</span> <span class="value">N/A</span></td>
+                <td><span class="label">Email</span> <span class="value">N/A</span></td>
+                <td><span class="label">Location</span> <span class="value">N/A</span></td>
+            </tr>
         @endif
     </table>
 </div>
+
 
     <!-- Important Contacts -->
     <div class="section">
