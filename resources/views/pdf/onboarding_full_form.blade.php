@@ -434,8 +434,6 @@
     </div>
     @endif
 
-    <!-- Page break before PART F -->
-    <div style="page-break-before: always;"></div>
 
     <!-- PART F – NDIS GOALS -->
     @if(isset($initial->ndisGoals) && count($initial->ndisGoals) > 0)
