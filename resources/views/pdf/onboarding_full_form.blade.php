@@ -4,30 +4,39 @@
     <meta charset="UTF-8">
     <title>Client Profile - Onboarding</title>
     <style>
+        /* CSS for PDF generation */
+        @media print {
+            @page {
+                size: A4;
+                margin: 15mm;
+            }
+        }
+
         body {
-            font-family: sans-serif;
-            font-size: 12px;
-            background-color: #f9fafb;
-            color: #111827;
+            font-family: Arial, sans-serif;
+            font-size: 11px;
+            line-height: 1.3;
+            background-color: #ffffff;
+            color: #000000;
             margin: 0;
-            padding: 20px;
+            padding: 0;
             counter-reset: section;
         }
 
         .container {
-            max-width: 950px;
-            margin: auto;
+            width: 100%;
+            margin: 0 auto;
             background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px 30px;
+            padding: 10px 15px;
         }
 
         .header {
             position: relative;
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             padding-top: 10px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 15px;
         }
 
         .logo {
@@ -39,13 +48,13 @@
         }
 
         .header-title {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             margin-top: 8px;
         }
 
         .document-number {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
             margin-bottom: 5px;
         }
@@ -55,7 +64,7 @@
         }
 
         .section {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             page-break-inside: avoid;
         }
 
@@ -63,11 +72,12 @@
             counter-increment: section;
             background-color: #e0f2fe;
             color: #0369a1;
-            padding: 8px 12px;
+            padding: 6px 10px;
             font-weight: bold;
             border-left: 4px solid #0284c7;
             margin-bottom: 8px;
             border-radius: 4px;
+            font-size: 12px;
         }
 
         .section-header::before {
@@ -81,19 +91,21 @@
             width: 100%;
             border-collapse: collapse;
             margin-bottom: 0;
+            table-layout: fixed;
         }
 
-        td {
+        td, th {
             padding: 6px 8px;
             vertical-align: top;
             border: 1px solid #e5e7eb;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            height: 32px; /* Fixed height for consistent rows */
         }
 
         th {
-            padding: 8px 10px;
             background-color: #f8fafc;
             font-weight: bold;
-            border: 1px solid #e5e7eb;
             text-align: left;
         }
 
@@ -101,7 +113,7 @@
             font-weight: bold;
             display: block;
             margin-bottom: 2px;
-            font-size: 11px;
+            font-size: 10px;
             color: #374151;
         }
 
@@ -128,7 +140,7 @@
             border-radius: 3px;
             background-color: #f9fafb;
             color: #374151;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 500;
         }
 
@@ -159,10 +171,16 @@
             line-height: 1.3;
         }
 
-        /* Consistent row heights */
+        /* Force consistent row heights */
         tr {
-            height: auto;
+            height: 32px;
             min-height: 32px;
+        }
+
+        /* Ensure proper spacing for multi-line content */
+        .multi-line-cell {
+            min-height: 32px;
+            height: auto;
         }
     </style>
 </head>
@@ -337,7 +355,7 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="4">
+                <td colspan="4" class="multi-line-cell">
                     <span class="label">Work Contact</span>
                     <span class="value">{{ $initial->emergencyContact->work_contact ?? 'N/A' }}</span>
                 </td>
@@ -345,6 +363,9 @@
         </table>
     </div>
     @endif
+
+
+
 
     <!-- PART D – SCHEDULE OF CARES -->
     @if(isset($initial->scheduleOfCares) && count($initial->scheduleOfCares) > 0)
