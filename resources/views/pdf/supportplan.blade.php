@@ -585,7 +585,12 @@
         </tr>
         <tr>
             <td>
-                <span class="label">CHSP Referral Codes</span>
+                <span class="label">CHSP Referral codes</span>
+                <span class="value">{{ $supportPlan->SupportFunding->has_chsp_referral_codes ? 'Yes' : 'No' }}</span>
+            </td>
+
+            <td>
+                <span class="label">CHSP Referral Details</span>
                 <span class="value">{{ $supportPlan->SupportFunding->chsp_referral_details ?? 'N/A' }}</span>
             </td>
             <td>
@@ -1032,800 +1037,785 @@
 <div class="section">
     <div class="section-header">Medication Management</div>
     <div class="section-body">
+        @php
+            $med = $supportPlan->medication_management;
+        @endphp
+
         <table>
             <tr>
-                <td><span class="label">Takes Regular Medications</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->takes_regular_medications ? 'Yes' : 'No' }}</span>
+                <td>
+                    <span class="label">Takes Regular Medications</span>
+                    <span class="value">{{ optional($med)->takes_regular_medications ? 'Yes' : 'No' }}</span>
                 </td>
-                <td><span class="label">Medication Details</span>
-                    <span class="value">{{ $supportPlan->medication_management->medication_details ?? 'N/A' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td><span class="label">Medication Form</span>
-                    <span class="value">{{ $supportPlan->medication_management->medication_form ?? 'N/A' }}</span>
-                </td>
-                <td><span class="label">Medication Packaging</span>
-                    <span class="value">{{ $supportPlan->medication_management->medication_packaging ?? 'N/A' }}</span>
+                <td>
+                    <span class="label">Medication Details</span>
+                    <span class="value">{{ $med->medication_details ?? 'N/A' }}</span>
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Medications Locked?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->medications_locked ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->medications_locked_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->medications_locked_details }}</div>
+                <td>
+                    <span class="label">Medication Form</span>
+                    <span class="value">{{ $med->medication_form ?? 'N/A' }}</span>
+                </td>
+                <td>
+                    <span class="label">Medication Packaging</span>
+                    <span class="value">{{ $med->medication_packaging ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Medications Locked?</span>
+                    <span class="value">{{ optional($med)->medications_locked ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->medications_locked_details))
+                        <div><strong>Details:</strong> {{ $med->medications_locked_details }}</div>
                     @endif
                 </td>
-                <td><span class="label">Specific Storage Requirements</span>
-                    <span class="value">{{ $supportPlan->medication_management->specific_storage_requirements ?? 'N/A' }}</span>
+                <td>
+                    <span class="label">Specific Storage Requirements</span>
+                    <span class="value">{{ $med->specific_storage_requirements ?? 'N/A' }}</span>
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Scheduled 4/8 Medications?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->scheduled_4_or_8_medications ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->scheduled_medications_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->scheduled_medications_details }}</div>
+                <td>
+                    <span class="label">Scheduled 4/8 Medications?</span>
+                    <span class="value">{{ optional($med)->scheduled_4_or_8_medications ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->scheduled_medications_details))
+                        <div><strong>Details:</strong> {{ $med->scheduled_medications_details }}</div>
                     @endif
                 </td>
-                <td><span class="label">Chemical Restraint Medications?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->chemical_restraint_medications ? 'Yes' : 'No' }}</span>
+                <td>
+                    <span class="label">Chemical Restraint Medications?</span>
+                    <span class="value">{{ optional($med)->chemical_restraint_medications ? 'Yes' : 'No' }}</span>
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Takes More Than Prescribed?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->takes_more_than_prescribed ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->takes_more_than_prescribed_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->takes_more_than_prescribed_details }}</div>
+                <td>
+                    <span class="label">Takes More Than Prescribed?</span>
+                    <span class="value">{{ optional($med)->takes_more_than_prescribed ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->takes_more_than_prescribed_details))
+                        <div><strong>Details:</strong> {{ $med->takes_more_than_prescribed_details }}</div>
                     @endif
                 </td>
-                <td><span class="label">At Risk of Missing Medication?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->at_risk_of_missing_medication ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->missing_medication_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->missing_medication_details }}</div>
+                <td>
+                    <span class="label">At Risk of Missing Medication?</span>
+                    <span class="value">{{ optional($med)->at_risk_of_missing_medication ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->missing_medication_details))
+                        <div><strong>Details:</strong> {{ $med->missing_medication_details }}</div>
                     @endif
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Able to Explain Purpose</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->able_to_explain_purpose ? 'Yes' : 'No' }}</span>
+                <td>
+                    <span class="label">Able to Explain Purpose</span>
+                    <span class="value">{{ optional($med)->able_to_explain_purpose ? 'Yes' : 'No' }}</span>
                 </td>
-                <td><span class="label">Last Medication Review</span>
+                <td>
+                    <span class="label">Last Medication Review</span>
                     <span class="value">
-                        {{ $supportPlan->medication_management->last_medication_review_date
-                            ? \Carbon\Carbon::parse($supportPlan->medication_management->last_medication_review_date)->format('d-m-Y')
+                        {{ $med->last_medication_review_date
+                            ? \Carbon\Carbon::parse($med->last_medication_review_date)->format('d-m-Y')
                             : 'N/A' }}
                     </span>
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Medication Collection/Delivery</span>
-                    <span class="value">{{ $supportPlan->medication_management->medication_collection_delivery_details ?? 'N/A' }}</span>
+                <td>
+                    <span class="label">Medication Collection/Delivery</span>
+                    <span class="value">{{ $med->medication_collection_delivery_details ?? 'N/A' }}</span>
                 </td>
-                <td><span class="label">Needs Support With Medication?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->needs_support_with_medication ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->support_with_medication_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->support_with_medication_details }}</div>
+                <td>
+                    <span class="label">Needs Support With Medication?</span>
+                    <span class="value">{{ optional($med)->needs_support_with_medication ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->support_with_medication_details))
+                        <div><strong>Details:</strong> {{ $med->support_with_medication_details }}</div>
                     @endif
                 </td>
             </tr>
+
             <tr>
-                <td><span class="label">Medication Management Worries?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->medication_management_worries ? 'Yes' : 'No' }}</span>
-                    @if(optional($supportPlan->medication_management)->medication_management_worries_details)
-                        <div><strong>Details:</strong> {{ $supportPlan->medication_management->medication_management_worries_details }}</div>
+                <td>
+                    <span class="label">Medication Management Worries?</span>
+                    <span class="value">{{ optional($med)->medication_management_worries ? 'Yes' : 'No' }}</span>
+                    @if(!empty($med->medication_management_worries_details))
+                        <div><strong>Details:</strong> {{ $med->medication_management_worries_details }}</div>
                     @endif
                 </td>
-                <td><span class="label">Medication Service Required?</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->medication_service_required ? 'Yes' : 'No' }}</span>
+                <td>
+                    <span class="label">Medication Service Required?</span>
+                    <span class="value">{{ optional($med)->medication_service_required ? 'Yes' : 'No' }}</span>
                 </td>
             </tr>
+
             <tr>
-                <td colspan="2"><span class="label">Support Worker Prompt</span>
-                    <span class="value">{{ optional($supportPlan->medication_management)->support_worker_prompt ? 'Yes' : 'No' }}</span>
+                <td colspan="2">
+                    <span class="label">Support Worker Prompt</span>
+                    <span class="value">{{ optional($med)->support_worker_prompt ? 'Yes' : 'No' }}</span>
                 </td>
             </tr>
         </table>
     </div>
 </div>
+
 <!-- mobility transfer -->
 <div class="section">
     <div class="section-header">Mobility & Transfers</div>
     <table>
         <tr>
-            <td>
-                <span class="label">Are you able to walk independently?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->can_walk_independently ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->walk_independently_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Do you need support with transfers?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->needs_transfer_support ? 'Yes' : 'No' }}
-                </span>
-            </td>
+            <td><span class="label">Able to walk independently?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_walk_independently ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->walk_independently_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Primary equipment used for mobility</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->primary_equipment_used ?? 'N/A' }}</span>
-            </td>
-            <td>
-                <span class="label">Can you climb stairs safely?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->can_climb_stairs ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->climb_stairs_details ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">Need support with transfers?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->needs_transfer_support ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Primary equipment used</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->primary_equipment_used ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Do you have stairs in your house?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->has_stairs_at_home ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->stairs_at_home_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Are you able to transfer yourself from a chair, bed, etc.?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->can_transfer_self ? 'Yes' : 'No' }}</span>
-            </td>
+            <td><span class="label">Can climb stairs safely?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_climb_stairs ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->climb_stairs_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Are you able to transfer in other environments?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->can_transfer_in_other_envs ? 'Yes' : 'No' }}</span>
-            </td>
-            <td>
-                <span class="label">Do you use a Bed Pole/Bed Rails?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->uses_bed_pole_or_rails ? 'Yes' : 'No' }}</span>
-            </td>
+            <td><span class="label">Has stairs at home?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->has_stairs_at_home ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->stairs_at_home_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Bed Pole/Bed Rails prescribed by OT?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->bed_pole_prescribed_by_ot ? 'Yes' : 'No' }}</span>
-            </td>
-            <td>
-                <span class="label">Can you access places out of walking distance?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->can_access_places_outside_walking_distance ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->access_places_details ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">Able to transfer self (chair, bed, etc.)?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_transfer_self ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Able to transfer in other environments?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_transfer_in_other_envs ? 'Yes' : 'No' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Is it safe for you to mobilise in your yard?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->safe_to_mobilise_in_yard ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->mobilise_yard_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">How do you access the community?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->community_access ?? 'N/A' }}</span>
-            </td>
+            <td><span class="label">Use a Bed Pole/Bed Rails?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->uses_bed_pole_or_rails ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Prescribed by OT?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->bed_pole_prescribed_by_ot ? 'Yes' : 'No' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Do you drive?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->drives ? 'Yes' : 'No' }}
-                    @if($supportPlan->mobility_transfer->medications_or_conditions_risk)
-                        (Risk: {{ $supportPlan->mobility_transfer->driving_risk_details ?? 'N/A' }})
-                    @endif
-                </span>
-            </td>
-            <td>
-                <span class="label">Mobility equipment</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->mobility_equipment ?? 'N/A' }}</span>
-            </td>
+            <td><span class="label">Can access places outside walking distance?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_access_places_outside_walking_distance ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->access_places_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
+            <td><span class="label">Safe to mobilise in yard?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->safe_to_mobilise_in_yard ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->mobilise_yard_details ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Access to community</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->community_access ?? 'N/A' }}</span></td>
+            <td><span class="label">Do you drive?</span></td>
             <td>
-                <span class="label">Equipment purchase type</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->equipment_purchase_type ?? 'N/A' }}</span>
-            </td>
-            <td>
-                <span class="label">Do you use a 4-wheel walker?</span>
                 <span class="value">
-                    {{ $supportPlan->mobility_transfer->uses_four_wheel_walker ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->four_wheel_walker_details ?? '' }}
+                    {{ $supportPlan->mobility_transfer?->drives ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer?->driving_risk_details ? '(Risk: ' . $supportPlan->mobility_transfer->driving_risk_details . ')' : '' }}
                 </span>
             </td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Wheelchair type</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_type ?? 'N/A' }}</span>
-            </td>
-            <td>
-                <span class="label">Wheelchair operation</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_operation ?? 'N/A' }}</span>
-            </td>
+            <td><span class="label">Mobility equipment</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->mobility_equipment ?? 'N/A' }}</span></td>
+            <td><span class="label">Equipment purchase type</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->equipment_purchase_type ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Wheelchair recommended by OT?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->wheelchair_ot_recommended ? 'Yes' : 'No' }}</span>
-            </td>
-            <td>
-                <span class="label">Can charge wheelchair battery?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->can_charge_wheelchair ? 'Yes' : 'No' }}</span>
-            </td>
+            <td><span class="label">Use a 4-wheel walker?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->uses_four_wheel_walker ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->four_wheel_walker_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
+            <td><span class="label">Wheelchair type</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->wheelchair_type ?? 'N/A' }}</span></td>
+            <td><span class="label">Wheelchair operation</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->wheelchair_operation ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Wheelchair recommended by OT?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->wheelchair_ot_recommended ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Can charge wheelchair battery?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->can_charge_wheelchair ? 'Yes' : 'No' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Last wheelchair service date</span></td>
             <td>
-                <span class="label">Last wheelchair service date</span>
                 <span class="value">
-                    {{ $supportPlan->mobility_transfer->last_wheelchair_service_date
+                    {{ $supportPlan->mobility_transfer?->last_wheelchair_service_date
                         ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_wheelchair_service_date)->format('d-m-Y')
                         : 'N/A' }}
                 </span>
             </td>
+            <td><span class="label">Can carry items &lt; 5kg?</span></td>
             <td>
-                <span class="label">Can carry items &lt; 5kg?</span>
                 <span class="value">
-                    {{ $supportPlan->mobility_transfer->can_carry_5kg ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->carry_5kg_details ?? '' }}
+                    {{ $supportPlan->mobility_transfer?->can_carry_5kg ? 'Yes' : 'No' }}
+                    {{ $supportPlan->mobility_transfer?->carry_5kg_details ?? '' }}
                 </span>
             </td>
         </tr>
 
         <tr>
-            <td>
-                <span class="label">Foot problems</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->foot_problems ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->foot_problems_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Mobility worries</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->mobility_worries ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->mobility_worries_details ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">Foot problems</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->foot_problems ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->foot_problems_details ?? 'N/A' }}</span></td>
         </tr>
 
         <tr>
+            <td><span class="label">Mobility worries</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->mobility_worries ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->mobility_worries_details ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Last OT assessment date</span></td>
             <td>
-                <span class="label">Last OT assessment date</span>
                 <span class="value">
-                    {{ $supportPlan->mobility_transfer->last_ot_assessment_date
+                    {{ $supportPlan->mobility_transfer?->last_ot_assessment_date
                         ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_ot_assessment_date)->format('d-m-Y')
                         : 'N/A' }}
                 </span>
             </td>
-            <td>
-                <span class="label">New OT referral required?</span>
-                <span class="value">{{ $supportPlan->mobility_transfer->new_ot_referral_required ? 'Yes' : 'No' }}</span>
-            </td>
+            <td><span class="label">New OT referral required?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->new_ot_referral_required ? 'Yes' : 'No' }}</span></td>
         </tr>
 
         <tr>
-            <td colspan="2">
-                <span class="label">DEMMI Assessment required?</span>
-                <span class="value">
-                    {{ $supportPlan->mobility_transfer->demmi_assessment_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->mobility_transfer->demmi_assessment_result ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">DEMMI Assessment required?</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->demmi_assessment_required ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Assessment result</span></td>
+            <td><span class="value">{{ $supportPlan->mobility_transfer?->demmi_assessment_result ?? 'N/A' }}</span></td>
         </tr>
     </table>
 </div>
 
-{{-- falls risk --}}
- <div class="section">
-        <div class="section-header">Falls Risk</div>
+ {{-- Falls Risk Section --}}
+<div class="section">
+    <div class="section-header">Falls Risk</div>
+    <div class="section-body">
         <table>
             <tr>
                 <td>
                     <span class="label">Recent falls in last 6 months?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->recent_falls ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->recent_falls_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->recent_falls ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->recent_falls_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->recent_falls_details }}</div>
+                    @endif
                 </td>
                 <td>
                     <span class="label">Strategies to reduce falls risk?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->strategies_reduce_risk ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->strategies_reduce_risk_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->strategies_reduce_risk ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->strategies_reduce_risk_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->strategies_reduce_risk_details }}</div>
+                    @endif
                 </td>
             </tr>
 
             <tr>
                 <td>
                     <span class="label">Safety pendant available?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->safety_pendant ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->safety_pendant_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->safety_pendant ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->safety_pendant_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->safety_pendant_details }}</div>
+                    @endif
                 </td>
                 <td>
                     <span class="label">Worried about falling?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->worried_about_falling ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->worried_about_falling_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->worried_about_falling ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->worried_about_falling_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->worried_about_falling_details }}</div>
+                    @endif
                 </td>
             </tr>
 
             <tr>
                 <td>
                     <span class="label">Referral to Falls Clinic?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->referral_falls_clinic ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->referral_falls_clinic_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->referral_falls_clinic ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->referral_falls_clinic_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->referral_falls_clinic_details }}</div>
+                    @endif
                 </td>
                 <td>
                     <span class="label">Referral to Occupational Therapist?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->referral_ot ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->fallrisk_referral_ot_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->referral_ot ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->fallrisk_referral_ot_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->fallrisk_referral_ot_details }}</div>
+                    @endif
                 </td>
             </tr>
 
             <tr>
                 <td colspan="2">
                     <span class="label">Referral to Physiotherapist?</span>
-                    <span class="value">
-                        {{ $supportPlan->fallsRisk->referral_physio ? 'Yes' : 'No' }}
-                        {{ $supportPlan->fallsRisk->referral_physiotherapist_details ?? '' }}
-                    </span>
+                    <span class="value">{{ optional($supportPlan->fallsRisk)->referral_physio ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->fallsRisk)->referral_physiotherapist_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->fallsRisk->referral_physiotherapist_details }}</div>
+                    @endif
                 </td>
             </tr>
         </table>
     </div>
-
-    {{-- cognitive --}}
-    <div class="section">
-    <div class="section-header">Cognition</div>
-    <table>
-        <tr>
-            <td>
-                <span class="label">Are there cognitive concerns?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->cognitive_concerns ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->cognitive_concerns_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Diagnosis of dementia?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->diagnosis_dementia ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->diagnosis_dementia_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="label">Capable of making own decisions?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->capable_of_decisions ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->capable_of_decisions_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Power of Attorney / Guardian?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->has_power_of_attorney ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->power_of_attorney_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="label">Becomes confused at times?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->becomes_confused ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->becomes_confused_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Experienced delirium?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->experienced_delirium ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->experienced_delirium_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="label">Feels anxious or worried?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->anxious_or_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->anxious_or_worry_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Short-term memory loss?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->short_term_memory_loss ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->short_term_memory_loss_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="label">Long-term memory loss?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->long_term_memory_loss ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->long_term_memory_loss_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Health literacy support?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->health_literacy_support ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->health_literacy_support_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td>
-                <span class="label">Referral to Geriatrician?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->referral_geriatrician ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->referral_geriatrician_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Referral to Psychologist?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->referral_psychologist ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->referral_psychologist_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-
-        <tr>
-            <td colspan="2">
-                <span class="label">Referral to Psychiatrist?</span>
-                <span class="value">
-                    {{ $supportPlan->cognition->referral_psychiatrist ? 'Yes' : 'No' }}
-                    {{ $supportPlan->cognition->referral_psychiatrist_details ?? '' }}
-                </span>
-            </td>
-        </tr>
-    </table>
 </div>
+
+{{-- Cognition Section --}}
+<div class="section">
+    <div class="section-header">Cognition</div>
+    <div class="section-body">
+        <table>
+            <tr>
+                <td>
+                    <span class="label">Are there cognitive concerns?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->cognitive_concerns ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->cognitive_concerns_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->cognitive_concerns_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Diagnosis of dementia?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->diagnosis_dementia ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->diagnosis_dementia_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->diagnosis_dementia_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Capable of making own decisions?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->capable_of_decisions ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->capable_of_decisions_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->capable_of_decisions_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Power of Attorney / Guardian?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->has_power_of_attorney ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->power_of_attorney_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->power_of_attorney_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Becomes confused at times?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->becomes_confused ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->becomes_confused_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->becomes_confused_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Experienced delirium?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->experienced_delirium ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->experienced_delirium_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->experienced_delirium_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Feels anxious or worried?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->anxious_or_worry ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->anxious_or_worry_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->anxious_or_worry_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Short-term memory loss?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->short_term_memory_loss ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->short_term_memory_loss_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->short_term_memory_loss_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Long-term memory loss?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->long_term_memory_loss ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->long_term_memory_loss_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->long_term_memory_loss_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Health literacy support?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->health_literacy_support ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->health_literacy_support_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->health_literacy_support_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <span class="label">Referral to Geriatrician?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->referral_geriatrician ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->referral_geriatrician_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->referral_geriatrician_details }}</div>
+                    @endif
+                </td>
+                <td>
+                    <span class="label">Referral to Psychologist?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->referral_psychologist ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->referral_psychologist_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->referral_psychologist_details }}</div>
+                    @endif
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Referral to Psychiatrist?</span>
+                    <span class="value">{{ optional($supportPlan->cognition)->referral_psychiatrist ? 'Yes' : 'No' }}</span>
+                    @if(optional($supportPlan->cognition)->referral_psychiatrist_details)
+                        <div><strong>Details:</strong> {{ $supportPlan->cognition->referral_psychiatrist_details }}</div>
+                    @endif
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
 
 {{-- Behaviour Support --}}
 
 <div class="section">
     <div class="section-header">Behaviour Support</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Feeling agitation or frustration?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->feeling_agitation ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->feeling_agitation_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Delusions or hallucinations previously?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->delusions_hallucinations ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->delusions_hallucinations_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->behaviourSupport)
+            <tr>
+                <td><span class="label">Feeling agitation or frustration?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->feeling_agitation ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->feeling_agitation_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Changes to personality out of character?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->personality_changes ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->personality_changes_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Wanders without purpose?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->wandering ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->wandering_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Delusions or hallucinations previously?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->delusions_hallucinations ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->delusions_hallucinations_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Concerns of absconding?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->absconding ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->absconding_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Screams, yells or verbally threatens?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->verbal_threats ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->verbal_threats_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Changes to personality out of character?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->personality_changes ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->personality_changes_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Physically assaults or threatens?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->physical_assault ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->physical_assault_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Restrictive interventions occurring?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->restrictive_interventions ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->restrictive_interventions_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Wanders without purpose?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->wandering ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->wandering_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Restrictive interventions approved?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->interventions_approved ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->interventions_approved_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Referral to Positive Behaviour Support Practitioner?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->referral_pbsp ? 'Yes' : 'No' }}
-                    {{ $supportPlan->behaviourSupport->referral_pbsp_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Concerns of absconding?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->absconding ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->absconding_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Behaviour Support Plan required?</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->bsp_required ? 'Yes' : 'No' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Expiry of Behaviour Support Plan</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->bsp_expiry_date
-                        ? \Carbon\Carbon::parse($supportPlan->behaviourSupport->bsp_expiry_date)->format('d/m/Y')
-                        : 'N/A' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Screams, yells or verbally threatens?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->verbal_threats ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->verbal_threats_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="2">
-                <span class="label">Current strategies being implemented:</span>
-                <span class="value">
-                    {{ $supportPlan->behaviourSupport->current_strategies ?? 'N/A' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Physically assaults or threatens?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->physical_assault ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->physical_assault_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Restrictive interventions occurring?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->restrictive_interventions ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->restrictive_interventions_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Restrictive interventions approved?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->interventions_approved ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->interventions_approved_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Referral to Positive Behaviour Support Practitioner?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->referral_pbsp ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->referral_pbsp_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Behaviour Support Plan required?</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->bsp_required ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Expiry Date</span>
+                    <span class="value">
+                        {{ $supportPlan->behaviourSupport->bsp_expiry_date
+                            ? \Carbon\Carbon::parse($supportPlan->behaviourSupport->bsp_expiry_date)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Current strategies being implemented:</span>
+                    <span class="value">{{ $supportPlan->behaviourSupport->current_strategies ?? 'N/A' }}</span>
+                </td>
+            </tr>
+        @endif
     </table>
 </div>
 
-{{-- Personal Care --}}
 
+{{-- Personal Care --}}
 <div class="section">
     <div class="section-header">Personal Care</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Support to maintain daily personal care?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_daily_personal_care ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->daily_personal_care_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Support for showering?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_showering ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->showering_type ?? '' }}
-                    {{ $supportPlan->personalCare->showering_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->personalCare)
+            <tr>
+                <td><span class="label">Support to maintain daily personal care?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_daily_personal_care ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->personalCare->daily_personal_care_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="2">
-                <span class="label">Personal care routine</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->personal_care_routine ?? 'N/A' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Support for showering?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_showering ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">
+                        {{ $supportPlan->personalCare->showering_type ?? '' }}
+                        {{ $supportPlan->personalCare->showering_details ?? 'N/A' }}
+                    </span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Support with dressing/undressing?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_dressing ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->dressing_details ?? '' }}
-                    {{ $supportPlan->personalCare->dressing_routine ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Equipment in shower/bathroom?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->equipment_in_bathroom ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->equipment_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Support with dressing/undressing?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_dressing ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">
+                        {{ $supportPlan->personalCare->dressing_details ?? '' }}
+                        {{ $supportPlan->personalCare->dressing_routine ?? 'N/A' }}
+                    </span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Support with shaving?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_shaving ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->shaving_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Support with haircuts?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_haircuts ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->haircuts_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Equipment in shower/bathroom?</span>
+                    <span class="value">{{ $supportPlan->personalCare->equipment_in_bathroom ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->personalCare->equipment_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Complete this task at home?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->task_at_home ? 'Yes' : 'No' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Wears dentures?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->wears_dentures ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->dentures_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Support with shaving?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_shaving ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->personalCare->shaving_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Support with brushing teeth?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->support_teeth_brushing ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->teeth_brushing_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">OT assessment on bathroom/shower?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->ot_bathroom_assessment ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->ot_assessment_type ?? '' }}
-                    {{ $supportPlan->personalCare->ot_assessment_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Support with haircuts?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_haircuts ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->personalCare->haircuts_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="2">
-                <span class="label">Referral to Occupational Therapist?</span>
-                <span class="value">
-                    {{ $supportPlan->personalCare->referral_ot_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->personalCare->plancare_referral_ot_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Complete this task at home?</span>
+                    <span class="value">{{ $supportPlan->personalCare->task_at_home ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Wears dentures?</span>
+                    <span class="value">
+                        {{ $supportPlan->personalCare->wears_dentures ? 'Yes' : 'No' }}
+                        {{ $supportPlan->personalCare->dentures_details ?? 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Support with brushing teeth?</span>
+                    <span class="value">{{ $supportPlan->personalCare->support_teeth_brushing ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">{{ $supportPlan->personalCare->teeth_brushing_details ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">OT assessment on bathroom/shower?</span>
+                    <span class="value">{{ $supportPlan->personalCare->ot_bathroom_assessment ? 'Yes' : 'No' }}</span>
+                </td>
+                <td><span class="label">Details</span>
+                    <span class="value">
+                        {{ $supportPlan->personalCare->ot_assessment_type ?? '' }}
+                        {{ $supportPlan->personalCare->ot_assessment_details ?? 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Personal care routine</span>
+                    <span class="value">{{ $supportPlan->personalCare->personal_care_routine ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
+                    <span class="label">Referral to Occupational Therapist?</span>
+                    <span class="value">
+                        {{ $supportPlan->personalCare->referral_ot_required ? 'Yes' : 'No' }}
+                        {{ $supportPlan->personalCare->plancare_referral_ot_details ?? 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+        @endif
     </table>
 </div>
+
 
 <div class="section">
     <div class="section-header">Continence</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Identified needs regarding continence support?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->identified_needs ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->identified_needs_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Able to identify toilet needs?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->identify_toilet_needs ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->identify_toilet_needs_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->continence)
+            <tr>
+                <td><span class="label">Identified needs regarding continence support?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->identified_needs ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->identified_needs_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Require prompting to use toilet/change products?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->require_prompting ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->require_prompting_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Wear continence aids?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->wears_continence_aids ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->continence_aids_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Able to identify toilet needs?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->identify_toilet_needs ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->identify_toilet_needs_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">RUIS assessment required?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->ruis_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->ruis_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">RFIS assessment required?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->rfis_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->rfis_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Require prompting to use toilet/change products?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->require_prompting ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->require_prompting_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Accessing funding for continence products?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->funding_for_products ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->funding_for_products_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Continence Nurse Assessment previously?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->nurse_assessment ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->nurse_assessment_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Wear continence aids?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->wears_continence_aids ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->continence_aids_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td colspan="2">
-                <span class="label">Does continence worry you?</span>
-                <span class="value">
-                    {{ $supportPlan->continence->worry_about_continence ? 'Yes' : 'No' }}
-                    {{ $supportPlan->continence->worry_about_continence_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">RUIS assessment required?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->ruis_required ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->ruis_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">RFIS assessment required?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->rfis_required ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->rfis_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Accessing funding for continence products?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->funding_for_products ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->funding_for_products_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Continence Nurse Assessment previously?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->nurse_assessment ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->nurse_assessment_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Does continence worry you?</span></td>
+                <td><span class="value">{{ $supportPlan->continence->worry_about_continence ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->continence->worry_about_continence_details ?? 'N/A' }}</span></td>
+            </tr>
+        @endif
     </table>
 </div>
+
+
 {{-- Vision --}}
 
 <div class="section">
@@ -1836,7 +1826,9 @@
                 <span class="label">Do you wear glasses or contact lenses?</span>
                 <span class="value">
                     {{ $supportPlan->vision->wears_glasses_or_contacts ? 'Yes' : 'No' }}
-                    {{ $supportPlan->vision->glasses_or_contacts_type ?? '' }}
+                    @if($supportPlan->vision->wears_glasses_or_contacts && $supportPlan->vision->glasses_or_contacts_type)
+                        – (Type: {{ $supportPlan->vision->glasses_or_contacts_type }})
+                    @endif
                 </span>
             </td>
             <td>
@@ -1860,50 +1852,51 @@
                 <span class="label">Any aspects of vision worry you?</span>
                 <span class="value">
                     {{ $supportPlan->vision->vision_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->vision->vision_worry_details ?? '' }}
+                    @if($supportPlan->vision->vision_worry && $supportPlan->vision->vision_worry_details)
+                        – (Details: {{ $supportPlan->vision->vision_worry_details }})
+                    @endif
                 </span>
             </td>
         </tr>
     </table>
 </div>
 
+
 {{-- Hearing --}}
 <div class="section">
     <div class="section-header">Hearing</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Do you wear hearing devices?</span>
-                <span class="value">
-                    {{ $supportPlan->hearing->wears_hearing_devices ? 'Yes' : 'No' }}
-                    {{ $supportPlan->hearing->hearing_devices_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">When do you wear them?</span>
-                <span class="value">
-                    {{ $supportPlan->hearing->when_worn ?? 'N/A' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->hearing)
+            <tr>
+                <td><span class="label">Do you wear hearing devices?</span></td>
+                <td><span class="value">{{ $supportPlan->hearing->wears_hearing_devices ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->hearing->hearing_devices_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Last Audiologist Appointment:</span>
-                <span class="value">
-                    {{ $supportPlan->hearing->last_audiologist_appointment
-                        ? \Carbon\Carbon::parse($supportPlan->hearing->last_audiologist_appointment)->format('d/m/Y')
-                        : 'N/A' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Any aspects of hearing worry you?</span>
-                <span class="value">
-                    {{ $supportPlan->hearing->hearing_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->hearing->hearing_worry_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">When do you wear them?</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->hearing->when_worn ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Last Audiologist Appointment:</span></td>
+                <td colspan="3">
+                    <span class="value">
+                        {{ $supportPlan->hearing->last_audiologist_appointment
+                            ? \Carbon\Carbon::parse($supportPlan->hearing->last_audiologist_appointment)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Any aspects of hearing worry you?</span></td>
+                <td><span class="value">{{ $supportPlan->hearing->hearing_worry ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->hearing->hearing_worry_details ?? 'N/A' }}</span></td>
+            </tr>
+        @endif
     </table>
 </div>
 
@@ -1911,59 +1904,70 @@
 <div class="section">
     <div class="section-header">Skin Conditions</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Do you have any skin conditions?</span>
-                <span class="value">
-                    {{ $supportPlan->skinCondition->has_skin_condition ? 'Yes' : 'No' }}
-                    {{ $supportPlan->skinCondition->skin_condition_type ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Does your skin condition impact daily activities?</span>
-                <span class="value">
-                    {{ $supportPlan->skinCondition->impacts_daily_activities ? 'Yes' : 'No' }}
-                    {{ $supportPlan->skinCondition->impact_date
-                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->impact_date)->format('d/m/Y')
-                        : '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->skinCondition)
+            <tr>
+                <td><span class="label">Do you have any skin conditions?</span></td>
+                <td><span class="value">{{ $supportPlan->skinCondition->has_skin_condition ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->skinCondition->skin_condition_type ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Pain/Discomfort Level:</span>
-                <span class="value">
-                    {{ $supportPlan->skinCondition->pain_discomfort_level ?? 'N/A' }}
-                    (Score: {{ $supportPlan->skinCondition->pain_level_score ?? 'N/A' }})
-                </span>
-            </td>
-            <td>
-                <span class="label">Strategies:</span>
-                <span class="value">{{ $supportPlan->skinCondition->management_strategies ?? 'N/A' }}</span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Does your skin condition impact daily activities?</span></td>
+                <td><span class="value">{{ $supportPlan->skinCondition->impacts_daily_activities ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Date</span></td>
+                <td>
+                    <span class="value">
+                        {{ $supportPlan->skinCondition->impact_date
+                            ? \Carbon\Carbon::parse($supportPlan->skinCondition->impact_date)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Does condition worry you?</span>
-                <span class="value">
-                    {{ $supportPlan->skinCondition->skin_condition_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->skinCondition->worry_date
-                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->worry_date)->format('d/m/Y')
-                        : '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Referral to Nursing required?</span>
-                <span class="value">
-                    {{ $supportPlan->skinCondition->referral_nursing_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->skinCondition->referral_nursing_date
-                        ? \Carbon\Carbon::parse($supportPlan->skinCondition->referral_nursing_date)->format('d/m/Y')
-                        : '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Pain/Discomfort Level</span></td>
+                <td colspan="3">
+                    <span class="value">
+                        {{ $supportPlan->skinCondition->pain_discomfort_level ?? 'N/A' }}
+                        (Score: {{ $supportPlan->skinCondition->pain_level_score ?? 'N/A' }})
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Strategies</span></td>
+                <td colspan="3">
+                    <span class="value">{{ $supportPlan->skinCondition->management_strategies ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Does condition worry you?</span></td>
+                <td><span class="value">{{ $supportPlan->skinCondition->skin_condition_worry ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Date</span></td>
+                <td>
+                    <span class="value">
+                        {{ $supportPlan->skinCondition->worry_date
+                            ? \Carbon\Carbon::parse($supportPlan->skinCondition->worry_date)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Referral to Nursing required?</span></td>
+                <td><span class="value">{{ $supportPlan->skinCondition->referral_nursing_required ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Date</span></td>
+                <td>
+                    <span class="value">
+                        {{ $supportPlan->skinCondition->referral_nursing_date
+                            ? \Carbon\Carbon::parse($supportPlan->skinCondition->referral_nursing_date)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+        @endif
     </table>
 </div>
 
@@ -2036,57 +2040,57 @@
 <div class="section">
     <div class="section-header">Pain Management</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Do you have ongoing pain?</span>
-                <span class="value">
-                    {{ $supportPlan->painManagement->ongoing_pain ? 'Yes' : 'No' }}
-                    {{ $supportPlan->painManagement->pain_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Location of the pain</span>
-                <span class="value">{{ $supportPlan->painManagement->pain_location ?? 'N/A' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="label">Frequency of the pain</span>
-                <span class="value">{{ $supportPlan->painManagement->pain_frequency ?? 'N/A' }}</span>
-            </td>
-            <td>
-                <span class="label">Scale of the pain (1-10)</span>
-                <span class="value">{{ $supportPlan->painManagement->pain_scale ?? 'N/A' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="label">Currently supported for pain?</span>
-                <span class="value">
-                    {{ $supportPlan->painManagement->supported_for_pain ? 'Yes' : 'No' }}
-                    {{ $supportPlan->painManagement->supported_pain_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Strategies to manage pain</span>
-                <span class="value">{{ $supportPlan->painManagement->pain_management_strategies ?? 'N/A' }}</span>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <span class="label">Abbey Pain Scale required?</span>
-                <span class="value">{{ $supportPlan->painManagement->abbey_pain_scale_required ? 'Yes' : 'No' }}</span>
-            </td>
-            <td>
-                <span class="label">Does any aspect of pain worry you?</span>
-                <span class="value">
-                    {{ $supportPlan->painManagement->pain_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->painManagement->pain_worry_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->painManagement)
+            <tr>
+                <td><span class="label">Do you have ongoing pain?</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->ongoing_pain ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->pain_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Location of the pain</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->painManagement->pain_location ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Frequency of the pain</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->painManagement->pain_frequency ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Scale of the pain (1-10)</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->painManagement->pain_scale ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Currently supported for pain?</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->supported_for_pain ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->supported_pain_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Strategies to manage pain</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->painManagement->pain_management_strategies ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Abbey Pain Scale required?</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->abbey_pain_scale_required ? 'Yes' : 'No' }}</span></td>
+                <td colspan="2"></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Does any aspect of pain worry you?</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->pain_worry ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->painManagement->pain_worry_details ?? 'N/A' }}</span></td>
+            </tr>
+        @endif
     </table>
 </div>
+
 {{-- Social Connections & Community Access --}}
 <div class="section">
     <div class="section-header">Social Connections & Community Access</div>
@@ -2141,142 +2145,130 @@
 <div class="section">
     <div class="section-header">Maintaining Your Home</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Do you need support with domestic assistance within the home?</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->domestic_assistance ? 'Yes' : 'No' }}
-                    {{ $supportPlan->homeMaintenance->domestic_assistance_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Level of independence</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->domestic_independence ?? 'N/A' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->homeMaintenance)
+            <tr>
+                <td><span class="label">Do you need support with domestic assistance within the home?</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->domestic_assistance ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->domestic_assistance_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Do you also need help obtaining safe and approved cleaning products and equipment?</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->cleaning_products_support ? 'Yes' : 'No' }}
-                    {{ $supportPlan->homeMaintenance->cleaning_products_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Do you need support with maintaining your gardens to be safe?</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->garden_maintenance ? 'Yes' : 'No' }}
-                    {{ $supportPlan->homeMaintenance->garden_maintenance_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Level of independence</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->homeMaintenance->domestic_independence ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Do you have any trouble navigating the house at night?</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->trouble_navigating_night ? 'Yes' : 'No' }}
-                    {{ $supportPlan->homeMaintenance->trouble_navigating_night_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Are there any aspects of maintaining your home that worry you?</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->home_worry ? 'Yes' : 'No' }}
-                    {{ $supportPlan->homeMaintenance->home_worry_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Do you also need help obtaining safe and approved cleaning products and equipment?</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->cleaning_products_support ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->cleaning_products_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Date Home Safety Assessment was last completed:</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->last_home_safety_assessment
-                        ? \Carbon\Carbon::parse($supportPlan->homeMaintenance->last_home_safety_assessment)->format('d/m/Y')
-                        : 'N/A' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Key areas of focus to be supported identified from Home:</span>
-                <span class="value">
-                    {{ $supportPlan->homeMaintenance->focus_areas ?? 'N/A' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Do you need support with maintaining your gardens to be safe?</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->garden_maintenance ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->garden_maintenance_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Do you have any trouble navigating the house at night?</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->trouble_navigating_night ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->trouble_navigating_night_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Are there any aspects of maintaining your home that worry you?</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->home_worry ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->homeMaintenance->home_worry_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Date Home Safety Assessment was last completed</span></td>
+                <td colspan="3">
+                    <span class="value">
+                        {{ $supportPlan->homeMaintenance->last_home_safety_assessment
+                            ? \Carbon\Carbon::parse($supportPlan->homeMaintenance->last_home_safety_assessment)->format('d/m/Y')
+                            : 'N/A' }}
+                    </span>
+                </td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Key areas of focus to be supported identified from Home</span></td>
+                <td colspan="3"><span class="value">{{ $supportPlan->homeMaintenance->focus_areas ?? 'N/A' }}</span></td>
+            </tr>
+        @else
+            <tr>
+                <td colspan="4" class="text-center">No Home Maintenance details available.</td>
+            </tr>
+        @endif
     </table>
 </div>
+
+
 
 {{-- Financial Support --}}
 
 <div class="section">
     <div class="section-header">Financial Support</div>
     <table>
-        <tr>
-            <td>
-                <span class="label">Do you have a Power of Attorney or Financial Guardian?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->financial_has_power_of_attorney ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->financial_power_of_attorney_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Do you have access to your own money?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->has_access_to_money ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->access_to_money_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+        @if($supportPlan->financialSupport)
+            <tr>
+                <td><span class="label">Do you have a Power of Attorney or Financial Guardian?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->financial_has_power_of_attorney ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->financial_power_of_attorney_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Are you at risk of financial abuse?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->at_risk_of_abuse ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->risk_of_abuse_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Do you need support to pay bills/attend bank?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->needs_support_for_bills ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->support_for_bills_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Do you have access to your own money?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->has_access_to_money ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->access_to_money_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td>
-                <span class="label">Do you ever find that you don't have enough money?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->not_enough_money ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->not_enough_money_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Do you want support to engage with a financial counsellor?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->support_financial_counsellor ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->financial_counsellor_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Are you at risk of financial abuse?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->at_risk_of_abuse ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->risk_of_abuse_details ?? 'N/A' }}</span></td>
+            </tr>
 
-        <tr>
-            <td colspan="2">
-                <span class="label">Do you want support to access Government initiatives (e.g. Utility Relief Grant)?</span>
-                <span class="value">
-                    {{ $supportPlan->financialSupport->support_government_initiatives ? 'Yes' : 'No' }}
-                    {{ $supportPlan->financialSupport->government_initiatives_details ?? '' }}
-                </span>
-            </td>
-        </tr>
+            <tr>
+                <td><span class="label">Do you need support to pay bills or attend bank?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->needs_support_for_bills ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->support_for_bills_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Do you ever find that you don't have enough money?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->not_enough_money ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->not_enough_money_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Do you want support to engage with a financial counsellor?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->support_financial_counsellor ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->financial_counsellor_details ?? 'N/A' }}</span></td>
+            </tr>
+
+            <tr>
+                <td><span class="label">Do you want support to access Government initiatives (e.g. Utility Relief Grant)?</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->support_government_initiatives ? 'Yes' : 'No' }}</span></td>
+                <td><span class="label">Details</span></td>
+                <td><span class="value">{{ $supportPlan->financialSupport->government_initiatives_details ?? 'N/A' }}</span></td>
+            </tr>
+        @endif
     </table>
 </div>
+
 
 {{-- Informal Supports --}}
 <div class="section">
@@ -2287,14 +2279,27 @@
                 <span class="label">Are you the primary caregiver for another person?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->is_primary_caregiver ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->primary_caregiver_details ?? '' }}
                 </span>
             </td>
+            <td>
+                <span class="label">If yes, please specify details:</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->primary_caregiver_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
             <td>
                 <span class="label">Are you receiving help from someone?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->receiving_help ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->receiving_help_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify who and how:</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->receiving_help_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
@@ -2304,44 +2309,70 @@
                 <span class="label">Does the carer live with you?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->carer_lives_with_you ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->carer_lives_with_you_details ?? '' }}
                 </span>
             </td>
+            <td>
+                <span class="label">If yes, please provide details:</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_lives_with_you_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
             <td>
                 <span class="label">Does the carer receive a pension?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->carer_receives_pension ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->carer_pension_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify details:</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_pension_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
 
         <tr>
             <td>
-                <span class="label">Factors affecting care relationship?</span>
+                <span class="label">Are there any factors affecting the care relationship?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->factors_affecting_care ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->factors_affecting_care_details ?? '' }}
                 </span>
             </td>
             <td>
-                <span class="label">Caregiver Strain Index Required?</span>
+                <span class="label">If yes, please describe:</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->factors_affecting_care_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Is a Caregiver Strain Index required?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->caregiver_strain_index_required ? 'Yes' : 'No' }}
                 </span>
             </td>
+            <td>
+                <span class="label">Is a Carer Gateway referral suitable?</span>
+                <span class="value">
+                    {{ $supportPlan->informalSupport->carer_gateway_referral ? 'Yes' : 'No' }}
+                </span>
+            </td>
         </tr>
 
         <tr>
             <td>
-                <span class="label">Carer Gateway referral suitable?</span>
+                <span class="label">If yes, provide referral details:</span>
                 <span class="value">
-                    {{ $supportPlan->informalSupport->carer_gateway_referral ? 'Yes' : 'No' }}
-                    {{ $supportPlan->informalSupport->carer_gateway_referral_details ?? '' }}
+                    {{ $supportPlan->informalSupport->carer_gateway_referral_details ?? 'N/A' }}
                 </span>
             </td>
             <td>
-                <span class="label">Primary caregiver receiving Carers Allowance?</span>
+                <span class="label">Is the primary caregiver receiving Carer’s Allowance?</span>
                 <span class="value">
                     {{ $supportPlan->informalSupport->primary_caregiver_receives_allowance ? 'Yes' : 'No' }}
                 </span>
@@ -2356,61 +2387,105 @@
     <table>
         <tr>
             <td>
-                <span class="label">At risk of abuse or neglect?</span>
+                <span class="label">Is the participant at risk of abuse or neglect?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->emergency_at_risk_of_abuse ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->abuse_details ?? '' }}
                 </span>
             </td>
             <td>
-                <span class="label">Referral to OPAN required?</span>
+                <span class="label">If yes, please provide details:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->abuse_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Is referral to OPAN required?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->opan_referral_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->opan_referral_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify details:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->opan_referral_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
 
         <tr>
             <td>
-                <span class="label">Risk of declining services?</span>
+                <span class="label">Is there a risk of declining services?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->risk_of_declining_services ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->declining_services_details ?? '' }}
                 </span>
             </td>
             <td>
-                <span class="label">Indicators of neglect?</span>
+                <span class="label">If yes, please describe:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->declining_services_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Are there indicators of neglect?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->neglect_indicators ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->neglect_indicators_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->neglect_indicators_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
 
         <tr>
             <td>
-                <span class="label">Emergency access to property?</span>
+                <span class="label">Is the property accessible in an emergency?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->emergency_accessible ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->emergency_accessible_details ?? '' }}
                 </span>
             </td>
             <td>
-                <span class="label">Emergency support available?</span>
+                <span class="label">If yes, please provide access details:</span>
                 <span class="value">
-                    {{ $supportPlan->emergencyReadiness->emergency_support_available ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->emergency_support_details ?? '' }}
+                    {{ $supportPlan->emergencyReadiness->emergency_accessible_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
 
         <tr>
-            <td colspan="2">
-                <span class="label">VPR Required?</span>
+            <td>
+                <span class="label">Is emergency support available?</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->emergency_support_available ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please describe:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->emergency_support_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Is a VPR (Vulnerability, Prevention & Response) required?</span>
                 <span class="value">
                     {{ $supportPlan->emergencyReadiness->vpr_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->emergencyReadiness->vpr_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify details:</span>
+                <span class="value">
+                    {{ $supportPlan->emergencyReadiness->vpr_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
@@ -2485,85 +2560,102 @@
     <table>
         <tr>
             <td>
-                <span class="label">Able to leave home independently?</span>
+                <span class="label">Is the participant able to leave home independently?</span>
                 <span class="value">
                     {{ $supportPlan->telecommunicationOutage?->independent_leave_home ? 'Yes' : 'No' }}
-                    {{ $supportPlan->telecommunicationOutage?->independent_leave_home_details ?? '' }}
                 </span>
             </td>
             <td>
-                <span class="label">Support check-in available?</span>
+                <span class="label">If yes, please provide details:</span>
                 <span class="value">
-                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin ? 'Yes' : 'No' }}
-                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin_details ?? '' }}
+                    {{ $supportPlan->telecommunicationOutage?->independent_leave_home_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
+
         <tr>
-            <td colspan="2">
-                <span class="label">Welfare check required (&gt; 5 hrs)?</span>
+            <td>
+                <span class="label">Is a support check-in available during outages?</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please provide details:</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->has_support_checkin_details ?? 'N/A' }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <span class="label">Is a welfare check required if the outage exceeds 5 hours?</span>
                 <span class="value">
                     {{ $supportPlan->telecommunicationOutage?->welfare_check_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->telecommunicationOutage?->welfare_check_required_details ?? '' }}
+                </span>
+            </td>
+            <td>
+                <span class="label">If yes, please specify details:</span>
+                <span class="value">
+                    {{ $supportPlan->telecommunicationOutage?->welfare_check_required_details ?? 'N/A' }}
                 </span>
             </td>
         </tr>
     </table>
 </div>
-
 
 <div class="section">
     <div class="section-header">Power Outage</div>
     <table>
         <tr>
+            <td><span class="label">Medical equipment reliant on power?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->has_medical_equipment ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->medical_equipment_details ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Backup Power Supply?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->has_backup_power ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->backup_power_details ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Registered Life Support?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->registered_life_support ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
             <td>
-                <span class="label">Medical equipment reliant on power?</span>
-                <span class="value">{{ $supportPlan->powerOutage->has_medical_equipment ? 'Yes' : 'No' }}</span>
-            </td>
-            <td>
-                <span class="label">Backup Power Supply?</span>
                 <span class="value">
-                    {{ $supportPlan->powerOutage->has_backup_power ? 'Yes' : 'No' }}
-                    {{ $supportPlan->powerOutage->backup_power_details ?? '' }}
+                    {{ $supportPlan->powerOutage?->life_support_hours_supply ? $supportPlan->powerOutage->life_support_hours_supply . ' hrs' : 'N/A' }}
+                    {{ $supportPlan->powerOutage?->life_support_provider ? ' (' . $supportPlan->powerOutage->life_support_provider . ')' : '' }}
                 </span>
             </td>
         </tr>
+
         <tr>
-            <td>
-                <span class="label">Registered Life Support?</span>
-                <span class="value">
-                    {{ $supportPlan->powerOutage->registered_life_support ? 'Yes' : 'No' }}
-                    {{ $supportPlan->powerOutage->life_support_hours_supply ?? '' }} hrs
-                    ({{ $supportPlan->powerOutage->life_support_provider ?? '' }})
-                </span>
-            </td>
-            <td>
-                <span class="label">Can leave home independently?</span>
-                <span class="value">
-                    {{ $supportPlan->powerOutage->power_independent_leave_home ? 'Yes' : 'No' }}
-                    {{ $supportPlan->powerOutage->power_independent_leave_home_details ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">Can leave home independently?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_independent_leave_home ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_independent_leave_home_details ?? 'N/A' }}</span></td>
         </tr>
+
         <tr>
-            <td>
-                <span class="label">Support check-in during outage?</span>
-                <span class="value">
-                    {{ $supportPlan->powerOutage->power_has_support_checkin ? 'Yes' : 'No' }}
-                    {{ $supportPlan->powerOutage->power_has_support_checkin_details ?? '' }}
-                </span>
-            </td>
-            <td>
-                <span class="label">Welfare check required >5 hours?</span>
-                <span class="value">
-                    {{ $supportPlan->powerOutage->power_welfare_check_required ? 'Yes' : 'No' }}
-                    {{ $supportPlan->powerOutage->power_welfare_check_required_details ?? '' }}
-                </span>
-            </td>
+            <td><span class="label">Support check-in during outage?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_has_support_checkin ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_has_support_checkin_details ?? 'N/A' }}</span></td>
+        </tr>
+
+        <tr>
+            <td><span class="label">Welfare check required (>5 hours)?</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_welfare_check_required ? 'Yes' : 'No' }}</span></td>
+            <td><span class="label">Details</span></td>
+            <td><span class="value">{{ $supportPlan->powerOutage?->power_welfare_check_required_details ?? 'N/A' }}</span></td>
         </tr>
     </table>
 </div>
-
 
 <div class="section">
     <div class="section-header">End of Life - Advanced Care Planning</div>
@@ -2571,46 +2663,85 @@
         <tr>
             <td>
                 <span class="label">Receiving palliative care?</span>
+            </td>
+            <td>
                 <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->receiving_palliative_care ? 'Yes' : 'No' }}
-                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->receiving_palliative_care_details }}
                 </span>
             </td>
             <td>
+                <span class="value">
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->receiving_palliative_care_details }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
                 <span class="label">Support to initiate palliative care services?</span>
+            </td>
+            <td>
                 <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_initiate_palliative_care ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_initiate_palliative_care_details }}
                 </span>
             </td>
         </tr>
+
         <tr>
             <td>
                 <span class="label">Has an advanced care plan?</span>
+            </td>
+            <td>
                 <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->has_advanced_care_plan ? 'Yes' : 'No' }}
-                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->advanced_care_plan_details }}
                 </span>
             </td>
             <td>
+                <span class="value">
+                    {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->advanced_care_plan_details }}
+                </span>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
                 <span class="label">Support completing advanced care plan?</span>
+            </td>
+            <td>
                 <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_complete_advanced_care_plan ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->support_to_complete_advanced_care_plan_details }}
                 </span>
             </td>
         </tr>
+
         <tr>
-            <td colspan="2">
+            <td>
                 <span class="label">Do Not Resuscitate (DNR)?</span>
+            </td>
+            <td>
                 <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->has_dnr ? 'Yes' : 'No' }}
+                </span>
+            </td>
+            <td>
+                <span class="value">
                     {{ optional($supportPlan->endOfLifeAdvancedCarePlanning)->dnr_details }}
                 </span>
             </td>
         </tr>
     </table>
 </div>
+
 
 
 
