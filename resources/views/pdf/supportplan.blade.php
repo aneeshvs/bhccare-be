@@ -437,6 +437,7 @@
     </table>
 </div>
 <!--contact details -->
+<div style="page-break-before: always;"></div>
 
 <div class="section">
     <div class="section-header">Contact Details</div>
@@ -660,6 +661,7 @@
 </div>
 
 <!---employee detail-->
+<div style="page-break-before: always;"></div>
 
 <div class="section">
     <div class="section-header">Employee Matching Needs</div>
@@ -1860,6 +1862,7 @@
         </tr>
     </table>
 </div>
+<div style="page-break-before: always;"></div>
 
 
 {{-- Hearing --}}
@@ -2491,6 +2494,7 @@
         </tr>
     </table>
 </div>
+<div style="page-break-before: always;"></div>
 
 {{-- Fire & Heat Readiness --}}
 
@@ -2656,6 +2660,9 @@
         </tr>
     </table>
 </div>
+
+<div style="page-break-before: always;"></div>
+
 
 <div class="section">
     <div class="section-header">End of Life - Advanced Care Planning</div>
