@@ -258,7 +258,13 @@
             <tr>
                 <td style="width: 25%">
                     <span class="label">Type of Funding</span>
-                    <span class="value">{{ $initial->funding->type_of_funding ?? 'N/A' }}</span>
+                    <div class="enum-field">
+                        @foreach(['Self-Managed', 'NDIA', 'Plan Managed'] as $option)
+                            <span class="enum-option {{ ($initial->funding->type_of_funding ?? '') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
                 </td>
                 <td style="width: 25%">
                     <span class="label">Funding Contact Person</span>
