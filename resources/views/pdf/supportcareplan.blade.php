@@ -107,6 +107,117 @@
             color: #9ca3af;
             font-style: italic;
         }
+
+       .enum-field {
+    display: flex;
+    gap: 15px;
+    margin-top: 4px;
+    flex-wrap: wrap;
+}
+
+.enum-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 2px 0;
+    cursor: default;
+}
+
+.radio-circle {
+    width: 14px;
+    height: 14px;
+    border: 2px solid #d1d5db;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.radio-circle.checked {
+    border-color: #0284c7;
+    background-color: #0284c7;
+}
+
+.radio-circle.checked::after {
+    content: "";
+    width: 6px;
+    height: 6px;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.radio-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: #374151;
+    line-height: 1.2;
+    white-space: nowrap;
+}
+
+.enum-field {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 8px;
+}
+
+.enum-option {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.checkbox-box {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #000;
+    text-align: center;
+    line-height: 14px;
+    font-size: 12px;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+}
+
+.checkbox-box.checked {
+    border-color: #0284c7;
+    background-color: #0284c7;
+    color: white;
+}
+
+
+
+.checkbox-label {
+    font-size: 14px;
+}
+
+.enum-field {
+    display: flex;
+    gap: 15px;
+    margin-top: 5px;
+}
+
+.enum-option {
+    padding: 4px 12px;
+    border: 2px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #6b7280;
+    background-color: #f9fafb;
+    transition: all 0.2s ease;
+}
+
+.enum-option.selected {
+    border-color: #0284c7;
+    background-color: #0284c7;
+    color: white;
+}
+
+
+
     </style>
 </head>
 <body>
@@ -179,32 +290,46 @@
         </table>
     </div>
 
-    <!-- Alternate Decision Maker -->
-    <div class="section">
-        <div class="section-header">Alternate Decision Maker</div>
-        <table>
-            <tr>
-                <td>
-                    <span class="label">Type</span>
-                    <span class="value">{{ $supportCarePlan->alternateDecisionMaker->type ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">First Name</span>
-                    <span class="value">{{ $supportCarePlan->alternateDecisionMaker->first_name ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Surname</span>
-                    <span class="value">{{ $supportCarePlan->alternateDecisionMaker->surname ?? 'N/A' }}</span>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <span class="label">Notes</span>
-                    <span class="value">{{ $supportCarePlan->alternateDecisionMaker->notes ?? 'N/A' }}</span>
-                </td>
-            </tr>
-        </table>
-    </div>
+   <div class="section">
+    <div class="section-header">Alternate Decision Maker</div>
+    <table>
+        <tr>
+            <td colspan="3">
+                <span class="label">Type</span>
+                <div class="enum-field">
+                    @foreach([
+                        'not_applicable' => 'Not Applicable',
+                        'partner' => 'Partner',
+                        'carer' => 'Carer',
+                        'guardian' => 'Guardian',
+                        'parent' => 'Parent',
+                        'advocacy' => 'Advocacy',
+                        'other' => 'Other'
+                    ] as $value => $label)
+                        <div class="enum-option">
+                            <span class="radio-circle {{ ($supportCarePlan->alternateDecisionMaker->type ?? '') === $value ? 'checked' : '' }}"></span>
+                            <span class="radio-label">{{ $label }}</span>
+                        </div>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">First Name</span>
+                <span class="value">{{ $supportCarePlan->alternateDecisionMaker->first_name ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Surname</span>
+                <span class="value">{{ $supportCarePlan->alternateDecisionMaker->surname ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Notes</span>
+                <span class="value">{{ $supportCarePlan->alternateDecisionMaker->notes ?? 'N/A' }}</span>
+            </td>
+        </tr>
+    </table>
+</div>
 
     <!-- Goals Section -->
     @php
@@ -303,68 +428,118 @@ $goalCategories = [
     </div>
 @endforeach
 
-    <!-- Communication Plans -->
     <div class="section">
-        <div class="section-header">Communication Plan</div>
-        <table>
-            @if($supportCarePlan->communicationPlans && $supportCarePlan->communicationPlans->count() > 0)
-                @foreach($supportCarePlan->communicationPlans as $communication)
-                    @php
-                        // Normalize helps_me_talk
-                        $helpsMeTalk = $communication->helps_me_talk;
-                        if (is_string($helpsMeTalk)) {
-                            $decoded = json_decode($helpsMeTalk, true);
-                            $helpsMeTalk = is_array($decoded) ? $decoded : [$helpsMeTalk];
-                        } elseif (!is_array($helpsMeTalk)) {
-                            $helpsMeTalk = [];
+    <div class="section-header">Communication Plan</div>
+    <table>
+        @if($supportCarePlan->communicationPlans && $supportCarePlan->communicationPlans->count() > 0)
+            @foreach($supportCarePlan->communicationPlans as $communication)
+                @php
+                    // Helper function to normalize JSON/array data
+                    function normalizeCommunicationData($data) {
+                        if (is_string($data)) {
+                            $decoded = json_decode($data, true);
+                            return is_array($decoded) ? $decoded : [$data];
+                        } elseif (!is_array($data)) {
+                            return [];
                         }
+                        return $data;
+                    }
 
-                        // Normalize helps_me_understand
-                        $helpsMeUnderstand = $communication->helps_me_understand;
-                        if (is_string($helpsMeUnderstand)) {
-                            $decoded = json_decode($helpsMeUnderstand, true);
-                            $helpsMeUnderstand = is_array($decoded) ? $decoded : [$helpsMeUnderstand];
-                        } elseif (!is_array($helpsMeUnderstand)) {
-                            $helpsMeUnderstand = [];
-                        }
-                    @endphp
+                    $helpsMeTalk = normalizeCommunicationData($communication->helps_me_talk);
+                    $helpsMeUnderstand = normalizeCommunicationData($communication->helps_me_understand);
+                    $pleaseCommunicateBy = normalizeCommunicationData($communication->please_communicate_by);
+                @endphp
 
-                    <tr>
-                        <td>
-                            <span class="label">Helps me talk</span>
-                            <span class="value">
-                                @if(!empty($helpsMeTalk))
-                                    {{ implode(', ', $helpsMeTalk) }}
-                                @else
-                                    N/A
-                                @endif
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Helps me understand</span>
-                            <span class="value">
-                                @if(!empty($helpsMeUnderstand))
-                                    {{ implode(', ', $helpsMeUnderstand) }}
-                                @else
-                                    N/A
-                                @endif
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Emergency Communication</span>
-                            <span class="value">{{ $communication->emergency_communication ?? 'N/A' }}</span>
-                        </td>
-                    </tr>
-                @endforeach
+                <!-- This Helps Me Talk To You -->
+                <tr>
+                    <td colspan="3">
+                        <span class="label"><strong>This Helps Me Talk To You</strong></span>
+                        <div class="enum-field">
+                            @foreach([
+                                'Interpreter' => 'Interpreter',
+                                'Symbols' => 'Symbols',
+                                'Pictures' => 'Pictures',
+                                'Gesturing' => 'Gesturing',
+                                'Facial Expressions' => 'Facial Expressions',
+                                'Simple words' => 'Simple words',
+                                'When you wait for me to respond' => 'When you wait for me to respond',
+                                'My Supporter/carer' => 'My Supporter/carer',
+                                'Other (Including Assistive technology)' => 'Other (Including Assistive technology)'
+                            ] as $value => $label)
+                                <div class="enum-option">
+                                    <span class="checkbox-box {{ in_array($value, $helpsMeTalk) ? 'checked' : '' }}"></span>
+                                    <span class="checkbox-label">{{ $label }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
 
-            @endif
-        </table>
-    </div>
+                <!-- This is What Helps Me To Understand You -->
+                <tr>
+                    <td colspan="3">
+                        <span class="label"><strong>This is What Helps Me To Understand You</strong></span>
+                        <div class="enum-field">
+                            @foreach([
+                                'Short plain sentences' => 'Short plain sentences',
+                                'Simple words' => 'Simple words',
+                                'Concrete examples' => 'Concrete examples',
+                                'Diagrams or pictures' => 'Diagrams or pictures',
+                                'Checking to see if I understand' => 'Checking to see if I understand',
+                                'Asking me to explain it' => 'Asking me to explain it',
+                                'Asking my supporter/carer to explain it to me' => 'Asking my supporter/carer to explain it to me',
+                                'Using real objects' => 'Using real objects',
+                                'Giving me a demonstration' => 'Giving me a demonstration',
+                                'Other' => 'Other'
+                            ] as $value => $label)
+                                <div class="enum-option">
+                                    <span class="checkbox-box {{ in_array($value, $helpsMeUnderstand) ? 'checked' : '' }}"></span>
+                                    <span class="checkbox-label">{{ $label }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
 
+                <!-- Please communicate with me by -->
+                <tr>
+                    <td colspan="3">
+                        <span class="label"><strong>Please communicate with me by</strong></span>
+                        <div class="enum-field">
+                            @foreach([
+                                'Speaking directly to me' => 'Speaking directly to me',
+                                'Taking time to tell me' => 'Taking time to tell me',
+                                'Waiting for me to respond' => 'Waiting for me to respond',
+                                'Writing down notes in my care plan' => 'Writing down notes in my care plan',
+                                'Knowing I cannot talk but can hear and understand' => 'Knowing I cannot talk but can hear and understand',
+                                'Other' => 'Other'
+                            ] as $value => $label)
+                                <div class="enum-option">
+                                    <span class="checkbox-box {{ in_array($value, $pleaseCommunicateBy) ? 'checked' : '' }}"></span>
+                                    <span class="checkbox-label">{{ $label }}</span>
+                                </div>
+                            @endforeach
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- Emergency Communication -->
+                <tr>
+                    <td colspan="3">
+                        <span class="label"><strong>Emergency Communication</strong></span>
+                        <span class="value">{{ $communication->emergency_communication ?? 'N/A' }}</span>
+                    </td>
+                </tr>
+            @endforeach
+        @else
+            <tr>
+                <td colspan="3">
+                    <span class="value">No communication plan available</span>
+                </td>
+            </tr>
+        @endif
+    </table>
+</div>
     <!-- Emergency Disaster Plan -->
     <div class="section">
         <div class="section-header">Emergency & Disaster Plan</div>
@@ -466,30 +641,71 @@ $goalCategories = [
     </div>
 
     <!-- Emergency Scenarios -->
-    <div class="section">
-        <div class="section-header">Emergency Scenarios and Support Actions</div>
-        <table>
-            @if($supportCarePlan->emergencyScenario)
-                <tr>
-                    <td><span class="label">Admitted to Hospital</span> <span class="value">{{ $supportCarePlan->emergencyScenario->admitted_to_hospital ? 'Yes' : 'No' }}</span></td>
-                    <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->admitted_to_hospital_action ?? 'N/A' }}</span></td>
-                </tr>
-                <tr>
-                    <td><span class="label">Medical Emergencies</span> <span class="value">{{ $supportCarePlan->emergencyScenario->medical_emergencies ? 'Yes' : 'No' }}</span></td>
-                    <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->medical_emergencies_action ?? 'N/A' }}</span></td>
-                </tr>
-                <tr>
-                    <td><span class="label">Other Likely Medical Emergency</span> <span class="value">{{ $supportCarePlan->emergencyScenario->other_likely_medical_emergency ? 'Yes' : 'No' }}</span></td>
-                    <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->other_likely_medical_emergency_action ?? 'N/A' }}</span></td>
-                </tr>
-                <tr>
-                    <td><span class="label">Natural Disaster</span> <span class="value">{{ $supportCarePlan->emergencyScenario->natural_disaster ? 'Yes' : 'No' }}</span></td>
-                    <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->natural_disaster_action ?? 'N/A' }}</span></td>
-                </tr>
-
-            @endif
-        </table>
-    </div>
+   <div class="section">
+    <div class="section-header">Emergency Scenarios and Support Actions</div>
+    <table>
+        @if($supportCarePlan->emergencyScenario)
+            <tr>
+                <td>
+                    <span class="label">Admitted to Hospital</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->admitted_to_hospital ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->admitted_to_hospital_action ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Medical Emergencies</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->medical_emergencies ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->medical_emergencies_action ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Other Likely Medical Emergency</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->other_likely_medical_emergency ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->other_likely_medical_emergency_action ?? 'N/A' }}</span></td>
+            </tr>
+            <tr>
+                <td>
+                    <span class="label">Natural Disaster</span>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->natural_disaster ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->natural_disaster_action ?? 'N/A' }}</span></td>
+            </tr>
+        @else
+            <tr>
+                <td colspan="2">
+                    <span class="value">No emergency scenarios available</span>
+                </td>
+            </tr>
+        @endif
+    </table>
+</div>
 
 </div>
 

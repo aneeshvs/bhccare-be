@@ -69,6 +69,41 @@
             font-weight: bold;
             width: 30%;
         }
+
+        .enum-field {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.enum-option {
+    padding: 3px 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 3px;
+    background-color: #f9fafb;
+    color: #374151;
+    font-size: 11px;
+    font-weight: 500;
+    word-break: break-word;
+    max-width: 200px;
+}
+
+.enum-option.selected {
+    background-color: #0284c7;
+    color: #ffffff;
+    border-color: #0369a1;
+    font-weight: bold;
+}
+
+.section-title {
+    background-color: #e0f2fe;
+    color: #0369a1;
+    padding: 8px 12px;
+    font-weight: bold;
+    border-left: 4px solid #0284c7;
+    margin-bottom: 8px;
+    border-radius: 4px;
+}
     </style>
 </head>
 <body>
@@ -118,7 +153,7 @@
     {{-- Consent --}}
     @if($serviceAgreement->consent)
     <table>
-        <tr><td colspan="2" class="section-title">2.Service Agreement</td></tr>
+        <tr><td colspan="2" class="section-title">2. Service Agreement</td></tr>
 
         <tr><th>Accepted Name</th><td>{{ $serviceAgreement->consent->accepted_name ?? '-' }}</td></tr>
         <tr><th>Accepted Position</th><td>{{ $serviceAgreement->consent->accepted_position ?? '-' }}</td></tr>
@@ -136,10 +171,22 @@
         <tr><th>Accepted Date</th><td>{{ formatDate($serviceAgreement->consent->accepted_date) }}</td></tr>
 
         <tr><th>Participant Name</th><td>{{ $serviceAgreement->consent->consents_participant_name ?? '-' }}</td></tr>
-        <tr><th>Participant Role</th><td>{{ $serviceAgreement->consent->participant_role ?? '-' }}</td></tr>
 
         <tr>
-            <th style="text-align:left; width:35%; padding:8px;"> Partcipant Signature</th>
+            <th>Participant Role</th>
+            <td>
+                <div class="enum-field">
+                    @foreach(['participant', 'representative'] as $option)
+                        <span class="enum-option {{ ($serviceAgreement->consent->participant_role ?? '') === $option ? 'selected' : '' }}">
+                            {{ ucfirst($option) }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th style="text-align:left; width:35%; padding:8px;">Participant Signature</th>
             <td style="padding:8px;">
                 @if(!empty($serviceAgreement->consent->participant_signature))
                     <img src="{{ $serviceAgreement->consent->participant_signature }}" alt="Signature" style="max-height:70px; border:1px solid #ccc; padding:4px;">
@@ -179,9 +226,52 @@
 
         <tr><th>Verbal Date</th><td>{{ formatDate($serviceAgreement->consent->verbal_date) }}</td></tr>
 
-    </table>
-    @endif
+        <!-- Office Use Only Section with Checkbox Style -->
+        <tr>
+            <th colspan="2" class="section-title" style="padding-top: 20px;">Office Use Only</th>
+        </tr>
 
+        <tr>
+            <th>Received Signed Copy</th>
+            <td>
+                <div class="enum-field">
+                    @foreach(['Yes', 'No'] as $option)
+                        <span class="enum-option {{ ($serviceAgreement->consent->received_signed_copy ?? '') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th>Agreed Verbally</th>
+            <td>
+                <div class="enum-field">
+                    @foreach(['Yes', 'No'] as $option)
+                        <span class="enum-option {{ ($serviceAgreement->consent->agreed_verbally ?? '') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+
+        <tr>
+            <th>CMS Comments Entered</th>
+            <td>
+                <div class="enum-field">
+                    @foreach(['Yes', 'No'] as $option)
+                        <span class="enum-option {{ ($serviceAgreement->consent->cms_comments_entered ?? '') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+
+    </table>
+@endif
 </div>
 </body>
 </html>

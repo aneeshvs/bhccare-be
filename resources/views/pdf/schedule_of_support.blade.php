@@ -96,6 +96,32 @@
         .text-center {
             text-align: center;
         }
+
+        .enum-field {
+    display: flex;
+    gap: 10px;
+    margin-top: 4px;
+}
+
+.enum-option {
+    padding: 3px 6px;
+    border: 1px solid #d1d5db;
+    border-radius: 3px;
+    background-color: #f9fafb;
+    color: #374151;
+    font-size: 11px;
+    font-weight: 500;
+    word-break: break-word;
+    max-width: 200px;
+}
+
+.enum-option.selected {
+    background-color: #0284c7;
+    color: #ffffff;
+    border-color: #0369a1;
+    font-weight: bold;
+}
+
     </style>
 </head>
 <body>
@@ -163,53 +189,70 @@
 
     <!-- Transport Section -->
     <div class="section">
-        <div class="section-header">Funded Support</div>
-        @if($schedule->transport)
-        <table>
-
-            <tr>
-                <td><span class="label">Support Name</span><span class="value">{{ $schedule->transport->support_name ?? 'N/A' }}</span></td>
-                <td><span class="label">Description</span><span class="value">{{ $schedule->transport->description ?? 'N/A' }}</span></td>
-            </tr>
-            <tr>
-                <td><span class="label">Price</span><span class="value">{{ $schedule->transport->price ?? 'N/A' }}</span></td>
-                <td><span class="label">Payment Information</span><span class="value">{{ $schedule->transport->payment_information ?? 'N/A' }}</span></td>
-            </tr>
-            <tr>
-                <td><span class="label">Invoicing Details</span><span class="value">{{ $schedule->transport->invoicing_details ?? 'N/A' }}</span></td>
-                <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->transport->delivery_details ?? 'N/A' }}</span></td>
-            </tr>
-            <tr>
-                <td colspan="2"><span class="label">Grand Total</span><span class="value">${{ $schedule->transport->grand_total ?? '0.00' }}</span></td>
-            </tr>
-        </table>
-        @else
-        <p>No transport details available.</p>
-        @endif
-    </div>
+    <div class="section-header">Funded Support</div>
+    @if($schedule->transport)
+    <table>
+        <tr>
+            <td><span class="label">Support Name</span><span class="value">{{ $schedule->transport->support_name ?? 'N/A' }}</span></td>
+            <td><span class="label">Description</span><span class="value">{{ $schedule->transport->description ?? 'N/A' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Price</span><span class="value">{{ $schedule->transport->price ?? 'N/A' }}</span></td>
+            <td>
+                <span class="label">Payment Information</span>
+                <div class="enum-field">
+                    @foreach(['NDIA', 'Self-managed', 'Plan managed'] as $option)
+                        <span class="enum-option {{ ($schedule->transport->payment_information ?? '') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td><span class="label">Invoicing Details</span><span class="value">{{ $schedule->transport->invoicing_details ?? 'N/A' }}</span></td>
+            <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->transport->delivery_details ?? 'N/A' }}</span></td>
+        </tr>
+        <tr>
+            <td colspan="2"><span class="label">Grand Total</span><span class="value">${{ $schedule->transport->grand_total ?? '0.00' }}</span></td>
+        </tr>
+    </table>
+    @else
+    <p>No transport details available.</p>
+    @endif
+</div>
 
     <!-- Unfunded Supports -->
     <div class="section">
-        <div class="section-header">Unfunded Supports</div>
-        @if($schedule->unfundedSupport)
-        <table>
-            <tr>
-                <td><span class="label">Support Name</span><span class="value">{{ $schedule->unfundedSupport->unfunded_support_name ?? 'N/A' }}</span></td>
-                <td><span class="label">Description</span><span class="value">{{ $schedule->unfundedSupport->unfunded_description ?? 'N/A' }}</span></td>
-            </tr>
-            <tr>
-                <td><span class="label">Price Information</span><span class="value">{{ $schedule->unfundedSupport->unfunded_price_information ?? 'N/A' }}</span></td>
-                <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</span></td>
-            </tr>
-            <tr>
-                <td><span class="label">Price</span><span class="value">{{ $schedule->unfundedSupport->unfunded_price ?? 'N/A' }}</span></td>
-                <td><span class="label">Grand Total</span><span class="value">${{ $schedule->unfundedSupport->unfunded_grand_total ?? '0.00' }}</span></td>
-            </tr>
-        </table>
-        @else
-        <p>No unfunded support details available.</p>
-        @endif
-    </div>
+    <div class="section-header">Unfunded Supports</div>
+    @if($schedule->unfundedSupport)
+    <table>
+        <tr>
+            <td><span class="label">Support Name</span><span class="value">{{ $schedule->unfundedSupport->unfunded_support_name ?? 'N/A' }}</span></td>
+            <td><span class="label">Description</span><span class="value">{{ $schedule->unfundedSupport->unfunded_description ?? 'N/A' }}</span></td>
+        </tr>
+        <tr>
+            <td>
+                <span class="label">Price Information</span>
+                <div class="enum-field">
+                    @foreach(['Free', 'Negotiated', 'Market rate', 'Sliding scale', 'Other'] as $option)
+                        <span class="enum-option {{ ($schedule->unfundedSupport->unfunded_price_information ?? '') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+            <td><span class="label">Delivery Details</span><span class="value">{{ $schedule->unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</span></td>
+        </tr>
+        <tr>
+            <td><span class="label">Price</span><span class="value">{{ $schedule->unfundedSupport->unfunded_price ?? 'N/A' }}</span></td>
+            <td><span class="label">Grand Total</span><span class="value">${{ $schedule->unfundedSupport->unfunded_grand_total ?? '0.00' }}</span></td>
+        </tr>
+    </table>
+    @else
+    <p>No unfunded support details available.</p>
+    @endif
+</div>
 
 <div style="page-break-before: always;"></div>
 

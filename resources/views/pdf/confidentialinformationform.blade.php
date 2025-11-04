@@ -19,13 +19,14 @@
             background: white;
             border: 1px solid #e5e7eb;
             border-radius: 12px;
-            padding: 20px 30px;
+            padding: 30px 40px;
         }
 
         .header {
             position: relative;
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 40px;
+            padding-top: 10px;
         }
         .logo {
             position: absolute;
@@ -35,43 +36,55 @@
             height: auto;
         }
         .header h2 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: bold;
             color: #1e40af;
             margin: 0;
+            padding-top: 10px;
         }
 
         .section-title {
             background-color: #e0f2fe;
             color: #0369a1;
             font-weight: bold;
-            padding: 10px 15px;
+            padding: 12px 18px;
             border-left: 4px solid #0284c7;
-            font-size: 13px;
-            margin-top: 30px;
-            margin-bottom: 8px;
-            border-radius: 4px;
+            font-size: 14px;
+            margin-top: 35px;
+            margin-bottom: 15px;
+            border-radius: 6px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 18px;
+            margin-bottom: 25px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         th, td {
             border: 1px solid #e5e7eb;
-            padding: 6px 8px;
+            padding: 10px 12px;
             text-align: left;
             vertical-align: top;
         }
         th {
-            background-color: #f9fafb;
-            font-weight: bold;
+            background-color: #f8fafc;
+            font-weight: 600;
             width: 30%;
+            color: #374151;
+            font-size: 12px;
+        }
+        td {
+            background-color: white;
+            font-size: 12px;
         }
 
         .value {
             color: #6b7280;
+            line-height: 1.4;
         }
 
         .empty-field {
@@ -82,6 +95,45 @@
         .page-break {
             page-break-before: always;
             break-before: page;
+        }
+
+        .enum-field {
+            display: flex;
+            gap: 12px;
+            margin-top: 6px;
+        }
+
+        .enum-option {
+            padding: 4px 8px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            background-color: #f9fafb;
+            color: #374151;
+            font-size: 11px;
+            font-weight: 500;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .enum-option.selected {
+            background-color: #0284c7;
+            color: #ffffff;
+            border-color: #0369a1;
+            font-weight: bold;
+        }
+
+        .agency-separator {
+            background-color: #f3f4f6;
+            height: 8px;
+            border-left: 3px solid #9ca3af;
+        }
+
+        .signature-image {
+            max-height: 80px;
+            border: 1px solid #d1d5db;
+            padding: 6px;
+            border-radius: 4px;
+            background-color: #f9fafb;
         }
     </style>
 </head>
@@ -101,7 +153,7 @@
 
     <!-- Participant Information -->
     <table>
-        <tr><td colspan="2" class="section-title">1.Confidential Information</td></tr>
+        <tr><td colspan="2" class="section-title" style="margin-top: 0;">1. Confidential Information</td></tr>
         <tr><th>Full Name</th><td><span class="value">{{ $form->participant_name ?? 'N/A' }}</span></td></tr>
         <tr><th>Date of Birth</th><td><span class="value">{{ formatDate($form->date_of_birth) }}</span></td></tr>
         <tr><th>Address</th><td><span class="value">{{ $form->address ?? 'N/A' }}</span></td></tr>
@@ -113,11 +165,11 @@
 
     <!-- Confidential Information Agencies -->
     <table>
-        <tr><td colspan="2" class="section-title">2.Confidential Information Agencies</td></tr>
+        <tr><td colspan="2" class="section-title">2. Confidential Information Agencies</td></tr>
         @if($form->agencies && $form->agencies->count() > 0)
             @foreach($form->agencies as $index => $agency)
                 @if($index > 0)
-                    <tr><td colspan="2" style="background-color: #f3f4f6; padding: 5px;"></td></tr>
+                    <tr><td colspan="2" class="agency-separator"></td></tr>
                 @endif
                 <tr><th>Name</th><td><span class="value">{{ $agency->name ?? 'N/A' }}</span></td></tr>
                 <tr><th>Role / Position</th><td><span class="value">{{ $agency->role ?? 'N/A' }}</span></td></tr>
@@ -138,25 +190,28 @@
 
     <!-- Written Participant Consent -->
     <table>
-        <tr><td colspan="2" class="section-title">3.Confidential Consent</td></tr>
+        <tr><td colspan="2" class="section-title">3. Confidential Consent</td></tr>
         @if($form->consent)
             <tr><th>Date</th><td><span class="value">{{ formatDate($form->consent->signed_date) }}</span></td></tr>
-            <tr><th>Signed By</th><td><span class="value">
-                @if($form->consent->signed_by === 'participant')
-                    Participant
-                @elseif($form->consent->signed_by === 'representative')
-                    Authorized Representative
-                @else
-                    {{ $form->consent->signed_by ?? 'N/A' }}
-                @endif
-            </span></td></tr>
+            <tr>
+                <th>Signed By</th>
+                <td>
+                    <div class="enum-field">
+                        @foreach(['participant' => 'Participant', 'authorized_rep' => 'Authorized Representative'] as $value => $label)
+                            <span class="enum-option {{ ($form->consent->signed_by ?? '') === $value ? 'selected' : '' }}">
+                                {{ $label }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+            </tr>
             <tr><th>Name</th><td><span class="value">{{ $form->consent->name ?? 'N/A' }}</span></td></tr>
             <tr><th>Witnessed By</th><td><span class="value">{{ $form->consent->witnessed_by ?? 'N/A' }}</span></td></tr>
             <tr>
                 <th>Participant Signature</th>
                 <td>
                     @if(isset($signatureImage) && $signatureImage)
-                        <img src="{{ $signatureImage }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
+                        <img src="{{ $signatureImage }}" class="signature-image" alt="Participant Signature">
                     @else
                         <span class="value empty-field">No signature available</span>
                     @endif
@@ -164,7 +219,15 @@
             </tr>
         @else
             <tr><th>Date</th><td><span class="value empty-field">No consent data available</span></td></tr>
-            <tr><th>Signed By</th><td><span class="value empty-field">No consent data available</span></td></tr>
+            <tr>
+                <th>Signed By</th>
+                <td>
+                    <div class="enum-field">
+                        <span class="enum-option">Participant</span>
+                        <span class="enum-option">Authorized Representative</span>
+                    </div>
+                </td>
+            </tr>
             <tr><th>Name</th><td><span class="value empty-field">No consent data available</span></td></tr>
             <tr><th>Witnessed By</th><td><span class="value empty-field">No consent data available</span></td></tr>
             <tr><th>Participant Signature</th><td><span class="value empty-field">No signature available</span></td></tr>
@@ -173,13 +236,13 @@
 
     <!-- Verbal Consent -->
     <table>
-        <tr><td colspan="2" class="section-title">4.Verbal Consent</td></tr>
+        <tr><td colspan="2" class="section-title">4. Verbal Consent</td></tr>
         @if($form->verbal)
             <tr>
                 <th>Verbal Signature</th>
                 <td>
                     @if(!empty($form->verbal->verbal_signature))
-                        <img src="{{ $form->verbal->verbal_signature }}" style="max-height:70px; border:1px solid #ccc; padding:4px;">
+                        <img src="{{ $form->verbal->verbal_signature }}" class="signature-image" alt="Verbal Signature">
                     @else
                         <span class="value empty-field">No signature available</span>
                     @endif
@@ -195,21 +258,98 @@
             <tr><th>Position</th><td><span class="value empty-field">No verbal consent data available</span></td></tr>
         @endif
     </table>
-<div style="page-break-before: always;"></div>
+
+
 
     <!-- Pre-Consent Disclosure Checklist -->
     <table>
-        <tr><td colspan="2" class="section-title">5.Pre-Consent Disclosure Checklist</td></tr>
+        <tr><td colspan="2" class="section-title">5. Pre-Consent Disclosure Checklist</td></tr>
         @if($form->preConsentDisclosure)
-            <tr><th>Discussed referral to other services/agencies</th><td><span class="value">{{ $form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No' }}</span></td></tr>
-            <tr><th>Explained release agreement and service provision</th><td><span class="value">{{ $form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No' }}</span></td></tr>
-            <tr><th>Explained sharing without consent (health/safety/legal)</th><td><span class="value">{{ $form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No' }}</span></td></tr>
-            <tr><th>Provided privacy information if requested</th><td><span class="value">{{ $form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No' }}</span></td></tr>
+            <tr>
+                <th>Discussed referral to other services/agencies</th>
+                <td>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($form->preConsentDisclosure->discuss_referral_services ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Explained release agreement and service provision</th>
+                <td>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($form->preConsentDisclosure->explain_release_agreement ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Explained sharing without consent (health/safety/legal)</th>
+                <td>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($form->preConsentDisclosure->explain_share_without_consent ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Provided privacy information if requested</th>
+                <td>
+                    <div class="enum-field">
+                        @foreach(['Yes', 'No'] as $option)
+                            <span class="enum-option {{ ($form->preConsentDisclosure->provide_privacy_information ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                                {{ $option }}
+                            </span>
+                        @endforeach
+                    </div>
+                </td>
+            </tr>
         @else
-            <tr><th>Discussed referral to other services/agencies</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
-            <tr><th>Explained release agreement and service provision</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
-            <tr><th>Explained sharing without consent (health/safety/legal)</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
-            <tr><th>Provided privacy information if requested</th><td><span class="value empty-field">No disclosure data available</span></td></tr>
+            <tr>
+                <th>Discussed referral to other services/agencies</th>
+                <td>
+                    <div class="enum-field">
+                        <span class="enum-option">Yes</span>
+                        <span class="enum-option">No</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Explained release agreement and service provision</th>
+                <td>
+                    <div class="enum-field">
+                        <span class="enum-option">Yes</span>
+                        <span class="enum-option">No</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Explained sharing without consent (health/safety/legal)</th>
+                <td>
+                    <div class="enum-field">
+                        <span class="enum-option">Yes</span>
+                        <span class="enum-option">No</span>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <th>Provided privacy information if requested</th>
+                <td>
+                    <div class="enum-field">
+                        <span class="enum-option">Yes</span>
+                        <span class="enum-option">No</span>
+                    </div>
+                </td>
+            </tr>
         @endif
     </table>
 
