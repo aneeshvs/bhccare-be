@@ -3356,6 +3356,24 @@
             </td>
         </tr>
 
+        <!-- MISSING FIELD ADDED HERE -->
+        <tr>
+            <td>
+                <span class="label">Do you want support for community engagement?</span>
+                <div class="enum-field">
+                    @foreach(['Yes', 'No'] as $option)
+                        <span class="enum-option {{ ($supportPlan->socialConnection->wants_support_for_community_engagement ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+            <td>
+                <span class="label">Support for Community Engagement Details</span>
+                <span class="value">{{ $supportPlan->socialConnection->support_for_community_engagement_details ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
         <tr>
             <td>
                 <span class="label">Do you need support accessing the community?</span>
@@ -3504,13 +3522,20 @@
                     <span class="label">Do you need support with domestic assistance within the home?</span>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportPlan->homeMaintenance->domestic_assistance ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($supportPlan->homeMaintenance->needs_domestic_assistance ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
                 <td>
+                    <span class="label">Domestic Assistance Type</span>
+                    <span class="value">{{ $supportPlan->homeMaintenance->domestic_assistance_type ?? 'N/A' }}</span>
+                </td>
+            </tr>
+
+            <tr>
+                <td colspan="2">
                     <span class="label">Domestic Assistance Details</span>
                     <span class="value">{{ $supportPlan->homeMaintenance->domestic_assistance_details ?? 'N/A' }}</span>
                 </td>
@@ -3518,77 +3543,73 @@
 
             <tr>
                 <td>
-                    <span class="label">Level of independence</span>
-                    <span class="value">{{ $supportPlan->homeMaintenance->domestic_independence ?? 'N/A' }}</span>
-                </td>
-                <td>
-                    <span class="label">Do you also need help obtaining safe and approved cleaning products and equipment?</span>
+                    <span class="label">Do you need help obtaining safe and approved cleaning products and equipment?</span>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportPlan->homeMaintenance->cleaning_products_support ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($supportPlan->homeMaintenance->needs_help_with_cleaning_products ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-            </tr>
-
-            <tr>
                 <td>
                     <span class="label">Cleaning Products Details</span>
                     <span class="value">{{ $supportPlan->homeMaintenance->cleaning_products_details ?? 'N/A' }}</span>
                 </td>
+            </tr>
+
+            <tr>
                 <td>
                     <span class="label">Do you need support with maintaining your gardens to be safe?</span>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportPlan->homeMaintenance->garden_maintenance ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($supportPlan->homeMaintenance->needs_garden_support ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
+                <td>
+                    <span class="label">Garden Support Details</span>
+                    <span class="value">{{ $supportPlan->homeMaintenance->garden_support_details ?? 'N/A' }}</span>
+                </td>
             </tr>
 
             <tr>
-                <td>
-                    <span class="label">Garden Maintenance Details</span>
-                    <span class="value">{{ $supportPlan->homeMaintenance->garden_maintenance_details ?? 'N/A' }}</span>
-                </td>
                 <td>
                     <span class="label">Do you have any trouble navigating the house at night?</span>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportPlan->homeMaintenance->trouble_navigating_night ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($supportPlan->homeMaintenance->trouble_navigating_at_night ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
+                <td>
+                    <span class="label">Night Navigation Details</span>
+                    <span class="value">{{ $supportPlan->homeMaintenance->navigating_at_night_details ?? 'N/A' }}</span>
+                </td>
             </tr>
 
             <tr>
-                <td>
-                    <span class="label">Night Navigation Details</span>
-                    <span class="value">{{ $supportPlan->homeMaintenance->trouble_navigating_night_details ?? 'N/A' }}</span>
-                </td>
                 <td>
                     <span class="label">Are there any aspects of maintaining your home that worry you?</span>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportPlan->homeMaintenance->home_worry ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($supportPlan->homeMaintenance->home_maintenance_worries ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
+                <td>
+                    <span class="label">Home Maintenance Worries Details</span>
+                    <span class="value">{{ $supportPlan->homeMaintenance->home_maintenance_worries_details ?? 'N/A' }}</span>
+                </td>
             </tr>
 
             <tr>
-                <td>
-                    <span class="label">Home Worry Details</span>
-                    <span class="value">{{ $supportPlan->homeMaintenance->home_worry_details ?? 'N/A' }}</span>
-                </td>
                 <td>
                     <span class="label">Date Home Safety Assessment was last completed</span>
                     <span class="value">
@@ -3597,12 +3618,9 @@
                             : 'N/A' }}
                     </span>
                 </td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
+                <td>
                     <span class="label">Key areas of focus to be supported identified from Home</span>
-                    <span class="value">{{ $supportPlan->homeMaintenance->focus_areas ?? 'N/A' }}</span>
+                    <span class="value">{{ $supportPlan->homeMaintenance->home_safety_focus_areas ?? 'N/A' }}</span>
                 </td>
             </tr>
         @else
@@ -3612,6 +3630,8 @@
         @endif
     </table>
 </div>
+
+
 
 {{-- Financial Support --}}
 <div class="section">
@@ -4200,7 +4220,7 @@
                 <span class="label">Support from Family/Neighbour?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->stormFlooding->_storm_support_from_family_or_neighbour ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                        <span class="enum-option {{ ($supportPlan->stormFlooding->storm_support_from_family_or_neighbour ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                             {{ $option }}
                         </span>
                     @endforeach
@@ -4286,10 +4306,7 @@
                     @endforeach
                 </div>
             </td>
-            <td>
-                <span class="label">Medical Equipment Details</span>
-                <span class="value">{{ $supportPlan->powerOutage?->medical_equipment_details ?? 'N/A' }}</span>
-            </td>
+
         </tr>
 
         <tr>
@@ -4382,7 +4399,6 @@
     </table>
 </div>
 
-<div style="page-break-before: always;"></div>
 
 {{-- End of Life - Advanced Care Planning --}}
 <div class="section">
