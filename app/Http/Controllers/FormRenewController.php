@@ -81,6 +81,26 @@ class FormRenewController extends Controller
             $filePath = "{$dir}/{$fileName}";
             $pdf->save($filePath);
 
+
+            // Core PHP server URL
+                $corePhpUrl = config('services.core_php.base_url') . '/save-pdf.php';
+
+                // Use cURL to send file
+                $ch = curl_init($corePhpUrl);
+                curl_setopt($ch, CURLOPT_POST, true);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, [
+                    'uuid' => $uuid,
+                    'form' => $form,
+                    'pdf_file' => new \CURLFile($filePath, 'application/pdf', $fileName)
+                ]);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                $coreResponse = curl_exec($ch);
+                curl_close($ch);
+
+                // Optional: Log Core PHP response
+                Log::info("Core PHP PDF upload response: " . $coreResponse);
+
+
             // ✅ Step 7: Make public URL (after `php artisan storage:link`)
             $publicUrl = url("storage/renewed-pdfs/{$fileName}");
 
