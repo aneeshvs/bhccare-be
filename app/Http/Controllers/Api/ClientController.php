@@ -14,14 +14,14 @@ class ClientController extends UniversalController
 public function storeBasic(Request $request)
 {
     $validator = Validator::make($request->all(), [
-        'uuid'                => 'required|string|uuid',
+        'uuid'                => 'nullable|string|uuid',
         'full_name'           => 'required|string',
-        'date_of_birth'       => 'required|date',
-        'gender'              => 'required|in:Male,Female,Other',
-        'residential_address' => 'required|string',
-        'mobile'              => 'required|string',
+        'date_of_birth'       => 'nullable|date',
+        'gender'              => 'nullable|in:Male,Female,Other',
+        'residential_address' => 'nullable|string',
+        'mobile'              => 'nullable|string',
         'email'               => 'nullable|email',
-        'password'            => 'required',
+        'password'            => 'nullable',
     ]);
 
     if ($validator->fails()) {
