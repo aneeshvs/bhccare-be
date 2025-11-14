@@ -2,23 +2,23 @@
 
 return [
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*', 'sanctum/csrf-cookie'], // Limit to API endpoints (better security)
 
-    'allowed_methods' => ['*'],
+    'allowed_methods' => ['*'], // Allow all HTTP methods (GET, POST, etc.)
 
     'allowed_origins' => [
-        'https://frontend.bhccare.com.au/',
-        'https://bhccare.com.au/',
+        'http://localhost:3000', // Next.js frontend
+        'http://localhost',      // Core PHP via XAMPP or Apache
     ],
 
     'allowed_origins_patterns' => [],
 
-    'allowed_headers' => ['*'],
+    'allowed_headers' => ['*'], // Allow all headers
 
     'exposed_headers' => [],
 
     'max_age' => 0,
 
-    'supports_credentials' => false, // true if using cookies/auth
+    'supports_credentials' => false, // Set to true only if you're using cookies/auth with frontend
 
 ];

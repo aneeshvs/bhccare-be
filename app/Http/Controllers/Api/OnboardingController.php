@@ -34,115 +34,165 @@ use Illuminate\Support\Facades\Hash;
 class OnboardingController extends UniversalController
 {
     public function update(
-        StoreOnboardingRequest  $request,
-        InitialEnquiryService $initialService,
-        FundingDetailService $fundingDetailService,
-        EmergencyContactService $emergencyContactService,
-        ScheduleOfCareService   $scheduleOfCareService,
-        CulturalBackgroundService $culturalBackgroundService,
-        NdisGoalServices $ndisGoalService,
-        HealthProfessionalDetailService $healthProfessionalDetailService,
-        DiagnosisSummaryService $diagnosisSummaryService,
-        HealthInformationService $healthInformationService,
-        HealthcareSupportDetailService $healthcareSupportDetailService,
-        BehaviourSupportService $behaviourSupportService,
-        MedicalAlertService $medicalAlertService,
-        PreventiveHealthSummaryService $preventiveHealthSummaryService,
-        SupportInformationService $supportInformationService,
-        FormCompletionService $completionService // ✅ inject it
+    StoreOnboardingRequest  $request,
+    InitialEnquiryService $initialService,
+    FundingDetailService $fundingDetailService,
+    EmergencyContactService $emergencyContactService,
+    ScheduleOfCareService   $scheduleOfCareService,
+    CulturalBackgroundService $culturalBackgroundService,
+    NdisGoalServices $ndisGoalService,
+    HealthProfessionalDetailService $healthProfessionalDetailService,
+    DiagnosisSummaryService $diagnosisSummaryService,
+    HealthInformationService $healthInformationService,
+    HealthcareSupportDetailService $healthcareSupportDetailService,
+    BehaviourSupportService $behaviourSupportService,
+    MedicalAlertService $medicalAlertService,
+    PreventiveHealthSummaryService $preventiveHealthSummaryService,
+    SupportInformationService $supportInformationService,
+    FormCompletionService $completionService
+) {
+    $data = $request->validated();
+
+    // ✅ Determine form status
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+
+    $result = DB::transaction(function () use (
+        $data,
+        $initialService,
+        $fundingDetailService,
+        $emergencyContactService,
+        $scheduleOfCareService,
+        $culturalBackgroundService,
+        $ndisGoalService,
+        $healthProfessionalDetailService,
+        $diagnosisSummaryService,
+        $healthInformationService,
+        $healthcareSupportDetailService,
+        $behaviourSupportService,
+        $medicalAlertService,
+        $preventiveHealthSummaryService,
+        $supportInformationService,
+        $completionService
     ) {
-        $data = $request->validated();
-        //form completion
-         $isFinal = $request->boolean('submit_final');
-         $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
 
-        $result = DB::transaction(function () use (
-            $data,
-            $initialService,
-            $fundingDetailService,
-            $emergencyContactService,
-            $scheduleOfCareService,
-            $culturalBackgroundService,
-            $ndisGoalService,
-            $healthProfessionalDetailService,
-            $diagnosisSummaryService,
-            $healthInformationService,
-            $healthcareSupportDetailService,
-            $behaviourSupportService,
-            $medicalAlertService,
-            $preventiveHealthSummaryService,
-            $supportInformationService,
-            $completionService,
-        ) {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        // ✅ Save all sections
+        $initial = $initialService->save($data);
+        $data['initial_enquiry_id'] = $initial->id;
 
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+        $fundingDetailService->save($data);
+        $emergencyContactService->save($data);
+        $scheduleOfCareService->saveMany($data['schedule_of_cares'] ?? [], $initial->id);
+        $culturalBackgroundService->save($data);
+        $ndisGoalService->saveMany($data['ndis_goals_onboarding'] ?? [], $initial->id);
+        $healthProfessionalDetailService->saveMany($data['health_professional_details'] ?? [], $initial->id);
+        $diagnosisSummaryService->save($data);
+        $healthInformationService->save($data);
+        $healthcareSupportDetailService->save($data);
+        $behaviourSupportService->save($data);
+        $medicalAlertService->save($data);
+        $preventiveHealthSummaryService->save($data);
+        $supportInformationService->save($data);
 
-            $initial = $initialService->save($data);
-            $data['initial_enquiry_id'] = $initial->id;
+        // ✅ Calculate completion
+        $completion = $completionService->calculate($initial);
+        $initial['completion_percentage'] = $completion;
 
-            $funding = $fundingDetailService->save($data);
-            $contacts = $emergencyContactService->save($data);
-            $schedules = $scheduleOfCareService->saveMany($data['schedule_of_cares'] ?? [], $initial->id);
-            $cultural = $culturalBackgroundService->save($data);
-            $ndisGoals = $ndisGoalService->saveMany($data['ndis_goals_onboarding'] ?? [], $initial->id);
-            $healthProfessionals = $healthProfessionalDetailService->saveMany($data['health_professional_details'] ?? [], $initial->id);
-            $diagnosis = $diagnosisSummaryService->save($data);
-            $healthInfo = $healthInformationService->save($data);
-            $healthcare = $healthcareSupportDetailService->save($data);
-            $behaviourSupport = $behaviourSupportService->save($data);
-            $medicalAlert = $medicalAlertService->save($data);
-            $preventiveHealth = $preventiveHealthSummaryService->save($data);
-            $supportInformation = $supportInformationService->save($data);
+        // ✅ Update Core PHP system form status
+        try {
+            $response = Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                'uuid' => (string) $initial->uuid,
+                'form_name' => 'onboarding',
+                'completion_percentage' => $completion,
+                'form_status' => $data['form_status'] === 'completed' ? 'completed' : 'in_progress',
+            ]);
 
-            // ✅ Calculate completion
-            $completion = $completionService->calculate($initial);
-            $initial['completion_percentage'] =$completion;
-
-
-
-           try {
-                $response =  Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                    'uuid' => (string) $initial->uuid,
-                    'form_name' => 'onboarding',
-                    'completion_percentage' => $completion,
-                    'form_status' => $data['form_status'] === 'completed' ? 'completed' : 'in_progress',
+            if ($response->failed()) {
+                Log::warning('⚠️ Core PHP update-form-status failed', [
+                    'uuid' => $initial->uuid,
+                    'status' => $response->status(),
+                    'body' => $response->body(),
                 ]);
+            }
+        } catch (\Exception $e) {
+            Log::error('❌ Error calling Core PHP update-form-status: ' . $e->getMessage());
+        }
 
-                if ($response->failed()) {
-                    Log::warning('Core PHP update-form-status failed', [
-                        'uuid' => $initial->uuid,
-                        'status' => $response->status(),
-                        'body' => $response->body(),
-                    ]);
+        return $initial;
+    });
+
+    // ✅ After transaction — handle PDF generation for completed form
+    if ($data['form_status'] === 'completed') {
+        try {
+            // Generate PDF
+            $pdf = Pdf::loadView('pdf.onboarding_full_form', [
+                'initial' => $result->load([
+                    'funding', 'emergencyContact', 'scheduleOfCares', 'culturalBackground',
+                    'ndisGoals', 'healthProfessionalDetails', 'diagnosisSummary',
+                    'healthInformation', 'healthcareSupportDetail', 'behaviourSupport',
+                    'medicalAlert', 'preventiveHealthSummary', 'supportInformation', 'staff'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Onboarding_Form_' . $result->full_name . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ✅ Send PDF to Core PHP user_documents
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+            $createdBy = $result->staff_id;
+            if (!$createdBy) {
+                    $createdBy = 1; // adminbhc ID
                 }
 
-            } catch (\Exception $e) {
-                Log::error('Error calling Core PHP update-form-status: ' . $e->getMessage());
+                $response = Http::attach(
+                    'doc',
+                    file_get_contents($filePath),
+                    $fileName
+                )->asMultipart()->post($corePhpUrl, [
+                    'userid'    => $result->user_id,
+                    'title'     => 'Onboarding Form',
+                    'comments'  => 'Form completed successfully.',
+                    'companyid' => $result->company_id ?? 1,
+                    'createdby' => $createdBy,
+                ]);
+
+            if ($response->successful()) {
+                Log::info('✅ Form PDF synced to Core PHP user_documents', [
+                    'userid' => $result->user_id,
+                    'form'   => 'Onboarding',
+                    'response' => $response->body(),
+                ]);
+            } else {
+                Log::warning('⚠️ Failed to sync PDF to user_documents', [
+                    'userid' => $result->user_id,
+                    'status' => $response->status(),
+                    'body'   => $response->body(),
+                ]);
             }
 
+            // Cleanup
+            @unlink($filePath);
 
-            return compact(
-                'initial', 'funding', 'contacts', 'schedules',
-                'cultural', 'ndisGoals', 'healthProfessionals', 'diagnosis',
-                'healthInfo', 'healthcare', 'behaviourSupport', 'medicalAlert',
-                'preventiveHealth', 'supportInformation', 'completion'
-            );
-        });
-
-        return response()->json([
-            'success' => true, // ✅ this is expected by frontend
-            'status' => 200,
-            'message' => 'Form submitted.',
-            'data' => $result,
-        ]);
-
+        } catch (\Exception $e) {
+            Log::error('❌ Error exporting or sending PDF: ' . $e->getMessage());
+        }
     }
+
+    return response()->json([
+        'success' => true,
+        'status' => 200,
+        'message' => 'Form submitted successfully.',
+        'data' => $result,
+    ]);
+}
 
 
 

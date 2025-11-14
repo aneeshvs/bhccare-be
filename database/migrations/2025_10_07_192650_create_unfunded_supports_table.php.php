@@ -14,6 +14,8 @@ return new class extends Migration {
 
             // Unfunded Support fields
             $table->string('unfunded_support_name')->nullable();
+            $table->string('goal_key')->nullable(); // OR ->unique() if globally unique
+
             $table->text('unfunded_description')->nullable();
             $table->string('unfunded_price_information')->nullable();
             $table->text('unfunded_delivery_details')->nullable();

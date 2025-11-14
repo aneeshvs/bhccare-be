@@ -13,6 +13,7 @@ class UnfundedSupport extends DefaultDBModel
     protected $fillable = [
         'schedule_of_support_id',
         'unfunded_support_name',
+        'goal_key',
         'unfunded_description',
         'unfunded_price_information',
         'unfunded_delivery_details',

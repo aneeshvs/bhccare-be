@@ -5,43 +5,73 @@ namespace App\ScheduleOfSupportService;
 use App\Models\UnfundedSupport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class UnfundedSupportService
 {
-    public function save(array $data): UnfundedSupport
+    /**
+     * Save multiple UnfundedSupport records (like NdisGoalServices::saveMany)
+     *
+     * @param array $supports
+     * @param int $scheduleOfSupportId
+     * @return array
+     */
+    public function saveMany(array $supports, int $scheduleOfSupportId): array
     {
-        $conditions = [
-            'schedule_of_support_id' => $data['schedule_of_support_id'],
-        ];
+        $saved = [];
 
-        $record = UnfundedSupport::firstOrNew($conditions);
-        $record->fill($data);
+        foreach ($supports as $support) {
+            if (empty($support['description'] ?? null)) {
+                continue;
+            }
 
-        if ($record->isDirty()) {
-            $changes = $record->getDirty();
-            $oldValues = array_intersect_key($record->getOriginal(), $changes);
+            // Auto-generate a unique key per record like goal_key
+            if (empty($support['goal_key'])) {
+                $support['goal_key'] = 'support_' . Str::uuid();
+            }
 
-            $record->save();
-
-            Log::info("UnfundedSupport changes", [
-                'changes' => $changes,
-                'original' => $oldValues,
+            // Find existing or create new
+            $record = UnfundedSupport::firstOrNew([
+                'schedule_of_support_id' => $scheduleOfSupportId,
+                'goal_key' => $support['goal_key'],
             ]);
 
-            activity()
-                ->useLog('unfunded_support')
-                ->performedOn($record)
-                ->causedBy(Auth::user())
-                ->withProperties([
-                    'attributes' => $changes,
-                    'old' => $oldValues,
+            $original = $record->exists ? $record->getOriginal() : [];
+
+            $record->fill($support);
+            $record->schedule_of_support_id = $scheduleOfSupportId;
+
+            if ($record->isDirty()) {
+                $changes = $record->getDirty();
+                $oldValues = array_intersect_key($original, $changes);
+
+                $record->save();
+
+                Log::info("UnfundedSupport changes", [
+                    'changes' => $changes,
+                    'original' => $oldValues,
                     'schedule_of_support_id' => $record->schedule_of_support_id,
-                ])
-                ->log('Unfunded Support record updated');
-        } else {
-            $record->save();
+                ]);
+
+                activity()
+                    ->useLog('unfunded_support')
+                    ->performedOn($record)
+                    ->causedBy(Auth::user())
+                    ->withProperties([
+                        'attributes' => $changes,
+                        'old' => $oldValues,
+                        'schedule_of_support_id' => $record->schedule_of_support_id,
+                        'user_id' => $support['user_id'] ?? null,
+                        'staff_id' => $support['staff_id'] ?? Auth::id(),
+                    ])
+                    ->log('Unfunded Support record updated');
+            } else {
+                $record->save();
+            }
+
+            $saved[] = $record;
         }
 
-        return $record;
+        return $saved;
     }
 }

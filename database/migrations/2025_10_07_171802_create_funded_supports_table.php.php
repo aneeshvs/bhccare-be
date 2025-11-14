@@ -17,7 +17,9 @@ return new class extends Migration {
                   ->onDelete('cascade');
 
             // Funded support fields
-            $table->string('support_name')->nullable(); // Name of support/item number
+            $table->string('support_name')->nullable();
+          $table->string('goal_key')->nullable(); // OR ->unique() if globally unique
+
             $table->text('description')->nullable(); // Scope and volume
             $table->decimal('price', 10, 2)->nullable(); // Price
             $table->string('payment_information')->nullable(); // NDIA, self-managed, plan managed

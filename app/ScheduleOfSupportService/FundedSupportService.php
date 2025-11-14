@@ -5,46 +5,72 @@ namespace App\ScheduleOfSupportService;
 use App\Models\FundedSupport;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class FundedSupportService
 {
-    public function save(array $data): FundedSupport
+    /**
+     * Save multiple FundedSupport records
+     *
+     * @param array $supports
+     * @param int $scheduleOfSupportId
+     * @return array
+     */
+    public function saveMany(array $supports, int $scheduleOfSupportId): array
     {
-        $conditions = [
-            'schedule_of_support_id' => $data['schedule_of_support_id'],
+        $saved = [];
 
-        ];
+        foreach ($supports as $support) {
+            if (empty($support['description'] ?? null)) {
+                continue;
+            }
 
-        $record = FundedSupport::firstOrNew($conditions);
-        $record->fill($data);
+            // Auto-generate unique key per record (optional, similar to goal_key)
+            if (empty($support['goal_key'])) {
+                $support['goal_key'] = 'funded_' . Str::uuid();
+            }
 
-        if ($record->isDirty()) {
-            $changes = $record->getDirty();
-            $oldValues = array_intersect_key($record->getOriginal(), $changes);
-
-            $record->save();
-
-            Log::info("FundedSupport changes", [
-                'changes' => $changes,
-                'original' => $oldValues,
+            $record = FundedSupport::firstOrNew([
+                'schedule_of_support_id' => $scheduleOfSupportId,
+                'goal_key' => $support['goal_key'],
             ]);
 
-            activity()
-                ->useLog('funded_support')
-                ->performedOn($record)
-                ->causedBy(Auth::user())
-                ->withProperties([
-                    'attributes' => $changes,
-                    'old'        => $oldValues,
-                    'schedule_of_support_id' => $record->schedule_of_support_id,
-                    'uuid' => $record->uuid ?? null,
+            $original = $record->exists ? $record->getOriginal() : [];
 
-                ])
-                ->log('FundedSupport record updated');
-        } else {
-            $record->save();
+            $record->fill($support);
+            $record->schedule_of_support_id = $scheduleOfSupportId;
+
+            if ($record->isDirty()) {
+                $changes = $record->getDirty();
+                $oldValues = array_intersect_key($original, $changes);
+
+                $record->save();
+
+                Log::info("FundedSupport changes", [
+                    'changes' => $changes,
+                    'original' => $oldValues,
+                    'schedule_of_support_id' => $record->schedule_of_support_id,
+                ]);
+
+                activity()
+                    ->useLog('funded_support')
+                    ->performedOn($record)
+                    ->causedBy(Auth::user())
+                    ->withProperties([
+                        'attributes' => $changes,
+                        'old' => $oldValues,
+                        'schedule_of_support_id' => $record->schedule_of_support_id,
+                        'user_id' => $support['user_id'] ?? null,
+                        'staff_id' => $support['staff_id'] ?? Auth::id(),
+                    ])
+                    ->log('Funded Support record updated');
+            } else {
+                $record->save();
+            }
+
+            $saved[] = $record;
         }
 
-        return $record;
+        return $saved;
     }
 }

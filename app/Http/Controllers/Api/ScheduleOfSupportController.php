@@ -40,8 +40,8 @@ class ScheduleOfSupportController extends Controller
 
             $data['schedule_of_support_id'] = $schedule->id;
 
-            $fundedSupportService->save($data);
-            $unfundedSupportService->save($data);
+            $fundedSupportService->saveMany($data['funded_supports'] ?? [], $schedule->id);
+            $unfundedSupportService->saveMany($data['unfunded_supports'] ?? [], $schedule->id);
             $agreementSignatureService->save($data);
 
             // ✅ Calculate completion
