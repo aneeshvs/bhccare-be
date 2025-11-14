@@ -143,6 +143,7 @@ Route::get('/get-schedule-of-supports-uuid', [ScheduleOfSupportController::class
 Route::get('/schedule-of-supports/export-pdf/{uuid}', [ScheduleOfSupportController::class, 'exportFullFormPdf']); // Export PDF
 Route::get('/schedule-of-supports/{uuid}/export-pdf', [ScheduleOfSupportController::class, 'exportFullFormPdf']); // Export PDF alternate
 
+Route::delete('/schedule-of-support/section/remove', [ScheduleOfSupportController::class, 'removeSection']);
 
 
 

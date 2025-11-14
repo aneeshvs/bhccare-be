@@ -130,4 +130,83 @@ class ScheduleOfSupportController extends Controller
     ], 200);
 }
 
+public function removeSection(Request $request)
+{
+    $uuid   = $request->input('uuid');
+    $table  = $request->input('table');   // funded_supports / unfunded_supports
+    $field  = $request->input('field');   // e.g. support_name
+    $value  = $request->input('value');   // e.g. Community Participation
+
+    if (!$uuid || !$table || !$field || !$value) {
+        return response()->json([
+            'status' => false,
+            'message' => 'uuid, table, field, and value are required.',
+        ], 400);
+    }
+
+    // Find Schedule by UUID
+    $schedule = ScheduleOfSupport::where('uuid', $uuid)->first();
+    if (!$schedule) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Invalid UUID.',
+        ], 404);
+    }
+
+    // Map tables to models
+    $modelMap = [
+        'funded_supports'   => \App\Models\FundedSupport::class,
+        'unfunded_supports' => \App\Models\UnfundedSupport::class,
+    ];
+
+    if (!isset($modelMap[$table])) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Unsupported table.',
+        ], 400);
+    }
+
+    $modelClass = $modelMap[$table];
+
+    // Find the record
+    $record = $modelClass::where('schedule_of_support_id', $schedule->id)
+        ->where($field, $value)
+        ->first();
+
+    if (!$record) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Record not found.',
+        ], 404);
+    }
+
+    // Log old data
+    $original = $record->getOriginal();
+
+    // Delete
+    $record->delete();
+
+    // Activity Log
+    activity()
+        ->useLog($table)
+        ->performedOn($record)
+        ->causedBy(Auth::user())
+        ->withProperties([
+            'attributes' => [$field => $value],
+            'old' => $original,
+            'schedule_of_support_id' => $schedule->id,
+            'uuid' => $uuid,
+            'client_type' => $schedule->client_type,
+            'staff_id' => $schedule->staff_id,
+            'user_id' => $schedule->user_id,
+        ])
+        ->log(ucwords(str_replace('_', ' ', $table)) . ' entry deleted');
+
+    return response()->json([
+        'status' => true,
+        'message' => 'Entry removed successfully.',
+    ]);
+}
+
+
 }
