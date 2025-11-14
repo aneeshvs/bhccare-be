@@ -13,6 +13,7 @@ class FundedSupport extends DefaultDBModel
     protected $fillable = [
         'schedule_of_support_id',
         'support_name',
+        'goal_key',
         'description',
         'price',
         'payment_information',

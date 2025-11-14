@@ -14,6 +14,21 @@ class StoreScheduleOfSupportRequest extends FormRequest
         return true;
     }
 
+    protected function prepareForValidation()
+{
+    if (is_string($this->funded_supports)) {
+        $this->merge([
+            'funded_supports' => json_decode($this->funded_supports, true),
+        ]);
+    }
+
+    if (is_string($this->unfunded_supports)) {
+        $this->merge([
+            'unfunded_supports' => json_decode($this->unfunded_supports, true),
+        ]);
+    }
+}
+
     public function rules(): array
     {
         return array_merge(
@@ -46,27 +61,35 @@ class StoreScheduleOfSupportRequest extends FormRequest
     {
         return [
 
-            'support_name'           => 'nullable|string',
-            'description'            => 'nullable|string',
-            'price'                  => 'nullable| numeric',
-            'payment_information'    => 'nullable| string',
-            'invoicing_details'      => 'nullable| string',
-            'delivery_details'       => 'nullable| string',
-            'grand_total'            =>  'nullable| numeric',
-        ];
+            'funded_supports' => 'nullable|array',
+            'funded_supports.*' => 'array',
+
+            'funded_supports.*.support_name' => 'nullable|string',
+            'funded_supports.*.goal_key' => 'nullable|string',
+            'funded_supports.*.description' => 'nullable|string',
+            'funded_supports.*.price' => 'nullable|numeric',
+            'funded_supports.*.payment_information' => 'nullable|string',
+            'funded_supports.*.invoicing_details' => 'nullable|string',
+            'funded_supports.*.delivery_details' => 'nullable|string',
+            'funded_supports.*.grand_total' => 'nullable|numeric',
+            ];
     }
 
     private function unfundedrules(): array
     {
         return [
 
-            'unfunded_support_name' => 'nullable|string|max:255',
-            'unfunded_description' => 'nullable|string',
-            'unfunded_price_information' => 'nullable|string|max:255',
-            'unfunded_delivery_details' => 'nullable|string',
-            'unfunded_price' => 'nullable|numeric',
-            'unfunded_grand_total' => 'nullable|numeric',
-        ];
+           'unfunded_supports' => 'nullable|array',
+            'unfunded_supports.*' => 'array',
+
+            'unfunded_supports.*.unfunded_support_name' => 'nullable|string',
+            'unfunded_supports.*.goal_key' => 'nullable|string',
+            'unfunded_supports.*.unfunded_description' => 'nullable|string',
+            'unfunded_supports.*.unfunded_price_information' => 'nullable|string',
+            'unfunded_supports.*.unfunded_delivery_details' => 'nullable|string',
+            'unfunded_supports.*.unfunded_price' => 'nullable|numeric',
+            'unfunded_supports.*.unfunded_grand_total' => 'nullable|numeric',
+            ];
 
     }
 

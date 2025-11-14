@@ -21,7 +21,7 @@ class UnfundedSupportService
         $saved = [];
 
         foreach ($supports as $support) {
-            if (empty($support['description'] ?? null)) {
+            if (empty($support['unfunded_description'] ?? null)) {
                 continue;
             }
 
