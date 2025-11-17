@@ -7,8 +7,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://frontend.bhcapp.com.au/',
-        'https://bhcapp.com.au/',
+        'https://frontend.bhcapp.com.au',
+        'https://bhcapp.com.au',
     ],
 
     'allowed_origins_patterns' => [],
