@@ -120,8 +120,25 @@
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
         <div class="header-title">Form-F5a Individual Risk Assessment</div>
-        <div class="document-number">Document Number: <span>IRA-{{ $assessment->id }}</span></div>
     </div>
+
+    <table style="width: 100%;   border-collapse: collapse; margin-bottom: 20px;">
+        <tr>
+            <td colspan="3" style="padding-top: 10px; font-weight: bold; text-align: center;">
+                <strong>HOW TO USE THIS FORM</strong>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="3" style="padding-top: 10px;">
+                You are to ensure onsite completion of the Home Safety Check prior to the commencement of service delivery. 
+                Only complete those areas related to the services to be provided and ensure you address potential risks 
+                with the Participant and put in place risk controls. This safety checklist is to be completed each time 
+                changes to the supports or their delivery are required, and/or any changes made to the Participant’s 
+                Service Agreement and/or Support care plan.
+            </td>
+        </tr>
+    </table>
 
     <!-- Client Details -->
     <div class="section">
@@ -155,10 +172,10 @@
 </div>
 
 
-    <!-- Details -->
+   
     <!-- Details -->
 <div class="section">
-    <div class="section-header">Risk Assessment Details</div>
+    <div class="section-header">Vulnerability Details</div>
     <table>
         <tr>
             <td>
@@ -203,7 +220,7 @@
     <table>
         <tr>
             <td>
-                <span class="label">Hearing Impairment</span>
+                <span class="label">Does The participant have Hearing impairment</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->communications->hearing_impairment ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -223,7 +240,7 @@
         </tr>
         <tr>
             <td>
-                <span class="label">Speech Impairment</span>
+                <span class="label">Does The participant have Speech impairment</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->communications->speech_impairment ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -251,7 +268,7 @@
     <table>
         <tr>
             <td>
-                <span class="label">Oriented in Time/Place</span>
+                <span class="label">Is the Participant Oriented in time and place</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->cognitions->oriented_in_time_place ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -271,7 +288,7 @@
         </tr>
         <tr>
             <td>
-                <span class="label">Accepts Direction</span>
+                <span class="label">Client able to accept direction and instruction</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->cognitions->accepts_direction ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -291,7 +308,7 @@
         </tr>
         <tr>
             <td>
-                <span class="label">Short Term Memory Issues</span>
+                <span class="label">Does The participant experience Short-term memory issues</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->cognitions->short_term_memory_issues ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -313,12 +330,14 @@
 </div>
 @endif
 
+<div style="page-break-before: always;"></div>
 
 
     <!-- Mobility -->
    @if($assessment->mobilities)
 <div class="section">
     <div class="section-header">Assessment Mobility</div>
+
     <table>
         <tr>
             <td>
@@ -326,16 +345,6 @@
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->mobilities->walk_unaided ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
-                    @endforeach
-                </div>
-            </td>
-            <td>
-                <span class="label">Accessibility Required</span>
-                <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($assessment->mobilities->accessibility_required ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                             {{ $option }}
                         </span>
                     @endforeach
@@ -350,6 +359,28 @@
                 <span class="value">{{ $assessment->mobilities->walk_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
+        <tr>
+            <td>
+                <span class="label">Accessibility Required</span>
+                <div class="enum-field">
+                    @foreach(['Yes', 'No'] as $option)
+                        <span class="enum-option {{ ($assessment->mobilities->accessibility_required ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            {{ $option }}
+                        </span>
+                    @endforeach
+                </div>
+            </td>
+            <td>
+                <span class="label">Hazards</span>
+                <span class="value">{{ $assessment->mobilities->accessibility_hazards ?? 'N/A' }}</span>
+            </td>
+            <td>
+                <span class="label">Management Plan</span>
+                <span class="value">{{ $assessment->mobilities->accessibility_management_plan ?? 'N/A' }}</span>
+            </td>
+        </tr>
+
         <tr>
             <td>
                 <span class="label">Manages Stairs</span>
@@ -370,6 +401,7 @@
                 <span class="value">{{ $assessment->mobilities->stairs_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
                 <span class="label">Uses Walking Aid</span>
@@ -390,9 +422,10 @@
                 <span class="value">{{ $assessment->mobilities->walking_aid_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Uses Wheelchair</span>
+                <span class="label">Uses electric wheelchair/ scooter</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->mobilities->uses_wheelchair ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -410,6 +443,7 @@
                 <span class="value">{{ $assessment->mobilities->wheelchair_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
                 <span class="label">Bed Transfer</span>
@@ -430,6 +464,7 @@
                 <span class="value">{{ $assessment->mobilities->bed_transfer_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
                 <span class="label">Vehicle Transfer</span>
@@ -450,6 +485,7 @@
                 <span class="value">{{ $assessment->mobilities->vehicle_transfer_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
                 <span class="label">Toilet Transfer</span>
@@ -470,6 +506,7 @@
                 <span class="value">{{ $assessment->mobilities->toilet_transfer_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
     </table>
 </div>
 @endif
@@ -482,7 +519,7 @@
     <table>
         <tr>
             <td>
-                <span class="label">Showering</span>
+                <span class="label">Does the participant require assistance with showering?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->showering ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -492,17 +529,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->showering_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->showering_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Meal</span>
+                <span class="label">Does the participant require assistance with meal?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->meal ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -512,17 +550,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->meal_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->meal_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Toileting</span>
+                <span class="label">Does the participant require assistance with Toileting?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->toileting ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -532,17 +571,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->toileting_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->toileting_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Grooming</span>
+                <span class="label">Does the participant require assistance with Grooming?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->grooming ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -552,17 +592,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->grooming_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->grooming_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Repositioning (Bed)</span>
+                <span class="label">Does the participant require assistance with Repositioning in bed?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->repositioning_bed ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -572,17 +613,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->repositioning_bed_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->repositioning_bed_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Repositioning (Chair)</span>
+                <span class="label">Does the participant require assistance with Repositioning in chair?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->repositioning_chair ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -592,17 +634,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->repositioning_chair_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->repositioning_chair_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Mouthcare</span>
+                <span class="label">Does the participant require assistance with Mouthcare?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->mouthcare ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -612,17 +655,18 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->mouthcare_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->mouthcare_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Skin Care</span>
+                <span class="label">Does the participant require assistance with Skin care?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($assessment->personalCareSupport->skin_care ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -632,17 +676,19 @@
                 </div>
             </td>
             <td>
-                <span class="label">Hazards</span>
+                <span class="label">Hazards identified:</span>
                 <span class="value">{{ $assessment->personalCareSupport->skin_care_hazards ?? 'N/A' }}</span>
             </td>
             <td>
-                <span class="label">Management Plan</span>
+                <span class="label">Management Plan:</span>
                 <span class="value">{{ $assessment->personalCareSupport->skin_care_management_plan ?? 'N/A' }}</span>
             </td>
         </tr>
+
     </table>
 </div>
 @endif
+
 
 
 
@@ -658,7 +704,7 @@
             @foreach($manualHandlings as $mh)
                 <tr>
                     <td>
-                        <span class="label">Training Provided</span>
+                        <span class="label">Has training been provided to support staff for specific client handling techniques?</span>
                         <div class="enum-field">
                             @foreach(['Yes', 'No'] as $option)
                                 <span class="enum-option {{ ($mh->training_provided ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -678,7 +724,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span class="label">Tasks Safe</span>
+                        <span class="label">Can all manual handling tasks be undertaken safely with current staff and equipment?</span>
                         <div class="enum-field">
                             @foreach(['Yes', 'No'] as $option)
                                 <span class="enum-option {{ ($mh->tasks_safe ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -701,7 +747,7 @@
             {{-- ✅ No data: show one empty row --}}
             <tr>
                 <td>
-                    <span class="label">Training Provided</span>
+                    <span class="label">Has training been provided to support staff for specific client handling techniques?	☐ Yes  ☐ No</span>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>
                         <span class="enum-option">No</span>
@@ -712,7 +758,8 @@
             </tr>
             <tr>
                 <td>
-                    <span class="label">Tasks Safe</span>
+                    <span class="label">Can all manual handling tasks be undertaken safely with current staff and equipment?
+</span>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>
                         <span class="enum-option">No</span>
@@ -737,7 +784,7 @@
         @endphp
         <tr>
             <td>
-                <span class="label">Physical Aggression</span>
+                <span class="label">Is there a history of physical aggression toward staff by the client?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->physical_aggression ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -746,10 +793,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->physical_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->physical_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->physical_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->physical_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->physical_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -759,9 +806,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Verbal Aggression</span>
+                <span class="label">Is there a history of verbal aggression toward staff by the client?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->verbal_aggression ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -770,10 +818,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->verbal_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->verbal_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->verbal_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->verbal_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->verbal_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -783,9 +831,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Client Aggression</span>
+                <span class="label">Is there a history of aggression towards other clients?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->client_aggression ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -794,10 +843,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->client_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->client_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->client_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->client_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->client_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -807,9 +856,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Self Harm</span>
+                <span class="label">Is there a history of self harm?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->self_harm ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -818,10 +868,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->self_harm_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->self_harm_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->self_harm_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->self_harm_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->self_harm_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -831,9 +881,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Drug & Alcohol Use</span>
+                <span class="label">Does the participant engage in drug or alcohol use?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->drug_alcohol_use ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -842,10 +893,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->drug_alcohol_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->drug_alcohol_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->drug_alcohol_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->drug_alcohol_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->drug_alcohol_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -855,9 +906,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Sexual Abuse History</span>
+                <span class="label">Is there a history of sexual abuse?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->sexual_abuse_history ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -866,10 +918,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->sexual_abuse_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->sexual_abuse_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->sexual_abuse_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->sexual_abuse_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->sexual_abuse_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -879,9 +931,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Emotional Manipulation</span>
+                <span class="label">Use of emotions to achieve goals?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->emotional_manipulation ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -890,10 +943,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->emotional_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->emotional_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->emotional_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->emotional_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->emotional_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -903,9 +956,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Other Known Risks</span>
+                <span class="label">Other known risks?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->other_known_risks ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -914,10 +968,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->other_risks_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->other_risks_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->other_risks_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->other_risks_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->other_risks_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -927,9 +981,10 @@
                 </div>
             </td>
         </tr>
+
         <tr>
             <td>
-                <span class="label">Finance Management</span>
+                <span class="label">Is the participant able to manage their finances safely and independently?</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->finance_management ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -938,10 +993,10 @@
                     @endforeach
                 </div>
             </td>
-            <td><span class="label">Hazards</span><span class="value">{{ $vr->finance_hazards ?? 'N/A' }}</span></td>
-            <td><span class="label">Management Plan</span><span class="value">{{ $vr->finance_management_plan ?? 'N/A' }}</span></td>
+            <td><span class="label">Hazards identified:</span><span class="value">{{ $vr->finance_hazards ?? 'N/A' }}</span></td>
+            <td><span class="label">Management Plan:</span><span class="value">{{ $vr->finance_management_plan ?? 'N/A' }}</span></td>
             <td>
-                <span class="label">BSP Plan</span>
+                <span class="label">Is there a BSP plan:</span>
                 <div class="enum-field">
                     @foreach(['Yes', 'No'] as $option)
                         <span class="enum-option {{ ($vr->finance_bsp_plan ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -951,9 +1006,11 @@
                 </div>
             </td>
         </tr>
+
     </table>
 </div>
 @endif
+
 
 
 </div>

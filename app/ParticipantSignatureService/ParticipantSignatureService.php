@@ -17,6 +17,8 @@ class ParticipantSignatureService
 
         $isNew = !$record->exists;
 
+
+
         $record->fill($data);
 
         $changes = $record->getDirty();

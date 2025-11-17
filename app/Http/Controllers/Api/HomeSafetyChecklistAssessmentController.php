@@ -24,84 +24,152 @@ use App\HomeSafetyChecklistAssessmentService\OutsideResidenceAssessmentService;
 
 class HomeSafetyChecklistAssessmentController extends Controller
 {
-    public function update(
-        StoreHomeSafetyChecklistAssessmentRequest $request,
-        HomeSafetyChecklistAssessmentService $service,
-        HomeSafetyChecklistCompletionService $completionService,
-        HomeSafetyOutsideEntryService $homeSafetyOutsideEntryService,
-        HomeSafetyInsideResidenceService $homeSafetyInsideResidenceService,
-        HallwaysSafetyCheckService  $hallwaysSafetyCheckService,
-        KitchenBathroomSafetyCheckService $kitchenBathroomSafetyCheckService,
-        OutsideResidenceAssessmentService $outsideResidenceAssessmentService,
-        HomeSafetyMiscellaneousService $homeSafetyMiscellaneousService,
-        HomeSafetyResidenceTypeService $homeSafetyResidenceTypeService
-
-
-    ) {
-        $data = $request->validated();
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
-
-        $result = DB::transaction(function () use ($data, $service,$homeSafetyOutsideEntryService,
-        $completionService,$homeSafetyInsideResidenceService,$hallwaysSafetyCheckService,
-        $kitchenBathroomSafetyCheckService,$outsideResidenceAssessmentService,$homeSafetyMiscellaneousService,
-        $homeSafetyResidenceTypeService,
+   public function update(
+    StoreHomeSafetyChecklistAssessmentRequest $request,
+    HomeSafetyChecklistAssessmentService $service,
+    HomeSafetyChecklistCompletionService $completionService,
+    HomeSafetyOutsideEntryService $homeSafetyOutsideEntryService,
+    HomeSafetyInsideResidenceService $homeSafetyInsideResidenceService,
+    HallwaysSafetyCheckService $hallwaysSafetyCheckService,
+    KitchenBathroomSafetyCheckService $kitchenBathroomSafetyCheckService,
+    OutsideResidenceAssessmentService $outsideResidenceAssessmentService,
+    HomeSafetyMiscellaneousService $homeSafetyMiscellaneousService,
+    HomeSafetyResidenceTypeService $homeSafetyResidenceTypeService
 ) {
-            $user = Auth::user();
-            if (!$user) {
-                abort(401, 'Unauthorized');
-            }
+    $data = $request->validated();
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+    // ⭐ DB Transaction
+    $assessment = DB::transaction(function () use (
+        $data,
+        $service,
+        $completionService,
+        $homeSafetyOutsideEntryService,
+        $homeSafetyInsideResidenceService,
+        $hallwaysSafetyCheckService,
+        $kitchenBathroomSafetyCheckService,
+        $outsideResidenceAssessmentService,
+        $homeSafetyMiscellaneousService,
+        $homeSafetyResidenceTypeService
+    ) {
 
-            $assessment = $service->save($data);
-            $data['home_safety_checklist_assessment_id'] = $assessment->id;
+        $user = Auth::user();
+        if (!$user) {
+            abort(401, 'Unauthorized');
+        }
 
-            $homeSafetyOutsideEntryService->save($data);
-            $homeSafetyInsideResidenceService->save($data);
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
 
-            $hallwaysSafetyCheckService->save($data);
-            $kitchenBathroomSafetyCheckService->save($data);
-            $outsideResidenceAssessmentService->save($data);
-            $homeSafetyMiscellaneousService->save($data);
-            $homeSafetyResidenceTypeService->save($data);
+        // ⭐ Save Base Form
+        $assessment = $service->save($data);
+        $data['home_safety_checklist_assessment_id'] = $assessment->id;
 
-            $completion = $completionService->calculate($assessment);
-            $assessment->completion_percentage = $completion;
-            $assessment->save();
+        // ⭐ Save child sections
+        $homeSafetyOutsideEntryService->save($data);
+        $homeSafetyInsideResidenceService->save($data);
+        $hallwaysSafetyCheckService->save($data);
+        $kitchenBathroomSafetyCheckService->save($data);
+        $outsideResidenceAssessmentService->save($data);
+        $homeSafetyMiscellaneousService->save($data);
+        $homeSafetyResidenceTypeService->save($data);
 
-             $formStatus = $data['form_status'] ?? 'in_progress';
-            try {
-                 Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                    'uuid' => (string) $assessment->uuid,
-                    'form_name' => 'home_safety_checklist_assessment',
-                    'completion_percentage' => $completion,
-                    'form_status' =>$formStatus,
+        // ⭐ Completion %
+        $completion = $completionService->calculate($assessment);
+        $assessment->completion_percentage = $completion;
+
+        if ($data['form_status'] === 'completed') {
+            $assessment->form_status = 'completed';
+        }
+
+        $assessment->save();
+
+        // ⭐ Report to Core PHP
+        try {
+            Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                'uuid' => (string) $assessment->uuid,
+                'form_name' => 'home_safety_checklist_assessment',
+                'completion_percentage' => $completion,
+                'form_status' => $data['form_status'],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('⚠ Error calling Core PHP update-form-status: '.$e->getMessage());
+        }
+
+        return $assessment;
+    });
+
+    // ⭐ After transaction → Generate PDF + Upload to Core PHP
+    if ($data['form_status'] === 'completed') {
+
+        try {
+            // ⭐ Generate PDF
+            $pdf = Pdf::loadView('pdf.home_safety_assessment', [
+                'assessment' => $assessment->load([
+                    'outsideEntry',
+                    'insideResidence',
+                    'hallways',
+                    'hallwaysSafetyAssessment',
+                    'outsideResidenceAssessment',
+                    'miscellaneous',
+                    'residenceType',
+                    'staff'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Home_Safety_Checklist_' . $assessment->full_name . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ⭐ Push PDF to Core PHP
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+             $staffEmail = $assessment->staff?->email ?? null;
+
+            $response = Http::attach(
+                'doc',
+                file_get_contents($filePath),
+                $fileName
+            )->asMultipart()->post($corePhpUrl, [
+                'userid'    => $assessment->user_id,
+                'title'     => 'Home Safety Checklist Assessment',
+                'comments'  => 'Form completed successfully.',
+                'companyid' => $assessment->company_id ?? 1,
+                'staff_email' => $staffEmail,
+            ]);
+
+            if (!$response->successful()) {
+                Log::warning('⚠ PDF upload failed for Home Safety Checklist', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
                 ]);
-            } catch (\Exception $e) {
-                Log::error('Error reporting Home Safety Checklist status: ' . $e->getMessage());
             }
 
-            if ($data['form_status'] === 'completed') {
-                $assessment->form_status = 'completed';
-                $assessment->save();
-            }
+            @unlink($filePath);
 
-            return ['homeSafetyChecklistAssessment' => $assessment->load([
-            'outsideEntry','insideResidence','hallways',
-            'hallwaysSafetyAssessment','outsideResidenceAssessment','miscellaneous','residenceType'
-
-            ]),
-        ];
-        });
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Home Safety Checklist Assessment saved successfully.',
-            'data' => $result,
-        ]);
+        } catch (\Exception $e) {
+            Log::error('❌ PDF Generation/Upload Failed: '.$e->getMessage());
+        }
     }
+
+    // ⭐ Final API Response
+    return response()->json([
+    'success' => true,
+    'message' => 'Home Safety Checklist Assessment saved successfully.',
+    'data' => [
+        'homeSafetyChecklistAssessment' => $assessment->load([
+            'outsideEntry',
+            'insideResidence',
+            'hallways',
+            'hallwaysSafetyAssessment',
+            'outsideResidenceAssessment',
+            'miscellaneous',
+            'residenceType'
+        ])
+    ],
+]);
+}
+
 
 
 

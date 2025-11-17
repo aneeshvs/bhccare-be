@@ -17,96 +17,153 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ConfidentialInformationFormController extends Controller
 {
     /**
      * Store or update Confidential Information Form.
      */
-    public function update(
-        StoreConfidentialInformationFormRequest $request,
-        ConfidentialInformationFormService $service,
-        ConfidentialInformationFormCompletionService $completionService,
-        ConfidentialInformationAgencyService  $ConfidentialInformationAgencyService,
-        ConfidentialInformationConsentService $confidentialInformationConsentService,
-        ConfidentialVerbalConsentService $confidentialVerbalConsentService,
-        PreConsentDisclosureService $preConsentDisclosureService
+public function update(
+    StoreConfidentialInformationFormRequest $request,
+    ConfidentialInformationFormService $service,
+    ConfidentialInformationFormCompletionService $completionService,
+    ConfidentialInformationAgencyService $ConfidentialInformationAgencyService,
+    ConfidentialInformationConsentService $confidentialInformationConsentService,
+    ConfidentialVerbalConsentService $confidentialVerbalConsentService,
+    PreConsentDisclosureService $preConsentDisclosureService
+) {
+    $data = $request->validated();
 
+    // ⭐ Determine form status
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+
+    // ⭐ DB Transaction
+    $form = DB::transaction(function () use (
+        $data,
+        $service,
+        $completionService,
+        $ConfidentialInformationAgencyService,
+        $confidentialInformationConsentService,
+        $confidentialVerbalConsentService,
+        $preConsentDisclosureService
     ) {
-        $data = $request->validated();
 
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        $result = DB::transaction(function () use (
-            $data,
-            $service,
-            $completionService,
-            $ConfidentialInformationAgencyService,
-            $confidentialInformationConsentService,
-            $confidentialVerbalConsentService,
-            $preConsentDisclosureService,
-        ) {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        // ⭐ Attach staff_id
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
 
-            // ✅ Attach staff ID
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+        // ⭐ Save Base Form
+        $form = $service->save($data);
 
-            // ✅ Save or update form
-            $form = $service->save($data);
+        $data['confidential_information_form_id'] = $form->id;
 
+        // ⭐ Save related sections
+        $ConfidentialInformationAgencyService->saveMany($data['agencies'] ?? [], $form->id);
+        $confidentialInformationConsentService->save($data);
+        $confidentialVerbalConsentService->save($data);
+        $preConsentDisclosureService->save($data);
 
-             $data['confidential_information_form_id'] = $form->id;
+        // ⭐ Calculate completion %
+        $completion = $completionService->calculate($form);
+        $form->completion_percentage = $completion;
 
-             $ConfidentialInformationAgencyService->saveMany($data['agencies'] ?? [], $form->id);
-              $confidentialInformationConsentService->save($data);
-              $confidentialVerbalConsentService->save($data);
-              $preConsentDisclosureService->save($data);
+        if ($data['form_status'] === 'completed') {
+            $form->form_status = 'completed';
+        }
 
+        $form->save();
 
-            // ✅ Calculate completion (optional logic)
-            $completion = $completionService->calculate($form);
-            $form->completion_percentage = $completion;
+        // ⭐ Report to Core PHP
+        try {
+            Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                'uuid' => (string) $form->uuid,
+                'form_name' => 'confidential-information',
+                'completion_percentage' => $completion,
+                'form_status' => $data['form_status'],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('⚠ Error calling Core PHP update-form-status: ' . $e->getMessage());
+        }
+         return $form;
 
-            // ✅ Update form status
-            if ($data['form_status'] === 'completed') {
-                $form->form_status = 'completed';
-            }
+    });
 
-            $form->save();
+    // ⭐ After transaction → Generate & Send PDF
+    if ($data['form_status'] === 'completed') {
 
-            // ✅ Report status to external PHP service (optional)
-            try {
-                Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                    'uuid' => (string) $form->uuid,
-                    'form_name' => 'confidential-information',
-                    'completion_percentage' => $completion,
-                    'form_status' => $data['form_status'],
+        try {
+            // ⭐ Generate PDF
+            $pdf = Pdf::loadView('pdf.confidentialinformationform', [
+                'form' => $form->load([
+                    'agencies',
+                    'consent',
+                    'verbal',
+                    'preConsentDisclosure'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Confidential_Information_' . $form->full_name . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ⭐ Push PDF to Core PHP user_documents
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+            $staffEmail = $form->staff?->email ?? null;
+
+            $response = Http::attach(
+                'doc',
+                file_get_contents($filePath),
+                $fileName
+            )->asMultipart()->post($corePhpUrl, [
+                'userid'    => $form->user_id,
+                'title'     => 'Confidential Information',
+                'comments'  => 'Form completed successfully.',
+                'companyid' => $form->company_id ?? 1,
+                'staff_email' => $staffEmail,
+            ]);
+
+            if ($response->successful()) {
+                Log::info('📄 PDF synced successfully for Confidential Information');
+            } else {
+                Log::warning('⚠ Failed PDF sync for Confidential Information', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
                 ]);
-            } catch (\Exception $e) {
-                Log::error('Error reporting Confidential Information form status: ' . $e->getMessage());
             }
 
-            return [
-                'confidentialInformationForm' => $form->load([
-                    'agencies','consent','verbal','preConsentDisclosure'
+            @unlink($filePath);
 
-                ]),
-            ];
-
-        });
-
-        return response()->json([
-            'success' => true,
-            'status' => 200,
-            'message' => 'Confidential Information Form saved successfully.',
-            'data' => $result,
-        ]);
+        } catch (\Exception $e) {
+            Log::error('❌ PDF Generation/Sync Failed: ' . $e->getMessage());
+        }
     }
+
+
+    // ⭐ Final Response
+    return response()->json([
+        'success' => true,
+        'status' => 200,
+        'message' => 'Confidential Information Form saved successfully.',
+        'data' => [
+        'confidentialInformationForm' => $form->load([
+            'agencies',
+            'consent',
+            'verbal',
+            'preConsentDisclosure'
+        ])
+    ],
+
+
+    ]);
+}
+
 
     /**
      * Show Confidential Information Form by UUID.

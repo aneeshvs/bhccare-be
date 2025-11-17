@@ -19,66 +19,133 @@ use Illuminate\Http\Request;
 
 class ScheduleOfSupportController extends Controller
 {
-    public function update(StoreScheduleOfSupportRequest $request, ScheduleOfSupportService $service,
+    public function update(
+    StoreScheduleOfSupportRequest $request,
+    ScheduleOfSupportService $service,
     FundedSupportService $fundedSupportService,
-     UnfundedSupportService  $unfundedSupportService,AgreementSignatureService  $agreementSignatureService, ScheduleOfSupportsCompletionService $completionService)
-    {
-        $data = $request->validated();
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+    UnfundedSupportService $unfundedSupportService,
+    AgreementSignatureService $agreementSignatureService,
+    ScheduleOfSupportsCompletionService $completionService
+) {
+    $data = $request->validated();
 
-        $result = DB::transaction(function () use ($data, $service,$fundedSupportService,$unfundedSupportService,$agreementSignatureService,$completionService) {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
+    // ⭐ Determine form status
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+
+    // ⭐ DB Transaction
+    $schedule = DB::transaction(function () use (
+        $data,
+        $service,
+        $fundedSupportService,
+        $unfundedSupportService,
+        $agreementSignatureService,
+        $completionService
+    ) {
+
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
+
+        // ⭐ Save Base Form
+        $schedule = $service->save($data);
+
+        $data['schedule_of_support_id'] = $schedule->id;
+
+        // ⭐ Save Related Sections
+        $fundedSupportService->saveMany($data['funded_supports'] ?? [], $schedule->id);
+        $unfundedSupportService->saveMany($data['unfunded_supports'] ?? [], $schedule->id);
+        $agreementSignatureService->save($data);
+
+        // ⭐ Calculate completion %
+        $completion = $completionService->calculate($schedule);
+        $schedule->completion_percentage = $completion;
+
+        // ⭐ Report to Core PHP
+        try {
+            Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                'uuid' => (string) $schedule->uuid,
+                'form_name' => 'schedule_of_support',
+                'completion_percentage' => $completion,
+                'form_status' => $data['form_status'],
+            ]);
+        } catch (\Exception $e) {
+            Log::error('⚠ Error calling Core PHP update-form-status: '.$e->getMessage());
+        }
+
+        return $schedule;
+    });
+
+    // ⭐ After transaction → Generate & Send PDF
+    if ($data['form_status'] === 'completed') {
+
+        try {
+            // ⭐ Generate PDF
+            $pdf = Pdf::loadView('pdf.schedule_of_support', [
+                'schedule' => $schedule->load([
+                    'transport',
+                    'unfundedSupport',
+                    'agreementSignature',
+                    'staff'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Schedule_Of_Support_' . $schedule->full_name . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ⭐ Push PDF to Core PHP user_documents
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+            $staffEmail = $schedule->staff?->email ?? null;
+
+            $response = Http::attach(
+                'doc',
+                file_get_contents($filePath),
+                $fileName
+            )->asMultipart()->post($corePhpUrl, [
+                'userid'    => $schedule->user_id,
+                'title'     => 'Schedule of Support',
+                'comments'  => 'Form completed successfully.',
+                'companyid' => $schedule->company_id ?? 1,
+            'staff_email' => $staffEmail,
+            ]);
+
+            if ($response->successful()) {
+                Log::info('📄 PDF synced successfully for Schedule of Support');
+            } else {
+                Log::warning('⚠ Failed PDF sync for Schedule of Support', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
+                ]);
             }
 
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+            @unlink($filePath);
 
-            $schedule = $service->save($data);
-
-            $data['schedule_of_support_id'] = $schedule->id;
-
-            $fundedSupportService->saveMany($data['funded_supports'] ?? [], $schedule->id);
-            $unfundedSupportService->saveMany($data['unfunded_supports'] ?? [], $schedule->id);
-            $agreementSignatureService->save($data);
-
-            // ✅ Calculate completion
-            $completion = $completionService->calculate($schedule);
-            $schedule->completion_percentage = $completion;
-
-
-            $formStatus = $data['form_status'] ?? 'in_progress';
-
-            // Report back to Core PHP
-            try {
-                    Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                        'uuid' => (string) $schedule->uuid,
-                        'form_name' => 'schedule_of_support',
-                        'completion_percentage' => $completion,
-                        'form_status' => $formStatus,
-                    ]);
-                } catch (\Exception $e) {
-                    Log::error('Error reporting Schedule of Support status: ' . $e->getMessage());
-                }
-
-            return ['scheduleOfSupport' => $schedule->load([
-                'transport',
-                'unfundedSupport',
-                'agreementSignature',
-
-            ]),
-        ];
-
-        });
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Schedule of Support saved successfully.',
-            'data' => $result,
-        ]);
+        } catch (\Exception $e) {
+            Log::error('❌ PDF Generation/Sync Failed: ' . $e->getMessage());
+        }
     }
+
+    // ⭐ Final Response
+    return response()->json([
+        'success' => true,
+        'status' => 200,
+        'message' => 'Schedule of Support updated successfully.',
+        'data' =>['scheduleOfSupport' => $schedule->load([
+                    'transport',
+                    'unfundedSupport',
+                    'agreementSignature',
+                    'staff'
+                ])
+
+        ],
+    ]);
+}
+
 
     public function showByUuid(string $uuid, ScheduleOfSupportsCompletionService $completionService)
 {

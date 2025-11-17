@@ -4,286 +4,248 @@
 
  <meta charset="UTF-8">
    <title>Client Profile - Onboarding</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            font-size: 12px;
-            background-color: #f9fafb;
-            color: #111827;
-            margin: 0;
-            padding: 20px;
-            counter-reset: section;
-        }
+<style>
+    body {
+        font-family: sans-serif;
+        font-size: 12px;
+        background-color: #f9fafb;
+        color: #111827;
+        margin: 0;
+        padding: 20px;
+        counter-reset: section;
+        line-height: 1.2; /* Reduce default line height */
+    }
 
-        .container {
-            max-width: 950px;
-            margin: auto;
-            background: white;
-            border: 1px solid #e5e7eb;
-            border-radius: 12px;
-            padding: 20px 30px;
-        }
+    .container {
+        max-width: 950px;
+        margin: auto;
+        background: white;
+        border: 1px solid #e5e7eb;
+        border-radius: 12px;
+        padding: 20px 30px;
+    }
 
-        .header {
-            position: relative;
-            text-align: center;
-            margin-bottom: 25px;
-            padding-top: 10px;
-        }
+    .header {
+        position: relative;
+        text-align: center;
+        margin-bottom: 15px; /* Reduced */
+        padding-top: 10px;
+    }
 
-        .logo {
-            position: absolute;
-            top: 0;
-            left: 0;
-            max-width: 60px;
-            height: auto;
-        }
+    .logo {
+        position: absolute;
+        top: 0;
+        left: 0;
+        max-width: 60px;
+        height: auto;
+    }
 
-        .header-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 8px;
-        }
+    .header-title {
+        font-size: 20px;
+        font-weight: bold;
+        margin-top: 8px;
+        margin-bottom: 5px; /* Added */
+    }
 
-        .document-number {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
+    .document-number {
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 3px; /* Reduced */
+    }
 
-        .document-number span {
-            color: #4f46e5;
-        }
+    .section {
+        margin-bottom: 12px; /* Reduced from 20px */
+        page-break-inside: avoid;
+        break-inside: avoid;
+    }
 
-        .section {
-            margin-bottom: 20px;
-            page-break-inside: avoid;
-        }
+    .section-header {
+        counter-increment: section;
+        background-color: #e0f2fe;
+        color: #0369a1;
+        padding: 6px 10px; /* Reduced padding */
+        font-weight: bold;
+        border-left: 4px solid #0284c7;
+        margin-bottom: 6px; /* Reduced */
+        border-radius: 4px;
+        font-size: 13px;
+    }
 
-        .section-header {
-            counter-increment: section;
-            background-color: #e0f2fe;
-            color: #0369a1;
-            padding: 8px 12px;
-            font-weight: bold;
-            border-left: 4px solid #0284c7;
-            margin-bottom: 8px;
-            border-radius: 4px;
-        }
+    .section-header::before {
+        content: counter(section) ". ";
+        font-weight: bold;
+        color: #0284c7;
+        margin-right: 4px; /* Reduced */
+    }
 
-        .section-header::before {
-            content: counter(section) ". ";
-            font-weight: bold;
-            color: #0284c7;
-            margin-right: 6px;
-        }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 0;
+        border-spacing: 0;
+    }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 0;
-        }
+    td {
+        padding: 4px 6px; /* Reduced padding */
+        vertical-align: top;
+        border: 1px solid #e5e7eb;
+        line-height: 1.2;
+    }
 
-        td {
-            padding: 6px 8px;
-            vertical-align: top;
-            border: 1px solid #e5e7eb;
-        }
+    th {
+        padding: 6px 8px; /* Reduced padding */
+        background-color: #f8fafc;
+        font-weight: bold;
+        border: 1px solid #e5e7eb;
+        text-align: left;
+        line-height: 1.2;
+    }
 
-        th {
-            padding: 8px 10px;
-            background-color: #f8fafc;
-            font-weight: bold;
-            border: 1px solid #e5e7eb;
-            text-align: left;
-        }
+    .label {
+        font-weight: bold;
+        display: block;
+        margin-bottom: 1px; /* Reduced */
+        font-size: 11px;
+        color: #374151;
+        line-height: 1.2;
+    }
 
-        .label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 2px;
-            font-size: 11px;
-            color: #374151;
-        }
+    .value {
+        display: block;
+        margin-top: 1px; /* Reduced */
+        line-height: 1.2;
+        min-height: auto;
+    }
 
-        .value {
-            display: block;
-            margin-top: 2px;
-            line-height: 1.3;
-        }
+    /* Remove fixed row heights */
+    tr {
+        height: auto;
+        min-height: auto; /* Remove fixed min-height */
+    }
 
-        .page-break {
-            page-break-before: always;
-            break-before: page;
-        }
+    .enum-field {
+        display: flex;
+        gap: 8px; /* Reduced */
+        margin-top: 2px; /* Reduced */
+        flex-wrap: wrap;
+    }
 
-        .enum-field {
-            display: flex;
-            gap: 10px;
-            margin-top: 4px;
-        }
+    .enum-option {
+        padding: 2px 4px; /* Reduced */
+        border: 1px solid #d1d5db;
+        border-radius: 2px;
+        background-color: #f9fafb;
+        color: #374151;
+        font-size: 10px; /* Reduced */
+        font-weight: 500;
+        word-break: break-word;
+        max-width: 200px;
+        line-height: 1.1;
+    }
 
-        .enum-option {
-    padding: 3px 6px;
-    border: 1px solid #d1d5db;
-    border-radius: 3px;
-    background-color: #f9fafb;
-    color: #374151;
-    font-size: 11px;
-    font-weight: 500;
-    word-break: break-word; /* For long text */
-    max-width: 200px; /* Adjust as needed */
-}
+    .enum-option.selected {
+        background-color: #0284c7;
+        color: #ffffff;
+        border-color: #0369a1;
+        font-weight: bold;
+    }
 
-        .enum-option.selected {
-            background-color: #0284c7;
-            color: #ffffff;
-            border-color: #0369a1;
-            font-weight: bold;
-        }
+    .checkbox-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 4px; /* Reduced */
+        padding: 2px 0; /* Reduced */
+        margin-bottom: 1px; /* Reduced */
+        line-height: 1.1;
+    }
 
-      .three-column-table {
-    width: 100%;
-    border: none;
-    margin-top: 8px;
-}
+    .checkbox-box {
+        width: 12px; /* Reduced */
+        height: 12px; /* Reduced */
+        border: 1px solid #d1d5db; /* Reduced */
+        border-radius: 2px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 8px; /* Reduced */
+        font-weight: bold;
+        color: white;
+        flex-shrink: 0;
+        margin-top: 0; /* Removed */
+    }
 
-.three-column-table td {
-    border: none;
-    padding: 0 10px 0 0;
-    vertical-align: top;
-}
+    .empty-field {
+        color: #6b7280;
+        font-style: italic;
+        font-size: 10px; /* Reduced */
+    }
 
-.checkbox-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    padding: 4px 0;
-    margin-bottom: 2px;
-}
+    /* Compact list styles */
+    ul {
+        margin: 2px 0; /* Reduced */
+        padding-left: 15px; /* Reduced */
+    }
 
-.checkbox-box {
-    width: 14px;
-    height: 14px;
-    border: 2px solid #d1d5db;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    color: white;
-    flex-shrink: 0;
-    margin-top: 1px;
-}
+    li {
+        margin-bottom: 1px; /* Reduced */
+        line-height: 1.2;
+        font-size: 11px;
+    }
 
-.checkbox-box.checked {
-    background-color: #0284c7;
-    border-color: #0369a1;
-}
+    /* Professional table compact styles */
+    .professional-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 4px; /* Reduced */
+    }
 
-.checkbox-label {
-    font-size: 11px;
-    line-height: 1.2;
-    color: #374151;
-}
+    .professional-table th {
+        padding: 4px 6px; /* Reduced */
+        font-size: 10px; /* Reduced */
+    }
 
-.warning-box {
-    margin-top: 15px;
-    padding: 10px;
-    background-color: #fef2f2;
-    border-left: 4px solid #dc2626;
-    border-radius: 4px;
-}
+    .professional-table td {
+        padding: 4px 6px; /* Reduced */
+        line-height: 1.1;
+    }
 
-.warning-text {
-    color: #dc2626;
-    font-weight: bold;
-    font-size: 11px;
-}
+    .professional-table .checkbox-item {
+        margin: 0;
+        gap: 4px; /* Reduced */
+    }
 
-        .section-body {
-            margin: 0;
-            padding: 0;
-        }
+    .professional-table .checkbox-box {
+        width: 12px; /* Reduced */
+        height: 12px; /* Reduced */
+        font-size: 8px; /* Reduced */
+    }
 
-        .empty-field {
-            color: #6b7280;
-            font-style: italic;
-        }
+    /* Three column table adjustments */
+    .three-column-table td {
+        padding: 0 8px 0 0; /* Reduced */
+        vertical-align: top;
+    }
 
-        ul {
-            margin: 6px 0;
-            padding-left: 18px;
-        }
+    .warning-box {
+        margin-top: 8px; /* Reduced */
+        padding: 6px; /* Reduced */
+    }
 
-        li {
-            margin-bottom: 3px;
-            line-height: 1.3;
-        }
+    .warning-text {
+        font-size: 10px; /* Reduced */
+    }
 
-        /* Consistent row heights */
-        tr {
-            height: auto;
-            min-height: 32px;
-        }
+    /* Ensure no extra space in section body */
+    .section-body {
+        margin: 0;
+        padding: 0;
+    }
 
-   .professional-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 8px;
-}
-
-.professional-table th {
-    background-color: #f8fafc;
-    padding: 8px;
-    text-align: left;
-    border: 1px solid #e5e7eb;
-    font-size: 11px;
-    font-weight: bold;
-}
-
-.professional-table td {
-    padding: 8px;
-    border: 1px solid #e5e7eb;
-    vertical-align: middle;
-}
-
-.professional-table .checkbox-item {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0;
-}
-
-.professional-table .checkbox-box {
-    width: 14px;
-    height: 14px;
-    border: 2px solid #d1d5db;
-    border-radius: 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    font-weight: bold;
-    color: white;
-    flex-shrink: 0;
-}
-
-.professional-table .checkbox-box.checked {
-    background-color: #0284c7;
-    border-color: #0369a1;
-}
-
-.professional-table .checkbox-label {
-    font-size: 11px;
-    font-weight: 500;
-}
-
-
-
-
-    </style>
+    /* Compact field styles */
+    .field {
+        margin: 2px 0; /* Reduced */
+    }
+</style>
 </head>
 <body>
 
@@ -351,7 +313,7 @@
                     <span class="value">{{ $initial->email ?? 'N/A' }}</span>
                 </td>
                 <td>
-                        <span class="label">Needs Assistance</span>
+                        <span class="label">Does the client need the involvement of an independent family member, friend, advocate, or legal guardian to assist with understanding and signing the agreement as part of this assessment?</span>
                         <div class="enum-field">
                             @foreach(['Yes', 'No'] as $option)
                                 <span class="enum-option {{ (isset($initial->agreement) && (($initial->agreement == 1 ? 'Yes' : 'No') === $option)) ? 'selected' : '' }}">
@@ -376,9 +338,9 @@
         <table>
             <tr>
                 <td style="width: 25%">
-                    <span class="label">Type of Funding</span>
+                    <span class="label">Type of Funding </span>
                     <div class="enum-field">
-                        @foreach(['Self-Managed', 'NDIA', 'Plan Managed'] as $option)
+                        @foreach(['Self-Managed','NDIA', 'Plan Managed'] as $option)
                             <span class="enum-option {{ ($initial->funding->type_of_funding ?? '') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
@@ -473,29 +435,37 @@
     @endif
 
     <!-- PART D – SCHEDULE OF CARES -->
-    @if(isset($initial->scheduleOfCares) && count($initial->scheduleOfCares) > 0)
-    <div class="section">
-        <div class="section-header">PART D – SCHEDULE OF CARES</div>
-        <table>
-            <thead>
+<div class="section">
+    <div class="section-header">SCHEDULE OF CARE</div>
+    <table style="width:100%; border-collapse: collapse;">
+        <thead>
+            <tr style="background-color: #f0f0f0; text-align: left;">
+                <th style="width:5%; border: 1px solid #ccc; padding: 8px;">#</th>
+                <th style="width:30%; border: 1px solid #ccc; padding: 8px;">Type of Service</th>
+                <th style="width:32.5%; border: 1px solid #ccc; padding: 8px;">Primary Task List</th>
+                <th style="width:32.5%; border: 1px solid #ccc; padding: 8px;">Secondary Task List</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php
+                $rows = $initial->scheduleOfCares ?? [];
+                $minRows = 5; // minimum rows to display
+                $totalRows = max(count($rows) + 1, $minRows); // +1 will auto-add 1 extra empty row
+            @endphp
+
+            @for ($i = 0; $i < $totalRows; $i++)
                 <tr>
-                    <th style="width: 30%">Type of Service</th>
-                    <th style="width: 35%">Primary Task List</th>
-                    <th style="width: 35%">Secondary Task List</th>
+                    <td style="border: 1px solid #ccc; padding: 8px;">{{ $i + 1 }}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">{{ $rows[$i]->type_of_service ?? 'N/A' }}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">{{ $rows[$i]->primary_task_list ?? 'N/A' }}</td>
+                    <td style="border: 1px solid #ccc; padding: 8px;">{{ $rows[$i]->secondary_task_list ?? 'N/A' }}</td>
                 </tr>
-            </thead>
-            <tbody>
-                @foreach ($initial->scheduleOfCares as $schedule)
-                    <tr>
-                        <td>{{ $schedule->type_of_service ?? 'N/A' }}</td>
-                        <td>{{ $schedule->primary_task_list ?? 'N/A' }}</td>
-                        <td>{{ $schedule->secondary_task_list ?? 'N/A' }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
-    @endif
+            @endfor
+        </tbody>
+    </table>
+</div>
+
+
 
     <!-- PART E – CULTURAL BACKGROUND -->
     @if(isset($initial->culturalBackground))
@@ -592,7 +562,7 @@
 
 <!-- PART G – HEALTH PROFESSIONAL DETAILS -->
 <div class="section">
-    <div class="section-header">PART G – HEALTH PROFESSIONAL DETAILS</div>
+    <div class="section-header">PART G – HEALTH PROFESSIONAL DETAILS((Medical practitioner, BSP, medical specialists, Physio, OT, Podiatrist, Dentist etc.))</div>
     <div class="section-body">
         <table>
             <tr>
@@ -775,59 +745,39 @@
 {{-- PART J: HEALTHCARE SUPPORT DETAIL --}}
 @if ($initial->healthcareSupportDetail)
     <div class="section">
-        <div class="section-header">PART J – HEALTHCARE SUPPORT DETAIL</div>
-        <div class="section-body">
-            <table>
-                <tr>
-                    <td>
-                        <span class="label">Medicare</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->medicare }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Health Fund</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->health_fund }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Pension Card Number</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->pension_card_number }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Health Care Card</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->health_care_card }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="label">DVA Type</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->dva_type }}</span>
-                    </td>
-                    <td>
-                        <span class="label">DVA Number</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->dva_number }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Companion Card</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->companion_card }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Preferred Hospital</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->preferred_hospital }}</span>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <span class="label">Ambulance Number</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->ambulance_number }}</span>
-                    </td>
-                    <td>
-                        <span class="label">Disabled Parking</span>
-                        <span class="value">{{ $initial->healthcareSupportDetail->disabled_parking }}</span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </table>
-        </div>
+        <div class="section-header">HEALTHCARE AND SUPPORT DETAILS</div>
+        <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px; width: 20%; font-weight: bold;">Medicare</td>
+                <td style="border: 1px solid #ccc; padding: 8px; width: 30%;">{{ $initial->healthcareSupportDetail->medicare ?? 'N/A' }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; width: 20%; font-weight: bold;">Health Fund</td>
+                <td style="border: 1px solid #ccc; padding: 8px; width: 30%;">{{ $initial->healthcareSupportDetail->health_fund ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Pension Card Number</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->pension_card_number ?? 'N/A' }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Health Care Card</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->health_care_card ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">DVA Type</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->dva_type ?? 'N/A' }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">DVA Number</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->dva_number ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Companion Card</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->companion_card ?? 'N/A' }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Preferred Hospital</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->preferred_hospital ?? 'N/A' }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Ambulance Number</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->ambulance_number ?? 'N/A' }}</td>
+                <td style="border: 1px solid #ccc; padding: 8px; font-weight: bold;">Disabled Parking</td>
+                <td style="border: 1px solid #ccc; padding: 8px;">{{ $initial->healthcareSupportDetail->disabled_parking ?? 'N/A' }}</td>
+            </tr>
+        </table>
     </div>
 @endif
 
@@ -914,6 +864,8 @@
                         <span class="value">{{ $initial->medicalAlert->allergies }}</span>
                     </td>
                 </tr>
+                <tr><td><span class="label">(If yes to any of the above, please provide a copy of the current plan less than a year old.) </span></td></tr>
+
                 <tr>
                     <td>
                         <span class="label">Medical Info</span>
@@ -1028,7 +980,8 @@
             <table>
                 <tr>
                    <td>
-                        <span class="label">Communication Assistance Required</span>
+                        <span class="label">Communication Assistance Required(Communication support is needed with hearing, comprehension, and vision.
+(Languages other than English)** Refer to Communication Plan if Needed)</span>
                         <div class="enum-field">
                             @foreach(['Yes', 'No'] as $option)
                                 <span class="enum-option {{ ($initial->supportInformation->communication_assistance_required ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
@@ -1052,7 +1005,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <span class="label">Interests</span>
+                        <span class="label">Interests(Interests (for example gardening, craft, reading etc))</span>
                         <span class="value">{{ is_array($initial->supportInformation->interests) ? implode(', ', $initial->supportInformation->interests) : $initial->supportInformation->interests }}</span>
                     </td>
                     <td>

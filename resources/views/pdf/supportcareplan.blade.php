@@ -108,20 +108,29 @@
             font-style: italic;
         }
 
-       .enum-field {
-    display: flex;
-    gap: 15px;
-    margin-top: 4px;
-    flex-wrap: wrap;
+      .enum-field {
+    display: inline-flex;
+    gap: 4px;              /* smaller gap */
 }
 
 .enum-option {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 2px 0;
-    cursor: default;
+    padding: 1px 4px;       /* smaller padding */
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #f3f4f6;
+    color: #374151;
+    font-size: 9px;         /* smaller text */
+    line-height: 1;         /* reduce height */
+    white-space: nowrap;    /* prevents stretching */
 }
+
+.enum-option.selected {
+    background-color: #0284c7;
+    color: #fff;
+    border-color: #0369a1;
+    font-weight: bold;
+}
+
 
 .radio-circle {
     width: 14px;
@@ -361,17 +370,23 @@ $goalCategories = [
                             <span class="value">{{ $goal->goal_title ?? 'N/A' }}</span>
                         </td>
                         <td>
-                            <span class="label">Goals of Support</span>
+                            <span class="label">Goals of support
+What is the specific goal to be achieved through BHC supports?
+</span>
                             <span class="value">{{ $goal->goals_of_support ?? 'N/A' }}</span>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <span class="label">Steps</span>
+                            <span class="label">Steps
+What will the participant do to actively participate in meeting this goal?
+</span>
                             <span class="value">{{ $goal->steps ?? 'N/A' }}</span>
                         </td>
                         <td>
-                            <span class="label">Organisation Steps</span>
+                            <span class="label">Organisation’s steps
+What support will we provide to meet this goal?
+</span>
                             <span class="value">{{ $goal->organisation_steps ?? 'N/A' }}</span>
                         </td>
                     </tr>
@@ -381,7 +396,7 @@ $goalCategories = [
                             <span class="value">{{ $goal->risk ?? 'N/A' }}</span>
                         </td>
                         <td>
-                            <span class="label">Risk Strategies</span>
+                            <span class="label">Risk Management Strategies:</span>
                             <span class="value">{{ $goal->risk_management_strategies ?? 'N/A' }}</span>
                         </td>
                     </tr>
@@ -399,18 +414,22 @@ $goalCategories = [
                         <span class="value">N/A</span>
                     </td>
                     <td>
-                        <span class="label">Goals of Support</span>
-                        <span class="value">N/A</span>
+<span class="label">Goals of support
+What is the specific goal to be achieved through BHC supports?
+</span>                        <span class="value">N/A</span>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <span class="label">Steps</span>
+                       <span class="label">Steps
+What will the participant do to actively participate in meeting this goal?
+</span>
                         <span class="value">N/A</span>
                     </td>
                     <td>
-                        <span class="label">Organisation Steps</span>
-                        <span class="value">N/A</span>
+  <span class="label">Organisation’s steps
+What support will we provide to meet this goal?
+</span>                        <span class="value">N/A</span>
                     </td>
                 </tr>
                 <tr>
@@ -643,69 +662,175 @@ $goalCategories = [
     <!-- Emergency Scenarios -->
    <div class="section">
     <div class="section-header">Emergency Scenarios and Support Actions</div>
-    <table>
+    <table style="width: 100%; border-collapse: collapse; margin-top: 10px;">
+        <thead>
+            <tr style="background-color: #f0f0f0; font-weight: bold;">
+                <th style="width: 15%; padding: 8px; text-align: center;">#</th>
+                <th style="width: 35%; padding: 8px;">Emergency Type</th>
+                <th style="width: 50%; padding: 8px;">My Support Coordinator will</th>
+            </tr>
+        </thead>
+        <tbody>
         @if($supportCarePlan->emergencyScenario)
+            @php $esc = $supportCarePlan->emergencyScenario; @endphp
+
             <tr>
-                <td>
-                    <span class="label">Admitted to Hospital</span>
+                <td style="text-align: center;">
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->admitted_to_hospital ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($esc->admitted_to_hospital ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->admitted_to_hospital_action ?? 'N/A' }}</span></td>
+                <td>Admitted to Hospital</td>
+                <td>{{ $esc->admitted_to_hospital_action ?? 'N/A' }}</td>
             </tr>
+
             <tr>
-                <td>
-                    <span class="label">Medical Emergencies</span>
+                <td style="text-align: center;">
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->medical_emergencies ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($esc->medical_emergencies ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->medical_emergencies_action ?? 'N/A' }}</span></td>
+                <td>Medical Emergencies</td>
+                <td>{{ $esc->medical_emergencies_action ?? 'N/A' }}</td>
             </tr>
+
             <tr>
-                <td>
-                    <span class="label">Other Likely Medical Emergency</span>
+                <td style="text-align: center;">
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->other_likely_medical_emergency ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($esc->other_likely_medical_emergency ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->other_likely_medical_emergency_action ?? 'N/A' }}</span></td>
+                <td>Other likely medical emergency (e.g., Seizures)</td>
+                <td>{{ $esc->other_likely_medical_emergency_action ?? 'N/A' }}</td>
             </tr>
+
             <tr>
-                <td>
-                    <span class="label">Natural Disaster</span>
+                <td style="text-align: center;">
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
-                            <span class="enum-option {{ ($supportCarePlan->emergencyScenario->natural_disaster ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
+                            <span class="enum-option {{ ($esc->natural_disaster ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
                                 {{ $option }}
                             </span>
                         @endforeach
                     </div>
                 </td>
-                <td><span class="label">Action</span> <span class="value">{{ $supportCarePlan->emergencyScenario->natural_disaster_action ?? 'N/A' }}</span></td>
+                <td>Natural Disaster (flood, bushfire, earthquake, pandemic)</td>
+                <td>{{ $esc->natural_disaster_action ?? 'N/A' }}</td>
             </tr>
         @else
             <tr>
-                <td colspan="2">
-                    <span class="value">No emergency scenarios available</span>
-                </td>
+                <td colspan="3" style="text-align: center; padding: 10px;">No emergency scenarios available</td>
             </tr>
         @endif
+        </tbody>
     </table>
 </div>
+
+
+
+<div class="section mt-6">
+
+    <!-- Intro -->
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px; background-color: #f9f9f9; border: 1px solid #ddd;">
+        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center; background-color: #e0f7fa;">
+                Best of Homecare is committed to ensuring that all participants are informed about the organisation's Emergency and Disaster Management Plan
+            </td>
+        </tr>
+
+    </table>
+
+
+    <!-- PANDEMIC OUTBREAK -->
+<table>        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center; background-color: #e0f2fe;">
+                PANDEMIC OUTBREAK
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">
+                Where a confirmed case occurs, Best of Homecare will explain to you the need to isolate and explore options with you.
+                <ul>
+                    <li>Continue to provide services that you are dependent on for daily living with appropriate infection control management.</li>
+                    <li>Offer online support where appropriate.</li>
+                </ul>
+            </td>
+        </tr>
+    </table>
+
+    <!-- FIRE -->
+<table>        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center;             background-color: #e0f2fe;
+ ">
+                FIRE
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">
+                Staff will not travel into fire zones, floodwaters or travel during extreme thunderstorms or severe weather.
+                Emergency Services and Emergency Contact lists will be activated by Best of Homecare, who will monitor your safety through ongoing communication with you and your supports.
+            </td>
+        </tr>
+    </table>
+
+    <!-- FLOOD -->
+<table>        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center;             background-color: #e0f2fe;
+ ">
+                FLOOD
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">
+                Best of Homecare will contact you to assess the situation. Contact your local Emergency Services secondary contacts as required. Ongoing communication to monitor your safety.
+            </td>
+        </tr>
+    </table>
+
+    <!-- EXTREME HEATWAVES -->
+<table>        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center;             background-color: #e0f2fe;
+;">
+                EXTREME HEATWAVES
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">
+                Contact with you prior to the heatwave (weather forecast) to ensure adequate cooling, water and other requirements are available.
+                If required, Best of Homecare will either provide, or contact your Support Network for availability of onsite support.
+            </td>
+        </tr>
+    </table>
+
+    <!-- THUNDERSTORMS AND SEVERE WEATHER -->
+    <table>
+        <tr>
+            <td style="padding: 10px; font-weight: bold; text-align: center;             background-color: #e0f2fe;
+ ">
+                THUNDERSTORMS AND SEVERE WEATHER
+            </td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;">
+                Contact you prior to the event (weather forecast) to ensure food, water, and other requirements are available.
+                If required, Best of Homecare will either provide onsite support or contact your Support Network for the availability of onsite support.
+            </td>
+        </tr>
+    </table>
+</div>
+
 
 </div>
 

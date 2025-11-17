@@ -307,31 +307,42 @@
     </div>
 
     <!-- Funded Supports Section -->
-   <div class="section">
-    <div class="section-header">Funded Supports</div>
+<div class="section">
+    <div class="section-header">Schedule of Supports - Funded Supports</div>
 
-    @if(isset($schedule->transport))
-        @foreach($schedule->transport as $index => $fundedSupport)
-            <div class="support-item">
-                <h4 class="support-header">Funded Support #{{ $index + 1 }}</h4>
-                <table>
+    @php
+        $fundedSupports = $schedule->transport ?? [];
+        $fundedTotalPrice = 0;
+    @endphp
+
+    <table style="width:100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #ccc;">
+        <thead>
+            <tr style="background-color: #f0f0f0; text-align: left;">
+                <th style="padding: 8px; border: 1px solid #ccc;">#</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Support</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Description of Support</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Price</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Payment Information</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Invoicing Details</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">How the Support will be provided</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(count($fundedSupports) === 0)
+                <tr>
+                    <td colspan="7" style="text-align: center; padding: 10px;">No funded supports available</td>
+                </tr>
+            @else
+                @foreach($fundedSupports as $index => $fundedSupport)
+                    @php
+                        $fundedTotalPrice += floatval($fundedSupport->price ?? 0);
+                    @endphp
                     <tr>
-                        <td style="width: 50%">
-                            <span class="label">Support Name</span>
-                            <span class="value">{{ $fundedSupport->support_name ?? 'N/A' }}</span>
-                        </td>
-                        <td style="width: 50%">
-                            <span class="label">Description</span>
-                            <span class="value">{{ $fundedSupport->description ?? 'N/A' }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Price</span>
-                            <span class="value">{{ $fundedSupport->price ?? 'N/A' }}</span>
-                        </td>
-                        <td>
-                            <span class="label">Payment Information</span>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $index + 1 }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $fundedSupport->support_name ?? 'N/A' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $fundedSupport->description ?? 'N/A' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">${{ $fundedSupport->price ?? '0.00' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">
                             <div class="enum-field">
                                 @foreach(['NDIA', 'Self-managed', 'Plan managed'] as $option)
                                     <span class="enum-option {{ ($fundedSupport->payment_information ?? '') === $option ? 'selected' : '' }}">
@@ -340,51 +351,25 @@
                                 @endforeach
                             </div>
                         </td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $fundedSupport->invoicing_details ?? 'N/A' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $fundedSupport->delivery_details ?? 'N/A' }}</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Invoicing Details</span>
-                            <span class="value">{{ $fundedSupport->invoicing_details ?? 'N/A' }}</span>
-                        </td>
-                        <td>
-                            <span class="label">Delivery Details</span>
-                            <span class="value">{{ $fundedSupport->delivery_details ?? 'N/A' }}</span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-        @endforeach
+                @endforeach
+            @endif
+        </tbody>
+        <tfoot>
+            <tr style="font-weight: bold; background-color: #f9f9f9;">
+                <td colspan="3" style="padding: 8px; border: 1px solid #ccc;">Grand Total (all funded Supports)</td>
+                <td colspan="4" style="padding: 8px; border: 1px solid #ccc;">${{ number_format($fundedTotalPrice, 2) }}</td>
+            </tr>
+        </tfoot>
+    </table>
 
-         @php
-                $fundedTotalPrice = 0;
-
-                foreach ($schedule->transport as $u) {
-                    $fundedTotalPrice += floatval($u->price ?? 0);
-                }
-            @endphp
-
-            <table class="total-table">
-                <tr>
-                    <td style="font-weight:bold; width:50%">Grand Total (all funded Supports)</td>
-                    <td style="font-weight:bold;">
-                        ${{ number_format($fundedTotalPrice, 2) }}
-                    </td>
-                </tr>
-            </table>
-
-
-
-    @else
-        <div class="note-box">
-            No funded support details available.
-        </div>
-    @endif
-
-    <div class="note-box">
+    <div class="note-box" style="padding: 10px; background-color: #f0f0f0; border-radius: 4px;">
         <strong>Please note:</strong><br>
-        · Participants being supported to engage in community/social or recreational activities within the community will be charged up to four hours over the plan period for documentation purposes.<br>
-        · The schedule of supports can include staff member shadow shifts up to six hours of weekday support per year.<br>
-        · Participants receiving core supports approve the flexible movement of funding between support types.
+        • Participants being supported to engage in community/social or recreational activities within the community will be charged, where applicable, up to four hours over the plan period for documentation purposes.<br>
+        • The schedule of supports can include staff member ‘shadow shifts’ (or buddy shifts) up to six hours of weekday support per year.<br>
+        • Participants receiving core supports approve the flexible movement of funding between support types noted in the Schedule of Support to meet their needs.
     </div>
 </div>
 
@@ -393,27 +378,41 @@
 
 
     <!-- Unfunded Supports Section -->
-    <div class="section">
-    <div class="section-header">Unfunded Supports</div>
+<div class="section">
+    <div class="section-header">Schedule of Supports - Unfunded Supports</div>
 
-    @if(isset($schedule->unfundedSupport))
-        @foreach($schedule->unfundedSupport as $index => $unfundedSupport)
-            <div class="support-item">
-                <h4 class="support-header">Unfunded Support #{{ $index + 1 }}</h4>
-                <table>
+    @php
+        $unfundedSupports = $schedule->unfundedSupport ?? [];
+        $unfundedTotalPrice = 0;
+    @endphp
+
+    <table style="width:100%; border-collapse: collapse; margin-bottom: 20px; border: 1px solid #ccc;">
+        <thead>
+            <tr style="background-color: #f0f0f0; text-align: left;">
+                <th style="padding: 8px; border: 1px solid #ccc;">#</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Support</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Description of Support</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Price</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Price Information</th>
+                <th style="padding: 8px; border: 1px solid #ccc;">Delivery Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if(count($unfundedSupports) === 0)
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 10px;">No unfunded supports available</td>
+                </tr>
+            @else
+                @foreach($unfundedSupports as $index => $unfundedSupport)
+                    @php
+                        $unfundedTotalPrice += floatval($unfundedSupport->unfunded_price ?? 0);
+                    @endphp
                     <tr>
-                        <td style="width: 50%">
-                            <span class="label">Support Name</span>
-                            <span class="value">{{ $unfundedSupport->unfunded_support_name ?? 'N/A' }}</span>
-                        </td>
-                        <td style="width: 50%">
-                            <span class="label">Description</span>
-                            <span class="value">{{ $unfundedSupport->unfunded_description ?? 'N/A' }}</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Price Information</span>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $index + 1 }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $unfundedSupport->unfunded_support_name ?? 'N/A' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $unfundedSupport->unfunded_description ?? 'N/A' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">${{ $unfundedSupport->unfunded_price ?? '0.00' }}</td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">
                             <div class="enum-field">
                                 @foreach(['Free', 'Negotiated', 'Market rate', 'Sliding scale', 'Other'] as $option)
                                     <span class="enum-option {{ ($unfundedSupport->unfunded_price_information ?? '') === $option ? 'selected' : '' }}">
@@ -422,55 +421,28 @@
                                 @endforeach
                             </div>
                         </td>
-                        <td>
-                            <span class="label">Delivery Details</span>
-                            <span class="value">{{ $unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</span>
-                        </td>
+                        <td style="padding: 8px; border: 1px solid #ccc;">{{ $unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</td>
                     </tr>
-                    <tr>
-                        <td>
-                            <span class="label">Price</span>
-                            <span class="value">{{ $unfundedSupport->unfunded_price ?? 'N/A' }}</span>
-                        </td>
+                @endforeach
+            @endif
+        </tbody>
+        <tfoot>
+            <tr style="font-weight: bold; background-color: #f9f9f9;">
+                <td colspan="3" style="padding: 8px; border: 1px solid #ccc;">Grand Total (all unfunded Supports)</td>
+                <td colspan="3" style="padding: 8px; border: 1px solid #ccc;">${{ number_format($unfundedTotalPrice, 2) }}</td>
+            </tr>
+        </tfoot>
+    </table>
 
-                    </tr>
-                </table>
-            </div>
-        @endforeach
-
-
-        {{-- FINAL TOTAL OF UNFUNDED PRICE --}}
-@php
-    $unfundedTotalPrice = 0;
-
-    foreach ($schedule->unfundedSupport as $u) {
-        $unfundedTotalPrice += floatval($u->unfunded_price ?? 0);
-    }
-@endphp
-
-<table class="total-table">
-    <tr>
-        <td style="font-weight:bold; width:50%">Grand Total (all funded Supports)</td>
-        <td style="font-weight:bold;">
-            ${{ number_format($unfundedTotalPrice, 2) }}
-        </td>
-    </tr>
-</table>
-
-
-    @else
-        <div class="note-box">
-            No unfunded support details available.
-        </div>
-    @endif
-
-    <div class="note-box">
+    <div class="note-box" style="padding: 10px; background-color: #f0f0f0; border-radius: 4px;">
         <strong>Please note:</strong><br>
-        · Payment for board and lodgings may go via PTO or Best of Homecare account only.<br>
-        · Breakdown of board and lodging costs is available upon request.
+        • Payment for board and lodgings may go via PTO or Best of Homecare account only.<br>
+        • Breakdown of board and lodging costs is available upon request.
     </div>
 </div>
-<div style="page-break-before: always;"></div>
+
+
+
 
 
     <!-- SIL/SDA Accommodation Section -->
@@ -504,6 +476,7 @@
             </tr>
         </table>
     </div>
+    <div style="page-break-before: always;"></div>
 
     <!-- Agreement Section -->
     <div class="agreement-section">

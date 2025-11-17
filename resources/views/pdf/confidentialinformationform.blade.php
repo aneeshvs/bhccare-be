@@ -135,6 +135,19 @@
             border-radius: 4px;
             background-color: #f9fafb;
         }
+
+         .note-box {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin: 15px 0;
+            font-size: 11px;
+            line-height: 1.4;
+        }
+        .note-box strong {
+            color: #0369a1;
+        }
     </style>
 </head>
 <body>
@@ -151,21 +164,70 @@
         }
     @endphp
 
+   
+
+
     <!-- Participant Information -->
-    <table>
-        <tr><td colspan="2" class="section-title" style="margin-top: 0;">1. Confidential Information</td></tr>
-        <tr><th>Full Name</th><td><span class="value">{{ $form->participant_name ?? 'N/A' }}</span></td></tr>
-        <tr><th>Date of Birth</th><td><span class="value">{{ formatDate($form->date_of_birth) }}</span></td></tr>
-        <tr><th>Address</th><td><span class="value">{{ $form->address ?? 'N/A' }}</span></td></tr>
-        <tr><th>Post Code</th><td><span class="value">{{ $form->post_code ?? 'N/A' }}</span></td></tr>
-        <tr><th>Phone</th><td><span class="value">{{ $form->phone ?? 'N/A' }}</span></td></tr>
-        <tr><th>Mobile Number</th><td><span class="value">{{ $form->mobile_no ?? 'N/A' }}</span></td></tr>
-        <tr><th>Email Address</th><td><span class="value">{{ $form->email ?? 'N/A' }}</span></td></tr>
-    </table>
+<table>
+
+
+    <!-- Section Title -->
+    <tr>
+        <td colspan="2" class="section-title" style="margin-top: 0;">1. Confidential Information(PARTICIPANT DETAILS)</td>
+    </tr>
+
+    <tr><th>Full Name</th><td><span class="value">{{ $form->participant_name ?? 'N/A' }}</span></td></tr>
+    <tr><th>Date of Birth</th><td><span class="value">{{ formatDate($form->date_of_birth) }}</span></td></tr>
+    <tr><th>Address</th><td><span class="value">{{ $form->address ?? 'N/A' }}</span></td></tr>
+    <tr><th>Post Code</th><td><span class="value">{{ $form->post_code ?? 'N/A' }}</span></td></tr>
+    <tr><th>Phone</th><td><span class="value">{{ $form->phone ?? 'N/A' }}</span></td></tr>
+    <tr><th>Mobile Number</th><td><span class="value">{{ $form->mobile_no ?? 'N/A' }}</span></td></tr>
+    <tr><th>Email Address</th><td><span class="value">{{ $form->email ?? 'N/A' }}</span></td></tr>
+
+    <!-- Notes Section Header -->
+    <tr>
+        <td colspan="2" style="padding-top: 15px;">
+            <strong>The organisation will comply with relevant privacy legislation and in the standards set for dealing with personal information outlined in our policy, practice guidelines and procedures
+Please discuss the following statement with Participants before proceeding:
+</strong>
+        </td>
+    </tr>
+
+    <tr>
+    <td colspan="2">
+        <ul style="margin: 0; padding-left: 18px;">
+            <li>If your information is required by law, your information may be shared without your consent.</li>
+            <li>Information can include data held in audio/visual format such as photos or other recorded material.</li>
+            <li>This consent form includes your permission for BHC to provide care/treatment described in the Goal Plan or Support Plan.</li>
+            <li>This consent form includes permission to conduct surveillance only in common areas (not bedrooms). Surveillance is used for participant and worker safety.</li>
+            <li>Surveillance footage is stored for 30 days, or up to 7 years if related to an incident or complaint.</li>
+            <li>The organisation will only collect personal and health information necessary to deliver services.</li>
+             <li>The organisation will take all necessary steps to protect my right to privacy and confidentiality when collecting my personal information. All information collected will be handled and maintained in a secure environment.</li>
+            <li>I am aware that my personal information and details will be stored electronically.</li>
+            <li>I have the right to request to see my records and to request a correction if I believe the information is wrong.</li>
+            <li>I have identified below any other individuals/services which I give informed consent for the organisation to contact on my behalf.</li>
+            <li>I may cancel all or part of this agreement at any time, by advising the organisation.</li>
+        </ul>
+        </ul>
+    </td>
+</tr>
+
+</table>
+<div style="page-break-before: always;"></div>
+
 
     <!-- Confidential Information Agencies -->
     <table>
-        <tr><td colspan="2" class="section-title">2. Confidential Information Agencies</td></tr>
+<tr><td colspan="2" class="section-title">2.Confidential Information Agencies( PROPOSED USE AND DISCLOSURE OF MY PERSONAL INFORMATION BETWEEN THE ORGANISATION AND AS LISTED BELOW:)</td></tr>
+
+    <tr>
+        <td colspan="2" style="padding-top: 15px;">
+            <strong>I understand that the following service(s) are recommended and relevant information about me may be forwarded to the agency(s) that provide these services, in order that I receive the best possible service, including external agencies (e.g. NDIS, DHHS, and Certification Body) and other service providers.
+
+</strong>
+        </td>
+    </tr>
+
         @if($form->agencies && $form->agencies->count() > 0)
             @foreach($form->agencies as $index => $agency)
                 @if($index > 0)
@@ -190,7 +252,15 @@
 
     <!-- Written Participant Consent -->
     <table>
-        <tr><td colspan="2" class="section-title">3. Confidential Consent</td></tr>
+
+        <tr><td colspan="2" class="section-title">3. Written Participant Consent</td></tr>
+        <tr>
+        <td colspan="2" style="padding-top: 15px;">
+    <strong>Best of Homecare has discussed with me how and why certain information about me may need to be provided to other service providers. I understand the recommendations and I give my permission for the information to be shared as detailed above.
+
+</strong>
+        </td>
+    </tr>
         @if($form->consent)
             <tr><th>Date</th><td><span class="value">{{ formatDate($form->consent->signed_date) }}</span></td></tr>
             <tr>
@@ -233,10 +303,19 @@
             <tr><th>Participant Signature</th><td><span class="value empty-field">No signature available</span></td></tr>
         @endif
     </table>
+<div style="page-break-before: always;"></div>
 
     <!-- Verbal Consent -->
     <table>
         <tr><td colspan="2" class="section-title">4. Verbal Consent</td></tr>
+         <tr>
+        <td colspan="2" style="padding-top: 15px;">
+    <strong>        Verbal consent should only be used where it is not practicable to obtain written consent. I have discussed the proposed referrals with the Participant or authorised representative and I am satisfied that they understand the proposed uses and disclosures and have provided their informed consent to these.
+
+
+</strong>
+        </td>
+    </tr>
         @if($form->verbal)
             <tr>
                 <th>Verbal Signature</th>
@@ -264,9 +343,19 @@
     <!-- Pre-Consent Disclosure Checklist -->
     <table>
         <tr><td colspan="2" class="section-title">5. Pre-Consent Disclosure Checklist</td></tr>
+
+         <tr>
+        <td colspan="2" style="padding-top: 15px;">
+            <strong>
+        To ensure the participant can make an informed decision about consent to disclose their information, the organisation should complete these steps, (tick when completed).
+
+</strong>
+        </td>
+    </tr>
+
         @if($form->preConsentDisclosure)
             <tr>
-                <th>Discussed referral to other services/agencies</th>
+                <th>Discuss with the participant the proposed referral to other services/agencies</th>
                 <td>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
@@ -278,7 +367,9 @@
                 </td>
             </tr>
             <tr>
-                <th>Explained release agreement and service provision</th>
+                <th>Explain that the participant’s information will only be released if the participant has agreed and advise that services will still be provided even if the participant does not want information disclosed.
+
+</th>
                 <td>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
@@ -290,7 +381,9 @@
                 </td>
             </tr>
             <tr>
-                <th>Explained sharing without consent (health/safety/legal)</th>
+                <th>Explain that information will be shared without consent if there is a serious threat to the health or safety of person(s), to report illegal activity or is required under law.
+
+</th>
                 <td>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
@@ -302,7 +395,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Provided privacy information if requested</th>
+                <th>Provide the participant with information about privacy if requested.</th>
                 <td>
                     <div class="enum-field">
                         @foreach(['Yes', 'No'] as $option)
@@ -315,7 +408,7 @@
             </tr>
         @else
             <tr>
-                <th>Discussed referral to other services/agencies</th>
+                <th>Discuss with the participant the proposed referral to other services/agencies</th>
                 <td>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>
@@ -324,7 +417,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Explained release agreement and service provision</th>
+                <th>Explain that the participant’s information will only be released if the participant has agreed and advise that services will still be provided even if the participant does not want information disclosed.
                 <td>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>
@@ -333,7 +426,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Explained sharing without consent (health/safety/legal)</th>
+                <th>Explain that information will be shared without consent if there is a serious threat to the health or safety of person(s), to report illegal activity or is required under law.
                 <td>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>
@@ -342,7 +435,7 @@
                 </td>
             </tr>
             <tr>
-                <th>Provided privacy information if requested</th>
+                <th>Provide the participant with information about privacy if requested.</th>
                 <td>
                     <div class="enum-field">
                         <span class="enum-option">Yes</span>

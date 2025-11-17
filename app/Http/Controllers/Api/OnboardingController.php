@@ -131,6 +131,9 @@ class OnboardingController extends UniversalController
     // ✅ After transaction — handle PDF generation for completed form
     if ($data['form_status'] === 'completed') {
         try {
+
+
+
             // Generate PDF
             $pdf = Pdf::loadView('pdf.onboarding_full_form', [
                 'initial' => $result->load([
@@ -147,10 +150,8 @@ class OnboardingController extends UniversalController
 
             // ✅ Send PDF to Core PHP user_documents
             $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
-            $createdBy = $result->staff_id;
-            if (!$createdBy) {
-                    $createdBy = 1; // adminbhc ID
-                }
+                   $staffEmail = $result->staff?->email ?? null;
+
 
                 $response = Http::attach(
                     'doc',
@@ -161,7 +162,7 @@ class OnboardingController extends UniversalController
                     'title'     => 'Onboarding Form',
                     'comments'  => 'Form completed successfully.',
                     'companyid' => $result->company_id ?? 1,
-                    'createdby' => $createdBy,
+                    'staff_email' => $staffEmail,
                 ]);
 
             if ($response->successful()) {
@@ -186,11 +187,16 @@ class OnboardingController extends UniversalController
         }
     }
 
+
+
+
     return response()->json([
         'success' => true,
         'status' => 200,
         'message' => 'Form submitted successfully.',
-        'data' => $result,
+        'data' => [
+        'initial' => $result
+    ],
     ]);
 }
 

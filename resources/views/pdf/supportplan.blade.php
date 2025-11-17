@@ -136,6 +136,58 @@
         <div class="header-title">Client Support Plan</div>
     </div>
 
+    <!-- ABOUT THIS SUPPORT PLAN -->
+<table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+    <tr>
+        <td style="padding: 10px; font-weight: bold; text-align: center; background-color: #e0f2fe;">
+            ABOUT THIS SUPPORT PLAN
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">
+            This Support Plan outlines how we will work with you to achieve your goals. It also confirms your approval
+            for us to provide the support and services you’ve agreed to.<br><br>
+            If your needs or circumstances change, the plan will be updated and re-approved by you.<br><br>
+            You’ll always receive a copy of your current, approved plan for your records. We’re here to support you 
+            every step of the way.
+        </td>
+    </tr>
+</table>
+
+<!-- WELLNESS AND REABLEMENT -->
+<table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+    <tr>
+        <td style="padding: 10px; font-weight: bold; text-align: center; background-color: #e0f2fe;">
+            WELLNESS AND REABLEMENT
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">
+            We’re committed to supporting you in embedding wellness and reablement into as many areas of your supports 
+            and services as possible.<br><br>
+            Wellness and reablement means doing with rather than doing for—helping you maintain and build your 
+            independence wherever we can.
+        </td>
+    </tr>
+</table>
+
+<!-- PUBLIC HOLIDAYS -->
+<table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+    <tr>
+        <td style="padding: 10px; font-weight: bold; text-align: center; background-color: #e0f2fe;">
+            PUBLIC HOLIDAYS
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">
+            We do not provide care on public holidays unless this has been agreed to in your Support Plan and budget.
+            If your needs change and you require direct care visits on a Public Holiday, it may require adjustments
+            to your care plan to keep costs within budget.
+        </td>
+    </tr>
+</table>
+
+
     <div class="section">
         <div class="section-header">Support Plan Details</div>
         <table>
@@ -199,7 +251,7 @@
 
     {{-- ✅ If participant unable to approve / co-approval needed --}}
 <div class="section">
-    <div class="section-header">Support Representative Approval</div>
+    <div class="section-header">Support Representative Approval(If the participant is unable to approve s sign or the participant has requested co approval, an approved support representative can sign)</div>
     <table>
         <tr>
             <td>
@@ -248,8 +300,27 @@
 
 <!--Keepsintouch -->
 
+<!-- KEEPING IN TOUCH / CONTACTING YOU -->
+<table style="width:100%; border-collapse: collapse; margin-bottom: 20px;">
+    <tr>
+        <td style="padding: 10px; font-weight: bold; background-color: #e0f2fe;">
+               <div class="section-header">Keeping in Touch</div>
+
+        </td>
+    </tr>
+    <tr>
+        <td style="padding: 10px;">
+            We’ll check in with you at least once a month to make sure you’re receiving the care and services you need 
+            and to answer any questions.<br><br>
+            We may also contact you for a variety of reasons related to your care—such as confirming services, 
+            discussing changes, reviewing your support plan, or responding to any concerns.<br><br>
+            That’s why it’s important that we know the best way to reach you.
+        </td>
+    </tr>
+</table>
+
+
 <div class="section">
-    <div class="section-header">Keeping in Touch</div>
     <table>
         <tr>
             <td>
@@ -368,6 +439,8 @@
 @if(!empty($supportPlan->non_responsive))
 <div class="section">
     <div class="section-header">Non-Responsive Visit Plan</div>
+
+    <div>We are required to ensure the safety and wellbeing of participants. If you are not home for a scheduled visit, the following plan will be followed:</div>
 
     <table width="100%" cellspacing="0" cellpadding="6" style="border-collapse: collapse; font-size: 13px;">
         <tr>

@@ -24,75 +24,148 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class IndividualRiskAssessmentController extends Controller
 {
     public function update(
-        StoreIndividualRiskAssessmentRequest $request,
-        IndividualRiskAssessmentService $service,
-        IndividualRiskAssessmentCompletionService $completionService,
-        IndividualRiskAssessmentDetailService $individualRiskAssessmentDetailService,
-        IndividualRiskAssessmentCommunicationService $individualRiskAssessmentCommunicationService,
-        IndividualRiskAssessmentCognitionService  $individualRiskAssessmentCognitionService,
-        IndividualRiskAssessmentMobilityService  $individualRiskAssessmentMobilityService,
-        IndividualRiskAssessmentPersonalCareSupportService $individualRiskAssessmentPersonalCareSupportService,
-        PlanManualHandlingService $planManualHandlingService,
-        IndividualRiskAssessmentViolenceRiskService  $individualRiskAssessmentViolenceRiskService,
+    StoreIndividualRiskAssessmentRequest $request,
+    IndividualRiskAssessmentService $service,
+    IndividualRiskAssessmentCompletionService $completionService,
+    IndividualRiskAssessmentDetailService $detailService,
+    IndividualRiskAssessmentCommunicationService $communicationService,
+    IndividualRiskAssessmentCognitionService $cognitionService,
+    IndividualRiskAssessmentMobilityService $mobilityService,
+    IndividualRiskAssessmentPersonalCareSupportService $personalCareSupportService,
+    PlanManualHandlingService $manualHandlingService,
+    IndividualRiskAssessmentViolenceRiskService $violenceRiskService
+) {
+    $data = $request->validated();
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
+    // ⭐ DB TRANSACTION — SAME AS HOME SAFETY
+    $assessment = DB::transaction(function () use (
+        $data,
+        $service,
+        $completionService,
+        $detailService,
+        $communicationService,
+        $cognitionService,
+        $mobilityService,
+        $personalCareSupportService,
+        $manualHandlingService,
+        $violenceRiskService
     ) {
-        $data = $request->validated();
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        $result = DB::transaction(function () use ($data, $service, $completionService,
-        $individualRiskAssessmentDetailService,
-        $individualRiskAssessmentCommunicationService,
-        $individualRiskAssessmentCognitionService,
-        $individualRiskAssessmentMobilityService,
-        $individualRiskAssessmentPersonalCareSupportService,
+        $user = Auth::user();
+        if (!$user) {
+            abort(401, 'Unauthorized');
+        }
 
-        $planManualHandlingService,
-        $individualRiskAssessmentViolenceRiskService,) {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
 
-            // Attach staff
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+        // ⭐ Save main form
+        $assessment = $service->save($data);
+        $data['individual_risk_assessment_id'] = $assessment->id;
 
-            // Save main record
-            $assessment = $service->save($data);
-            $data['individual_risk_assessment_id'] = $assessment->id;
+        // ⭐ Save all child sections
+        $detailService->save($data);
+        $communicationService->save($data);
+        $cognitionService->save($data);
+        $mobilityService->save($data);
+        $personalCareSupportService->save($data);
 
+        // ⭐ Save manual handling (multi-row)
+        $manualHandlingService->saveMany(
+            $data['manual_handlings'] ?? [],
+            $assessment->id
+        );
 
-            $individualRiskAssessmentDetailService->save($data);
-            $individualRiskAssessmentCommunicationService->save($data);
-            $individualRiskAssessmentCognitionService->save($data);
-            $individualRiskAssessmentMobilityService->save($data);
-            $individualRiskAssessmentPersonalCareSupportService->save($data);
+        $violenceRiskService->save($data);
 
-            $planManualHandlingService->saveMany($data['manual_handlings'] ?? [],$assessment->id);
-            $individualRiskAssessmentViolenceRiskService->save($data);
+        // ⭐ Calculate completion
+        $completion = $completionService->calculate($assessment);
+        $assessment->completion_percentage = $completion;
 
-            // Calculate completion %
-            $completion = $completionService->calculate($assessment);
-            $assessment->completion_percentage = $completion;
-            $assessment->save();
+        // ⭐ Mark as completed
+        if ($data['form_status'] === 'completed') {
+            $assessment->form_status = 'completed';
+        }
 
-            $formStatus = $data['form_status'] ?? 'in_progress';
+        $assessment->save();
 
-            // Report to Core PHP
-            try {
-                Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                    'uuid' => (string) $assessment->uuid,
+        // ⭐ Report to Core PHP
+        try {
+            Http::asForm()->post(
+                config('services.core_php.base_url') . '/update-form-status.php',
+                [
+                    'uuid' => (string)$assessment->uuid,
                     'form_name' => 'individual_risk_assessment',
                     'completion_percentage' => $completion,
-                    'form_status' => $formStatus,
+                    'form_status' => $data['form_status'],
+                ]
+            );
+        } catch (\Exception $e) {
+            Log::error('⚠ Error calling Core PHP update-form-status: ' . $e->getMessage());
+        }
+
+        return $assessment;
+    });
+
+    // ⭐ AFTER TRANSACTION → PDF GENERATION (same as home safety)
+    if ($data['form_status'] === 'completed') {
+
+        try {
+            // ⭐ Generate PDF
+            $pdf = Pdf::loadView('pdf.individual_risk_assessment', [
+                'assessment' => $assessment->load([
+                    'details',
+                    'communications',
+                    'cognitions',
+                    'mobilities',
+                    'personalCareSupport',
+                    'manualHandlings',
+                    'violenceRisk',
+                    'staff'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Individual_Risk_Assessment_' . $assessment->full_name . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ⭐ Upload PDF to Core PHP (add-user-document API)
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+            $staffEmail = $assessment->staff?->email ?? null;
+
+            $response = Http::attach(
+                'doc',
+                file_get_contents($filePath),
+                $fileName
+            )->asMultipart()->post($corePhpUrl, [
+                'userid'    => $assessment->user_id,
+                'title'     => 'Individual Risk Assessment',
+                'comments'  => 'Form completed successfully.',
+                'companyid' => $assessment->company_id ?? 1,
+                'staff_email' => $staffEmail,
+            ]);
+
+            if (!$response->successful()) {
+                Log::warning('⚠ PDF upload failed for Individual Risk Assessment', [
+                    'status' => $response->status(),
+                    'body' => $response->body(),
                 ]);
-            } catch (\Exception $e) {
-                Log::error('Error reporting Risk Assessment status: ' . $e->getMessage());
             }
 
+            @unlink($filePath);
 
-            return ['individualRiskAssessment' => $assessment->load([
+        } catch (\Exception $e) {
+            Log::error('❌ PDF Generation/Upload Failed: ' . $e->getMessage());
+        }
+    }
+
+    // ⭐ FINAL API RESPONSE
+    return response()->json([
+        'success' => true,
+        'message' => 'Individual Risk Assessment saved successfully.',
+        'data' => [ 'individualRiskAssessment' => $assessment->load([
             'details',
             'communications',
             'cognitions',
@@ -102,19 +175,11 @@ class IndividualRiskAssessmentController extends Controller
             'violenceRisk'
 
             ]),
-       ];
 
+        ],
 
-
-        });
-
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Individual Risk Assessment saved successfully.',
-            'data' => $result,
-        ]);
-    }
+    ]);
+}
 
     public function showByUuid(string $uuid, IndividualRiskAssessmentCompletionService $completionService)
     {

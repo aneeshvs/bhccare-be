@@ -11,26 +11,24 @@ use Illuminate\Support\Facades\Log;
 
 class FormRenewController extends Controller
 {
-    /**
-     * Renew PDF for a given form and UUID.
-     *
-     * This supports admin (no password) and staff (password required),
-     * regenerates the PDF from its view, saves it under /storage/app/public/renewed-pdfs/,
-     * and returns a public URL for access.
-     */
     public function renewPdf(Request $request, $form, $uuid)
     {
         try {
-        if (!$request->boolean('is_admin')) {
-            // ✅ Step 1: Validate user email
-            $request->validate([
-                'email' => 'required|email|exists:users,email',
-            ]);
+            /**
+             * ---------------------------------------------------------
+             * 1) Verify staff or admin
+             * ---------------------------------------------------------
+             */
+            if (!$request->boolean('is_admin')) {
 
-            $user = User::where('email', $request->email)->firstOrFail();
+                // Validate email
+                $request->validate([
+                    'email' => 'required|email|exists:users,email',
+                ]);
 
-            // ✅ Step 2: If not admin, verify password
+                $user = User::where('email', $request->email)->firstOrFail();
 
+                // Validate password
                 $request->validate([
                     'staff_password' => 'required|string',
                 ]);
@@ -40,7 +38,11 @@ class FormRenewController extends Controller
                 }
             }
 
-            // ✅ Step 3: Map all supported forms
+            /**
+             * ---------------------------------------------------------
+             * 2) Supported forms
+             * ---------------------------------------------------------
+             */
             $formMap = [
                 'onboarding'          => [\App\Models\InitialEnquiry::class, 'pdf.onboarding_full_form', 'initial'],
                 'support-plan'        => [\App\Models\SupportPlan::class, 'pdf.supportplan', 'supportPlan'],
@@ -49,67 +51,120 @@ class FormRenewController extends Controller
                 'risk-assessment'     => [\App\Models\IndividualRiskAssessment::class, 'pdf.individual_risk_assessment', 'assessment'],
                 'schedule-of-support' => [\App\Models\ScheduleOfSupport::class, 'pdf.schedule_of_support', 'schedule'],
                 'home-safety'         => [\App\Models\HomeSafetyChecklistAssessment::class, 'pdf.home_safety_assessment', 'assessment'],
-                'confidential-information'         => [\App\Models\ConfidentialInformationForm::class, 'pdf.confidentialinformationform', 'form'],
+                'confidential-information' => [\App\Models\ConfidentialInformationForm::class, 'pdf.confidentialinformationform', 'form'],
 
-               'multiple-supports' => [\App\Models\ParticipantSignature::class, 'pdf.participantsignature', 'participantSignature'],
+                // ✅ Participant Signature FIX HERE
+                'multiple-supports' => [
+                    \App\Models\ParticipantSignature::class,
+                    'pdf.participantsignature',
+                    'record'
+                ],
 
-               'onboarding-packing-signoff'=>[\App\Models\OnboardingPackingSignoff::class,'pdf.onboardingpacking','record'],
+                'onboarding-packing-signoff' => [
+                    \App\Models\OnboardingPackingSignoff::class,
+                    'pdf.onboardingpacking',
+                    'record'
+                ],
             ];
 
             if (!isset($formMap[$form])) {
                 return response()->json(['error' => 'Unsupported form type'], 400);
             }
 
-            // ✅ Step 4: Generate the PDF from view + model
             [$modelClass, $view, $varName] = $formMap[$form];
+
+            /**
+             * ---------------------------------------------------------
+             * 3) Fetch the record
+             * ---------------------------------------------------------
+             */
             $record = $modelClass::where('uuid', $uuid)->first();
 
             if (!$record) {
                 return response()->json(['error' => 'Record not found for this UUID'], 404);
             }
 
-            $pdf = Pdf::loadView($view, [$varName => $record]);
+            /**
+             * ---------------------------------------------------------
+             * 4) Extra PDF variables (Fix for signatureImage)
+             * ---------------------------------------------------------
+             */
+            $extra = [];
 
-            // ✅ Step 5: Ensure storage directory exists
+            if ($form === 'multiple-supports') {
+                // Detect signature image column (base64 or file path)
+                $extra['signatureImage'] = $record->signature_image
+                    ?? $record->signature
+                    ?? $record->image
+                    ?? null;
+            }
+
+            /**
+             * ---------------------------------------------------------
+             * 5) Generate PDF
+             * ---------------------------------------------------------
+             */
+            $pdf = Pdf::loadView($view, array_merge([
+                $varName => $record,
+            ], $extra));
+
+            /**
+             * ---------------------------------------------------------
+             * 6) Create storage directory
+             * ---------------------------------------------------------
+             */
             $dir = storage_path('app/public/renewed-pdfs');
             if (!File::exists($dir)) {
                 File::makeDirectory($dir, 0755, true);
             }
 
-            // ✅ Step 6: Save with timestamp to avoid overwriting
+            /**
+             * ---------------------------------------------------------
+             * 7) Save PDF with unique name
+             * ---------------------------------------------------------
+             */
             $fileName = "renewed_{$form}_{$uuid}_" . time() . ".pdf";
             $filePath = "{$dir}/{$fileName}";
+
             $pdf->save($filePath);
 
+            /**
+             * ---------------------------------------------------------
+             * 8) Send PDF to Core PHP
+             * ---------------------------------------------------------
+             */
+            $corePhpUrl = config('services.core_php.base_url') . '/save-pdf.php';
 
-            // Core PHP server URL
-                $corePhpUrl = config('services.core_php.base_url') . '/save-pdf.php';
+            $ch = curl_init($corePhpUrl);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, [
+                'uuid' => $uuid,
+                'form' => $form,
+                'pdf_file' => new \CURLFile($filePath, 'application/pdf', $fileName)
+            ]);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            $coreResponse = curl_exec($ch);
+            curl_close($ch);
 
-                // Use cURL to send file
-                $ch = curl_init($corePhpUrl);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, [
-                    'uuid' => $uuid,
-                    'form' => $form,
-                    'pdf_file' => new \CURLFile($filePath, 'application/pdf', $fileName)
-                ]);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                $coreResponse = curl_exec($ch);
-                curl_close($ch);
+            Log::info("Core PHP upload response: {$coreResponse}");
 
-                // Optional: Log Core PHP response
-                Log::info("Core PHP PDF upload response: " . $coreResponse);
-
-
-            // ✅ Step 7: Make public URL (after `php artisan storage:link`)
+            /**
+             * ---------------------------------------------------------
+             * 9) Public URL
+             * ---------------------------------------------------------
+             */
             $publicUrl = url("storage/renewed-pdfs/{$fileName}");
 
-            // ✅ Step 8: Return JSON response
+            /**
+             * ---------------------------------------------------------
+             * 10) Success JSON
+             * ---------------------------------------------------------
+             */
             return response()->json([
-                'success'   => true,
-                'message'   => "PDF renewed successfully for {$form}.",
+                'success' => true,
+                'message' => "PDF renewed successfully for {$form}.",
                 'file_name' => $fileName,
-                'file_url'  => $publicUrl,
+                'file_url' => $publicUrl,
             ]);
 
         } catch (\Throwable $e) {
@@ -122,7 +177,7 @@ class FormRenewController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'An error occurred while renewing the PDF.',
-                'error'   => $e->getMessage(),
+                'error' => $e->getMessage(),
             ], 500);
         }
     }

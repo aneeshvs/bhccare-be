@@ -26,115 +26,167 @@ use Illuminate\Support\Facades\Log;
 class SupportCarePlanController extends Controller
 {
     public function update(
-        StoreSupportCarePlanRequest $request,
-        SupportCarePlanService $service,
-        SupportCarePlanCompletionService $completionService,
-        AlternateDecisionMakerService $alternateDecisionMakerService,
-        SilGoalService $silGoalService,
-        SupportCoordinationGoalService $supportCoordinationGoalService,
-        SupportCarePlanCommunicationPlanService $supportCarePlanCommunicationPlanService,
-        SupportCarePlanEmergencyDisasterPlanService  $supportCarePlanEmergencyDisasterPlanService,
-        SupportCarePlanEmergencyContactService $supportCarePlanEmergencyContactService,
-        SupportCarePlanImportantContactService $supportCarePlanImportantContactService,
-        SupportCarePlanLocalServicesContactService $supportCarePlanLocalServicesContact,
-        SupportCarePlanEmergencyScenarioService $supportCarePlanEmergencyScenarioService
+    StoreSupportCarePlanRequest $request,
+    SupportCarePlanService $service,
+    SupportCarePlanCompletionService $completionService,
+    AlternateDecisionMakerService $alternateDecisionMakerService,
+    SilGoalService $silGoalService,
+    SupportCoordinationGoalService $supportCoordinationGoalService,
+    SupportCarePlanCommunicationPlanService $supportCarePlanCommunicationPlanService,
+    SupportCarePlanEmergencyDisasterPlanService $supportCarePlanEmergencyDisasterPlanService,
+    SupportCarePlanEmergencyContactService $supportCarePlanEmergencyContactService,
+    SupportCarePlanImportantContactService $supportCarePlanImportantContactService,
+    SupportCarePlanLocalServicesContactService $supportCarePlanLocalServicesContact,
+    SupportCarePlanEmergencyScenarioService $supportCarePlanEmergencyScenarioService
+) {
+    $data = $request->validated();
 
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
+    $result = DB::transaction(function () use (
+        $data,
+        $service,
+        $completionService,
+        $alternateDecisionMakerService,
+        $silGoalService,
+        $supportCoordinationGoalService,
+        $supportCarePlanCommunicationPlanService,
+        $supportCarePlanEmergencyDisasterPlanService,
+        $supportCarePlanEmergencyContactService,
+        $supportCarePlanImportantContactService,
+        $supportCarePlanLocalServicesContact,
+        $supportCarePlanEmergencyScenarioService,
     ) {
-        $data = $request->validated();
+        $user = Auth::user();
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
 
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+        // Attach staff
+        $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+        $data['staff_id'] = $staff?->id ?? null;
 
-        $result = DB::transaction(function () use (
-            $data,
-            $service,
-            $completionService,
-            $alternateDecisionMakerService,
-            $silGoalService,
-            $supportCoordinationGoalService,
-            $supportCarePlanCommunicationPlanService,
-            $supportCarePlanEmergencyDisasterPlanService,
-            $supportCarePlanEmergencyContactService,
-            $supportCarePlanImportantContactService,
-            $supportCarePlanLocalServicesContact,
-            $supportCarePlanEmergencyScenarioService,
-        ) {
-            $user = Auth::user();
-            if (!$user) {
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        // Save main plan
+        $plan = $service->save($data);
+        $data['support_care_plan_id'] = $plan->id;
 
-            // ✅ Attach staff
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+        // Save child sections
+        $alternateDecisionMakerService->save($data);
+        $silGoalService->saveMany($data['sil_goals'] ?? [], $plan->id, 'sil');
+        $silGoalService->saveMany($data['support_coordination_goals'] ?? [], $plan->id, 'support_coordination');
+        $silGoalService->saveMany($data['homecare_goals'] ?? [], $plan->id, 'homecare');
+        $supportCarePlanCommunicationPlanService->save($data);
+        $supportCarePlanEmergencyDisasterPlanService->save($data);
+        $supportCarePlanImportantContactService->save($data + ['support_care_plan_id' => $plan->id]);
+        $supportCarePlanEmergencyContactService->saveMany($data['emergency_contacts'] ?? [], $plan->id);
+        $supportCarePlanLocalServicesContact->save($data);
+        $supportCarePlanEmergencyScenarioService->save($data);
 
-            // ✅ Save main Support Care Plan
-            $plan = $service->save($data);
-             $data['support_care_plan_id'] = $plan->id;
+        // Calculate completion %
+        $completion = $completionService->calculate($plan);
+        $plan->completion_percentage = $completion;
 
-             $alternateDecisionMakerService->save($data);
-             $silGoalService->saveMany($data['sil_goals'] ?? [], $plan->id, 'sil');
-            $silGoalService->saveMany($data['support_coordination_goals'] ?? [], $plan->id, 'support_coordination');
-            $silGoalService->saveMany($data['homecare_goals'] ?? [], $plan->id, 'homecare');
-            $supportCarePlanCommunicationPlanService->save($data);
-            $supportCarePlanEmergencyDisasterPlanService->save($data);
-            $supportCarePlanImportantContactService->save($data + ['support_care_plan_id' => $plan->id]);
+        // Report status to Core PHP
+        try {
+            Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
+                'uuid' => (string) $plan->uuid,
+                'form_name' => 'support_care_plan',
+                'completion_percentage' => $completion,
+                'form_status' => $data['form_status'],
+            ]);
+        } catch (\Exception $e) {
+            Log::error("Support Care Plan status update failed: " . $e->getMessage());
+        }
+
+        // Save status if completed
+        if ($data['form_status'] === 'completed') {
+            $plan->form_status = 'completed';
+            $plan->save();
+        }
+
+        return [
+            'supportCarePlan' => $plan->load([
+                'alternateDecisionMaker',
+                'silGoals',
+                'supportCoordinationGoals',
+                'homecareGoals',
+                'communicationPlans',
+                'emergencyDisasterPlan',
+                'emergencyContacts',
+                'importantContacts',
+                'localServicesContact',
+                'emergencyScenario'
+            ]),
+        ];
+    });
 
 
-           $supportCarePlanEmergencyContactService->saveMany($data['emergency_contacts'] ?? [], $plan->id);
-           $supportCarePlanLocalServicesContact->save($data);
-           $supportCarePlanEmergencyScenarioService->save($data);
 
+if ($data['form_status'] === 'completed') {
 
+    try {
+        // ⭐ Generate PDF
+        $pdf = Pdf::loadView('pdf.supportcareplan', [
+            'supportCarePlan' => $result['supportCarePlan']->load([
+                'alternateDecisionMaker',
+                'silGoals',
+                'supportCoordinationGoals',
+                'homecareGoals',
+                'communicationPlans',
+                'emergencyDisasterPlan',
+                'emergencyContacts',
+                'importantContacts',
+                'localServicesContact',
+                'emergencyScenario'
+            ])
+        ])->setPaper('A4', 'portrait');
 
-            // ✅ Calculate completion %
-            $completion = $completionService->calculate($plan);
-            $plan->completion_percentage = $completion;
+        $fileName = 'Support_Care_Plan_' . ($result['supportCarePlan']->full_name ?? 'Record') . '.pdf';
+        $filePath = storage_path("app/temp/{$fileName}");
+        $pdf->save($filePath);
 
-            // ✅ Report status to Core PHP
-            $formStatus = $data['form_status'] ?? 'in_progress';
+        // ⭐ Upload PDF → Core PHP Document API
+        $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
 
-            try {
-                 Http::asForm()->post(config('services.core_php.base_url') . '/update-form-status.php', [
-                    'uuid' => (string) $plan->uuid,
-                    'form_name' => 'support_care_plan',
-                    'completion_percentage' => $completion,
-                    'form_status' => $formStatus,
-                ]);
-            } catch (\Exception $e) {
-                Log::error('Error reporting Support Care Plan status: ' . $e->getMessage());
-            }
+        $result['supportCarePlan']->load('staff');
+        $staffEmail = $result['supportCarePlan']->staff?->email ?? null;
 
-            if ($formStatus === 'completed') {
-                $plan->form_status = 'completed';
-                $plan->save();
-            }
-
-            return [
-               'supportCarePlan' => $plan->load([
-               'alternateDecisionMaker',
-               'silGoals',
-               'supportCoordinationGoals',
-               'homecareGoals',
-               'communicationPlans',
-               'emergencyDisasterPlan',
-               'emergencyContacts',
-               'importantContacts',
-               'localServicesContact',
-               'emergencyScenario'
-
-                ]),
-            ];
-        });
-
-        return response()->json([
-            'success' => true,
-            'status' => 200,
-            'message' => 'Support Care Plan saved successfully.',
-            'data' => $result,
+        $response = Http::attach(
+            'doc',
+            file_get_contents($filePath),
+            $fileName
+        )->asMultipart()->post($corePhpUrl, [
+            'userid'    => $result['supportCarePlan']->user_id,
+            'title'     => 'Support Care Plan',
+            'comments'  => 'Support Care Plan completed successfully.',
+            'companyid' => $result['supportCarePlan']->company_id ?? 1,
+            'staff_email' => $staffEmail,
         ]);
+
+        if (!$response->successful()) {
+            Log::warning("⚠ Failed to upload Support Care Plan PDF", [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
+        }
+
+        @unlink($filePath);
+
+    } catch (\Exception $e) {
+        Log::error("❌ Support Care Plan PDF/upload failed: " . $e->getMessage());
     }
+}
+
+
+
+    return response()->json([
+        'success' => true,
+        'status' => 200,
+        'message' => 'Support Care Plan saved successfully.',
+        'data' => $result,
+    ]);
+}
 
     public function showByUuid(string $uuid, SupportCarePlanCompletionService $completionService)
     {

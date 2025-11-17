@@ -19,116 +19,162 @@ use Barryvdh\DomPDF\Facade\Pdf;
 class OnboardingPackingSignoffController extends Controller
 {
     public function update(
-        StoreOnboardingPackingSignoffRequest $request,
-        OnboardingPackingSignoffService $service,
-        OnboardingPackingSignoffCompletionService $completionService,
-        OnboardingPackingSignoffDisabilityActDiscussionService $DisabilityActDiscussionService,
-        OnboardingPackingSignoffParticipantDeclarationService $ParticipantDeclarationService
-    ) {
-        $data = $request->validated();
-        $isFinal = $request->boolean('submit_final');
-        $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
+    StoreOnboardingPackingSignoffRequest $request,
+    OnboardingPackingSignoffService $service,
+    OnboardingPackingSignoffCompletionService $completionService,
+    OnboardingPackingSignoffDisabilityActDiscussionService $DisabilityActDiscussionService,
+    OnboardingPackingSignoffParticipantDeclarationService $ParticipantDeclarationService
+) {
+    $data = $request->validated();
+    $isFinal = $request->boolean('submit_final');
+    $data['form_status'] = $isFinal ? 'completed' : 'in_progress';
 
-        Log::info('🔹 OnboardingPackingSignoff update started', [
-            'data' => $data,
-            'isFinal' => $isFinal,
+    Log::info('🔹 OnboardingPackingSignoff update started', [
+        'data' => $data,
+        'isFinal' => $isFinal,
+    ]);
+
+    $user = Auth::user();
+    if (!$user) {
+        Log::warning('❌ Unauthorized access attempt');
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    // Attach staff
+    $staff = \App\Models\Staff::where('user_id', $user->id)->first();
+    $data['staff_id'] = $staff?->id ?? null;
+
+    // ---------------------- TRANSACTION ----------------------
+    $result = DB::transaction(function () use (
+        $data,
+        $service,
+        $completionService,
+        $DisabilityActDiscussionService,
+        $ParticipantDeclarationService
+    ) {
+        // Save main record
+        $record = $service->save($data);
+
+        // Save child records
+        $data['onboarding_packing_signoff_id'] = $record->id;
+        $DisabilityActDiscussionService->save($data);
+        $ParticipantDeclarationService->save($data);
+
+        // Calculate completion
+        $completion = $completionService->calculate($record);
+        $record->completion_percentage = $completion;
+
+        if ($data['form_status'] === 'completed') {
+            $record->form_status = 'completed';
+        }
+
+        $record->save();
+
+        Log::info('✅ PackingSignoff saved', [
+            'uuid' => $record->uuid,
+            'completion_percentage' => $record->completion_percentage,
+            'form_status' => $record->form_status,
         ]);
 
-        $result = DB::transaction(function () use (
-            $data,
-            $service,
-            $completionService,
-            $DisabilityActDiscussionService,
-            $ParticipantDeclarationService,
-        ) {
-            $user = Auth::user();
-            if (!$user) {
-                Log::warning('❌ Unauthorized access attempt to OnboardingPackingSignoffController');
-                return response()->json(['message' => 'Unauthorized'], 401);
-            }
+        return [
+            'record' => $record,
+            'completion' => $completion
+        ];
+    });
+    // ---------------------- END TRANSACTION ----------------------
 
-            $staff = \App\Models\Staff::where('user_id', $user->id)->first();
-            $data['staff_id'] = $staff?->id ?? null;
+    $record     = $result['record'];
+    $completion = $result['completion'];
 
-            Log::info('✅ Authenticated Staff Found', [
-                'user_id' => $user->id,
-                'staff_id' => $data['staff_id'],
+    // ------------------ SEND STATUS TO CORE PHP ------------------
+    $payload = [
+        'uuid' => (string) $record->uuid,
+        'form_name' => 'onboarding-packing-signoff',
+        'completion_percentage' => $completion,
+        'form_status' => $record->form_status,
+    ];
+
+    Log::info('📤 Sending form_status to Core PHP', $payload);
+
+    try {
+        $response = Http::asForm()->post(
+            config('services.core_php.base_url') . '/update-form-status.php',
+            $payload
+        );
+
+        if ($response->failed()) {
+            Log::error('❌ Core PHP form-status failed', [
+                'response' => $response->body(),
+                'status' => $response->status(),
+            ]);
+        }
+    } catch (\Exception $e) {
+        Log::error('❌ Core PHP form-status exception: ' . $e->getMessage());
+    }
+
+    // ------------------- PDF GENERATION & UPLOAD -------------------
+    if ($record->form_status === 'completed') {
+
+        try {
+            // ⭐ Generate PDF
+            $pdf = Pdf::loadView('pdf.onboardingpacking', [
+                'record' => $record->load([
+                    'staff',
+                    'disabilityActDiscussion',
+                    'participantDeclaration'
+                ])
+            ])->setPaper('A4', 'portrait');
+
+            $fileName = 'Onboarding_Packing_Signoff_' . ($record->full_name ?? 'Form') . '.pdf';
+            $filePath = storage_path("app/temp/{$fileName}");
+            $pdf->save($filePath);
+
+            // ⭐ Upload PDF to Core PHP
+            $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+            $staffEmail = $record->staff?->email ?? null;
+
+
+            $fileUploadResponse = Http::attach(
+                'doc',
+                file_get_contents($filePath),
+                $fileName
+            )->asMultipart()->post($corePhpUrl, [
+                'userid'    => $record->user_id,
+                'title'     => 'Onboarding Packing Signoff',
+                'comments'  => 'Form completed successfully.',
+                'companyid' => $record->company_id ?? 1,
+                'staff_email' => $staffEmail,
             ]);
 
-            // ✅ Save main record
-            $record = $service->save($data);
-
-            // ✅ Save related records
-            $data['onboarding_packing_signoff_id'] = $record->id;
-            $DisabilityActDiscussionService->save($data);
-            $ParticipantDeclarationService->save($data);
-
-            // ✅ Calculate completion
-            $completion = $completionService->calculate($record);
-            $record->completion_percentage = $completion;
-
-            if ($data['form_status'] === 'completed') {
-                $record->form_status = 'completed';
-            }
-
-            $record->save();
-
-            Log::info('✅ OnboardingPackingSignoff saved', [
-                'uuid' => $record->uuid,
-                'completion_percentage' => $record->completion_percentage,
-                'form_status' => $record->form_status,
-            ]);
-
-            // ✅ Send status to Core PHP system
-            $payload = [
-                'uuid' => (string) $record->uuid,
-                'form_name' => 'onboarding-packing-signoff',
-                'completion_percentage' => $record->completion_percentage, // ✅ fixed property
-                'form_status' => $data['form_status'],
-            ];
-
-            Log::info('📤 Sending to Core PHP form_status_tracking', $payload);
-
-            try {
-                $response = Http::asForm()->post(
-                    config('services.core_php.base_url') . '/update-form-status.php',
-                    $payload
-                );
-
-                if ($response->failed()) {
-                    Log::error('❌ Core PHP request failed', [
-                        'response' => $response->body(),
-                        'status' => $response->status(),
-                    ]);
-                } else {
-                    Log::info('✅ Core PHP response received', [
-                        'response' => $response->json(),
-                    ]);
-                }
-            } catch (\Exception $e) {
-                Log::error('❌ Exception while sending to Core PHP', [
-                    'error' => $e->getMessage(),
+            if (!$fileUploadResponse->successful()) {
+                Log::warning('⚠ Document upload failed', [
+                    'status' => $fileUploadResponse->status(),
+                    'body' => $fileUploadResponse->body(),
                 ]);
             }
 
-            return [
-                'onboardingPackingSignoff' =>
-                    $record->load('staff', 'disabilityActDiscussion', 'participantDeclaration'),
-            ];
-        });
+            // delete temporary file
+            @unlink($filePath);
 
-        Log::info('🎉 OnboardingPackingSignoff transaction complete', [
-            'result' => $result,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'status' => 200,
-            'message' => 'Onboarding Packing Sign Off saved successfully.',
-            'data' => $result,
-        ]);
+        } catch (\Exception $e) {
+            Log::error('❌ PDF generation/upload failed: ' . $e->getMessage());
+        }
     }
 
+    // ---------------- FINAL RESPONSE ----------------
+    return response()->json([
+        'success' => true,
+        'status'  => 200,
+        'message' => 'Onboarding Packing Signoff saved successfully.',
+        'data'    => [
+            'onboardingPackingSignoff' => $record->load([
+                'staff',
+                'disabilityActDiscussion',
+                'participantDeclaration'
+            ]),
+        ],
+    ]);
+}
 
 
 

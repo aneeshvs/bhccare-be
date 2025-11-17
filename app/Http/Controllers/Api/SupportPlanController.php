@@ -281,7 +281,100 @@ SupportPlanEndOfLifeAdvancedCarePlanningService $supportPlanEndOfLifeAdvancedCar
 
 
 
+
+
     });
+
+      /**
+ * ----------------------------------------------------------
+ * 📌 AFTER TRANSACTION → PDF GENERATION + USER DOCUMENT API
+ * ----------------------------------------------------------
+ */
+if ($data['form_status'] === 'completed') {
+
+    try {
+        // ⭐ Generate PDF
+        $pdf = Pdf::loadView('pdf.supportplan', [
+            'supportPlan' => $result['supportPlan']->load([
+                'approval',
+                'representativeApproval',
+                'careApproval',
+                'keep_in_touch',
+                'non_responsive',
+                'participantDetail',
+                'contactDetail',
+                'contactDetailSecondary',
+                'SupportFunding',
+                'services',
+                'supportplan_employee',
+                'myGoals',
+                'LivingArrangement',
+                'cultural_diversity',
+                'general_health',
+                'medication_management',
+                'mobility_transfer',
+                'fallsRisk',
+                'cognition',
+                'behaviourSupport',
+                'personalCare',
+                'continence',
+                'vision',
+                'hearing',
+                'skinCondition',
+                'dietary',
+                'painManagement',
+                'socialConnection',
+                'homeMaintenance',
+                'financialSupport',
+                'informalSupport',
+                'emergencyReadiness',
+                'fireHeatReadiness',
+                'stormFlooding',
+                'telecommunicationOutage',
+                'powerOutage',
+                'endOfLifeAdvancedCarePlanning',
+            ])
+        ])->setPaper('A4', 'portrait');
+
+        $fileName = 'Support_Plan_' . ($result['supportPlan']->full_name ?? 'Record') . '.pdf';
+        $filePath = storage_path("app/temp/{$fileName}");
+        $pdf->save($filePath);
+
+
+        // ⭐ Upload PDF → Core PHP Document API
+        $corePhpUrl = config('services.core_php.base_url') . '/add-user-document.php';
+
+        $result['supportPlan']->load('staff');
+        $staffEmail = $result['supportPlan']->staff?->email ?? null;
+
+
+        $response = Http::attach(
+            'doc',
+            file_get_contents($filePath),
+            $fileName
+        )->asMultipart()->post($corePhpUrl, [
+            'userid'    => $result['supportPlan']->user_id,
+            'title'     => 'Support Plan',
+            'comments'  => 'Support Plan completed successfully.',
+            'companyid' => $result['supportPlan']->company_id ?? 1,
+             'staff_email' => $staffEmail,
+        ]);
+
+        if (!$response->successful()) {
+            Log::warning("⚠ Failed to upload Support Plan PDF", [
+                'status' => $response->status(),
+                'body'   => $response->body(),
+            ]);
+        }
+
+        // ⭐ Delete temp file
+        @unlink($filePath);
+
+    } catch (\Exception $e) {
+        Log::error("❌ Support Plan PDF/upload failed: " . $e->getMessage());
+    }
+}
+
         return response()->json([
             'success' => true, // ✅ this is expected by frontend
             'status' => 200,
