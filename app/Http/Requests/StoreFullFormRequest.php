@@ -68,24 +68,24 @@ class StoreFullFormRequest extends FormRequest
     private function clientRules(): array
     {
         return [
-            'full_name'             => 'required|string|max:255',
-            'date_of_birth'         => 'required|date',
-            'gender'                => 'required|in:Male,Female,Other',
-            'residential_address'   => 'required|string',
+            'full_name'             => 'nullable|string|max:255',
+            'date_of_birth'         => 'nullable|date',
+            'gender'                => 'nullable|in:Male,Female,Other',
+            'residential_address'   => 'nullable|string',
 
             'home_phone'             => 'nullable|string',
             'work_phone'             => 'nullable|string',
 
-            'mobile'                => 'required|string|max:15',
+            'mobile'                => 'nullable|string|max:15',
             'email'                 => 'nullable|email|max:255',
-            'atsi_status'           => 'required|in:Aboriginal,Torres Strait Islander,Neither,Both',
+            'atsi_status'           => 'nullable|in:Aboriginal,Torres Strait Islander,Neither,Both',
             'cultural_background'   => 'nullable|string',
             'language_spoken'       => 'nullable|string',
             'interpreter_required'  => 'boolean',
             'password'              => 'nullable|string',
             'submit_final'          => 'nullable|boolean',
             'guardian_name'             => 'nullable|string|max:255',
-            'is_public_guardian' => 'required|in:Public Guardian,Temporary Guardian,No',
+            'is_public_guardian' => 'nullable|in:Public Guardian,Temporary Guardian,No',
             'guardian_relationship'     => 'nullable|string|max:100',
             'guardian_mobile'           => 'nullable|string|max:15',
             'guardian_email'            => 'nullable|email|max:255',
@@ -221,7 +221,7 @@ class StoreFullFormRequest extends FormRequest
     public function goalRules(): array
     {
         return [
-            'ndis_goals' => 'required|array|min:1',
+            'ndis_goals' => 'nullable|array',
             'ndis_goals.*.goal' => 'nullable|string|max:255',
             'ndis_goals.*.barriers' => 'nullable|string',
 

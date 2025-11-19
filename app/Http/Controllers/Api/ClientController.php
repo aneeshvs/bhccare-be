@@ -15,7 +15,7 @@ public function storeBasic(Request $request)
 {
     $validator = Validator::make($request->all(), [
         'uuid'                => 'nullable|string|uuid',
-        'full_name'           => 'required|string',
+        'full_name'           => 'nullable|string',
         'date_of_birth'       => 'nullable|date',
         'gender'              => 'nullable|in:Male,Female,Other',
         'residential_address' => 'nullable|string',
