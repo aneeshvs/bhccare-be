@@ -25,5 +25,14 @@ class UserSeeder extends Seeder
             'password'     => Hash::make('24brownsrdDM'),
             'user_type_id'  => 1, // Admin
         ]);
+
+        User::create([
+            'name'         => 'Mira',
+            'email'        => 'meramagdy21@gmail.com',
+            'password'     => Hash::make('Mer218@BHC'),
+            'user_type_id'  => 3, // Prompt
+        ]);
+
+
     }
 }
