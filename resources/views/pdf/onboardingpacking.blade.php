@@ -155,7 +155,9 @@
 
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
-        <h2>Onboarding Packing Sign Off</h2>
+        <h2>Onboarding Pack Contents List Sign Off</h2>
+        <div class="document-number">Document Number: <span>Form F-19</span></div>
+
     </div>
 
     {{-- Onboarding Items --}}
@@ -163,7 +165,7 @@
 
     <tr>
         <td colspan="3" class="section-title">1. INTAKE AND ASSESSMENT</td>
-        
+
     </tr>
         <tr>
             <th style="text-align:left; width:35%; padding:8px;">Participant Name</th>

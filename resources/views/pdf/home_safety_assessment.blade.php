@@ -140,10 +140,10 @@
 
     <tr>
         <td colspan="3" style="padding-top: 10px;">
-            You are to ensure onsite completion of the Home Safety Check prior to the commencement of service delivery. 
-            Only complete those areas related to the services to be provided and ensure you address potential risks 
-            with the Participant and put in place risk controls. This safety checklist is to be completed each time 
-            changes to the supports or their delivery are required, and/or any changes made to the Participant’s 
+            You are to ensure onsite completion of the Home Safety Check prior to the commencement of service delivery.
+            Only complete those areas related to the services to be provided and ensure you address potential risks
+            with the Participant and put in place risk controls. This safety checklist is to be completed each time
+            changes to the supports or their delivery are required, and/or any changes made to the Participant’s
             Service Agreement and/or Support care plan.
         </td>
     </tr>
@@ -151,7 +151,7 @@
 
     <!-- Main Assessment Information -->
     <div class="section">
-    <div class="section-header">1.Home Safety Information</div>
+    <div class="section-header">1.Participant Details</div>
     <table>
         <tr>
             <td>
@@ -192,7 +192,7 @@
         </tr>
         <tr>
             <td colspan="3">
-                <span class="label">Which door is used for entry? 
+                <span class="label">Which door is used for entry?
 (if ‘Other’, please define)
 </span>
                 <div class="enum-field">
@@ -306,7 +306,7 @@
 <!-- Inside Residence Assessment -->
 @if($assessment->insideResidence)
 <div class="section">
-    <div class="section-header">3. Inside Residence Assessment</div>
+    <div class="section-header">3. Inside Residence (General)</div>
     <table>
 
         <tr>
@@ -488,7 +488,7 @@
 <!-- Hallways Safety Assessment -->
 @if($assessment->hallways)
 <div class="section">
-    <div class="section-header">4. Hallways Assessment</div>
+    <div class="section-header">4. Hallways / Lounge / Dining / Bedroom<</div>
     <table>
 
         <!-- Hallways / Lounge / Dining / Bedroom -->
@@ -1131,7 +1131,7 @@
 <!-- Miscellaneous Assessment -->
 @if($assessment->miscellaneous)
 <div class="section">
-    <div class="section-header">7. Miscellaneous Safety Assessment</div>
+    <div class="section-header">7. Miscellaneous</div>
     <table>
 
         <!-- Children living at home -->
@@ -1322,7 +1322,7 @@
     <!-- Residence Type -->
    @if($assessment->residenceType)
 <div class="section">
-    <div class="section-header">8.Residence Type & Completion Details</div>
+    <div class="section-header">8. Type of Residence</div>
     <table>
         <tr>
             <td colspan="2">

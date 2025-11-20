@@ -95,14 +95,11 @@
     <!-- Header -->
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo">
-        <h2>Appendix A – Multiple Supports</h2>
+        <h2> Service Agreement <br> Appendix A – Multiple Supports</h2>
     </div>
 
     <!-- Document Body -->
-    <p class="main-title">
-        Service Agreement<br>
-        Appendix A - Multiple Supports
-    </p>
+
 
     <p>
         For participants who receive dual supports that may present as a conflict of interest.
@@ -147,7 +144,7 @@
         @endif
 
         <br><br>
-        <strong>Date Signed:</strong>
+        <strong>Date</strong>
         {{ $record->date_signed ? \Carbon\Carbon::parse($record->date_signed)->format('d/m/Y') : '-' }}
     </div>
 

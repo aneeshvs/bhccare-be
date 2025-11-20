@@ -291,7 +291,7 @@
     margin-bottom: 20px;
     border: 1px solid #d1d5db;
     border-radius: 6px;
-    
+
 }
 
 /* Consent Table Styles */
@@ -357,6 +357,9 @@
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
         <h2>Service Agreement</h2>
+        <div class="document-number">Document Number: <span>SA-01</span></div>
+
+
     </div>
 
 
@@ -775,7 +778,7 @@
         <table class="consent-table">
             <thead>
                 <tr>
-                    <th colspan="2" class="table-header">Participant</th>
+                    <th colspan="2" class="table-header">Agreement accepted and signed on behalf of Best of Homecare</th>
                 </tr>
             </thead>
             <tbody>
@@ -784,7 +787,7 @@
                     <td>{{ $serviceAgreement->consent->consents_participant_name ?? '-' }}</td>
                 </tr>
                 <tr>
-                    <th>Role</th>
+                    <th>Position</th>
                     <td>
                         <div class="enum-field">
                             @foreach(['participant', 'representative'] as $option)
@@ -817,7 +820,7 @@
         <table class="consent-table">
             <thead>
                 <tr>
-                    <th colspan="2" class="table-header">Witness</th>
+                    <th colspan="2" class="table-header">Written Participant Consent</th>
                 </tr>
             </thead>
             <tbody>
@@ -845,7 +848,7 @@
 
 {{-- Verbal Participant Consent --}}
 <div class="consent-section">
-    <div class="consent-title">Verbal Agreement</div>
+    <div class="consent-title">Verbal Participant Consent</div>
     <div class="consent-text">
         Verbal consent should only be used where it is not practicable to obtain written consent. I have discussed the proposed Service Agreement with the Participant or authorised representative, and I am satisfied that they understand the proposed Service Agreement and Schedule.
     </div>
@@ -854,7 +857,7 @@
         <table class="consent-table">
             <thead>
                 <tr>
-                    <th colspan="2" class="table-header">Verbal Consent Details</th>
+                    <th colspan="2" class="table-header">Verbal Details</th>
                 </tr>
             </thead>
             <tbody>
@@ -892,7 +895,7 @@
 
 {{-- Office Use Only --}}
 <div class="office-use-section">
-    
+
 
     <p><strong>SA-01b Schedule of Supports– Attached</strong></p>
     <p>Please also note, our schedule of fees is subject to change by direction of the National Disability Insurance Scheme.</p>

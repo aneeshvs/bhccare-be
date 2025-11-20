@@ -281,7 +281,7 @@ class StoreSupportPlanRequest extends FormRequest
             'support_plan_my_goals.*.success_look_like' => 'nullable|string|max:255',
             'support_plan_my_goals.*.who_will_support' => 'nullable|string|max:255',
             'support_plan_my_goals.*.participant_support' => 'nullable|string|max:255',
-            'support_plan_my_goals.*.when_to_meet_goal' => 'nullable|string|max:255',
+            'support_plan_my_goals.*.target_date' => 'nullable|string|max:255',
             'support_plan_my_goals.*.goal_key' => 'nullable|string|max:255',
 
         ];

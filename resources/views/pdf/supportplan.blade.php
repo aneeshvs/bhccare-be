@@ -132,8 +132,7 @@
 
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="Company Logo">
-        <div class="document-number">Document Number: <span>Form F-</span></div>
-        <div class="header-title">Client Support Plan</div>
+        <div class="header-title"> SUPPORT PLAN</div>
     </div>
 
     <!-- ABOUT THIS SUPPORT PLAN -->
@@ -148,7 +147,7 @@
             This Support Plan outlines how we will work with you to achieve your goals. It also confirms your approval
             for us to provide the support and services you’ve agreed to.<br><br>
             If your needs or circumstances change, the plan will be updated and re-approved by you.<br><br>
-            You’ll always receive a copy of your current, approved plan for your records. We’re here to support you 
+            You’ll always receive a copy of your current, approved plan for your records. We’re here to support you
             every step of the way.
         </td>
     </tr>
@@ -163,9 +162,9 @@
     </tr>
     <tr>
         <td style="padding: 10px;">
-            We’re committed to supporting you in embedding wellness and reablement into as many areas of your supports 
+            We’re committed to supporting you in embedding wellness and reablement into as many areas of your supports
             and services as possible.<br><br>
-            Wellness and reablement means doing with rather than doing for—helping you maintain and build your 
+            Wellness and reablement means doing with rather than doing for—helping you maintain and build your
             independence wherever we can.
         </td>
     </tr>
@@ -189,7 +188,7 @@
 
 
     <div class="section">
-        <div class="section-header">Support Plan Details</div>
+        <div class="section-header">Your Support Plan</div>
         <table>
             <tr>
                 <td>
@@ -273,7 +272,7 @@
 </div>
 
 <div class="section">
-    <div class="section-header">Care Partner Details</div>
+    <div class="section-header">This form was facilitated by your Care Partner</div>
     <table>
         <tr>
             <td>
@@ -310,9 +309,9 @@
     </tr>
     <tr>
         <td style="padding: 10px;">
-            We’ll check in with you at least once a month to make sure you’re receiving the care and services you need 
+            We’ll check in with you at least once a month to make sure you’re receiving the care and services you need
             and to answer any questions.<br><br>
-            We may also contact you for a variety of reasons related to your care—such as confirming services, 
+            We may also contact you for a variety of reasons related to your care—such as confirming services,
             discussing changes, reviewing your support plan, or responding to any concerns.<br><br>
             That’s why it’s important that we know the best way to reach you.
         </td>
@@ -438,7 +437,7 @@
 {{-- ===================== Non-Responsive Visit Plan ===================== --}}
 @if(!empty($supportPlan->non_responsive))
 <div class="section">
-    <div class="section-header">Non-Responsive Visit Plan</div>
+    <div class="section-header">Non-Responsive to scheduled Visit Plan</div>
 
     <div>We are required to ensure the safety and wellbeing of participants. If you are not home for a scheduled visit, the following plan will be followed:</div>
 
@@ -746,7 +745,7 @@
 </div>
 
 <div class="section">
-    <div class="section-header">SupportFunding Details</div>
+    <div class="section-header">FUNDING</div>
     <table>
         <tr>
             <td>
@@ -856,7 +855,7 @@
 </div>
  <!--service section -->
   <div class="section">
-    <div class="section-header"> SUPPORT PLAN SERVICES</div>
+    <div class="section-header">Budget & Services accessed through us</div>
     <div class="section-body">
         <table>
             <thead>
@@ -917,7 +916,7 @@
 
 <!--mygoals -->
 <div class="section">
-    <div class="section-header"> SUPPORT PLAN MY GOALS</div>
+    <div class="section-header"> MY GOALS</div>
     <div class="section-body">
         <table>
             <thead>
@@ -938,7 +937,7 @@
                         <td><span class="value">{{ $goal->success_look_like }}</span></td>
                         <td><span class="value">{{ $goal->who_will_support }}</span></td>
                         <td><span class="value">{{ $goal->participant_support }}</span></td>
-                        <td><span class="value">{{ $goal->when_to_meet_goal }}</span></td>
+                        <td><span class="value">{{ $goal->target_date }}</span></td>
                     </tr>
                 @endforeach
             </tbody>

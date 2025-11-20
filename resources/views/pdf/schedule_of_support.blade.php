@@ -480,7 +480,7 @@
 
     <!-- Agreement Section -->
     <div class="agreement-section">
-        <div class="section-header">Agreement Signature</div>
+        <div class="section-header">Agreement Signatures:</div>
 
         <div class="agreement-title"> Participant / Representative  </div>
         <table>

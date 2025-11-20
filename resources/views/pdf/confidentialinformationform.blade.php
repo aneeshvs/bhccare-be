@@ -155,7 +155,7 @@
 
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
-        <h2>Confidential Information Form</h2>
+        <h2>Consent to Exchange Release Confidential Information Form -Form-F3</h2>
     </div>
 
     @php
@@ -164,7 +164,7 @@
         }
     @endphp
 
-   
+
 
 
     <!-- Participant Information -->
@@ -173,7 +173,7 @@
 
     <!-- Section Title -->
     <tr>
-        <td colspan="2" class="section-title" style="margin-top: 0;">1. Confidential Information(PARTICIPANT DETAILS)</td>
+        <td colspan="2" class="section-title" style="margin-top: 0;">1.PARTICIPANT DETAILS</td>
     </tr>
 
     <tr><th>Full Name</th><td><span class="value">{{ $form->participant_name ?? 'N/A' }}</span></td></tr>
@@ -218,7 +218,7 @@ Please discuss the following statement with Participants before proceeding:
 
     <!-- Confidential Information Agencies -->
     <table>
-<tr><td colspan="2" class="section-title">2.Confidential Information Agencies( PROPOSED USE AND DISCLOSURE OF MY PERSONAL INFORMATION BETWEEN THE ORGANISATION AND AS LISTED BELOW:)</td></tr>
+<tr><td colspan="2" class="section-title">2. PROPOSED USE AND DISCLOSURE OF MY PERSONAL INFORMATION BETWEEN THE ORGANISATION AND AS LISTED BELOW</td></tr>
 
     <tr>
         <td colspan="2" style="padding-top: 15px;">

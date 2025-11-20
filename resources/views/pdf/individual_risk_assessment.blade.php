@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Individual Risk Assessment - BHC</title>
+
     <style>
         body {
             font-family: sans-serif;
@@ -119,7 +119,8 @@
     <!-- Header -->
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="BHC Logo">
-        <div class="header-title">Form-F5a Individual Risk Assessment</div>
+        <div class="header-title">Individual Risk Assessment</div>
+        <div class="document-number">Document Number: <span>Form F-5a</span></div>
     </div>
 
     <table style="width: 100%;   border-collapse: collapse; margin-bottom: 20px;">
@@ -131,10 +132,10 @@
 
         <tr>
             <td colspan="3" style="padding-top: 10px;">
-                You are to ensure onsite completion of the Home Safety Check prior to the commencement of service delivery. 
-                Only complete those areas related to the services to be provided and ensure you address potential risks 
-                with the Participant and put in place risk controls. This safety checklist is to be completed each time 
-                changes to the supports or their delivery are required, and/or any changes made to the Participant’s 
+                You are to ensure onsite completion of the Home Safety Check prior to the commencement of service delivery.
+                Only complete those areas related to the services to be provided and ensure you address potential risks
+                with the Participant and put in place risk controls. This safety checklist is to be completed each time
+                changes to the supports or their delivery are required, and/or any changes made to the Participant’s
                 Service Agreement and/or Support care plan.
             </td>
         </tr>
@@ -142,7 +143,7 @@
 
     <!-- Client Details -->
     <div class="section">
-    <div class="section-header">Assessment Client Details</div>
+    <div class="section-header"> Client Details</div>
     <table>
         <tr>
             <td>
@@ -172,7 +173,7 @@
 </div>
 
 
-   
+
     <!-- Details -->
 <div class="section">
     <div class="section-header">Vulnerability Details</div>
@@ -216,7 +217,7 @@
     <!-- Communications -->
  @if($assessment->communications)
 <div class="section">
-    <div class="section-header">Assessment Communications</div>
+    <div class="section-header"> Communication</div>
     <table>
         <tr>
             <td>
@@ -264,7 +265,7 @@
 
    @if($assessment->cognitions)
 <div class="section">
-    <div class="section-header">Assessment Cognition</div>
+    <div class="section-header"> Cognition</div>
     <table>
         <tr>
             <td>
@@ -336,7 +337,7 @@
     <!-- Mobility -->
    @if($assessment->mobilities)
 <div class="section">
-    <div class="section-header">Assessment Mobility</div>
+    <div class="section-header"> Mobility</div>
 
     <table>
         <tr>
@@ -515,7 +516,7 @@
    <!-- Personal Care & Support -->
 @if($assessment->personalCareSupport)
 <div class="section">
-    <div class="section-header">Assessment Personal Care & Support</div>
+    <div class="section-header"> Personal Care & Support</div>
     <table>
         <tr>
             <td>
@@ -694,7 +695,7 @@
 
     <!-- Manual Handling -->
 <div class="section">
-    <div class="section-header">Assessment Plan - Manual Handling</div>
+    <div class="section-header">Manual Handling(Refer to Manual Handling HandBook)</div>
     <table>
         @php
             $manualHandlings = $assessment->manualHandlings ?? collect();
@@ -777,7 +778,7 @@
 
   @if($assessment->violenceRisk)
 <div class="section">
-    <div class="section-header">Violence & Other Risks</div>
+    <div class="section-header">Violence Risks</div>
     <table>
         @php
             $vr = $assessment->violenceRisk;

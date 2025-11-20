@@ -448,7 +448,7 @@ What support will we provide to meet this goal?
 @endforeach
 
     <div class="section">
-    <div class="section-header">Communication Plan</div>
+    <div class="section-header">My Communication Plan</div>
     <table>
         @if($supportCarePlan->communicationPlans && $supportCarePlan->communicationPlans->count() > 0)
             @foreach($supportCarePlan->communicationPlans as $communication)
@@ -594,7 +594,7 @@ What support will we provide to meet this goal?
 
     <!-- Emergency Contacts -->
 <div class="section">
-    <div class="section-header">Emergency Contacts</div>
+    <div class="section-header">Key Emergency Contacts</div>
     <table>
         @php
             $contacts = $supportCarePlan->emergencyContacts ?? collect();
@@ -626,7 +626,7 @@ What support will we provide to meet this goal?
 
     <!-- Important Contacts -->
     <div class="section">
-        <div class="section-header">Important Contacts / Services</div>
+        <div class="section-header">My Important Contacts / Services</div>
         <table>
             @if($supportCarePlan->importantContacts)
                 <tr><td><span class="label">Advocate</span> <span class="value">{{ $supportCarePlan->importantContacts->advocate ?? 'N/A' }}</span></td></tr>

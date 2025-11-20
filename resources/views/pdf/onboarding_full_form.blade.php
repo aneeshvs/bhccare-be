@@ -252,8 +252,9 @@
 <div class="container">
     <div class="header">
         <img src="{{ public_path('images/BHC LOGO_SMALL.png') }}" class="logo" alt="Company Logo">
-        <div class="document-number">Document Number: <span>Form F-18</span></div>
-        <div class="header-title">Client Profile - Onboarding</div>
+
+        <div class="header-title">Client Profile(Onboarding)</div>
+         <div class="document-number">Document Number: <span>Form F-18</span></div>
     </div>
 
     <!-- PART A – INITIAL ENQUIRY -->
@@ -334,7 +335,7 @@
     <!-- PART B – FUNDING DETAILS -->
     @if(isset($initial->funding))
     <div class="section">
-        <div class="section-header">PART B – FUNDING DETAILS</div>
+        <div class="section-header"> FUNDING </div>
         <table>
             <tr>
                 <td style="width: 25%">
@@ -404,7 +405,7 @@
     <!-- PART C – EMERGENCY CONTACT DETAILS -->
     @if(isset($initial->emergencyContact))
     <div class="section">
-        <div class="section-header">PART C – EMERGENCY CONTACT DETAILS</div>
+        <div class="section-header">ALTERNATIVE EMERGENCY CONTACTS</div>
         <table>
             <tr>
                 <td style="width: 25%">
@@ -470,7 +471,7 @@
     <!-- PART E – CULTURAL BACKGROUND -->
     @if(isset($initial->culturalBackground))
     <div class="section">
-        <div class="section-header">PART E – CULTURAL BACKGROUND</div>
+        <div class="section-header">RELIGIOUS/CULTURAL</div>
         <table>
             <tr>
                 <td style="width: 25%">
@@ -543,7 +544,7 @@
     <!-- PART F – NDIS GOALS -->
     @if(isset($initial->ndisGoals))
     <div class="section">
-        <div class="section-header">PART F – NDIS GOALS</div>
+        <div class="section-header"> NDIS GOALS FOR BHC SUPPORT</div>
         <div class="section-body">
             <div class="field">
                 <span class="label">What are the NDIS Goals that you would like assistance from BHC with?</span>
@@ -562,7 +563,7 @@
 
 <!-- PART G – HEALTH PROFESSIONAL DETAILS -->
 <div class="section">
-    <div class="section-header">PART G – HEALTH PROFESSIONAL DETAILS((Medical practitioner, BSP, medical specialists, Physio, OT, Podiatrist, Dentist etc.))</div>
+    <div class="section-header"> HEALTH PROFESSIONAL DETAILS((Medical practitioner, BSP, medical specialists, Physio, OT, Podiatrist, Dentist etc.))</div>
     <div class="section-body">
         <table>
             <tr>
@@ -663,7 +664,7 @@
 {{-- PART H: DIAGNOSIS SUMMARY --}}
 @if ($initial->diagnosisSummary)
     <div class="section">
-        <div class="section-header">PART H – DIAGNOSIS SUMMARY</div>
+        <div class="section-header"> DIAGNOSIS SUMMARY</div>
         <div class="section-body">
             <table>
                 <tr>
@@ -687,7 +688,7 @@
 <!-- PART I: HEALTH INFORMATION -->
 @if ($initial->healthInformation)
 <div class="section">
-    <div class="section-header">PART I – HEALTH INFORMATION</div>
+    <div class="section-header"> HEALTH INFORMATION</div>
     <div class="section-body">
         <table>
             <tr>
@@ -786,7 +787,7 @@
 {{-- PART K: BEHAVIOUR SUPPORT --}}
 @if(isset($initial->behaviourSupport))
     <div class="section">
-        <div class="section-header">PART K – BEHAVIOUR SUPPORT</div>
+        <div class="section-header"> BEHAVIOUR SUPPORT</div>
         <div class="section-body">
             <table>
                 <tr>
@@ -825,7 +826,7 @@
 {{-- PART L – MEDICAL ALERT --}}
 @if ($initial->medicalAlert)
    <div class="section page-break">
-        <div class="section-header">PART L – MEDICAL ALERT</div>
+        <div class="section-header"> MEDICAL ALERTS/ ALLERGIES</div>
         <div class="section-body">
             <table>
                 <tr>
@@ -931,7 +932,7 @@
 {{-- PART M – PREVENTIVE HEALTH SUMMARY --}}
 @if ($initial->preventiveHealthSummary)
     <div class="section">
-        <div class="section-header">PART M – PREVENTIVE HEALTH SUMMARY</div>
+        <div class="section-header"> PREVENTIVE HEALTH SUMMARY</div>
         <div class="section-body">
             <table>
                 <tr>
@@ -975,7 +976,7 @@
 {{-- PART N – SUPPORT INFORMATION --}}
 @if ($initial->supportInformation)
     <div class="section">
-        <div class="section-header">PART N – SUPPORT INFORMATION</div>
+        <div class="section-header"> SUPPORT INFORMATION</div>
         <div class="section-body">
             <table>
                 <tr>
