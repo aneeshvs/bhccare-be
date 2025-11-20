@@ -144,7 +144,7 @@
         @endif
 
         <br><br>
-        <strong>Date</strong>
+        <strong>Date:</strong>
         {{ $record->date_signed ? \Carbon\Carbon::parse($record->date_signed)->format('d/m/Y') : '-' }}
     </div>
 
