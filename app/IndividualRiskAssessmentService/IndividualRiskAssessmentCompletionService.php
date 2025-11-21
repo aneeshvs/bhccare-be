@@ -19,7 +19,7 @@ class IndividualRiskAssessmentCompletionService
             'planned_review_date',
         ],
 
-        'deatils' =>[
+        'details' =>[
 
         'vulnerability',
         'review_frequency',
@@ -128,38 +128,39 @@ class IndividualRiskAssessmentCompletionService
 
         foreach ($this->sectionFields as $relation => $fields) {
             if ($relation === 'riskAssessment') {
-                // Direct fields on IndividualRiskAssessment
-                foreach ($fields as $field) {
-                    $totalFields++;
-                    if (!empty($assessment->$field)) {
-                        $filledFields++;
-                    }
-                }
-            } else {
-                // Handle hasOne / hasMany relations if added
-                $relatedData = $assessment->$relation;
+    foreach ($fields as $field) {
+        $totalFields++;
 
-                if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
-                    foreach ($relatedData as $item) {
-                        foreach ($fields as $field) {
-                            $totalFields++;
-                            if (!empty($item->$field)) {
-                                $filledFields++;
-                            }
-                        }
-                    }
-                } elseif ($relatedData) {
-                    foreach ($fields as $field) {
-                        $totalFields++;
-                        if (!empty($relatedData->$field)) {
-                            $filledFields++;
-                        }
-                    }
-                } else {
-                    // If no related records exist, count fields as empty
-                    $totalFields += count($fields);
+        if ($assessment->$field !== null && $assessment->$field !== '') {
+            $filledFields++;
+        }
+    }
+} else {
+    $relatedData = $assessment->$relation;
+
+    if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+        foreach ($relatedData as $item) {
+            foreach ($fields as $field) {
+                $totalFields++;
+
+                if ($item->$field !== null && $item->$field !== '') {
+                    $filledFields++;
                 }
             }
+        }
+    } elseif ($relatedData) {
+        foreach ($fields as $field) {
+            $totalFields++;
+
+            if ($relatedData->$field !== null && $relatedData->$field !== '') {
+                $filledFields++;
+            }
+        }
+    } else {
+        $totalFields += count($fields);
+    }
+}
+
         }
 
         return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;

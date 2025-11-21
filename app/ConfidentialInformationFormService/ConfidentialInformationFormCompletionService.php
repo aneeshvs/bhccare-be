@@ -21,43 +21,35 @@ class ConfidentialInformationFormCompletionService
         ],
 
         'agencies'=>[
-
-        'name',
-        'role',
-        'contact',
-        'agency_name',
-        'service_type',
-        'information_shared',
+            'name',
+            'role',
+            'contact',
+            'agency_name',
+            'service_type',
+            'information_shared',
         ],
 
         'consent'=>[
             'signature',
-        'signed_date',
-        'signed_by',
-        'name',
-        'witnessed_by',
+            'signed_date',
+            'signed_by',
+            'name',
+            'witnessed_by',
         ],
 
         'verbal'=>[
-
-        'verbal_signature',
-        'verbal_signed_date',
-        'verbal_name',
-        'position',
+            'verbal_signature',
+            'verbal_signed_date',
+            'verbal_name',
+            'position',
         ],
 
-
-
         'preConsentDisclosure'=>[
-
-        'discuss_referral_services',
-        'explain_release_agreement',
-        'explain_share_without_consent',
-        'provide_privacy_information',
+            'discuss_referral_services',
+            'explain_release_agreement',
+            'explain_share_without_consent',
+            'provide_privacy_information',
         ]
-
-
-
     ];
 
     /**
@@ -69,35 +61,49 @@ class ConfidentialInformationFormCompletionService
         $totalFields  = 0;
 
         foreach ($this->sectionFields as $section => $fields) {
+
+            // DIRECT FIELDS on the form model
             if ($section === 'form') {
-                // Direct form fields
+
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($form->$field)) {
+
+                    // BOOLEAN SAFE CHECK
+                    if ($form->$field !== null && $form->$field !== '') {
                         $filledFields++;
                     }
                 }
+
             } else {
-                // Handle related models if added in future
+
+                // RELATION FIELDS (future-proof)
                 $relatedData = $form->$section;
 
                 if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+
                     foreach ($relatedData as $item) {
                         foreach ($fields as $field) {
                             $totalFields++;
-                            if (!empty($item->$field)) {
+
+                            if ($item->$field !== null && $item->$field !== '') {
                                 $filledFields++;
                             }
                         }
                     }
+
                 } elseif ($relatedData) {
+
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($relatedData->$field)) {
+
+                        if ($relatedData->$field !== null && $relatedData->$field !== '') {
                             $filledFields++;
                         }
                     }
+
                 } else {
+
+                    // NO RELATED RECORD = fields count empty
                     $totalFields += count($fields);
                 }
             }

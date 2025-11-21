@@ -73,43 +73,59 @@ class OnboardingPackingSignoffCompletionService
     public function calculate(OnboardingPackingSignoff $record): int
     {
         $filledFields = 0;
-        $totalFields  = 0;
+        $totalFields = 0;
 
         foreach ($this->sectionFields as $relation => $fields) {
+
+            // 1. Direct model fields
             if ($relation === 'onboardingPackingSignoff') {
-                // Direct fields on the model
+
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($record->$field)) {
+
+                    if ($record->$field !== null && $record->$field !== '') {
                         $filledFields++;
                     }
                 }
+
             } else {
-                // Handle relations if added later
+
+                // 2. Handle relationships dynamically
                 $relatedData = $record->$relation;
 
                 if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
-                    foreach ($relatedData as $item) {
+
+                    foreach ($relatedData as $row) {
                         foreach ($fields as $field) {
                             $totalFields++;
-                            if (!empty($item->$field)) {
+
+                            if ($row->$field !== null && $row->$field !== '') {
                                 $filledFields++;
                             }
                         }
                     }
+
                 } elseif ($relatedData) {
+
+                    // Single related record
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($relatedData->$field)) {
+
+                        if ($relatedData->$field !== null && $relatedData->$field !== '') {
                             $filledFields++;
                         }
                     }
+
                 } else {
+
+                    // Relation exists in schema, but no records yet
                     $totalFields += count($fields);
                 }
             }
         }
 
-        return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
+        return $totalFields > 0
+            ? (int) round(($filledFields / $totalFields) * 100)
+            : 0;
     }
 }

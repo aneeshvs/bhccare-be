@@ -96,44 +96,62 @@ class FormCompletionService
     ];
 
     public function calculate(InitialEnquiry $initial): int
-    {
-        $filledFields = 0;
-        $totalFields = 0;
+{
+    $filledFields = 0;
+    $totalFields  = 0;
 
-        foreach ($this->sectionFields as $relation => $fields) {
-            if ($relation === 'initialEnquiry') {
-                // These fields belong directly to the $initial model
-                foreach ($fields as $field) {
-                    $totalFields++;
-                    if (!empty($initial->$field)) {
-                        $filledFields++;
-                    }
+    foreach ($this->sectionFields as $relation => $fields) {
+
+        // Direct table fields
+        if ($relation === 'initialEnquiry') {
+
+            foreach ($fields as $field) {
+                $totalFields++;
+
+                if ($initial->$field !== null && $initial->$field !== '') {
+                    $filledFields++;
                 }
-            } else {
-                $relatedData = $initial->$relation;
+            }
 
-                if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
-                    foreach ($relatedData as $item) {
-                        foreach ($fields as $field) {
-                            $totalFields++;
-                            if (!empty($item->$field)) {
-                                $filledFields++;
-                            }
-                        }
-                    }
-                } elseif ($relatedData) {
+        } else {
+
+            // Relationship data
+            $relatedData = $initial->$relation;
+
+            if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+
+                foreach ($relatedData as $item) {
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($relatedData->$field)) {
+
+                        if ($item->$field !== null && $item->$field !== '') {
                             $filledFields++;
                         }
                     }
-                } else {
-                    $totalFields += count($fields);
                 }
+
+            } elseif ($relatedData) {
+
+                // Single related model
+                foreach ($fields as $field) {
+                    $totalFields++;
+
+                    if ($relatedData->$field !== null && $relatedData->$field !== '') {
+                        $filledFields++;
+                    }
+                }
+
+            } else {
+
+                // No related records yet
+                $totalFields += count($fields);
             }
         }
-
-        return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
     }
+
+    return $totalFields > 0
+        ? (int) round(($filledFields / $totalFields) * 100)
+        : 0;
+}
+
 }

@@ -6,19 +6,18 @@ use App\Models\ScheduleOfSupport;
 
 class ScheduleOfSupportsCompletionService
 {
-    /**
-     * Define fields grouped by section/relation.
-     * The `schedule` section refers to fields directly on the ScheduleOfSupports model.
-     */
     private array $sectionFields = [
 
+        // Main Table Fields
         'schedule' => [
-           'participant_name',
+            'participant_name',
             'creation_date',
             'funding_review_date',
             'support_on_public_holiday',
         ],
-        'transport'=>[
+
+        // Funded supports (relation name must match model relationship)
+        'transport' => [
             'support_name',
             'description',
             'price',
@@ -28,67 +27,69 @@ class ScheduleOfSupportsCompletionService
             'grand_total',
         ],
 
-        'unfundedSupport'=>[
-
-        'unfunded_support_name',
-        'unfunded_description',
-        'unfunded_price_information',
-        'unfunded_delivery_details',
-        'unfunded_price',
-        'unfunded_grand_total',
-
+        // Unfunded supports (relation)
+        'unfundedSupport' => [
+            'unfunded_support_name',
+            'unfunded_description',
+            'unfunded_price_information',
+            'unfunded_delivery_details',
+            'unfunded_price',
+            'unfunded_grand_total',
         ],
 
-        'agreementSignature' =>[
-
-        'participant_signature',
-        'agreement_participant_name',
-        'participant_date',
-        'homecare_signature',
-        'homecare_name',
-        'homecare_date',
+        // Final signature section
+        'agreementSignature' => [
+            'participant_signature',
+            'agreement_participant_name',
+            'participant_date',
+            'representative_signature',
+            'representative_name',
+            'representative_date',
         ],
-
     ];
 
-    /**
-     * Calculate percentage of completed fields.
-     */
     public function calculate(ScheduleOfSupport $schedule): int
     {
         $filledFields = 0;
         $totalFields  = 0;
 
         foreach ($this->sectionFields as $relation => $fields) {
+
             if ($relation === 'schedule') {
-                // Direct fields on ScheduleOfSupports
+                // Direct attributes
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($schedule->$field) || $schedule->$field === 0) {
+                    if ($schedule->$field !== null && $schedule->$field !== '') {
                         $filledFields++;
                     }
                 }
+
             } else {
-                // Future extension: related tables
+
                 $relatedData = $schedule->$relation;
 
+                // Collection type relations
                 if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
                     foreach ($relatedData as $item) {
                         foreach ($fields as $field) {
                             $totalFields++;
-                            if (!empty($item->$field)) {
+                            if ($item->$field !== null && $item->$field !== '') {
                                 $filledFields++;
                             }
                         }
                     }
+
+                // Single-object relation
                 } elseif ($relatedData) {
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($relatedData->$field)) {
+                        if ($relatedData->$field !== null && $relatedData->$field !== '') {
                             $filledFields++;
                         }
                     }
+
                 } else {
+                    // If relation doesn't exist yet, count empty fields
                     $totalFields += count($fields);
                 }
             }

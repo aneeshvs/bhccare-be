@@ -28,13 +28,16 @@ class SupportCarePlanCompletionService
         ],
 
         'silGoals'=>[
+
         'goal_title',
         'goals_of_support',
         'steps',
         'organisation_steps',
         'risk',
         'risk_management_strategies',
-        ],
+
+    ],
+
 
         'communicationPlans'=>[
             'helps_me_talk',
@@ -109,36 +112,46 @@ class SupportCarePlanCompletionService
     $totalFields  = 0;
 
     foreach ($this->sectionFields as $relation => $fields) {
+
         if ($relation === 'supportCarePlan') {
-            // Direct fields on SupportCarePlan
+
             foreach ($fields as $field) {
                 $totalFields++;
-                if (!empty($plan->$field)) {
+
+                // Count filled including boolean 0 or 1
+                if ($plan->$field !== null && $plan->$field !== '') {
                     $filledFields++;
                 }
             }
+
         } else {
-            // Handle relations (hasMany / hasOne)
+
             $relatedData = $plan->$relation;
 
             if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+
                 foreach ($relatedData as $item) {
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($item->$field)) {
+
+                        if ($item->$field !== null && $item->$field !== '') {
                             $filledFields++;
                         }
                     }
                 }
+
             } elseif ($relatedData) {
+
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($relatedData->$field)) {
+
+                    if ($relatedData->$field !== null && $relatedData->$field !== '') {
                         $filledFields++;
                     }
                 }
+
             } else {
-                // If no related records exist, count fields as empty
+
                 $totalFields += count($fields);
             }
         }
@@ -146,5 +159,6 @@ class SupportCarePlanCompletionService
 
     return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
 }
+
 
 }

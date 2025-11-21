@@ -624,25 +624,27 @@ class SupportPlanCompletionService
 
 
     ];
-    /**
-     * Calculate percentage of completed fields.
-     */
+
+
+
     public function calculate(SupportPlan $supportPlan): int
     {
         $filledFields = 0;
-        $totalFields  = 0;
+        $totalFields = 0;
 
         foreach ($this->sectionFields as $relation => $fields) {
+
             if ($relation === 'supportPlan') {
-                  // Fields directly on the SupportPlan model
+
                 foreach ($fields as $field) {
                     $totalFields++;
                     if (!empty($supportPlan->$field)) {
                         $filledFields++;
                     }
                 }
+
             } else {
-                // Related models (approval, representative, carePartner)
+
                 $relatedData = $supportPlan->$relation;
 
                 if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
@@ -654,6 +656,7 @@ class SupportPlanCompletionService
                             }
                         }
                     }
+
                 } elseif ($relatedData) {
                     foreach ($fields as $field) {
                         $totalFields++;
@@ -661,8 +664,9 @@ class SupportPlanCompletionService
                             $filledFields++;
                         }
                     }
+
                 } else {
-                    // Relation is empty, so count all fields as unfilled
+                    // no related data → count fields as unfilled
                     $totalFields += count($fields);
                 }
             }
@@ -671,3 +675,5 @@ class SupportPlanCompletionService
         return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
     }
 }
+
+

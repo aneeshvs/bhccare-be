@@ -165,7 +165,7 @@ class HomeSafetyChecklistCompletionService
 
        'residence_house_type',
         'residence_other_type',
-        
+
         'assessment_completed_with',
         'name',
         'position',
@@ -189,32 +189,44 @@ class HomeSafetyChecklistCompletionService
         $totalFields  = 0;
 
         foreach ($this->sectionFields as $relation => $fields) {
+
+            /** ---------- Main model fields ---------- **/
             if ($relation === 'assessment') {
                 foreach ($fields as $field) {
                     $totalFields++;
-                    if (!empty($assessment->$field)) {
+
+                    if ($assessment->$field !== null && $assessment->$field !== '') {
                         $filledFields++;
                     }
                 }
+
+            /** ---------- Relation fields ---------- **/
             } else {
+
                 $relatedData = $assessment->$relation;
 
                 if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
+
                     foreach ($relatedData as $item) {
                         foreach ($fields as $field) {
                             $totalFields++;
-                            if (!empty($item->$field)) {
+
+                            if ($item->$field !== null && $item->$field !== '') {
                                 $filledFields++;
                             }
                         }
                     }
+
                 } elseif ($relatedData) {
+
                     foreach ($fields as $field) {
                         $totalFields++;
-                        if (!empty($relatedData->$field)) {
+
+                        if ($relatedData->$field !== null && $relatedData->$field !== '') {
                             $filledFields++;
                         }
                     }
+
                 } else {
                     $totalFields += count($fields);
                 }
@@ -223,4 +235,5 @@ class HomeSafetyChecklistCompletionService
 
         return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
     }
+
 }

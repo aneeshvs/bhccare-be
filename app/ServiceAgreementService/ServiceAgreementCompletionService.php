@@ -7,12 +7,14 @@ use App\Models\ServiceAgreement;
 class ServiceAgreementCompletionService
 {
     /**
-     * Define fields grouped by section/relation.
-     * The `serviceAgreement` section refers to fields directly on the ServiceAgreement model.
+     * List all fields to track completion progress.
+     * KEY = Model or relationship name
+     * VALUE = Fields to check
      */
-    private array $sectionFields = [
+    protected array $trackedFields = [
+
+        // Fields on the main ServiceAgreement model
         'serviceAgreement' => [
-            // Participant fields
             'participant_name',
             'ndis_number',
             'address',
@@ -24,65 +26,83 @@ class ServiceAgreementCompletionService
             'term_start_date',
             'term_end_date',
             'area_of_support',
-
-            // Representative fields
             'representative_name',
             'representative_relationship',
             'representative_contact',
             'representative_email',
+        ],
 
-            // System / meta fields
-            'staff_id',
-            'user_id',
-            'client_type',
+        // Related hasOne record (consent)
+        'consent' => [
+            'accepted_name',
+            'accepted_position',
+            'accepted_signature',
+            'accepted_date',
+            'consents_participant_name',
+            'participant_role',
+            'participant_signature',
+            'participant_date',
+            'witness_name',
+            'witness_signature',
+            'witness_date',
+            'verbal_staff_name',
+            'verbal_staff_signature',
+            'verbal_staff_position',
+            'verbal_date',
+            'other_notes',
+            'received_signed_copy',
+            'agreed_verbally',
+            'cms_comments_entered',
         ],
     ];
 
-    /**
-     * Calculate percentage of completed fields.
-     */
     public function calculate(ServiceAgreement $serviceAgreement): int
-{
-    $filledFields = 0;
-    $totalFields  = 0;
+    {
+        $filled = 0;
+        $total  = 0;
 
-    foreach ($this->sectionFields as $relation => $fields) {
-        if ($relation === 'serviceAgreement') {
-            // Direct fields
-            foreach ($fields as $field) {
-                $totalFields++;
-                if (!empty($serviceAgreement->$field)) {
-                    $filledFields++;
+        foreach ($this->trackedFields as $relation => $fields) {
+
+            if ($relation === 'serviceAgreement') {
+                // Count direct model fields
+                foreach ($fields as $field) {
+                    $total++;
+
+                    if (!is_null($serviceAgreement->$field) && $serviceAgreement->$field !== '') {
+                        $filled++;
+                    }
                 }
-            }
-        } else {
-            // Handle relations (hasOne / hasMany)
-            $relatedData = $serviceAgreement->$relation;
 
-            if ($relatedData instanceof \Illuminate\Database\Eloquent\Collection) {
-                foreach ($relatedData as $item) {
-                    foreach ($fields as $field) {
-                        $totalFields++;
-                        if (!empty($item->$field)) {
-                            $filledFields++;
+            } else {
+                // Count relational fields (hasOne / hasMany)
+                $related = $serviceAgreement->$relation;
+
+                if ($related instanceof \Illuminate\Database\Eloquent\Collection) {
+
+                    foreach ($related as $item) {
+                        foreach ($fields as $field) {
+                            $total++;
+                            if (!is_null($item->$field) && $item->$field !== '') {
+                                $filled++;
+                            }
                         }
                     }
-                }
-            } elseif ($relatedData) {
-                foreach ($fields as $field) {
-                    $totalFields++;
-                    if (!empty($relatedData->$field)) {
-                        $filledFields++;
+
+                } elseif ($related) {
+                    foreach ($fields as $field) {
+                        $total++;
+                        if (!is_null($related->$field) && $related->$field !== '') {
+                            $filled++;
+                        }
                     }
+
+                } else {
+                    // related record not created yet → count fields as empty
+                    $total += count($fields);
                 }
-            } else {
-                // No related records exist → count fields as empty
-                $totalFields += count($fields);
             }
         }
+
+        return $total > 0 ? (int) round(($filled / $total) * 100) : 0;
     }
-
-    return $totalFields > 0 ? (int) round(($filledFields / $totalFields) * 100) : 0;
-}
-
 }
