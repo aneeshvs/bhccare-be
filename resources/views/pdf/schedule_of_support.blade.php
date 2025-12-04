@@ -491,15 +491,19 @@
     <div class="content-wrapper">
         <div class="container">
             <!-- Funded Supports Section -->
-           <div class="section page-start">
+         <div class="section page-start">
     <div class="section-header">2. Schedule of Supports - Funded Supports</div>
 
     @php
-        // Funded supports from DB (Next.js already calculated totals)
+        // Funded supports from DB
         $fundedSupports = $schedule->transport ?? [];
 
-        // Grand total already stored in DB by Laravel
-        $finalGrandTotal = $schedule->grand_total ?? 0;
+        // Calculate grand total from supports (unit × price)
+        $calculatedGrandTotal = collect($fundedSupports)->sum(function ($item) {
+            $unit = $item->unit ?? 0;
+            $price = $item->price ?? 0;
+            return $unit * $price;
+        });
     @endphp
 
     <table>
@@ -509,10 +513,8 @@
                 <th style="width: 15%">Support</th>
                 <th style="width: 20%">Description of Support</th>
                 <th style="width: 10%">Unit</th>
-
                 <th style="width: 10%">Price</th>
-               
-                <th style="width: 20%">Payment Information</th>
+                <th style="width: 15%">Payment Information</th>
                 <th style="width: 15%">Invoicing Details</th>
                 <th style="width: 20%">How the Support will be provided</th>
             </tr>
@@ -525,28 +527,31 @@
                 </tr>
             @else
                 @foreach($fundedSupports as $index => $fundedSupport)
+                    @php
+                        $unit = $fundedSupport->unit ?? 0;
+                        $price = $fundedSupport->price ?? 0;
+                    @endphp
+
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $fundedSupport->support_name ?? 'N/A' }}</td>
                         <td>{{ $fundedSupport->description ?? 'N/A' }}</td>
 
                         <!-- UNIT FROM DATABASE -->
-                        <td>{{ $fundedSupport->unit ?? '0' }}</td>
+                        <td>{{ $unit }}</td>
 
                         <!-- PRICE FROM DATABASE -->
-                        <td>${{ number_format($fundedSupport->price ?? 0, 2) }}</td>
+                        <td>${{ number_format($price, 2) }}</td>
 
-                        
-
-                    <td>
-                        <div class="enum-field">
-                            @foreach(['NDIA', 'Self-managed', 'Plan managed'] as $option)
-                                <span class="enum-option {{ ($fundedSupport->payment_information ?? '') === $option ? 'selected' : '' }}">
-                                    {{ $option }}
-                                </span><br>
-                            @endforeach
-                        </div>
-                    </td>
+                        <td>
+                            <div class="enum-field">
+                                @foreach(['NDIA', 'Self-managed', 'Plan managed'] as $option)
+                                    <span class="enum-option {{ ($fundedSupport->payment_information ?? '') === $option ? 'selected' : '' }}">
+                                        {{ $option }}
+                                    </span><br><br>
+                                @endforeach
+                            </div>
+                        </td>
 
                         <td>{{ $fundedSupport->invoicing_details ?? 'N/A' }}</td>
                         <td>{{ $fundedSupport->delivery_details ?? 'N/A' }}</td>
@@ -557,10 +562,10 @@
 
         <tfoot>
             <tr class="total-row">
-                <td colspan="5">Grand Total (all funded Supports)</td>
+                <td colspan="5">Grand Total (all funded supports)</td>
 
-                <!-- FINAL GRAND TOTAL FROM DB -->
-                <td colspan="4">${{ number_format($finalGrandTotal, 2) }}</td>
+                <!-- DISPLAY CALCULATED GRAND TOTAL -->
+                <td colspan="4">${{ number_format($calculatedGrandTotal, 2) }}</td>
             </tr>
         </tfoot>
     </table>
@@ -572,6 +577,7 @@
         • Participants receiving core supports approve the flexible movement of funding between support types noted in the Schedule of Support to meet their needs.
     </div>
 </div>
+
 
         </div>
     </div>
@@ -611,15 +617,19 @@
     <div class="content-wrapper">
         <div class="container">
             <!-- Unfunded Supports Section -->
-           <div class="section page-start">
+          <div class="section page-start">
     <div class="section-header">3. Schedule of Supports - Unfunded Supports</div>
 
     @php
-        // Unfunded supports from DB (Next.js already calculated totals)
+        // Unfunded supports from DB
         $unfundedSupports = $schedule->unfundedSupport ?? [];
 
-        // Grand total already stored in DB by Laravel
-        $unfundedGrandTotal = $schedule->unfunded_grand_total ?? 0;
+        // Calculate grand total (unit × price)
+        $unfundedCalculatedGrandTotal = collect($unfundedSupports)->sum(function ($item) {
+            $unit = $item->unfunded_unit ?? 0;
+            $price = $item->unfunded_price ?? 0;
+            return $unit * $price;
+        });
     @endphp
 
     <table>
@@ -630,8 +640,7 @@
                 <th style="width: 20%">Description of Support</th>
                 <th style="width: 10%">Unit</th>
                 <th style="width: 10%">Price</th>
-                
-                <th style="width: 30%">Price Information</th>
+                <th style="width: 15%">Price Information</th>
                 <th style="width: 15%">Delivery Details</th>
             </tr>
         </thead>
@@ -643,24 +652,28 @@
                 </tr>
             @else
                 @foreach($unfundedSupports as $index => $unfundedSupport)
+                    @php
+                        $unit = $unfundedSupport->unfunded_unit ?? 0;
+                        $price = $unfundedSupport->unfunded_price ?? 0;
+                    @endphp
+
                     <tr>
                         <td>{{ $index + 1 }}</td>
                         <td>{{ $unfundedSupport->unfunded_support_name ?? 'N/A' }}</td>
                         <td>{{ $unfundedSupport->unfunded_description ?? 'N/A' }}</td>
 
-                        <!-- UNIT FROM DATABASE -->
-                        <td>{{ $unfundedSupport->unfunded_unit ?? '0' }}</td>
+                        <!-- UNIT -->
+                        <td>{{ $unit }}</td>
 
-                        <!-- PRICE FROM DATABASE -->
-                        <td>${{ number_format($unfundedSupport->unfunded_price ?? 0, 2) }}</td>
+                        <!-- PRICE -->
+                        <td>${{ number_format($price, 2) }}</td>
 
-                        
                         <td>
                             <div class="enum-field">
                                 @foreach(['Free', 'Negotiated', 'Market rate', 'Sliding scale', 'Other'] as $option)
                                     <span class="enum-option {{ ($unfundedSupport->unfunded_price_information ?? '') === $option ? 'selected' : '' }}">
                                         {{ $option }}
-                                    </span><br>
+                                    </span><br><br>
                                 @endforeach
                             </div>
                         </td>
@@ -673,10 +686,10 @@
 
         <tfoot>
             <tr class="total-row">
-                <td colspan="5">Grand Total (all unfunded Supports)</td>
+                <td colspan="5">Grand Total (all unfunded supports)</td>
 
-                <!-- GRAND TOTAL FROM DATABASE -->
-                <td colspan="3">${{ number_format($unfundedGrandTotal, 2) }}</td>
+                <!-- Show calculated total -->
+                <td colspan="3">${{ number_format($unfundedCalculatedGrandTotal, 2) }}</td>
             </tr>
         </tfoot>
     </table>
