@@ -68,6 +68,8 @@ class StoreScheduleOfSupportRequest extends FormRequest
             'funded_supports.*.goal_key' => 'nullable|string',
             'funded_supports.*.description' => 'nullable|string',
             'funded_supports.*.price' => 'nullable|numeric',
+            'funded_supports.*.unit' => 'nullable|numeric',
+            
             'funded_supports.*.payment_information' => 'nullable|string',
             'funded_supports.*.invoicing_details' => 'nullable|string',
             'funded_supports.*.delivery_details' => 'nullable|string',
@@ -88,6 +90,8 @@ class StoreScheduleOfSupportRequest extends FormRequest
             'unfunded_supports.*.unfunded_price_information' => 'nullable|string',
             'unfunded_supports.*.unfunded_delivery_details' => 'nullable|string',
             'unfunded_supports.*.unfunded_price' => 'nullable|numeric',
+            'unfunded_supports.*.unfunded_unit' => 'nullable|numeric',
+           
             'unfunded_supports.*.unfunded_grand_total' => 'nullable|numeric',
             ];
 

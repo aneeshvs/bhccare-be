@@ -36,7 +36,8 @@ return [
     ],
 
     'core_php' => [
-    'base_url' => env('CORE_PHP_URL', 'https://bhcapp.com.au'),
+    'base_url' => env('CORE_PHP_URL', 'http://localhost/bhcappdemo
+u'),
 ],
 
 

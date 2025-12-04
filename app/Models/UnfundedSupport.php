@@ -18,6 +18,7 @@ class UnfundedSupport extends DefaultDBModel
         'unfunded_price_information',
         'unfunded_delivery_details',
         'unfunded_price',
+        'unfunded_unit',
         'unfunded_grand_total',
     ];
 

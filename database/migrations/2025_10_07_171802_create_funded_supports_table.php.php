@@ -20,8 +20,12 @@ return new class extends Migration {
             $table->string('support_name')->nullable();
           $table->string('goal_key')->nullable(); // OR ->unique() if globally unique
 
-            $table->text('description')->nullable(); // Scope and volume
+            $table->text('description')->nullable();
+             // Scope and volume
             $table->decimal('price', 10, 2)->nullable(); // Price
+
+            $table->decimal('unit', 10, 2)->nullable(); //unit
+
             $table->string('payment_information')->nullable(); // NDIA, self-managed, plan managed
             $table->text('invoicing_details')->nullable(); // Org name, email, address
             $table->text('delivery_details')->nullable();

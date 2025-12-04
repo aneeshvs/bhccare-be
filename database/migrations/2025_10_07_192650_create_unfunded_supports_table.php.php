@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('unfunded_price_information')->nullable();
             $table->text('unfunded_delivery_details')->nullable();
             $table->decimal('unfunded_price', 10, 2)->nullable();
+             $table->decimal('unfunded_unit', 10, 2)->nullable(); //unit
             $table->decimal('unfunded_grand_total', 10, 2)->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());

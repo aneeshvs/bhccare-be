@@ -16,6 +16,7 @@ class FundedSupport extends DefaultDBModel
         'goal_key',
         'description',
         'price',
+        'unit',
         'payment_information',
         'invoicing_details',
         'delivery_details',
