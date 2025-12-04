@@ -670,7 +670,7 @@
 
                         <td>
                             
-                        {{ $unfundedSupport->unfunded_price_information ?? 'N/A'}}>
+                        {{ $unfundedSupport->unfunded_price_information ?? 'N/A'}}
                                         
                         </td>
 
