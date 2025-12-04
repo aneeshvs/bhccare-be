@@ -14,6 +14,9 @@ class ServiceAgreementService
             'user_id' => $data['user_id'],
             'client_type' => $data['client_type'],
         ];
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $agreement = ServiceAgreement::firstOrNew($conditions);
         $isNew = !$agreement->exists; // Detect create vs update

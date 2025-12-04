@@ -15,6 +15,10 @@ class ScheduleOfSupportService
             'client_type' => $data['client_type'] ?? null,
         ];
 
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
+
         $schedule = ScheduleOfSupport::firstOrNew($conditions);
         $isNew = !$schedule->exists; // Check if creating first time
 

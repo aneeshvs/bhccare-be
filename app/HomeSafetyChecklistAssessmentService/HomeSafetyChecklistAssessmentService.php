@@ -15,6 +15,10 @@ class HomeSafetyChecklistAssessmentService
             'client_type' => $data['client_type'],
         ];
 
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
+
         $record = HomeSafetyChecklistAssessment::firstOrNew($conditions);
         $isNew = !$record->exists; // Detect first-time creation
 

@@ -14,6 +14,9 @@ class OnboardingPackingSignoffService
             'user_id' => $data['user_id'],
             'client_type' => $data['client_type'],
         ]);
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $isNew = !$record->exists;
         $record->fill($data);
