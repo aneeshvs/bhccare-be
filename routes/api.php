@@ -21,6 +21,9 @@ use App\Http\Controllers\Api\ParticipantSignatureController;
 
 use App\Http\Controllers\Api\OnboardingPackingSignoffController;
 
+use App\Http\Controllers\ChargebandController;
+
+
 
 
 use Illuminate\Support\Facades\DB;
@@ -72,6 +75,11 @@ Route::delete('/form/section/remove', [OnboardingController::class, 'removeSecti
 
 Route::post('/login', [UsersController::class, 'login']);
 Route::post('/register', [RegisteredUserController::class, 'store']);
+
+Route::get('/chargebands', [ChargebandController::class, 'index']);
+Route::post('/chargebands', [ChargebandController::class, 'store']);
+
+
 
 // routes/api.php support plan
 Route::get('/support-plan-show/{uuid}', [SupportPlanController::class, 'showByUuid']);
