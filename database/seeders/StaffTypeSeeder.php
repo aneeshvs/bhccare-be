@@ -34,6 +34,7 @@ class StaffTypeSeeder extends Seeder
             32 => 'Candidate',
             33 => 'Service Manager',
             35 => 'SIL Coordinator Team Leader',
+            36 => 'Case Manager (HCP)',
         ];
 
         foreach ($staffTypes as $id => $name) {

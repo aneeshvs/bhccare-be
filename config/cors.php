@@ -8,8 +8,7 @@ return [
 
     'allowed_origins' => [
         'http://localhost:3000',
-        'http://localhost/bhcappdemo
-',
+        'http://localhost/bhcappdemo',
     ],
 
     'allowed_origins_patterns' => [],
