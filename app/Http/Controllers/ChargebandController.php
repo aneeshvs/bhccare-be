@@ -14,7 +14,7 @@ class ChargebandController extends Controller
         
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => $data
         ]);
     }
@@ -28,12 +28,12 @@ class ChargebandController extends Controller
             // 'fundtypeid'      => $request->fundtypeid,
             // 'serviceid'       => $request->serviceid,
             // 'color'           => $request->color,
-            // 'status'          => $request->status,
+            // 'success'          => $request->success,
             // 'companyid'       => $request->companyid,
         ]);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Chargeband created successfully',
             'data' => $chargeband
         ], 201);
@@ -45,7 +45,7 @@ class ChargebandController extends Controller
         $chargeband = Chargeband::where('uuid', $uuid)->firstOrFail();
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'data' => $chargeband
         ]);
     }
@@ -61,12 +61,12 @@ class ChargebandController extends Controller
             'fundtypeid'      => $request->fundtypeid ?? $chargeband->fundtypeid,
             'serviceid'       => $request->serviceid ?? $chargeband->serviceid,
             'color'           => $request->color ?? $chargeband->color,
-            'status'          => $request->status ?? $chargeband->status,
+            'success'          => $request->success ?? $chargeband->success,
             'companyid'       => $request->companyid ?? $chargeband->companyid,
         ]);
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Chargeband updated successfully',
             'data' => $chargeband
         ]);
@@ -79,7 +79,7 @@ class ChargebandController extends Controller
         $chargeband->delete();
 
         return response()->json([
-            'status' => true,
+            'success' => true,
             'message' => 'Chargeband deleted successfully'
         ]);
     }
