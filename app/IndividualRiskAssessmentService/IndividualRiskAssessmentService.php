@@ -14,6 +14,9 @@ class IndividualRiskAssessmentService
             'user_id' => $data['user_id'] ?? null,
             'client_type' => $data['client_type'] ?? null,
         ];
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $assessment = IndividualRiskAssessment::firstOrNew($conditions);
         $isNew = !$assessment->exists; // Detect first-time insert

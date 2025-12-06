@@ -14,6 +14,9 @@ class InitialEnquiryService
             'user_id' => $data['user_id'],
             'client_type' => $data['client_type'],
         ];
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $initial = InitialEnquiry::firstOrNew($conditions);
         $isNew = !$initial->exists; // Detect first-time create

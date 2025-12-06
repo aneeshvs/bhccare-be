@@ -13,6 +13,9 @@ class SupportCarePlanService
             'user_id' => $data['user_id'],
             'client_type' => $data['client_type'],
         ];
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $plan = SupportCarePlan::firstOrNew($conditions);
         $isNew = !$plan->exists; // detect if first time creating

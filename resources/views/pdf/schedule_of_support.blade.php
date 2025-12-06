@@ -640,7 +640,7 @@
                 <th style="width: 20%">Description of Support</th>
                 <th style="width: 10%">Unit</th>
                 <th style="width: 10%">Price</th>
-                <th style="width: 15%">Price Information</th>
+                <th style="width: 10%">Price Information</th>
                 <th style="width: 15%">Delivery Details</th>
             </tr>
         </thead>
@@ -669,13 +669,9 @@
                         <td>${{ number_format($price, 2) }}</td>
 
                         <td>
-                            <div class="enum-field">
-                                @foreach(['Free', 'Negotiated', 'Market rate', 'Sliding scale', 'Other'] as $option)
-                                    <span class="enum-option {{ ($unfundedSupport->unfunded_price_information ?? '') === $option ? 'selected' : '' }}">
-                                        {{ $option }}
-                                    </span><br><br>
-                                @endforeach
-                            </div>
+                            
+                        {{ $unfundedSupport->unfunded_price_information ?? 'N/A'}}
+                                        
                         </td>
 
                         <td>{{ $unfundedSupport->unfunded_delivery_details ?? 'N/A' }}</td>

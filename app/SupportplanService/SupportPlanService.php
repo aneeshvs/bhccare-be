@@ -14,6 +14,9 @@ class SupportPlanService
             'user_id' => $data['user_id'],
             'client_type' => $data['client_type'],
         ];
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
 
         $plan = SupportPlan::firstOrNew($conditions);
         $isNew = !$plan->exists; // Detect create vs update

@@ -15,6 +15,10 @@ class ConfidentialInformationFormService
             'client_type' => $data['client_type'],
         ];
 
+        if (!empty($data['uuid'])) {
+            $conditions['uuid'] = $data['uuid'];
+        }
+
         $record = ConfidentialInformationForm::firstOrNew($conditions);
         $isNew = !$record->exists; // Detect first-time creation
 
