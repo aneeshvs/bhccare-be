@@ -11,6 +11,7 @@ class ChargebandController extends Controller
     public function index()
     {
         $data = Chargeband::orderBy('id', 'desc')->get();
+        
 
         return response()->json([
             'status' => true,
@@ -23,12 +24,12 @@ class ChargebandController extends Controller
     {
         $chargeband = Chargeband::create([
             'chargeband_name' => $request->chargeband_name,
-            'categoryid'      => $request->categoryid,
-            'fundtypeid'      => $request->fundtypeid,
-            'serviceid'       => $request->serviceid,
-            'color'           => $request->color,
-            'status'          => $request->status,
-            'companyid'       => $request->companyid,
+            // 'categoryid'      => $request->categoryid,
+            // 'fundtypeid'      => $request->fundtypeid,
+            // 'serviceid'       => $request->serviceid,
+            // 'color'           => $request->color,
+            // 'status'          => $request->status,
+            // 'companyid'       => $request->companyid,
         ]);
 
         return response()->json([
@@ -70,7 +71,7 @@ class ChargebandController extends Controller
             'data' => $chargeband
         ]);
     }
-
+    
     // DELETE /chargebands/{uuid}
     public function destroy($uuid)
     {
