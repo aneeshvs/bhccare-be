@@ -699,39 +699,46 @@
 
 
             <!-- SIL/SDA Accommodation Section -->
-            <div class="section">
-                <div class="section-header1">Supported Independent Living Accommodation - Fortnightly Participants Contribution (SIL/SDA Only)</div>
-                <table>
-                    <thead>
-                        <tr>
-                            <th style="width: 70%">Description</th>
-                            <th style="width: 30%">Amount (Per Fortnight)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Rent Charges (Rental cost and Commonwealth rent assistance)</td>
-                            <td>$390.20</td>
-                        </tr>
-                        <tr>
-                            <td>33% of the total cost of utilities such as electricity, gas, water, and internet<br>
-                                <small style="color: #666;">(Above rates are based on the total cost of utilities for a Year)</small>
-                            </td>
-                            <td>$204.80</td>
-                        </tr>
-                        <tr>
-                            <td>Food/Groceries<br>
-                                <small style="color: #666;">(Based on the total cost of the food purchase currently in our SIL accommodation per person)</small>
-                            </td>
-                            <td>$200.00</td>
-                        </tr>
-                        <tr class="total-row">
-                            <td><strong>Total Cost</strong></td>
-                            <td><strong>$795.00 / Fortnight</strong></td>
-                        </tr>
-                    </tbody>
-                </table>
+    @if($flag)
+        <div class="section">
+            <div class="section-header1">
+                Supported Independent Living Accommodation - Fortnightly Participants Contribution (SIL/SDA Only)
             </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th style="width: 70%">Description</th>
+                        <th style="width: 30%">Amount (Per Fortnight)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Rent Charges (Rental cost and Commonwealth rent assistance)</td>
+                        <td>$390.20</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            33% of the total cost of utilities such as electricity, gas, water, and internet<br>
+                            <small style="color: #666;">(Above rates are based on the total cost of utilities for a Year)</small>
+                        </td>
+                        <td>$204.80</td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Food/Groceries<br>
+                            <small style="color: #666;">(Based on the total cost of the food purchase currently in our SIL accommodation per person)</small>
+                        </td>
+                        <td>$200.00</td>
+                    </tr>
+                    <tr class="total-row">
+                        <td><strong>Total Cost</strong></td>
+                        <td><strong>$795.00 / Fortnight</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    @endif
+
         </div>
     </div>
 

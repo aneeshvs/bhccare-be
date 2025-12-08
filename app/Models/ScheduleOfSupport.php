@@ -22,12 +22,17 @@ class ScheduleOfSupport extends DefaultDBModel
         'support_on_public_holiday',
         'form_status',
         'completion_percentage',
+        'sil_section_flag'
     ];
 
     protected $attributes = [
         'form_status' => 'in_progress',
         'completion_percentage' => 0,
     ];
+
+    protected $casts = [
+    'sil_section_flag' => 'boolean',
+];
 
     public function staff()
     {

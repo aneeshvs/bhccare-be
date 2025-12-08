@@ -23,6 +23,8 @@ return new class extends Migration {
 
             $table->boolean('support_on_public_holiday')->default(false);
 
+            $table->boolean('sil_section_flag')->default(0);
+
             // Tracking
             $table->enum('form_status', ['in_progress', 'completed', 'draft'])->default('in_progress');
             $table->unsignedTinyInteger('completion_percentage')->default(0);

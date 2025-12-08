@@ -51,6 +51,7 @@ class StoreScheduleOfSupportRequest extends FormRequest
             'funding_review_date' => 'nullable|date',
 
             'support_on_public_holiday' => 'boolean',
+            'sil_section_flag' => 'boolean',
 
             'form_status' => 'nullable|string|in:in_progress,completed,draft',
             'completion_percentage' => 'nullable|integer|min:0|max:100',

@@ -171,16 +171,25 @@ class ScheduleOfSupportController extends Controller
 
 
     public function exportFullFormPdf(string $uuid)
-    {
-        $schedule = ScheduleOfSupport::with('staff','transport','unfundedSupport','agreementSignature')->where('uuid', $uuid)->firstOrFail();
+{
+    $schedule = ScheduleOfSupport::with(
+        'staff',
+        'transport',
+        'unfundedSupport',
+        'agreementSignature'
+    )->where('uuid', $uuid)->firstOrFail();
 
-        $pdf = Pdf::loadView('pdf.schedule_of_support', compact('schedule'))
-            ->setPaper('A4', 'portrait');
+    // Pass flag to Blade view
+    $flag = $schedule->sil_section_flag;  
 
-        $fileName = 'Schedule_of_Support_' . ($schedule->staff->name ?? 'Unknown') . '.pdf';
+    $pdf = Pdf::loadView('pdf.schedule_of_support', compact('schedule', 'flag'))
+              ->setPaper('A4', 'portrait');
 
-        return $pdf->download($fileName);
-    }
+    $fileName = 'Schedule_of_Support_' . ($schedule->staff->name ?? 'Unknown') . '.pdf';
+
+    return $pdf->download($fileName);
+}
+
 
     public function getScheduleOfSupportsUuid(Request $request)
 {
