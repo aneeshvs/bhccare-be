@@ -213,6 +213,8 @@ private function violencerules(): array
             'verbal_management_plan' => 'nullable|string',
             'verbal_bsp_plan' => 'boolean',
 
+            'verbal_aggression_notes'=>'nullable',
+
             'client_aggression' => 'boolean',
             'client_hazards' => 'nullable|string',
             'client_management_plan' => 'nullable|string',
@@ -247,6 +249,8 @@ private function violencerules(): array
             'finance_hazards' => 'nullable|string',
             'finance_management_plan' => 'nullable|string',
             'finance_bsp_plan' => 'boolean',
+
+            'finance_management_notes'=>'nullable'
         ];
     }
 

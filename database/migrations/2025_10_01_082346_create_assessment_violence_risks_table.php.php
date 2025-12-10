@@ -33,6 +33,9 @@ return new class extends Migration {
             $table->text('client_management_plan')->nullable();
             $table->boolean('client_bsp_plan')->default(false);
 
+            $table->text('verbal_aggression_notes')->nullable();
+
+
             $table->boolean('self_harm')->default(false);
             $table->text('self_harm_hazards')->nullable();
             $table->text('self_harm_management_plan')->nullable();
@@ -62,6 +65,8 @@ return new class extends Migration {
             $table->text('finance_hazards')->nullable();
             $table->text('finance_management_plan')->nullable();
             $table->boolean('finance_bsp_plan')->default(false);
+
+            $table->text('finance_management_notes')->nullable();
 
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
