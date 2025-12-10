@@ -1027,8 +1027,12 @@
                     </td>
                 </tr>
 
-                <tr>
-                    <td class="field-label">Is there a history of verbal aggression toward staff by the client?</td>
+               <tr>
+                    <td class="field-label">
+                        Is there a history of verbal aggression toward staff by the client?
+                    </td>
+
+                    <!-- RESPONSE COLUMN (Options + Notes inside same TD) -->
                     <td class="field-value">
                         <div class="enum-field">
                             @foreach(['Yes', 'No', 'N/A'] as $option)
@@ -1036,13 +1040,15 @@
                                     {{ $option }}
                                 </span>
                             @endforeach
+
                             @if(($vr->verbal_aggression ?? '') === 'N/A' && !empty($vr->verbal_aggression_notes))
-                                <div style="margin-top: 4px; font-style: italic;">
+                                <div style="margin-top: 4px; font-style: italic; color:#555;">
                                     Notes: {{ $vr->verbal_aggression_notes }}
                                 </div>
                             @endif
                         </div>
                     </td>
+
                     <td class="field-value">{{ $vr->verbal_hazards ?? 'N/A' }}</td>
                     <td class="field-value">{{ $vr->verbal_management_plan ?? 'N/A' }}</td>
                     <td class="field-value">
@@ -1201,7 +1207,12 @@
                 </tr>
 
                 <tr>
-                    <td class="field-label">Does the participant need help to manage their finances?</td>
+                   
+                    <td class="field-label">
+                        Does the participant need help to manage their finances?
+                    </td>
+
+                    <!-- OPTIONS COLUMN -->
                     <td class="field-value">
                         <div class="enum-field">
                             @foreach(['Yes', 'No', 'N/A'] as $option)
@@ -1209,15 +1220,20 @@
                                     {{ $option }}
                                 </span>
                             @endforeach
-
-                            {{-- If N/A and notes available, show notes (optional) --}}
-                            @if(($vr->finance_management ?? '') === 'N/A' && !empty($vr->finance_management_notes))
-                                <div style="margin-top: 4px; font-style: italic;">
-                                    Notes: {{ $vr->finance_management_notes }}
-                                </div>
-                            @endif
                         </div>
+                   
+
+                    
+                        @if(($vr->finance_management ?? '') === 'N/A' && !empty($vr->finance_management_notes))
+                            <div style="margin-top: 4px; font-style: italic;">
+                                Notes: {{ $vr->finance_management_notes }}
+                            </div>
+                        @else
+                            <span style="color: #777;">—</span> <!-- Dash when no notes -->
+                        @endif
                     </td>
+
+
 
                     <td class="field-value">{{ $vr->finance_hazards ?? 'N/A' }}</td>
                     <td class="field-value">{{ $vr->finance_management_plan ?? 'N/A' }}</td>

@@ -23,7 +23,7 @@ return new class extends Migration {
             $table->text('physical_management_plan')->nullable();
             $table->boolean('physical_bsp_plan')->default(false);
 
-           $table->enum('verbal_aggression', ['Yes', 'No', 'N/A'])->default('No');
+           $table->enum('verbal_aggression', ['Yes', 'No', 'N/A'])->nullable();
              $table->text('verbal_aggression_notes')->nullable();
             $table->text('verbal_hazards')->nullable();
             $table->text('verbal_management_plan')->nullable();
@@ -62,7 +62,7 @@ return new class extends Migration {
             $table->text('other_risks_management_plan')->nullable();
             $table->boolean('other_risks_bsp_plan')->default(false);
 
-           $table->enum('finance_management', ['Yes', 'No', 'N/A'])->default('No');
+           $table->enum('finance_management', ['Yes', 'No', 'N/A'])->nullable();
              $table->text('finance_management_notes')->nullable();
             $table->text('finance_hazards')->nullable();
             $table->text('finance_management_plan')->nullable();
