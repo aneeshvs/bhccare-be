@@ -208,7 +208,7 @@ private function violencerules(): array
             'physical_management_plan' => 'nullable|string',
             'physical_bsp_plan' => 'boolean',
 
-            'verbal_aggression' => 'boolean',
+            'verbal_aggression' => 'in:Yes,No,N/A',
             'verbal_hazards' => 'nullable|string',
             'verbal_management_plan' => 'nullable|string',
             'verbal_bsp_plan' => 'boolean',
@@ -245,7 +245,7 @@ private function violencerules(): array
             'other_risks_management_plan' => 'nullable|string',
             'other_risks_bsp_plan' => 'boolean',
 
-            'finance_management' => 'boolean',
+            'finance_management' => 'in:Yes,No,N/A',
             'finance_hazards' => 'nullable|string',
             'finance_management_plan' => 'nullable|string',
             'finance_bsp_plan' => 'boolean',
