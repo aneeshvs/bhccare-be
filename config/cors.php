@@ -7,7 +7,8 @@ return [
     'allowed_methods' => ['*'],
 
     'allowed_origins' => [
-        'https://frontend.bhcapp.com.au',
+        
+        'https://fe.bhcapp.com.au',
         'https://bhcapp.com.au',
     ],
 
