@@ -370,7 +370,7 @@
                                 @foreach(['male', 'female', 'non-binary'] as $option)
                                     <span class="enum-option {{ ($initial->gender ?? '') === $option ? 'selected' : '' }}">
                                         {{ ucfirst($option) }}
-                                    </span>
+                                    </span><br>
                                 @endforeach
                             </div>
                         </td>
@@ -430,7 +430,7 @@
                                 @foreach(['Self-Managed','NDIA', 'Plan Managed'] as $option)
                                     <span class="enum-option {{ ($initial->funding->type_of_funding ?? '') === $option ? 'selected' : '' }}">
                                         {{ $option }}
-                                    </span>
+                                    </span><br>
                                 @endforeach
                             </div>
                         </td>
