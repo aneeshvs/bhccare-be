@@ -1792,17 +1792,24 @@
 </div>
 
 <!-- Mobility & Transfers -->
+@php
+    function yesNoSelected($value, $option) {
+        if ($value === null) return '';
+        return ($value ? 'Yes' : 'No') === $option ? 'selected' : '';
+    }
+@endphp
+
 <div class="section">
-    <div class="section-header">18.Mobility & Transfers</div>
+    <div class="section-header">18. Mobility & Transfers</div>
     <table>
+
+        {{-- Walk independently --}}
         <tr>
             <td class="field-label">Are you able to walk independently?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_walk_independently ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_walk_independently, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1811,14 +1818,14 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->walk_independently_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Transfer support --}}
         <tr>
             <td class="field-label">Do you need support with transfers?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->needs_transfer_support ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->needs_transfer_support, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1827,14 +1834,14 @@
             <td class="field-label">Primary equipment used for mobility</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->primary_equipment_used ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Stairs --}}
         <tr>
             <td class="field-label">Can you climb stairs safely?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_climb_stairs ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_climb_stairs, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1843,14 +1850,13 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->climb_stairs_details ?? 'N/A' }}</td>
         </tr>
+
         <tr>
             <td class="field-label">Do you have stairs in your house?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->has_stairs_at_home ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->has_stairs_at_home, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1859,38 +1865,46 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->stairs_at_home_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Transfer self --}}
         <tr>
             <td class="field-label">Are you able to transfer yourself from a chair, bed, etc.?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_transfer_self ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_transfer_self, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
+        <tr>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->transfer_self_details ?? 'N/A' }}</td>
+        </tr>
+
+        {{-- Transfer other environments --}}
         <tr>
             <td class="field-label">Are you able to transfer when not at home in different environments?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_transfer_in_other_envs ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_transfer_in_other_envs, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
         <tr>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->transfer_other_env_details ?? 'N/A' }}</td>
+        </tr>
+
+        {{-- Bed pole --}}
+        <tr>
             <td class="field-label">Do you use a Bed Pole/Bed Rails?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->uses_bed_pole_or_rails ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->uses_bed_pole_or_rails, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1899,22 +1913,20 @@
             <td class="field-label">If yes, was this prescribed by an Occupational Therapist?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->bed_pole_prescribed_by_ot ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->bed_pole_prescribed_by_ot, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
+
+        {{-- Distance & yard --}}
         <tr>
-            <td class="field-label">Are you able to get to places out of walking distance? (100m+)</td>
+            <td class="field-label">Are you able to get to places out of walking distance? (100m+)?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_access_places_outside_walking_distance ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_access_places_outside_walking_distance, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1923,14 +1935,13 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->access_places_details ?? 'N/A' }}</td>
         </tr>
+
         <tr>
             <td class="field-label">Is it safe for you to mobilise in your back/front yard?</td>
             <td class="field-value">
                 <div class="enum-field">
-                    @foreach(['Yes', 'No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->safe_to_mobilise_in_yard ? 'Yes' : 'No') === $option ? 'selected' : '' }}">
-                            {{ $option }}
-                        </span>
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->safe_to_mobilise_in_yard, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1939,26 +1950,40 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->mobilise_yard_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Community --}}
         <tr>
             <td class="field-label">How do you access the community?</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->community_access ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Driving --}}
         <tr>
             <td class="field-label">Do you drive?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->drives ? 'Yes' : 'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->drives, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
         <tr>
-            <td class="field-label">If yes, do any medications or conditions pose a safety risk?</td>
+            <td class="field-label">Do any of your medications or health conditions pose a safety risk for driving?</td>
+            <td class="field-value">
+                <div class="enum-field">
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->medications_or_conditions_risk, $option) }}">{{ $option }}</span>
+                    @endforeach
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->driving_risk_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Equipment --}}
         <tr>
             <td class="field-label">Equipment you use to aid mobility</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->mobility_equipment ?? 'N/A' }}</td>
@@ -1967,14 +1992,14 @@
             <td class="field-label">Did you self-purchase this equipment or was it recommended by an Occupational Therapist?</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->equipment_purchase_type ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Walker --}}
         <tr>
             <td class="field-label">Do you use a 4-wheel walker?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->uses_four_wheel_walker ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->uses_four_wheel_walker, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -1983,9 +2008,15 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->four_wheel_walker_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Wheelchair --}}
         <tr>
-            <td class="field-label">Do you use a manual or electric wheelchair?</td>
+            <td class="field-label">Do you use a manual or electric wheelchair</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->wheelchair_type ?? 'N/A' }}</td>
+        </tr>
+        <tr>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->wheelchair_use_details ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td class="field-label">How do you operate your wheelchair?</td>
@@ -1996,54 +2027,62 @@
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->wheelchair_ot_recommended ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->wheelchair_ot_recommended, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
+        </tr>
+        <tr>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->wheelchair_ot ?? 'N/A' }}</td>
         </tr>
         <tr>
             <td class="field-label">Can you independently charge the wheelchair battery?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_charge_wheelchair ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_charge_wheelchair, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
         <tr>
-            <td class="field-label">Last service date for wheelchair</td>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->can_charge_details ?? 'N/A' }}</td>
+        </tr>
+        <tr>
+            <td class="field-label">Last wheelchair service date</td>
+
             <td class="field-value">
                 {{ $supportPlan->mobility_transfer?->last_wheelchair_service_date
                     ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_wheelchair_service_date)->format('d-m-Y')
                     : 'N/A' }}
             </td>
         </tr>
+
+        {{-- Carry --}}
         <tr>
-            <td class="field-label">Are you able to carry items < 5kg while mobilising?</td>
+            <td class="field-label">Are you able to carry items 5kg < while mobilising?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->can_carry_5kg ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->can_carry_5kg, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
-                {{ $supportPlan->mobility_transfer?->carry_5kg_details ?? 'N/A' }}
             </td>
         </tr>
+        <tr>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->carry_5kg_details ?? 'N/A' }}</td>
+        </tr>
+
+        {{-- Foot --}}
         <tr>
             <td class="field-label">Any foot problems that impact your mobility?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->foot_problems ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->foot_problems, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -2052,14 +2091,14 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->foot_problems_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- Mobility worries --}}
         <tr>
             <td class="field-label">Are there any aspects of your mobility that worry you?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->mobility_worries ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->mobility_worries, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
@@ -2068,42 +2107,48 @@
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->mobility_worries_details ?? 'N/A' }}</td>
         </tr>
+
+        {{-- OT & DEMMI --}}
         <tr>
             <td class="field-label">Date of last Occupational Therapist assessment</td>
+
             <td class="field-value">
                 {{ $supportPlan->mobility_transfer?->last_ot_assessment_date
                     ? \Carbon\Carbon::parse($supportPlan->mobility_transfer->last_ot_assessment_date)->format('d-m-Y')
                     : 'N/A' }}
             </td>
         </tr>
+
         <tr>
             <td class="field-label">Is a new Occupational Therapist referral required?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->new_ot_referral_required ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->new_ot_referral_required, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
         <tr>
-            <td class="field-label">DEMMI Assessment required</td>
+            <td class="field-label">Details</td>
+            <td class="field-value">{{ $supportPlan->mobility_transfer?->new_ot_referral_details ?? 'N/A' }}</td>
+        </tr>
+
+        <tr>
+            <td class="field-label">DEMMI assessment required?</td>
             <td class="field-value">
                 <div class="enum-field">
                     @foreach(['Yes','No'] as $option)
-                        <span class="enum-option {{ ($supportPlan->mobility_transfer?->demmi_assessment_required ? 'Yes':'No') === $option ? 'selected':'' }}">
-                            {{ $option }}
-                        </span>
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->demmi_assessment_required, $option) }}">{{ $option }}</span>
                     @endforeach
                 </div>
             </td>
         </tr>
         <tr>
-            <td class="field-label">DEMMI Score / Details</td>
+            <td class="field-label">DEMMI result</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->demmi_assessment_result ?? 'N/A' }}</td>
         </tr>
+
     </table>
 </div>
 

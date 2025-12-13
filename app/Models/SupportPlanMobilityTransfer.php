@@ -53,6 +53,20 @@ class SupportPlanMobilityTransfer extends DefaultDBModel
         'new_ot_referral_required',
         'demmi_assessment_required',
         'demmi_assessment_result',
+        
+        'can_charge_details', // add new fileds 
+
+                // Missing detail fields
+        'transfer_self_details',
+        'transfer_other_env_details',
+
+        // Wheelchair related
+        'wheelchair_use_details',
+        'wheelchair_ot',
+
+        // OT referral
+        'new_ot_referral_details',
+
     ];
     protected $table = 'support_plan_mobility_transfers';
 

@@ -267,6 +267,20 @@ class SupportPlanCompletionService
         'new_ot_referral_required',
         'demmi_assessment_required',
         'demmi_assessment_result',
+
+               // Missing detail fields
+        'transfer_self_details',
+        'transfer_other_env_details',
+
+        'can_charge_details',
+
+        // Wheelchair related
+        'wheelchair_use_details',
+        'wheelchair_ot',
+
+        // OT referral
+        'new_ot_referral_details',
+
       ],
       'fallsRisk'=>[
         'recent_falls',

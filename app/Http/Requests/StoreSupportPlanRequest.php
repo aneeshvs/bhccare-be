@@ -411,50 +411,75 @@ class StoreSupportPlanRequest extends FormRequest
     }
 
     public function mobilitytransferules(): array
-    {
-        return [
+{
+    return [
+        'can_walk_independently' => 'nullable|boolean',
+        'walk_independently_details' => 'nullable|string',
 
-            'can_walk_independently' => 'nullable|boolean',
-            'walk_independently_details' => 'nullable|string',
-            'needs_transfer_support' => 'nullable|boolean',
-            'primary_equipment_used' => 'nullable|string',
-            'can_climb_stairs' => 'nullable|boolean',
-            'climb_stairs_details' => 'nullable|string',
-            'has_stairs_at_home' => 'nullable|boolean',
-            'stairs_at_home_details' => 'nullable|string',
-            'can_transfer_self' => 'nullable|boolean',
-            'can_transfer_in_other_envs' => 'nullable|boolean',
-            'uses_bed_pole_or_rails' => 'nullable|boolean',
-            'bed_pole_prescribed_by_ot' => 'nullable|boolean',
-            'can_access_places_outside_walking_distance' => 'nullable|boolean',
-            'access_places_details' => 'nullable|string',
-            'safe_to_mobilise_in_yard' => 'nullable|boolean',
-            'mobilise_yard_details' => 'nullable|string',
-            'community_access' => 'nullable|string',
-            'drives' => 'nullable|boolean',
-            'medications_or_conditions_risk' => 'nullable|boolean',
-            'driving_risk_details' => 'nullable|string',
-            'mobility_equipment' => 'nullable|string',
-            'equipment_purchase_type' => 'nullable|string',
-            'uses_four_wheel_walker' => 'nullable|boolean',
-            'four_wheel_walker_details' => 'nullable|string',
-            'wheelchair_type' => 'nullable|string',
-            'wheelchair_operation' => 'nullable|string',
-            'wheelchair_ot_recommended' => 'nullable|boolean',
-            'can_charge_wheelchair' => 'nullable|boolean',
-            'last_wheelchair_service_date' => 'nullable|date',
-            'can_carry_5kg' => 'nullable|boolean',
-            'carry_5kg_details' => 'nullable|string',
-            'foot_problems' => 'nullable|boolean',
-            'foot_problems_details' => 'nullable|string',
-            'mobility_worries' => 'nullable|boolean',
-            'mobility_worries_details' => 'nullable|string',
-            'last_ot_assessment_date' => 'nullable|date',
-            'new_ot_referral_required' => 'nullable|boolean',
-            'demmi_assessment_required' => 'nullable|boolean',
-            'demmi_assessment_result' => 'nullable|string',
-        ];
-    }
+        'needs_transfer_support' => 'nullable|boolean',
+        'primary_equipment_used' => 'nullable|string',
+
+        'can_climb_stairs' => 'nullable|boolean',
+        'climb_stairs_details' => 'nullable|string',
+
+        'has_stairs_at_home' => 'nullable|boolean',
+        'stairs_at_home_details' => 'nullable|string',
+
+        'can_transfer_self' => 'nullable|boolean',
+        'transfer_self_details' => 'nullable|string',
+
+        'can_transfer_in_other_envs' => 'nullable|boolean',
+        'transfer_other_env_details' => 'nullable|string',
+
+        'uses_bed_pole_or_rails' => 'nullable|boolean',
+        'bed_pole_prescribed_by_ot' => 'nullable|boolean',
+
+        'can_access_places_outside_walking_distance' => 'nullable|boolean',
+        'access_places_details' => 'nullable|string',
+
+        'safe_to_mobilise_in_yard' => 'nullable|boolean',
+        'mobilise_yard_details' => 'nullable|string',
+
+        'community_access' => 'nullable|string',
+
+        'drives' => 'nullable|boolean',
+
+        'medications_or_conditions_risk' => 'nullable|boolean',
+        'driving_risk_details' => 'nullable|string',
+
+        'mobility_equipment' => 'nullable|string',
+        'equipment_purchase_type' => 'nullable|string',
+
+        'uses_four_wheel_walker' => 'nullable|boolean',
+        'four_wheel_walker_details' => 'nullable|string',
+
+        'wheelchair_type' => 'nullable|string',
+        'wheelchair_use_details' => 'nullable|string',
+        'wheelchair_operation' => 'nullable|string',
+        'wheelchair_ot_recommended' => 'nullable|boolean',
+        'wheelchair_ot' => 'nullable|string',
+        'can_charge_wheelchair' => 'nullable|boolean',
+        'can_charge_details'=>'nullable|string',// add new field
+        'last_wheelchair_service_date' => 'nullable|date',
+
+        'can_carry_5kg' => 'nullable|boolean',
+        'carry_5kg_details' => 'nullable|string',
+
+        'foot_problems' => 'nullable|boolean',
+        'foot_problems_details' => 'nullable|string',
+
+        'mobility_worries' => 'nullable|boolean',
+        'mobility_worries_details' => 'nullable|string',
+
+        'last_ot_assessment_date' => 'nullable|date',
+
+        'new_ot_referral_required' => 'nullable|boolean',
+        'new_ot_referral_details' => 'nullable|string',
+
+        'demmi_assessment_required' => 'nullable|boolean',
+        'demmi_assessment_result' => 'nullable|string',
+    ];
+}
 
    private function fallriskrules(): array
 {
