@@ -2007,12 +2007,21 @@
         <tr>
             <td class="field-label">Details</td>
             <td class="field-value">{{ $supportPlan->mobility_transfer?->four_wheel_walker_details ?? 'N/A' }}</td>
+            
         </tr>
 
         {{-- Wheelchair --}}
         <tr>
             <td class="field-label">Do you use a manual or electric wheelchair</td>
-            <td class="field-value">{{ $supportPlan->mobility_transfer?->wheelchair_type ?? 'N/A' }}</td>
+            <td class="field-value">
+                <div class="enum-field">
+                    @foreach(['Yes','No'] as $option)
+                        <span class="enum-option {{ yesNoSelected($supportPlan->mobility_transfer?->wheelchair_type, $option) }}">{{ $option }}</span>
+                    @endforeach
+                </div>
+            </td>
+            
+            <!-- <td class="field-value">{{ $supportPlan->mobility_transfer?->wheelchair_type ?? 'N/A' }}</td> -->
         </tr>
         <tr>
             <td class="field-label">Details</td>
