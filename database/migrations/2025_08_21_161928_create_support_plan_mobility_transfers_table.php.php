@@ -73,7 +73,7 @@ return new class extends Migration {
             $table->text('four_wheel_walker_details')->nullable();
 
             // 15. Wheelchair use
-            $table->string('wheelchair_type')->nullable(); // manual / electric / none
+            $table->boolean('wheelchair_type')->nullable(); // manual / electric / none
             $table->text('wheelchair_use_details')->nullable(); // EXTRA missing field
             $table->text('wheelchair_operation')->nullable();
             $table->boolean('wheelchair_ot_recommended')->nullable();

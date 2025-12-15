@@ -453,7 +453,7 @@ class StoreSupportPlanRequest extends FormRequest
         'uses_four_wheel_walker' => 'nullable|boolean',
         'four_wheel_walker_details' => 'nullable|string',
 
-        'wheelchair_type' => 'nullable|string',
+        'wheelchair_type' => 'nullable|boolean',
         'wheelchair_use_details' => 'nullable|string',
         'wheelchair_operation' => 'nullable|string',
         'wheelchair_ot_recommended' => 'nullable|boolean',
