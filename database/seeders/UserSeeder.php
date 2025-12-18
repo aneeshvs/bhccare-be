@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'name'         => 'Mira',
             'email'        => 'meramagdy21@gmail.com',
             'password'     => Hash::make('Mer218@BHC'),
-            'user_type_id'  => 3, // Prompt
+            'user_type_id'  => 3, // staff
         ]);
 
 

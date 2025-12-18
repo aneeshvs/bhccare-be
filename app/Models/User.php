@@ -54,4 +54,10 @@ class User extends Authenticatable
         return $this->hasOne(\App\Models\Staff::class, 'email', 'email');
     }
 
+    public function client()
+{
+    return $this->hasOne(Client::class);
+}
+
+
 }

@@ -97,6 +97,12 @@ class Client extends DefaultDBModel
     }
 
 
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+
 
 
 

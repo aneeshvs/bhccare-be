@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOnboardingPackingSignoffRequest;
 use App\Models\OnboardingPackingSignoff;
+
+use App\Models\OnboardingPackingSignoffParticipantDeclaration;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffService;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffCompletionService;
 use App\OnboardingPackingSignoffService\OnboardingPackingSignoffDisabilityActDiscussionService;
@@ -173,6 +175,68 @@ class OnboardingPackingSignoffController extends Controller
                 'participantDeclaration'
             ]),
         ],
+    ]);
+}
+
+
+
+
+/**
+ * CLIENT: Signature ONLY update (public)
+ */
+public function clientSignatureUpdate(Request $request)
+{
+    Log::info('📝 Client ONLY signature update started');
+    
+    // Validate ONLY signature fields
+    $validated = $request->validate([
+        'uuid' => 'required|string',
+        // 'participant_name' => 'required|string|max:255',
+        // 'relationship_to_participant' => 'required|string|max:255',
+        'participant_signature' => 'required|string',
+        'signed_date' => 'required|date',
+       
+    ]);
+    
+    // Find the parent form
+    $parentRecord = OnboardingPackingSignoff::where('uuid', $validated['uuid'])->first();
+    
+    if (!$parentRecord) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Form not found'
+        ], 404);
+    }
+    
+    // ⭐ UPDATE ONLY the participant declaration child record
+    $participantDeclaration = OnboardingPackingSignoffParticipantDeclaration::updateOrCreate(
+        [
+            'onboarding_packing_signoff_id' => $parentRecord->id
+        ],
+        [
+            // 'participant_name' => $validated['participant_name'],
+            // 'relationship_to_participant' => $validated['relationship_to_participant'],
+            'participant_signature' => $validated['participant_signature'],
+            'signed_date' => $validated['signed_date'],
+        ]
+    );
+    
+    Log::info('✅ Client signature saved', [
+        'parent_id' => $parentRecord->id,
+        'declaration_id' => $participantDeclaration->id,
+    ]);
+    
+    
+    
+    return response()->json([
+        'success' => true,
+        'message' => 'Signature saved successfully',
+        'data' => [
+            'uuid' => $parentRecord->uuid,
+            'participant_name' => $participantDeclaration->participant_name,
+            'relationship_to_participant' => $participantDeclaration->relationship_to_participant,
+            'signed_date' => $participantDeclaration->signed_date,
+        ]
     ]);
 }
 

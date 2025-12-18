@@ -203,6 +203,13 @@ Route::get('/onboarding-packing-signoff/export-pdf/{uuid}', [OnboardingPackingSi
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
+
+//publi api routes
+
+Route::put('/client/onboarding-packing-signoff/update', [OnboardingPackingSignoffController::class, 'clientSignatureUpdate']);
+
+
+
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);

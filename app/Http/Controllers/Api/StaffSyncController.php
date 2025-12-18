@@ -49,7 +49,7 @@ public function store(Request $request)
             'name'     => $request->name,
             'email'    => $request->email,
             'password' => Hash::make($request->password),
-            'usertype' => 'staff',
+            'user_type_id' => 3,
         ]);
 
         $staff = Staff::create([
