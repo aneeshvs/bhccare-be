@@ -194,7 +194,7 @@ public function clientSignatureUpdate(Request $request)
         // 'participant_name' => 'required|string|max:255',
         // 'relationship_to_participant' => 'required|string|max:255',
         'participant_signature' => 'required|string',
-        'signed_date' => 'required|date',
+        'signed_date' => 'nullable|date',
        
     ]);
     
