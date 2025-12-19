@@ -19,6 +19,12 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Barryvdh\DomPDF\Facade\Pdf;
 
+
+use App\Models\ConfidentialInformationConsent;
+use App\Models\ConfidentialVerbalConsent;
+
+use Illuminate\Support\Facades\Validator;
+
 class ConfidentialInformationFormController extends Controller
 {
     /**
@@ -163,6 +169,128 @@ public function update(
 
     ]);
 }
+
+
+/**
+     * CLIENT: Signature update for Confidential Information Form (public)
+     * Updates both ConfidentialInformationConsent and ConfidentialVerbalConsent
+     */
+    public function clientSignatureUpdate(Request $request)
+    {
+        Log::info('📝 Confidential Form Client signature submission started', $request->all());
+        
+        // Validate signature fields
+        $validator = Validator::make($request->all(), [
+            'uuid' => 'required|string',
+            'user_id' => 'required|integer',
+            // Consent 1 fields (ConfidentialInformationConsent)
+            'signature_consent' => 'required|string',
+            'signed_date_consent' => 'nullable|date',
+            'name_consent' => 'nullable|string|max:255',
+            'signed_by_consent' => 'nullable|string|max:255',
+            'witnessed_by_consent' => 'nullable|string|max:255',
+            
+            // Consent 2 fields (ConfidentialVerbalConsent)
+            'verbal_signature' => 'required|string',
+            'verbal_signed_date' => 'nullable|date',
+            'verbal_name' => 'nullable|string|max:255',
+            'position' => 'nullable|string|max:255',
+        ]);
+        
+        if ($validator->fails()) {
+            Log::error('❌ Validation failed', $validator->errors()->toArray());
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation error',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+        
+        $validated = $validator->validated();
+        
+        // Find the parent form
+        $parentRecord = ConfidentialInformationForm::where('uuid', $validated['uuid'])
+            ->where('user_id', $validated['user_id'])
+            ->first();
+        
+        if (!$parentRecord) {
+            Log::error('❌ Form not found', ['uuid' => $validated['uuid'], 'user_id' => $validated['user_id']]);
+            return response()->json([
+                'success' => false,
+                'message' => 'Form not found'
+            ], 404);
+        }
+        
+        Log::info('✅ Found parent record', [
+            'uuid' => $parentRecord->uuid,
+            'parent_id' => $parentRecord->id,
+        ]);
+        
+        // ⭐ UPDATE ConfidentialInformationConsent (first consent form)
+        if ($request->hasAny(['signature_consent', 'signed_date_consent', 'name_consent', 'signed_by_consent', 'witnessed_by_consent'])) {
+            $consent1 = ConfidentialInformationConsent::updateOrCreate(
+                [
+                    'confidential_information_form_id' => $parentRecord->id
+                ],
+                [
+                    'signature' => $validated['signature_consent'] ?? null,
+                    'signed_date' => $validated['signed_date_consent'] ?? null,
+                    'name' => $validated['name_consent'] ?? null,
+                    'signed_by' => $validated['signed_by_consent'] ?? null,
+                    'witnessed_by' => $validated['witnessed_by_consent'] ?? null,
+                ]
+            );
+            
+            Log::info('✅ ConfidentialInformationConsent saved', [
+                'consent_id' => $consent1->id,
+                'has_signature' => !empty($validated['signature_consent']),
+            ]);
+        }
+        
+        // ⭐ UPDATE ConfidentialVerbalConsent (second consent form)
+        if ($request->hasAny(['verbal_signature', 'verbal_signed_date', 'verbal_name', 'position'])) {
+            $consent2 = ConfidentialVerbalConsent::updateOrCreate(
+                [
+                    'confidential_information_form_id' => $parentRecord->id
+                ],
+                [
+                    'verbal_signature' => $validated['verbal_signature'] ?? null,
+                    'verbal_signed_date' => $validated['verbal_signed_date'] ?? null,
+                    'verbal_name' => $validated['verbal_name'] ?? null,
+                    'position' => $validated['position'] ?? null,
+                ]
+            );
+            
+            Log::info('✅ ConfidentialVerbalConsent saved', [
+                'verbal_consent_id' => $consent2->id,
+                'has_verbal_signature' => !empty($validated['verbal_signature']),
+            ]);
+        }
+        
+        // Load the updated relationships
+        $parentRecord->load(['consent', 'verbal']);
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Signature(s) submitted successfully',
+            'data' => [
+                'uuid' => $parentRecord->uuid,
+                'consent' => $parentRecord->consent ? [
+                    'signature' => $parentRecord->consent->signature,
+                    'signed_date' => $parentRecord->consent->signed_date,
+                    'name' => $parentRecord->consent->name,
+                ] : null,
+                'verbal' => $parentRecord->verbal ? [
+                    'verbal_signature' => $parentRecord->verbal->verbal_signature,
+                    'verbal_signed_date' => $parentRecord->verbal->verbal_signed_date,
+                    'verbal_name' => $parentRecord->verbal->verbal_name,
+                ] : null,
+            ]
+        ]);
+    }
+    
+   
+
 
 
     /**

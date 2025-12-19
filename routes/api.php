@@ -203,8 +203,10 @@ Route::get('/onboarding-packing-signoff/export-pdf/{uuid}', [OnboardingPackingSi
 Route::post('/form/{form}/renew-pdf/{uuid}', [FormRenewController::class, 'renewPdf']);
 
 
-
+// ✅ Public route for client signature (Confidential Information)
+Route::put('/client/confidential-form/update', [ConfidentialInformationFormController::class, 'clientSignatureUpdate']);
 //publi api routes
+Route::put('/client/multiple-supports/update',[ParticipantSignatureController::class, 'clientUpdateSignature']);
 
 Route::put('/client/onboarding-packing-signoff/update', [OnboardingPackingSignoffController::class, 'clientSignatureUpdate']);
 

@@ -70,9 +70,9 @@ class StoreOnboardingRequest extends FormRequest
             'gender' => 'nullable|in:male,female,other',
             'date_of_birth' => 'nullable|date',
             'address' => 'nullable|string|max:255',
-            'postcode' => 'nullable|string|max:10',
-            'phone_number' => 'nullable|string|max:20',
-            'mobile_number' => 'nullable|string|max:20',
+            'postcode' => 'nullable|string',
+            'phone_number' => 'nullable|string',
+            'mobile_number' => 'nullable|string',
             'email' => 'nullable|email',
             'need_support_person' => 'nullable|boolean',
             'support_person_details' => 'nullable|string',
@@ -90,7 +90,7 @@ class StoreOnboardingRequest extends FormRequest
             'ndis_plan_end_date' => 'nullable|date',
             'plan_manager_name' => 'nullable|string|max:255',
             'plan_manager_email' => 'nullable|email|max:255',
-            'plan_manager_phone' => 'nullable|string|max:20',
+            'plan_manager_phone' => 'nullable|string',
         ];
     }
         private function emergencyRules(): array
@@ -99,9 +99,9 @@ class StoreOnboardingRequest extends FormRequest
 
                 'name' => 'nullable|string|max:255',
                 'relationship' => 'nullable|string|max:255',
-                'phone' => 'nullable|string|max:20',
-                'mobile' => 'nullable|string|max:20',
-                'work_contact' => 'nullable|string|max:20',
+                'phone' => 'nullable|string|',
+                'mobile' => 'nullable|string|',
+                'work_contact' => 'nullable|string',
             ];
         }
         private function scheduleRules(): array
@@ -145,7 +145,7 @@ class StoreOnboardingRequest extends FormRequest
                 'health_professional_details' => 'nullable|array',
                 'health_professional_details.*.role' => 'nullable|string|max:255',
                 'health_professional_details.*.name' => 'nullable|string|max:255',
-                'health_professional_details.*.contact_number' => 'nullable|string|max:20',
+                'health_professional_details.*.contact_number' => 'nullable|string',
             ];
         }
         private function diagnosisRules(): array
@@ -194,11 +194,11 @@ class StoreOnboardingRequest extends FormRequest
                 'asthma' => 'nullable|boolean',
                 'diabetes' => 'nullable|boolean',
                 'allergies' => 'nullable|string|max:1000',
-                'medical_info' => 'nullable|string|max:2000',
-                'diagnosis' => 'nullable|string|max:2000',
-                'other_description' => 'nullable|string|max:2000',
-                'medication_taken' => 'nullable|string|max:2000',
-                'medication_purpose' => 'nullable|string|max:2000',
+                'medical_info' => 'nullable|string',
+                'diagnosis' => 'nullable|string',
+                'other_description' => 'nullable|string',
+                'medication_taken' => 'nullable|string',
+                'medication_purpose' => 'nullable|string',
                 'staff_administer_medication' => 'nullable|boolean',
 
                  'self_administered' => 'nullable|boolean',
@@ -210,7 +210,7 @@ class StoreOnboardingRequest extends FormRequest
         private function preventiveHealthRules(): array
         {
             return [
-                'medical_checkup_status' => 'nullable|string|max:2000',
+                'medical_checkup_status' => 'nullable|string',
                 'last_dental_check' => 'nullable|date',
                 'last_hearing_check' => 'nullable|date',
                 'last_vision_check' => 'nullable|date',
@@ -222,7 +222,7 @@ class StoreOnboardingRequest extends FormRequest
             return [
 
                 'communication_assistance_required' => 'nullable|boolean',
-                'mealtime_plan' => 'nullable|string|max:2000',
+                'mealtime_plan' => 'nullable|string',
                 'likes' => 'nullable|string|max:1000',
                 'dislikes' => 'nullable|string|max:1000',
                 'interests' => 'nullable|string|max:1000',
@@ -232,7 +232,7 @@ class StoreOnboardingRequest extends FormRequest
                  'no_preference' => 'nullable|boolean',
 
 
-                'special_request' => 'nullable|string|max:2000',
+                'special_request' => 'nullable|string',
             ];
         }
 

@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Http;
 
+use App\Models\ParticipantSignature;
+
+
 use Illuminate\Support\Facades\Log;
 
 class ServiceAgreementController extends Controller
@@ -150,7 +153,7 @@ class ServiceAgreementController extends Controller
 
 
 
-    public function showByUuid( string $uuid, ServiceAgreementCompletionService $completionService)
+public function showByUuid( string $uuid, ServiceAgreementCompletionService $completionService)
 {
     // ✅ Load all related relationships if needed
     $serviceAgreement = ServiceAgreement::with([

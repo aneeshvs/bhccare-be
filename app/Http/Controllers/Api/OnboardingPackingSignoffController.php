@@ -191,6 +191,7 @@ public function clientSignatureUpdate(Request $request)
     // Validate ONLY signature fields
     $validated = $request->validate([
         'uuid' => 'required|string',
+        'user_id' => 'required|integer',
         // 'participant_name' => 'required|string|max:255',
         // 'relationship_to_participant' => 'required|string|max:255',
         'participant_signature' => 'required|string',
@@ -199,7 +200,9 @@ public function clientSignatureUpdate(Request $request)
     ]);
     
     // Find the parent form
-    $parentRecord = OnboardingPackingSignoff::where('uuid', $validated['uuid'])->first();
+   $parentRecord = OnboardingPackingSignoff::where('uuid', $validated['uuid'])
+        ->where('user_id', $validated['user_id'])
+        ->first();
     
     if (!$parentRecord) {
         return response()->json([
