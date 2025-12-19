@@ -450,6 +450,7 @@ public function clientUpdateSupportPlanApproval(Request $request)
                 'id' => $parentRecord->id,
                 'uuid' => $parentRecord->uuid,
             ]
+            
         ]
     ]);
 }

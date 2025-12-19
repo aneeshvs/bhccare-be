@@ -147,30 +147,29 @@ public function clientUpdateSignature(Request $request)
 {
     Log::info('📝 Client participant signature update started');
 
-    // ✅ Validate client-controlled fields ONLY
     $validated = $request->validate([
-         'uuid' => 'required|string',
+        'uuid' => 'required|string',
         'user_id' => 'required|integer',
-       
         'participant_signature' => 'required|string', // base64
         'date_signed' => 'nullable|date',
     ]);
 
-    // ✅ Find participant signature record belonging to this client
     $participantSignature = ParticipantSignature::where('uuid', $validated['uuid'])
         ->where('user_id', $validated['user_id'])
         ->first();
 
     if (!$participantSignature) {
-        Log::warning('❌ Participant signature record not found', $validated);
-
         return response()->json([
             'success' => false,
             'message' => 'Signature record not found or access denied'
         ], 404);
     }
 
-    
+    // ✅ THIS WAS MISSING
+    $participantSignature->update([
+        'participant_signature' => $validated['participant_signature'],
+        'date_signed' => $validated['date_signed'],
+    ]);
 
     Log::info('✅ Client participant signature updated', [
         'id' => $participantSignature->id,
@@ -186,6 +185,7 @@ public function clientUpdateSignature(Request $request)
         ]
     ]);
 }
+
 
 
 
