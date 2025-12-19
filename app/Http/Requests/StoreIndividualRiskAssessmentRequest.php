@@ -52,8 +52,7 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
     {
         return [
             'user_id' => 'nullable|integer',
-            'client_type' => 'required|in:1,2',
-
+           'client_type' => 'required|in:1,2',
 
 
             // Risk Assessment fields

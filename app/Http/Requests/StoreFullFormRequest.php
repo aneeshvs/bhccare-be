@@ -76,7 +76,7 @@ class StoreFullFormRequest extends FormRequest
             'home_phone'             => 'nullable|string',
             'work_phone'             => 'nullable|string',
 
-            'mobile'                => 'nullable|string|max:15',
+            'mobile'                => 'nullable|string',
             'email'                 => 'nullable|email|max:255',
             'atsi_status'           => 'nullable|in:Aboriginal,Torres Strait Islander,Neither,Both',
             'cultural_background'   => 'nullable|string',
@@ -87,7 +87,7 @@ class StoreFullFormRequest extends FormRequest
             'guardian_name'             => 'nullable|string|max:255',
             'is_public_guardian' => 'nullable|in:Public Guardian,Temporary Guardian,No',
             'guardian_relationship'     => 'nullable|string|max:100',
-            'guardian_mobile'           => 'nullable|string|max:15',
+            'guardian_mobile'           => 'nullable|string',
             'guardian_email'            => 'nullable|email|max:255',
             'guardian_address'          => 'nullable|string',
             'guardian_contact_method'   => 'nullable|string|max:100',
@@ -100,9 +100,9 @@ class StoreFullFormRequest extends FormRequest
             'agency'          => 'nullable|string|max:255',
             'contact_name'    => 'nullable|string|max:255',
             'job_title'       => 'nullable|string|max:255',
-            'work_contact'    => 'nullable|string|max:20',
-            'referral_mobile' => 'nullable|string|max:20',
-            'referral_email'           => 'nullable|email|max:255',
+            'work_contact'    => 'nullable|string',
+            'referral_mobile' => 'nullable|string',
+            'referral_email'  => 'nullable|email|max:255',
             'has_consent'     => 'nullable|boolean',
         ];
     }
@@ -131,7 +131,7 @@ class StoreFullFormRequest extends FormRequest
     {
         return [
             'ndis_plan_approved'              => 'nullable|in:Yes,No,Pending',
-            'ndis_number'                     => 'nullable|string|max:50',
+            'ndis_number'                     => 'nullable|string',
             'ndis_plan_start_date'           => 'nullable|date',
             'ndis_plan_end_date'             => 'nullable|date',
 
@@ -215,7 +215,7 @@ class StoreFullFormRequest extends FormRequest
         return [
             'need_bhc_community_support' => 'nullable|boolean',
             'comments' => 'nullable|string',
-            'transport_funding' => 'nullable|numeric|min:0',
+            'transport_funding' => 'nullable|numeric',
         ];
     }
     public function goalRules(): array
@@ -231,8 +231,8 @@ class StoreFullFormRequest extends FormRequest
     private function independentLivingRules(): array
     {
         return [
-            'rent_per_week'           => 'nullable|numeric|min:0',
-            'utilities_per_week'      => 'nullable|numeric|min:0',
+            'rent_per_week'           => 'nullable|numeric',
+            'utilities_per_week'      => 'nullable|numeric',
             'needs_furnished'         => 'boolean',
             'owns_furniture'          => 'boolean',
             'lease_duration'          => 'nullable|string|max:255',

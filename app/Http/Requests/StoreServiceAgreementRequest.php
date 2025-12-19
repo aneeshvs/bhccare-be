@@ -36,9 +36,9 @@ class StoreServiceAgreementRequest extends FormRequest
 
             // ✅ Participant fields
             'participant_name' => 'nullable|string|max:255',
-            'ndis_number' => 'nullable|string|max:50',
+            'ndis_number' => 'nullable|string',
             'address' => 'nullable|string|max:500',
-            'contact' => 'nullable|string|max:50',
+            'contact' => 'nullable|string',
             'email' => 'nullable|email|max:255',
             'dob' => 'nullable|date',
             'ndis_plan_start_date' => 'nullable|date',
@@ -50,7 +50,7 @@ class StoreServiceAgreementRequest extends FormRequest
             // ✅ Representative fields
             'representative_name' => 'nullable|string|max:255',
             'representative_relationship' => 'nullable|string|max:255',
-            'representative_contact' => 'nullable|string|max:50',
+            'representative_contact' => 'nullable|string',
             'representative_email' => 'nullable|email|max:255',
 
             // ✅ Form tracking

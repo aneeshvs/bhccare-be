@@ -41,7 +41,7 @@ class StoreHomeSafetyChecklistAssessmentRequest extends FormRequest
 
             'participant_name' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'phone' => 'nullable|string|max:50',
+            'phone' => 'nullable|string',
             'email' => 'nullable|email|max:255',
 
             'is_new_participant' => 'nullable|boolean',

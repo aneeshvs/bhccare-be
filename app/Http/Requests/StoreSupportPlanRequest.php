@@ -114,7 +114,7 @@ class StoreSupportPlanRequest extends FormRequest
     return [
         'care_partner_name' => 'nullable|string|max:255',
         'care_partner_role' => 'nullable|string|max:255',
-        'care_partner_contact_phone' => 'nullable|string|max:20',
+        'care_partner_contact_phone' => 'nullable|string',
         'care_partner_email' => 'nullable|email|max:255',
     ];
 }
@@ -184,7 +184,7 @@ class StoreSupportPlanRequest extends FormRequest
     {
         return [
 
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string',
             'address' => 'nullable|string|max:255',
             'is_rural_area' => 'nullable|boolean',
             'mailing_address' => 'nullable|string|max:255',
@@ -197,7 +197,7 @@ class StoreSupportPlanRequest extends FormRequest
         return [
 
             'secondary_role' => 'nullable|string|max:255',
-            'secondary_phone' => 'nullable|string|max:20',
+            'secondary_phone' => 'nullable|string',
             'secondary_email' => 'nullable|email|max:255',
             'secondary_address' => 'nullable|string|max:500',
             'secondary_best_time_to_contact' => 'nullable|string|max:255',
@@ -341,7 +341,7 @@ class StoreSupportPlanRequest extends FormRequest
             'has_allergies' => 'nullable|boolean',
             'allergy_details' => 'nullable|string',
 
-            'health_impact_scale' => 'nullable|integer|max:10',
+            'health_impact_scale' => 'nullable|integer',
 
             'painful_day_to_day' => 'nullable|boolean',
             'painful_day_to_day_details' => 'nullable|string',
@@ -352,7 +352,7 @@ class StoreSupportPlanRequest extends FormRequest
             'nutritional_concerns' => 'nullable|boolean',
             'nutritional_concerns_details' => 'nullable|string',
 
-            'current_weight' => 'nullable|string|max:50',
+            'current_weight' => 'nullable|string',
 
             'annual_vaccinations' => 'nullable|boolean',
             'annual_vaccination_details' => 'nullable|string',

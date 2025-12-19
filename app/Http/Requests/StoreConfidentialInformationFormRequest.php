@@ -51,11 +51,11 @@ class StoreConfidentialInformationFormRequest extends FormRequest
 
             'participant_name' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
-            'post_code' => 'nullable|string|max:10',
+            'post_code' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string',
             'email' => 'nullable|email|max:255',
-            'mobile_no' => 'nullable|string|max:20',
+            'mobile_no' => 'nullable|string',
 
            'form_status' => 'nullable|string',
         ];
