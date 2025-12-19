@@ -193,7 +193,7 @@ class StoreOnboardingRequest extends FormRequest
                 'epilepsy' => 'nullable|boolean',
                 'asthma' => 'nullable|boolean',
                 'diabetes' => 'nullable|boolean',
-                'allergies' => 'nullable|string|max:1000',
+                'allergies' => 'nullable|string',
                 'medical_info' => 'nullable|string',
                 'diagnosis' => 'nullable|string',
                 'other_description' => 'nullable|string',
