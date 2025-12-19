@@ -151,7 +151,115 @@ class ServiceAgreementController extends Controller
 
 
 
+public function clientUpdateServiceAgreementConsent(Request $request)
+{
+    Log::info('📝 Client updating ServiceAgreementConsent via UUID');
 
+    $validated = $request->validate([
+        'uuid' => 'required|string',
+        'user_id' => 'required|integer',
+        
+        // Client-controlled fields
+        'consents_participant_name' => 'nullable|string|max:255',
+       
+        'participant_signature' => 'nullable|string',
+        'participant_date' => 'nullable|date',
+        
+        'witness_name' => 'nullable|string|max:255',
+        'witness_signature' => 'nullable|string',
+        'witness_date' => 'nullable|date',
+        
+        'verbal_staff_name' => 'nullable|string|max:255',
+        'verbal_staff_signature' => 'nullable|string',
+        'verbal_staff_position' => 'nullable|string|max:255',
+        'verbal_date' => 'nullable|date',
+        
+        'other_notes' => 'nullable|string',
+        'received_signed_copy' => 'nullable|boolean',
+        'agreed_verbally' => 'nullable|boolean',
+       
+    ]);
+
+    // Find parent ServiceAgreement by UUID and user_id
+    $parentRecord = ServiceAgreement::where('uuid', $validated['uuid'])
+        ->where('user_id', $validated['user_id'])
+        ->first();
+
+    if (!$parentRecord) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Service Agreement not found or access denied'
+        ], 404);
+    }
+
+    // Update or create the ServiceAgreementConsent
+    $consentRecord = ServiceAgreementConsent::updateOrCreate(
+        [
+            'service_agreement_id' => $parentRecord->id
+        ],
+        [
+            // Participant fields
+            'consents_participant_name' => $validated['consents_participant_name'],
+          
+            'participant_signature' => $validated['participant_signature'],
+            'participant_date' => $validated['participant_date'],
+            
+            // Witness fields
+            'witness_name' => $validated['witness_name'],
+            'witness_signature' => $validated['witness_signature'],
+            'witness_date' => $validated['witness_date'],
+            
+            // Verbal consent fields
+            'verbal_staff_name' => $validated['verbal_staff_name'],
+            'verbal_staff_signature' => $validated['verbal_staff_signature'],
+            'verbal_staff_position' => $validated['verbal_staff_position'],
+            'verbal_date' => $validated['verbal_date'],
+            
+            // Other fields
+            'other_notes' => $validated['other_notes'],
+            'received_signed_copy' => $validated['received_signed_copy'],
+            'agreed_verbally' => $validated['agreed_verbally'],
+          
+        ]
+    );
+
+    Log::info('✅ Client updated Service Agreement Consent', [
+        'service_agreement_id' => $parentRecord->id,
+        'consent_id' => $consentRecord->id,
+        'client_id' => $validated['user_id']
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Service Agreement Consent saved successfully',
+        'data' => [
+            'uuid' => $parentRecord->uuid,
+            'participant_details' => [
+                'name' => $consentRecord->consents_participant_name,
+              
+                'date' => $consentRecord->participant_date,
+                'has_signature' => !empty($consentRecord->participant_signature),
+            ],
+            'witness_details' => [
+                'name' => $consentRecord->witness_name,
+                'date' => $consentRecord->witness_date,
+                'has_signature' => !empty($consentRecord->witness_signature),
+            ],
+            'verbal_consent' => [
+                'staff_name' => $consentRecord->verbal_staff_name,
+                'position' => $consentRecord->verbal_staff_position,
+                'date' => $consentRecord->verbal_date,
+                'has_signature' => !empty($consentRecord->verbal_staff_signature),
+                'agreed_verbally' => $consentRecord->agreed_verbally,
+            ],
+            'status' => [
+                'received_signed_copy' => $consentRecord->received_signed_copy,
+               
+            ],
+            'other_notes' => $consentRecord->other_notes,
+        ]
+    ]);
+}
 
 public function showByUuid( string $uuid, ServiceAgreementCompletionService $completionService)
 {

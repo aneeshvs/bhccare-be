@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use App\Models\SupportPlan;
+use App\Models\SupportPlanApproval;
 use App\Models\SupportPlanBehaviourSupport;
 use App\Models\SupportPlanCarePartner;
 use App\Models\SupportPlanContactDetailSecondary;
@@ -382,6 +383,75 @@ if ($data['form_status'] === 'completed') {
             'data' => $result,
         ]);
 
+}
+
+
+public function clientUpdateSupportPlanApproval(Request $request)
+{
+    Log::info('📝 Client updating SupportPlanApproval via UUID');
+
+    $validated = $request->validate([
+        'uuid' => 'required|string',
+        'user_id' => 'required|integer',
+        
+        // Client-controlled fields
+        'participant_name' => 'nullable|string|max:255',
+        'date_of_approval' => 'nullable|date',
+        'signature' => 'nullable|string',
+    ]);
+
+    // Find parent SupportPlan by UUID and user_id
+    $parentRecord = SupportPlan::where('uuid', $validated['uuid'])
+        ->where('user_id', $validated['user_id'])
+        ->first();
+
+    if (!$parentRecord) {
+        Log::warning('❌ Support Plan not found or access denied', [
+            'uuid' => $validated['uuid'],
+            'user_id' => $validated['user_id']
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Support Plan not found or access denied'
+        ], 404);
+    }
+
+    // Update or create the SupportPlanApproval
+    $approvalRecord = SupportPlanApproval::updateOrCreate(
+        [
+            'support_plan_id' => $parentRecord->id
+        ],
+        [
+            'participant_name' => $validated['participant_name'],
+            'date_of_approval' => $validated['date_of_approval'],
+            'signature' => $validated['signature'],
+        ]
+    );
+
+    Log::info('✅ Client updated Support Plan Approval', [
+        'support_plan_id' => $parentRecord->id,
+        'approval_id' => $approvalRecord->id,
+        'client_id' => $validated['user_id']
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'Support Plan Approval saved successfully',
+        'data' => [
+            'uuid' => $parentRecord->uuid,
+            'approval_details' => [
+                'participant_name' => $approvalRecord->participant_name,
+                'date_of_approval' => $approvalRecord->date_of_approval,
+                'has_signature' => !empty($approvalRecord->signature),
+                'signature_saved' => !empty($validated['signature']),
+            ],
+            'support_plan' => [
+                'id' => $parentRecord->id,
+                'uuid' => $parentRecord->uuid,
+            ]
+        ]
+    ]);
 }
 
 

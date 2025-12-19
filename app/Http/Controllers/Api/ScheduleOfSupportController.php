@@ -7,6 +7,7 @@ use App\Http\Requests\StoreScheduleOfSupportRequest;
 use App\ScheduleOfSupportService\ScheduleOfSupportService;
 use App\ScheduleOfSupportService\ScheduleOfSupportsCompletionService;
 use App\Models\ScheduleOfSupport;
+use App\Models\AgreementSignature;
 use App\ScheduleOfSupportService\AgreementSignatureService;
 use App\ScheduleOfSupportService\FundedSupportService;
 use App\ScheduleOfSupportService\UnfundedSupportService;
@@ -147,6 +148,85 @@ class ScheduleOfSupportController extends Controller
 }
 
 
+public function clientUpdateAllSignatures(Request $request)
+{
+    Log::info('📝 Client updating ALL signature fields in AgreementSignature via UUID');
+
+    // Validate using UUID approach
+    $validated = $request->validate([
+        'uuid' => 'required|string',
+        'user_id' => 'required|integer',
+        
+        // PARTICIPANT FIELDS
+        'participant_signature' => 'nullable|string',
+        'agreement_participant_name' => 'nullable|string|max:255',
+        'participant_date' => 'nullable|date',
+        
+        // REPRESENTATIVE FIELDS
+        'representative_signature' => 'nullable|string',
+        'representative_name' => 'nullable|string|max:255',
+        'representative_date' => 'nullable|date',
+    ]);
+
+    // Find the parent ScheduleOfSupport record using UUID
+    $schedule = ScheduleOfSupport::where('uuid', $validated['uuid'])
+        ->where('user_id', $validated['user_id'])
+        ->first();
+
+    if (!$schedule) {
+        Log::warning('❌ Schedule not found or access denied', [
+            'uuid' => $validated['uuid'],
+            'user_id' => $validated['user_id']
+        ]);
+
+        return response()->json([
+            'success' => false,
+            'message' => 'Schedule not found or access denied'
+        ], 404);
+    }
+
+    // ⭐ UPDATE or CREATE the AgreementSignature record
+    $agreementSignature = AgreementSignature::updateOrCreate(
+        [
+            'schedule_of_support_id' => $schedule->id
+        ],
+        [
+            // Participant fields
+            'participant_signature' => $validated['participant_signature'],
+            'agreement_participant_name' => $validated['agreement_participant_name'],
+            'participant_date' => $validated['participant_date'],
+            
+            // Representative fields
+            'representative_signature' => $validated['representative_signature'],
+            'representative_name' => $validated['representative_name'],
+            'representative_date' => $validated['representative_date'],
+        ]
+    );
+
+    Log::info('✅ Client updated ALL signature fields', [
+        'schedule_id' => $schedule->id,
+        'agreement_signature_id' => $agreementSignature->id,
+        'client_id' => $validated['user_id']
+    ]);
+
+    return response()->json([
+        'success' => true,
+        'message' => 'All signatures have been saved',
+        'data' => [
+            'uuid' => $schedule->uuid,
+            'participant_signature' => [
+                'name' => $agreementSignature->agreement_participant_name,
+                'date' => $agreementSignature->participant_date,
+                'signed' => !empty($agreementSignature->participant_signature),
+            ],
+            'representative_signature' => [
+                'name' => $agreementSignature->representative_name,
+                'date' => $agreementSignature->representative_date,
+                'signed' => !empty($agreementSignature->representative_signature),
+            ]
+        ]
+    ]);
+}
     public function showByUuid(string $uuid, ScheduleOfSupportsCompletionService $completionService)
 {
      $schedule = ScheduleOfSupport::with('transport','unfundedSupport','agreementSignature')->where('uuid', $uuid)->firstOrFail();
