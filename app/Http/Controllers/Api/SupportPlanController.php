@@ -395,8 +395,8 @@ public function clientUpdateSupportPlanApproval(Request $request)
         'user_id' => 'required|integer',
         
         // Client-controlled fields
-        'participant_name' => 'nullable|string|max:255',
-        'date_of_approval' => 'nullable|date',
+        // 'participant_name' => 'nullable|string|max:255',
+        // 'date_of_approval' => 'nullable|date',
         'signature' => 'nullable|string',
     ]);
 
@@ -423,8 +423,8 @@ public function clientUpdateSupportPlanApproval(Request $request)
             'support_plan_id' => $parentRecord->id
         ],
         [
-            'participant_name' => $validated['participant_name'],
-            'date_of_approval' => $validated['date_of_approval'],
+            // 'participant_name' => $validated['participant_name'],
+            // 'date_of_approval' => $validated['date_of_approval'],
             'signature' => $validated['signature'],
         ]
     );

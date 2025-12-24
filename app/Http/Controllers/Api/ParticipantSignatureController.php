@@ -151,7 +151,7 @@ public function clientUpdateSignature(Request $request)
         'uuid' => 'required|string',
         'user_id' => 'required|integer',
         'participant_signature' => 'required|string', // base64
-        'date_signed' => 'nullable|date',
+        // 'date_signed' => 'nullable|date',
     ]);
 
     $participantSignature = ParticipantSignature::where('uuid', $validated['uuid'])
@@ -168,7 +168,7 @@ public function clientUpdateSignature(Request $request)
     // ✅ THIS WAS MISSING
     $participantSignature->update([
         'participant_signature' => $validated['participant_signature'],
-        'date_signed' => $validated['date_signed'],
+        // 'date_signed' => $validated['date_signed'],
     ]);
 
     Log::info('✅ Client participant signature updated', [

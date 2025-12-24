@@ -10,6 +10,7 @@ class SelectedService extends DefaultDBModel
     protected $fillable = [
          'client_id',
         'service_name',
+        'goal_key',
     ];
      public function client()
     {

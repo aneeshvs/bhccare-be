@@ -2,6 +2,7 @@
 namespace App\Services;
 
 use App\Models\NdisGoal;
+use Illuminate\Support\Str;
 
 class NdisGoalService
 {
@@ -9,35 +10,34 @@ class NdisGoalService
     {
         $saved = [];
 
-        foreach ($goals as $goal) {
-            $goalName = trim($goal['goal'] ?? '');
-;
-            // Skip empty goal names
+        foreach ($goals as $row) {
+
+            $goalName = trim($row['goal'] ?? '');
+
+            // Skip empty goals
             if ($goalName === '') {
                 continue;
             }
 
-
-
-            // Find existing goal for client (case-insensitive match)
-            $existing = NdisGoal::where('client_id', $clientId)
-                ->whereRaw('LOWER(goal) = ?', [strtolower($goalName)])
-                ->first();
-
-            if ($existing) {
-                // Update only if barrier value changed
-                $existing->update([
-                    'barriers' => $goal['barriers'] ?? null,
-                ]);
-                $saved[] = $existing;
-            } else {
-                // Create new
-                $saved[] = NdisGoal::create([
-                    'client_id' => $clientId,
-                    'goal'      => $goalName,
-                    'barriers'  => $goal['barriers'] ?? null,
-                ]);
+            // Auto-generate goal_key if missing
+            if (empty($row['goal_key'])) {
+                $row['goal_key'] = 'ndis_goal_' . Str::uuid();
             }
+
+            // Find existing goal by client + goal_key
+            $goal = NdisGoal::firstOrNew([
+                'client_id' => $clientId,
+                'goal_key'  => $row['goal_key'],
+            ]);
+
+            // Fill fields
+            $goal->goal     = $goalName;
+            $goal->barriers = $row['barriers'] ?? null;
+
+            // Save (no logging)
+            $goal->save();
+
+            $saved[] = $goal;
         }
 
         return $saved;

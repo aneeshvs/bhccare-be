@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('provider')->nullable();
+            $table->string('goal_key')->nullable();
             $table->string('contact_details')->nullable();
             $table->string('length_of_support')->nullable();
             $table->text('reason_for_leaving')->nullable();

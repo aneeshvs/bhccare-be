@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\SelectedService;
+use Illuminate\Support\Str;
 
 class SelectedServiceService
 {
@@ -10,43 +11,34 @@ class SelectedServiceService
     {
         $saved = [];
 
-        foreach ($services as $service) {
-            $serviceName = trim($service['service_name'] ?? '');
+        foreach ($services as $row) {
 
-            // 🚫 Skip if service name is empty
+            $serviceName = trim($row['service_name'] ?? '');
+
+            // Skip empty service names
             if ($serviceName === '') {
                 continue;
             }
 
-            // 🔍 Check if the same service already exists (case-insensitive)
-            $existing = SelectedService::where('client_id', $clientId)
-                ->whereRaw('LOWER(service_name) = ?', [strtolower($serviceName)])
-                ->first();
-
-            if ($existing) {
-                // ✅ If there are additional fields, compare & update
-                $changes = [
-                    'description' => $service['description'] ?? null, // example field
-                    'category'    => $service['category'] ?? null,    // example field
-                ];
-
-                // Filter only changed fields
-                $dirty = array_filter($changes, fn($v, $k) => $existing->$k !== $v, ARRAY_FILTER_USE_BOTH);
-
-                if (!empty($dirty)) {
-                    $existing->update($changes);
-                }
-
-                $saved[] = $existing;
-            } else {
-                // 🆕 Create new record
-                $saved[] = SelectedService::create([
-                    'client_id'    => $clientId,
-                    'service_name' => $serviceName,
-                    'description'  => $service['description'] ?? null,
-                    'category'     => $service['category'] ?? null,
-                ]);
+            // Auto-generate goal_key if missing
+            if (empty($row['goal_key'])) {
+                $row['goal_key'] = 'service_' . Str::uuid();
             }
+
+            // Find or create by client + goal_key
+            $service = SelectedService::firstOrNew([
+                'client_id'   => $clientId,
+                'goal_key' => $row['goal_key'],
+            ]);
+
+            // Fill fields
+            $service->service_name = $serviceName;
+           
+
+            // Save (no logs)
+            $service->save();
+
+            $saved[] = $service;
         }
 
         return $saved;

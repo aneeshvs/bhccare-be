@@ -195,7 +195,7 @@ public function clientSignatureUpdate(Request $request)
         // 'participant_name' => 'required|string|max:255',
         // 'relationship_to_participant' => 'required|string|max:255',
         'participant_signature' => 'required|string',
-        'signed_date' => 'nullable|date',
+        // 'signed_date' => 'nullable|date',
        
     ]);
     
@@ -220,7 +220,7 @@ public function clientSignatureUpdate(Request $request)
             // 'participant_name' => $validated['participant_name'],
             // 'relationship_to_participant' => $validated['relationship_to_participant'],
             'participant_signature' => $validated['participant_signature'],
-            'signed_date' => $validated['signed_date'],
+            // 'signed_date' => $validated['signed_date'],
         ]
     );
     

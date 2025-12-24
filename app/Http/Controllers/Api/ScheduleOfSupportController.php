@@ -159,13 +159,13 @@ public function clientUpdateAllSignatures(Request $request)
         
         // PARTICIPANT FIELDS
         'participant_signature' => 'nullable|string',
-        'agreement_participant_name' => 'nullable|string|max:255',
-        'participant_date' => 'nullable|date',
+        // 'agreement_participant_name' => 'nullable|string|max:255',
+        // 'participant_date' => 'nullable|date',
         
         // REPRESENTATIVE FIELDS
         'representative_signature' => 'nullable|string',
-        'representative_name' => 'nullable|string|max:255',
-        'representative_date' => 'nullable|date',
+        // 'representative_name' => 'nullable|string|max:255',
+        // 'representative_date' => 'nullable|date',
     ]);
 
     // Find the parent ScheduleOfSupport record using UUID
@@ -193,13 +193,13 @@ public function clientUpdateAllSignatures(Request $request)
         [
             // Participant fields
             'participant_signature' => $validated['participant_signature'],
-            'agreement_participant_name' => $validated['agreement_participant_name'],
-            'participant_date' => $validated['participant_date'],
+            // 'agreement_participant_name' => $validated['agreement_participant_name'],
+            // 'participant_date' => $validated['participant_date'],
             
             // Representative fields
             'representative_signature' => $validated['representative_signature'],
-            'representative_name' => $validated['representative_name'],
-            'representative_date' => $validated['representative_date'],
+            // 'representative_name' => $validated['representative_name'],
+            // 'representative_date' => $validated['representative_date'],
         ]
     );
 

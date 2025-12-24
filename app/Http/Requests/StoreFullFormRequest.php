@@ -114,6 +114,10 @@ class StoreFullFormRequest extends FormRequest
             'previous_service_providers.*.contact_details' => 'nullable|string|max:255',
             'previous_service_providers.*.length_of_support' => 'nullable|string|max:255',
             'previous_service_providers.*.reason_for_leaving' => 'nullable|string|max:1000',
+            'previous_service_providers.*.goal_key' => 'nullable|string', 
+
+
+            
 
         ];
     }
@@ -124,6 +128,8 @@ class StoreFullFormRequest extends FormRequest
 
             'selected_services' => 'nullable|array',
             'selected_services.*.service_name' => 'nullable|string|max:255',
+            'selected_services.*.goal_key' => 'nullable|string', 
+
 
         ];
     }
@@ -224,6 +230,7 @@ class StoreFullFormRequest extends FormRequest
             'ndis_goals' => 'nullable|array',
             'ndis_goals.*.goal' => 'nullable|string|max:255',
             'ndis_goals.*.barriers' => 'nullable|string',
+           'ndis_goals.*.goal_key' => 'nullable|string', 
 
 
         ];

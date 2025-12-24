@@ -11,6 +11,7 @@ class NdisGoal extends DefaultDBModel
         'client_id',
         'goal',
         'barriers',
+        'goal_key'
 
     ];
 

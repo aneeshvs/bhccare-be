@@ -185,16 +185,16 @@ public function update(
             'user_id' => 'required|integer',
             // Consent 1 fields (ConfidentialInformationConsent)
             'signature_consent' => 'required|string',
-            'signed_date_consent' => 'nullable|date',
-            'name_consent' => 'nullable|string|max:255',
-            'signed_by_consent' => 'nullable|string|max:255',
-            'witnessed_by_consent' => 'nullable|string|max:255',
+            // 'signed_date_consent' => 'nullable|date',
+            // 'name_consent' => 'nullable|string|max:255',
+            // 'signed_by_consent' => 'nullable|string|max:255',
+            // 'witnessed_by_consent' => 'nullable|string|max:255',
             
             // Consent 2 fields (ConfidentialVerbalConsent)
             'verbal_signature' => 'required|string',
-            'verbal_signed_date' => 'nullable|date',
-            'verbal_name' => 'nullable|string|max:255',
-            'position' => 'nullable|string|max:255',
+            // 'verbal_signed_date' => 'nullable|date',
+            // 'verbal_name' => 'nullable|string|max:255',
+            // 'position' => 'nullable|string|max:255',
         ]);
         
         if ($validator->fails()) {
@@ -234,10 +234,10 @@ public function update(
                 ],
                 [
                     'signature' => $validated['signature_consent'] ?? null,
-                    'signed_date' => $validated['signed_date_consent'] ?? null,
-                    'name' => $validated['name_consent'] ?? null,
-                    'signed_by' => $validated['signed_by_consent'] ?? null,
-                    'witnessed_by' => $validated['witnessed_by_consent'] ?? null,
+                    // 'signed_date' => $validated['signed_date_consent'] ?? null,
+                    // 'name' => $validated['name_consent'] ?? null,
+                    // 'signed_by' => $validated['signed_by_consent'] ?? null,
+                    // 'witnessed_by' => $validated['witnessed_by_consent'] ?? null,
                 ]
             );
             
@@ -255,9 +255,9 @@ public function update(
                 ],
                 [
                     'verbal_signature' => $validated['verbal_signature'] ?? null,
-                    'verbal_signed_date' => $validated['verbal_signed_date'] ?? null,
-                    'verbal_name' => $validated['verbal_name'] ?? null,
-                    'position' => $validated['position'] ?? null,
+                    // 'verbal_signed_date' => $validated['verbal_signed_date'] ?? null,
+                    // 'verbal_name' => $validated['verbal_name'] ?? null,
+                    // 'position' => $validated['position'] ?? null,
                 ]
             );
             

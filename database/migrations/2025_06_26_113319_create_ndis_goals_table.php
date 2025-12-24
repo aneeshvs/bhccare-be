@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->id();
 
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
+              $table->string('goal_key')->nullable();
 
             $table->string('goal')->nullable();
             $table->text('barriers')->nullable();

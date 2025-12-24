@@ -159,24 +159,26 @@ public function clientUpdateServiceAgreementConsent(Request $request)
         'uuid' => 'required|string',
         'user_id' => 'required|integer',
         
-        // Client-controlled fields
-        'consents_participant_name' => 'nullable|string|max:255',
+        // // Client-controlled fields
+        // 'consents_participant_name' => 'nullable|string|max:255',
+
+        'accepted_signature' => 'nullable|string',
        
         'participant_signature' => 'nullable|string',
-        'participant_date' => 'nullable|date',
+        // 'participant_date' => 'nullable|date',
         
-        'witness_name' => 'nullable|string|max:255',
+        // 'witness_name' => 'nullable|string|max:255',
         'witness_signature' => 'nullable|string',
-        'witness_date' => 'nullable|date',
+        // 'witness_date' => 'nullable|date',
         
-        'verbal_staff_name' => 'nullable|string|max:255',
+        // 'verbal_staff_name' => 'nullable|string|max:255',
         'verbal_staff_signature' => 'nullable|string',
-        'verbal_staff_position' => 'nullable|string|max:255',
-        'verbal_date' => 'nullable|date',
+        // 'verbal_staff_position' => 'nullable|string|max:255',
+        // 'verbal_date' => 'nullable|date',
         
-        'other_notes' => 'nullable|string',
-        'received_signed_copy' => 'nullable|boolean',
-        'agreed_verbally' => 'nullable|boolean',
+        // 'other_notes' => 'nullable|string',
+        // 'received_signed_copy' => 'nullable|boolean',
+        // 'agreed_verbally' => 'nullable|boolean',
        
     ]);
 
@@ -198,27 +200,32 @@ public function clientUpdateServiceAgreementConsent(Request $request)
             'service_agreement_id' => $parentRecord->id
         ],
         [
-            // Participant fields
-            'consents_participant_name' => $validated['consents_participant_name'],
+
+
+            // // Participant fields
+            // 'consents_participant_name' => $validated['consents_participant_name'],
+
+             'accepted_signature' =>  $validated['accepted_signature'],
+       
           
             'participant_signature' => $validated['participant_signature'],
-            'participant_date' => $validated['participant_date'],
+            // 'participant_date' => $validated['participant_date'],
             
             // Witness fields
-            'witness_name' => $validated['witness_name'],
+            // 'witness_name' => $validated['witness_name'],
             'witness_signature' => $validated['witness_signature'],
-            'witness_date' => $validated['witness_date'],
+            // 'witness_date' => $validated['witness_date'],
             
-            // Verbal consent fields
-            'verbal_staff_name' => $validated['verbal_staff_name'],
+            // // Verbal consent fields
+            // 'verbal_staff_name' => $validated['verbal_staff_name'],
             'verbal_staff_signature' => $validated['verbal_staff_signature'],
-            'verbal_staff_position' => $validated['verbal_staff_position'],
-            'verbal_date' => $validated['verbal_date'],
+            // 'verbal_staff_position' => $validated['verbal_staff_position'],
+            // 'verbal_date' => $validated['verbal_date'],
             
             // Other fields
-            'other_notes' => $validated['other_notes'],
-            'received_signed_copy' => $validated['received_signed_copy'],
-            'agreed_verbally' => $validated['agreed_verbally'],
+            // 'other_notes' => $validated['other_notes'],
+            // 'received_signed_copy' => $validated['received_signed_copy'],
+            // 'agreed_verbally' => $validated['agreed_verbally'],
           
         ]
     );

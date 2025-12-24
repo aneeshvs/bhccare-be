@@ -91,23 +91,26 @@ public function update(
         $independentLivingOptionService->save($data);
         $finalDeclarationService->save($data);
 
-        $response = Http::asForm()->post(config('services.core_php.base_url') . '/php/update-form-status.php', [
-    'uuid'        => $uuid,
-    'form_status' => 'completed',
+     if ($client->form_status === 'completed') {
+    $response = Http::asForm()->post(
+        config('services.core_php.base_url') . '/php/update-form-status.php',
+        [
+            'uuid'        => $uuid,
+            'form_status' => 'completed',
+            'name'        => $client->full_name,
+            'lastname'    => '',
+            'gender'      => $client->gender,
+            'dateofbirth' => $client->date_of_birth,
+            'email'       => $client->email,
+            'mobile'      => $client->mobile,
+            'address'     => $client->residential_address,
+            'username'    => $client->email,
+            'usertype'    => 'NDIS',
+            'password'    => $client->password,
+        ]
+    );
 
-    'name'        => $client->full_name,
-    'lastname'    => '', // OR split full name later
-    'gender'      => $client->gender,
-    'dateofbirth' => $client->date_of_birth,
-    'email'       => $client->email,
-    'mobile'      => $client->mobile,
-    'address'     => $client->residential_address,
 
-    'username'    => $client->email,
-    'usertype'    => 'NDIS',
-
-    'password'    => $client->password,
-]);
 Log::info('Sending Core PHP update-form-status request', [
     'uuid' => $uuid,
     'payload' => [
@@ -128,8 +131,22 @@ Log::info('Core PHP response', [
     'response' => $response->json()
 ]);
 
+}
+$client = Client::with([
+    'referrals',
+    'accommodations',
+    'selectedServices',
+    'previousServiceProviders',
+    'clientNdisDetail',
+    'medicalInformation',
+    'housingHistory',
+    'rosterOfCare',
+    'ndisGoals',
+    'independentLivingOption',
+    'finalDeclaration'
+])->find($client->id);
 
-        return compact('client');
+return $client;
     });
 
 

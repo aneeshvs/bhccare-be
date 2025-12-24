@@ -12,6 +12,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('client_id')->constrained()->onDelete('cascade');
             $table->string('service_name')->nullable();
+            $table->string('goal_key')->nullable();
             MigrationHelper::addColumns($table, MigrationHelper::defaultColumnFlags());
         });
     }

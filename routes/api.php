@@ -45,7 +45,7 @@ Route::post('/generate-form-uuid', function () {
     ]);
 });
 
-Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']); //core php create propect api call
+Route::post('/clients/create-basic', [ClientController::class, 'storeBasic']);//core php create propect api call
 
 Route::get('/validate-password', [FullFormController::class, 'validatePassword']);//prospect_form validate
 

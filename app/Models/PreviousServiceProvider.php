@@ -10,6 +10,7 @@ class PreviousServiceProvider extends DefaultDBModel
     protected $fillable = [
          'client_id',
         'provider',
+        'goal_key',
         'contact_details',
         'length_of_support',
         'reason_for_leaving',
