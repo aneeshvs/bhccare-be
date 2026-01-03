@@ -13,6 +13,16 @@ class StoreServiceAgreementRequest extends FormRequest
         return true; // adjust if you want authorization logic
     }
 
+    protected function prepareForValidation()
+{
+    // Decode area_of_support if sent as JSON string
+    if (is_string($this->area_of_support)) {
+        $this->merge([
+            'area_of_support' => json_decode($this->area_of_support, true),
+        ]);
+    }
+}
+
     public function rules()
     {
         return array_merge(
