@@ -425,8 +425,19 @@
                     </tr>
                     <tr>
                         <td class="field-label">Area of Support</td>
-                        <td class="field-value" colspan="3">{{ $serviceAgreement->area_of_support ?? 'Enter areas of support' }}</td>
+                        <td class="field-value" colspan="3">
+                            @if(!empty($serviceAgreement->area_of_support))
+                                <ul style="margin:0; padding-left:16px;">
+                                    @foreach($serviceAgreement->area_of_support as $support)
+                                        <li>{{ $support }}</li>
+                                    @endforeach
+                                </ul>
+                            @else
+                                Enter areas of support
+                            @endif
+                        </td>
                     </tr>
+
                 </table>
 
                 <!-- Representative Details -->
