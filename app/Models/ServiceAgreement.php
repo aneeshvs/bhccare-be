@@ -37,6 +37,11 @@ class ServiceAgreement extends DefaultDBModel
         'form_status' => 'in_progress',
     ];
 
+    protected $casts = [
+    'area_of_support' => 'array',
+];
+
+
     public function staff()
     {
         return $this->belongsTo(Staff::class);

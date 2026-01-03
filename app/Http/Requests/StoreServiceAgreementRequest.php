@@ -45,7 +45,7 @@ class StoreServiceAgreementRequest extends FormRequest
             'ndis_plan_end_date' => 'nullable|date',
             'term_start_date' => 'nullable|date',
             'term_end_date' => 'nullable|date',
-            'area_of_support' => 'nullable|string|max:255',
+            'area_of_support' => 'nullable|array',
 
             // ✅ Representative fields
             'representative_name' => 'nullable|string|max:255',

@@ -28,7 +28,7 @@ return new class extends Migration {
             $table->date('ndis_plan_end_date')->nullable();
             $table->date('term_start_date')->nullable();
             $table->date('term_end_date')->nullable();
-            $table->string('area_of_support')->nullable();
+            $table->json('area_of_support')->nullable();
 
             // ✅ Representative fields
             $table->string('representative_name')->nullable();
