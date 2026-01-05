@@ -222,6 +222,7 @@ Route::put('/client/onboarding-packing-signoff/update', [OnboardingPackingSignof
 // Authenticated Routes
 Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
+    Route::get('/me', [ProfileController::class, 'show']);
     Route::put('/onboardsubmit',[OnboardingController::class,'update']);
     Route::put('/support-plan', [SupportPlanController::class, 'update']);
     Route::put('/service-agreement/update', [ServiceAgreementController::class, 'update']);
