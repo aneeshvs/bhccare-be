@@ -1208,202 +1208,143 @@
 
     <div class="content-wrapper">
         <div class="container">
-            <!-- Outside Residence Assessment -->
-            @if($assessment->outsideResidenceAssessment)
+                    <!-- Outside Residence Assessment -->
+        @if($assessment->outsideResidenceAssessment)
             <div class="section page-start">
-                <div class="section-header">5.OUTSIDE - BACK AND SIDES OF RESIDENCE / GARAGES AND SHEDS</div>
+                <div class="section-header">
+                    5. OUTSIDE – BACK AND SIDES OF RESIDENCE / GARAGES AND SHEDS
+                </div>
+
                 <table>
                     <thead>
                         <tr>
                             <th class="question-column"></th>
                             <th class="response-column"></th>
-                            <th class="strategy-column">Where there is a risk identified, please outline the management strategy</th>
+                            <th class="strategy-column">
+                                Where there is a risk identified, please outline the management strategy
+                            </th>
                         </tr>
                     </thead>
+
                     <tbody>
+                        {{-- Paths / Veranda / Steps --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Are floor surfaces level, in good condition, with no trip hazards (e.g. mats)?</span>
+                                Are paths/veranda/steps surface level, non-slip/trip free, uncluttered and of adequate width?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->floor_surfaces ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_paths_veranda_steps ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->floor_surfaces_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_paths_veranda_steps_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Pets restrained --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Are electrical switches/power points/leads in good condition, easy to access, and in a suitable location?</span>
+                                Are pets restrained and separated from worker?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->electrical_good_condition ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_pets_restrained ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->electrical_good_condition_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_pets_restrained_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Lighting --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Is ventilation, lighting and drainage adequate?</span>
+                                Is lighting adequate for illumination at night?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->ventilation_lighting_drainage ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_lighting_adequate ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->ventilation_lighting_drainage_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_lighting_adequate_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Door --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Are benches/surfaces clean and is there adequate room/height to work from?</span>
+                                Is the door easy to open and clear of obstruction?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->benches_clean_adequate ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_door_easy_open ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->benches_clean_adequate_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_door_easy_open_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Lawn mower --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Is the stove and food preparation equipment clean and in good working order?</span>
+                                Is lawn mower and gardening equipment of appropriate design and in working order?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->stove_clean_working ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_lawn_mower_condition ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->stove_clean_working_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_lawn_mower_condition_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Electrical --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Is the fridge clean and food stored appropriately?</span>
+                                Are electrical switches, power points and leads in good condition and easy to access?
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
                                     @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->fridge_clean_stored ?? '') === $option ? 'selected' : '' }}">
+                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->outside_electrical_condition ?? '') === $option ? 'selected' : '' }}">
                                             {{ $option }}
                                         </span>
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->fridge_clean_stored_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_electrical_condition_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
+                        {{-- Fire hazards --}}
                         <tr>
                             <td class="question-column">
-                                <span class="label">Is the bath/shower an appropriate design for easy access, with a non-slip surface?</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->bath_shower_accessible ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->bath_shower_accessible_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Is the toilet accessible for cleaning and is the seat intact?</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->toilet_accessible ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->toilet_accessible_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Is privacy adequate for staff use? (doors closed and locked)</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->privacy_adequate ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->privacy_adequate_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Is the washing machine/dryer an appropriate design, clean and in working order?</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->washing_machine_condition ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->washing_machine_condition_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Is the iron/ironing board/clothesline an appropriate design and in working order?</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->ironing_equipment_condition ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->ironing_equipment_condition_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Are manual handling risks associated with Participant transfers assessed and controlled? (e.g., transfers in/out of bed, into car)</span>
-                            </td>
-                            <td class="response-column">
-                                <div class="response-options">
-                                    @foreach(['Yes','No','N/A','Unsure'] as $option)
-                                        <span class="enum-option {{ ($assessment->outsideResidenceAssessment->manual_handling_risks ?? '') === $option ? 'selected' : '' }}">
-                                            {{ $option }}
-                                        </span>
-                                    @endforeach
-                                </div>
-                            </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->manual_handling_risks_strategy ?? 'N/A' }}</td>
-                        </tr>
-                        <tr>
-                            <td class="question-column">
-                                <span class="label">Are there any fire hazards? (fireplaces, candles, etc.)</span>
+                                Are there any fire hazards? (heaters, BBQ – gas/coal, etc.)
                             </td>
                             <td class="response-column">
                                 <div class="response-options">
@@ -1414,12 +1355,16 @@
                                     @endforeach
                                 </div>
                             </td>
-                            <td class="strategy-column">{{ $assessment->outsideResidenceAssessment->outside_fire_hazards_strategy ?? 'N/A' }}</td>
+                            <td class="strategy-column">
+                                {{ $assessment->outsideResidenceAssessment->outside_fire_hazards_strategy ?? 'N/A' }}
+                            </td>
                         </tr>
+
                     </tbody>
                 </table>
             </div>
-            @endif
+        @endif
+
         </div>
     </div>
 
