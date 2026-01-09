@@ -394,7 +394,7 @@
                                 <span class="enum-option {{ $assessment->is_review_existing ? 'selected' : '' }}">Review Existing</span>
                             </div>
                         </td>
-                        <td class="field-label">Participant Agrees to Safety Check</td>
+                        <td class="field-label">Does the participant agree to the home safety assessment?</td>
                         <td class="field-value">
                             <div class="enum-field">
                                 @foreach(['Yes', 'No'] as $option)
