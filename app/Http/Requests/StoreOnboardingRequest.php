@@ -224,9 +224,9 @@ class StoreOnboardingRequest extends FormRequest
 
                 'communication_assistance_required' => 'nullable|boolean',
                 'mealtime_plan' => 'nullable|string',
-                'likes' => 'nullable|string|max:1000',
-                'dislikes' => 'nullable|string|max:1000',
-                'interests' => 'nullable|string|max:1000',
+                'likes' => 'nullable|string',
+                'dislikes' => 'nullable|string',
+                'interests' => 'nullable|string',
 
                  'male' => 'nullable|boolean',
                  'female' => 'nullable|boolean',
