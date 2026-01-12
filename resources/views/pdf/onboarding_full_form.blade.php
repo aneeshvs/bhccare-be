@@ -866,6 +866,12 @@
                                     @endforeach
                                 </tr>
                             </table>
+                            @if(in_array('Other', $selectedConditions) && !empty($initial->healthInformation->health_other_description))
+                                <div style="margin-top: 5px;">
+                                    <span class="label">Other Details:</span>
+                                    <span class="value">{{ $initial->healthInformation->health_other_description }}</span>
+                                </div>
+                            @endif
                         </td>
                     </tr>
                 </table>
