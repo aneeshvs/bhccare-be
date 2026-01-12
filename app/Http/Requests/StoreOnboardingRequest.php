@@ -159,7 +159,7 @@ class StoreOnboardingRequest extends FormRequest
         {
             return [
                 'health_conditions' => 'nullable|array',
-                'health_conditions.*' => 'string|in:Urinary Catheter Management,Intellectual Disability,Spinal Cord Disability/Injury,Bowel Care,Wound Care / Pressure Area Care,Hearing Impairment,Tracheostomy Management,Cerebral Palsy,Subcutaneous Medication Management,Mealtime Support or Dysphagia,Enteral Feeding or Peg Feeding,Ventilator,Medication Support,Autism,Other',
+                'health_conditions.*' => 'string|in:Urinary Catheter Management,Intellectual Disability,Spinal Cord Disability/Injury,Bowel Care,Wound Care / Pressure Area Care,Hearing Impairment,Tracheostomy Management,Cerebral Palsy,Subcutaneous Medication Management,Mealtime Support or Dysphagia,Enteral Feeding or Peg Feeding,Ventilator,Medication Support,Autism,Mental Health,Physical Disability,Other',
                 'health_other_description' => 'nullable|string|max:500',
             ];
         }

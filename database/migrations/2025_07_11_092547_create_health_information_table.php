@@ -12,7 +12,9 @@ return new class extends Migration {
         Schema::create('health_information', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('initial_enquiry_id');
-            $table->json('health_conditions')->nullable(); // stores selected values as JSON
+            $table->json('health_conditions')->nullable(); 
+            $table->string('health_other_description', 500)->nullable();
+// stores selected values as JSON
 
             $table->foreign('initial_enquiry_id')
                 ->references('id')

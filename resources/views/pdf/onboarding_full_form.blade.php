@@ -839,6 +839,9 @@
                                             'Enteral Feeding or Peg Feeding',
                                             'Ventilator',
                                             'Medication Support',
+                                            'Autism',
+                                            'Mental Health',
+                                            'Physical Disability',
                                             'Other'
                                         ];
 

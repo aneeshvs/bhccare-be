@@ -15,6 +15,7 @@ class HealthInformationService
 
         $health->fill([
             'health_conditions' => $data['health_conditions'] ?? [],
+            'health_other_description' => $data['health_other_description'] ?? null,
         ]);
 
         if ($health->isDirty()) {

@@ -13,6 +13,7 @@ class HealthInformation extends DefaultDBModel
     protected $fillable = [
         'initial_enquiry_id',
         'health_conditions',
+        'health_other_description',
     ];
 
     protected $casts = [
