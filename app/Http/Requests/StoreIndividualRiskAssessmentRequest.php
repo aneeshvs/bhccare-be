@@ -183,6 +183,7 @@ class StoreIndividualRiskAssessmentRequest extends FormRequest
     }
 
     private function manualHandlingRules(): array
+    
 {
     return [
         'manual_handlings'                              => 'nullable|array',
