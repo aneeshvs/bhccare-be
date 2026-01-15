@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class FullFormController extends UniversalController
 {
@@ -250,10 +251,27 @@ public function removeItem(Request $request)
         'message' => $deleted > 0 ? 'Entry deleted successfully.' : 'Entry not found.',
     ]);
 }
+    public function exportFullFormPdf(string $uuid)
+    {
+        $client = Client::with([
+            'referrals', 'accommodations', 'selectedServices',
+            'previousServiceProviders', 'clientNdisDetail',
+            'medicalInformation', 'housingHistory', 'rosterOfCare',
+            'ndisGoals', 'independentLivingOption', 'finalDeclaration'
+        ])->where('prospect_uuid', $uuid)->firstOrFail();
 
+        // Note: Using the same view as Onboarding. Ensure variable name matches view expectation.
+        // Assuming view expects $initial, mapping $client to 'initial'
+        $pdf = Pdf::loadView('pdf.client_full_form', ['initial' => $client])
+            ->setPaper('A4', 'portrait');
 
-
-
-
+        return $pdf->download('Client_Form_' . $client->full_name . '.pdf');
+    }
 }
+
+
+
+
+
+
 

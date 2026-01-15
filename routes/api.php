@@ -34,6 +34,7 @@ use Illuminate\Http\Request;
 // Public Routes Prospects
 Route::put('/form/submit/{uuid}', [FullFormController::class, 'update']);
 Route::get('/form/data/{uuid}', [FullFormController::class, 'show']);
+Route::get('/form/export-pdf/{uuid}', [FullFormController::class, 'exportFullFormPdf']);
  // optional
 Route::post('/generate-form-uuid', function () {
     $uuid = Str::uuid();
